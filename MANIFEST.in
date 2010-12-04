@@ -1,0 +1,6 @@
+recursive-include teerace/media *
+recursive-include teerace/templates *
+
+include LICENSE
+include README
+include *.txt
