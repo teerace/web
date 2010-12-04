@@ -14,7 +14,7 @@ def read_file(filename):
 DESC = " ".join(__import__('teerace').__doc__.splitlines()).strip()
 
 setup(
-    name = "django-teerace",
+    name = "teerace",
     version = __import__('teerace').get_version().replace(' ', '-'),
     url = '',
     author = 'Krzysztof Socha',
