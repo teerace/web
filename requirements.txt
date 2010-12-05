@@ -1,2 +1,4 @@
 Django>=1.2
+django-annoying>=0.7.5
 django-piston>=0.2.2
+django-recaptcha-works>=0.3.4
