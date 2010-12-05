@@ -1,7 +1,10 @@
-from django.test.simple import run_tests as default_run_tests 
-from django.conf import settings 
+from django.test.simple import DjangoTestSuiteRunner
+from django.conf import settings
 
 
-def run_tests(test_labels, *args, **kwargs):
-	del test_labels
-	return default_run_tests(settings.OUR_APPS, *args, **kwargs)
+class LocalTestSuiteRunner(DjangoTestSuiteRunner):
+
+	def run_tests(self, test_labels, extra_tests=None, **kwargs):
+		del test_labels
+		super(LocalTestSuiteRunner, self).run_tests(settings.OUR_APPS, extra_tests, **kwargs)
+
