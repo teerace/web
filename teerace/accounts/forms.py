@@ -23,6 +23,7 @@ class RegisterForm(forms.Form):
 		username = self.cleaned_data['username']
 		try:
 			user = User.objects.get(username__iexact=username)
+			del user
 			raise forms.ValidationError("Username is already taken")
 		except User.DoesNotExist:
 			pass

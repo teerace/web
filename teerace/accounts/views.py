@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from annoying.functions import get_config
@@ -8,7 +8,7 @@ from accounts.forms import LoginForm, RegisterForm
 
 
 @render_to('accounts/login.html')
-def login(request, *args, **kwargs):
+def login(request):
 	if request.user.is_authenticated():
 		return redirect(reverse('home'))
 
@@ -33,7 +33,7 @@ def login(request, *args, **kwargs):
 	}
 
 
-def logout(request, *args, **kwargs):
+def logout(request):
 	next = request.REQUEST.get('next', reverse('home'))
 	auth_logout(request)
 	messages.success(request, "Bye bye.")
@@ -41,7 +41,7 @@ def logout(request, *args, **kwargs):
 
 
 @render_to('accounts/register.html')
-def register(request, *args, **kwargs):
+def register(request):
 	if request.user.is_authenticated():
 		return redirect(reverse('home'))
 
@@ -68,14 +68,14 @@ def register(request, *args, **kwargs):
 
 
 @render_to('accounts/first_login.html')
-def first_login(request, *args, **kwargs):
+def first_login(request):
 	return {
-	
+
 	}
 
 
 @render_to('accounts/welcome.html')
-def welcome(request, *args, **kwargs):
+def welcome(request):
 	return {
-	
+
 	}
