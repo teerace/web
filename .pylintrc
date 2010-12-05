@@ -9,9 +9,7 @@ ignore=.git
 
 [MESSAGES CONTROL]
 
-# TODO document the rest of the exclusions
 # C0111 - Missing docstring
-# W0312 - Found indentation with tabs instead of spaces
 disable=C0111
 
 [REPORTS]
