@@ -1,3 +1,4 @@
+from zlib import crc32
 from django.db import models
 from django.contrib.auth.models import User
 from lib.file_storage import OverwriteStorage
@@ -17,8 +18,13 @@ class Map(models.Model):
 		return 'uploads/maps/{0}_{1}.map'.format(self.name, self.crc)
 	map_file = models.FileField(storage=OverwriteStorage(),
 		upload_to=map_filename)
-	# FIXME autogenerate CRC of the map file
 	crc = models.CharField(max_length=8)
+
+	def save(self, *args, **kwargs):
+		if self.map_file:
+			self.crc = '{0:x}'.format(crc32(self.map_file.open().read()))
+			self.map_file.close()
+		super(Map, self).save(*args, **kwargs)
 
 
 class Run(models.Model):
