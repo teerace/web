@@ -1,0 +1,6 @@
+[submodule "teerace-media"]
+	path = teerace/media
+	url = git@github.com:chaosk/teerace-media.git
+[submodule "teerace/media"]
+	path = teerace/media
+	url = ../teerace-media
