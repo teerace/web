@@ -25,7 +25,7 @@ def login(request):
 		login_form = LoginForm(request.POST)
 		if login_form.is_valid() and login_form.user:
 			auth_login(request, login_form.user)
-			messages.success(request, "Hello, %s." % login_form.user)
+			messages.success(request, "Hello, {0}.".format(login_form.user))
 			redirect(next_uri)
 
 	return {
@@ -60,7 +60,7 @@ def register(request):
 		register_form = RegisterForm(request.POST)
 		if register_form.is_valid():
 			auth_login(request, register_form.save())
-			messages.success(request, "Welcome aboard, %s." % register_form.user)
+			messages.success(request, "Welcome aboard, {0}.".format(register_form.user))
 			redirect(next_uri)
 
 	return {
