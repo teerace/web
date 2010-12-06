@@ -21,7 +21,7 @@ class APIKeyAuthentication(object):
 			return False
 
 		try:
-			server = Server.objects.get(api_key=auth_string)
+			server = Server.objects.get(public_key=auth_string)
 			request.user = server.maintained_by
 			request.server = server
 			request.throttle_extra = server.id

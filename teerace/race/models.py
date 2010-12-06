@@ -55,7 +55,9 @@ class Server(models.Model):
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
 	def generate_random_key(self):
 		return User.objects.make_random_password(length=32)
-	api_key = models.CharField(max_length=32, default=generate_random_key,
+	public_key = models.CharField(max_length=32, default=generate_random_key,
+		unique=True)
+	private_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
 
 	def __unicode__(self):
