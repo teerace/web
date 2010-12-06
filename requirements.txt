@@ -3,3 +3,4 @@ django-admin-tools>=0.3.0
 django-annoying>=0.7.5
 django-piston>=0.2.2
 django-recaptcha-works>=0.3.4
+pycrypto>=2.3
