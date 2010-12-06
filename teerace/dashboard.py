@@ -1,4 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 
@@ -15,22 +14,22 @@ class CustomIndexDashboard(Dashboard):
 
 		# append a link list module for "quick links"
 		self.children.append(modules.LinkList(
-			title=_('Quick links'),
+			title="Quick links",
 			layout='inline',
 			draggable=False,
 			deletable=False,
 			collapsible=False,
 			children=[
 				{
-					'title': _('Return to site'),
+					'title': "Return to site",
 					'url': '/',
 				},
 				{
-					'title': _('Change password'),
+					'title': "Change password",
 					'url': reverse('admin:password_change'),
 				},
 				{
-					'title': _('Log out'),
+					'title': "Log out",
 					'url': reverse('admin:logout')
 				},
 			]
@@ -38,45 +37,45 @@ class CustomIndexDashboard(Dashboard):
 
 		# append an app list module for "Applications"
 		self.children.append(modules.AppList(
-			title=_('Applications'),
-			exclude_list=('django.contrib','piston'),
+			title="Applications",
+			exclude_list=('django.contrib', 'piston'),
 		))
 
 		# append an app list module for "Administration"
 		self.children.append(modules.AppList(
-			title=_('Administration'),
+			title="Administration",
 			include_list=('django.contrib',),
 		))
 
 		# append a recent actions module
 		self.children.append(modules.RecentActions(
-			title=_('Recent Actions'),
+			title="Recent Actions",
 			limit=5
 		))
 
 		# append a feed module
 		self.children.append(modules.Feed(
-			title=_('Latest Django News'),
+			title="Latest Django News",
 			feed_url='http://www.djangoproject.com/rss/weblog/',
 			limit=5
 		))
 
 		# append another link list module for "support".
 		self.children.append(modules.LinkList(
-			title=_('Support'),
+			title="Support",
 			children=[
 				{
-					'title': _('Django documentation'),
+					'title': "Django documentation",
 					'url': 'http://docs.djangoproject.com/',
 					'external': True,
 				},
 				{
-					'title': _('Django "django-users" mailing list'),
+					'title': "Django \"django-users\" mailing list",
 					'url': 'http://groups.google.com/group/django-users',
 					'external': True,
 				},
 				{
-					'title': _('Django irc channel'),
+					'title': "Django irc channel",
 					'url': 'irc://irc.freenode.net/django',
 					'external': True,
 				},
@@ -112,7 +111,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
 
 		# append a recent actions module
 		self.children.append(modules.RecentActions(
-			title=_('Recent Actions'),
+			title="Recent Actions",
 			include_list=self.get_app_content_types(),
 		))
 
