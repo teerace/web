@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	register_form
+	next - URI to redirect after successful registration
+{% endcomment %}
+{% block content %}
+	<h1>Sign up</h1>
+
+	<form method="post" action="{% url accounts.views.register %}">
+		{% with register_form as form %}
+			{% include "snippets/form.html" %}
+		{% endwith %}
+		<input type="hidden" name="next" value="{{ next }}" />
+		<input type="submit" value="Sign up" />
+	</form>
+{% endblock %}

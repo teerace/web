@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	login_form
+	next - URI to redirect after successful log in
+{% endcomment %}
+{% block content %}
+	<h1>Sign in</h1>
+
+	<form method="post" action="{% url accounts.views.login %}">
+		{% with login_form as form %}
+			{% include "snippets/form.html" %}
+		{% endwith %}
+		<input type="hidden" name="next" value="{{ next }}" />
+		<input type="submit" value="Login" />
+	</form>
+	<a href="{% url django.contrib.auth.views.password_reset %}">Lost your password?</a>
+{% endblock %}
