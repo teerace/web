@@ -36,10 +36,10 @@ def login(request):
 
 @login_required
 def logout(request):
-	next = request.REQUEST.get('next', reverse('home'))
+	next_uri = request.REQUEST.get('next', reverse('home'))
 	auth_logout(request)
 	messages.success(request, "Bye bye.")
-	return redirect(next)
+	return redirect(next_uri)
 
 
 @render_to('accounts/register.html')
