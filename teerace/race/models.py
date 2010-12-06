@@ -15,6 +15,7 @@ class Map(models.Model):
 	created_by = models.ForeignKey(User)
 
 	def map_filename(self, filename):
+		del filename
 		return 'uploads/maps/{0}_{1}.map'.format(self.name, self.crc)
 	map_file = models.FileField(storage=OverwriteStorage(),
 		upload_to=map_filename)
@@ -51,7 +52,7 @@ class Server(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
-	def generate_random_key():
+	def generate_random_key(self):
 		return User.objects.make_random_password(length=32)
 	api_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
