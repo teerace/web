@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from lib.fields.uuid_field import UUIDField
 from lib.file_storage import OverwriteStorage
 
 
@@ -26,7 +25,7 @@ class Run(models.Model):
 	"""Representation of one map finish"""
 
 	map = models.ForeignKey(Map)
-	server = models.ForeignKey('Server')
+	server = models.ForeignKey('Server', related_name='runs')
 	user = models.ForeignKey(User)
 	time = models.FloatField()
 	reported_at = models.DateTimeField(auto_now_add=True)
@@ -37,12 +36,19 @@ class Run(models.Model):
 
 
 class Server(models.Model):
-	"""Representation of Teeworlds server hooked up to Teerace"""
+	"""
+	Representation of Teeworlds server hooked up to Teerace
+	
+	We use maintainer account to interact with API.
+	"""
 
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True)
-	maintained_by = models.ForeignKey(User, blank=True, null=True)
-	api_key = UUIDField(auto=True)
+	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
+	def generate_random_key():
+		return User.objects.make_random_password(length=32)
+	api_key = models.CharField(max_length=32, default=generate_random_key,
+		unique=True)
 
 	def __unicode__(self):
 		return self.name
