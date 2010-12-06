@@ -34,6 +34,7 @@ class Run(models.Model):
 	map = models.ForeignKey(Map)
 	server = models.ForeignKey('Server', related_name='runs')
 	user = models.ForeignKey(User)
+	nickname = models.CharField(max_length=32)
 	time = models.FloatField()
 	reported_at = models.DateTimeField(auto_now_add=True)
 	created_at = models.DateTimeField()
