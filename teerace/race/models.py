@@ -53,7 +53,9 @@ class Server(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
-	def generate_random_key(self):
+
+	@staticmethod
+	def generate_random_key():
 		return User.objects.make_random_password(length=32)
 	public_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
