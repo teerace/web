@@ -5,3 +5,14 @@
 body {
 	background: #91c5ff url("/media/images/bg.png") repeat-x;
 }
+
+#page {
+	width: 800px;
+	margin: 0 auto;
+}
+
+#header {
+	background: url("/media/images/trlogo.png") no-repeat;
+	height: 110px;
+
+}
