@@ -36,9 +36,11 @@ DATABASES = {
 }
 
 if DEBUG:
-	CACHE_BACKEND = 'locmem://'
+	CACHE_BACKEND = 'caching.backends.locmem://'
 else:
-	CACHE_BACKEND = 'locmem://' # FIXME install memcached
+	CACHE_BACKEND = 'caching.backends.locmem://' # FIXME install memcached
+CACHE_PREFIX = 'teerace:'
+CACHE_COUNT_TIMEOUT = 60
 
 # When you change this setting, you have to run
 # ./manage.py syncdb
