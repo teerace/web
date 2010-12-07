@@ -18,6 +18,7 @@ PADDING = '{'
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
 
 
+# TODO merge both functions and add cipher caching
 def aes_encrypt(string, key):
 	"""
 	Encrypts `string` using cipher generated from `key`
