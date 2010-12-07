@@ -1,0 +1,7 @@
+/* import eric's css reset */
+@import 'reset.css';
+
+/* main css */
+body {
+	background: #91c5ff url("/media/images/bg.png") repeat-x;
+}
