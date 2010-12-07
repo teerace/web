@@ -43,7 +43,11 @@ else:
 # When you change this setting, you have to run
 # ./manage.py syncdb
 # to update Site instance.
+#
 # Also, it should NOT contain http://
+#
+# If you run your app on different port than 80,
+# also include it in this setting.
 SITE_DOMAIN = ''
 
 MAILER_ADDRESS = ''
