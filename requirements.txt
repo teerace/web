@@ -6,4 +6,5 @@ django-coverage>=1.1
 django-piston>=0.2.2
 django-recaptcha-works>=0.3.4
 docutils>=0.7
+feedparser>=4.1
 pycrypto>=2.3
