@@ -23,7 +23,7 @@ class Map(models.Model):
 
 	def save(self, *args, **kwargs):
 		if self.map_file:
-			self.crc = '{0:x}'.format(crc32(self.map_file.open().read()))
+			self.crc = '{0:x}'.format(crc32(self.map_file.read()) & 0xffffffff)
 			self.map_file.close()
 		super(Map, self).save(*args, **kwargs)
 
