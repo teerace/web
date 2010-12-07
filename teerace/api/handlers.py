@@ -2,7 +2,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from piston.handler import BaseHandler
 from piston.utils import rc
-from race.models import Run
+from race.models import Map, Run
 from lib.aes import aes_decrypt
 
 
@@ -36,7 +36,7 @@ class RunHandler(BaseHandler):
 			for run in data:
 				map_name = run['map']
 				try:
-					map = Map.objects.get(name=map_name)
+					map_obj = Map.objects.get(name=map_name)
 				except Map.DoesNotExist:
 					continue
 				user_id = run['user']
@@ -45,7 +45,7 @@ class RunHandler(BaseHandler):
 				except User.DoesNotExist:
 					continue
 				Run(
-					map = map,
+					map = map_obj,
 					server = request.server,
 					user = user,
 					nickname = run['nickname'],
