@@ -1,4 +1,5 @@
 from django.contrib import admin
+from race.forms import ServerAdminForm
 from race.models import Map, Server
 
 
@@ -16,7 +17,25 @@ class MapAdmin(admin.ModelAdmin):
 class ServerAdmin(admin.ModelAdmin):
 	list_display = ('id', 'name', 'maintained_by', 'public_key')
 	list_display_links = ('id', 'name')
-	fields = ('name', 'description', 'maintained_by')
+	form = ServerAdminForm
+
+	def add_view(self, request):
+		self.exclude = ('public_key', 'private_key')
+		return super(ServerAdmin, self).add_view(request)
+
+	def change_view(self, request, obj_id):
+		#self.readonly_fields = ('public_key', 'private_key')
+		return super(ServerAdmin, self).change_view(request, obj_id)
+
+	def save_model(self, request, obj, form, change):
+		if '_regenerate_public' in request.POST:
+			obj.regenerate_public_key()
+			del request.POST['_regenerate_public']
+		if '_regenerate_private' in request.POST:
+			obj.regenerate_private_key()
+			del request.POST['_regenerate_private']
+		obj.save()
+
 
 admin.site.register(Map, MapAdmin)
 admin.site.register(Server, ServerAdmin)

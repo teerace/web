@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from lib.file_storage import OverwriteStorage
 
 
+def generate_random_key():
+	return User.objects.make_random_password(length=32)
+
+
 class Map(models.Model):
 	"""Representation of a map played in Teerace"""
 
@@ -56,10 +60,8 @@ class Server(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
+	last_connection_at = models.DateTimeField(auto_now=True)
 
-	@staticmethod
-	def generate_random_key():
-		return User.objects.make_random_password(length=32)
 	public_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
 	private_key = models.CharField(max_length=32, default=generate_random_key,
@@ -67,3 +69,18 @@ class Server(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	def _regenerate_key(self, field_name):
+		if not field_name in ('public_key', 'private_key'):
+			raise ValueError("_update_key() can only be used with"
+				" public_key/private_key fields")
+		new_key = generate_random_key()
+		setattr(self, field_name, new_key)
+		self.save()
+		return new_key
+
+	def regenerate_public_key(self):
+		return self._regenerate_key('public_key')
+
+	def regenerate_private_key(self):
+		return self._regenerate_key('private_key')

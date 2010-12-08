@@ -24,6 +24,7 @@ class APIKeyAuthentication(object):
 			server = Server.objects.get(public_key=auth_string)
 			request.user = server.maintained_by
 			request.server = server
+			server.save() # bumps the last_connection_at
 			request.throttle_extra = server.id
 		except Server.DoesNotExist:
 			request.user = AnonymousUser()
