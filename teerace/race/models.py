@@ -21,6 +21,9 @@ class Map(models.Model):
 		upload_to=map_filename)
 	crc = models.CharField(max_length=8)
 
+	def __unicode__(self):
+		return self.name
+
 	def save(self, *args, **kwargs):
 		if self.map_file:
 			self.crc = '{0:x}'.format(crc32(self.map_file.read()) & 0xffffffff)
