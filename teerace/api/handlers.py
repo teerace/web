@@ -1,10 +1,9 @@
-from datetime import datetime
 from django.contrib.auth.models import User
 from piston.handler import BaseHandler
 from piston.utils import rc, require_extended
 from api.forms import ValidateUserForm
 from race.forms import RunForm
-from race.models import Map, Run
+from race.models import Run
 from lib.aes import aes_decrypt
 from lib.piston_utils import validate_mime
 

@@ -34,7 +34,7 @@ class TestCase(unittest.TestCase):
 
 class JsonClient(Client):
 
-	def post(self, path, data={}, content_type='application/json',
+	def post(self, path, data=None, content_type='application/json',
 		follow=False, **extra):
 		if content_type == 'application/json':
 			data = simplejson.dumps(data)
