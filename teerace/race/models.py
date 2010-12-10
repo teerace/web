@@ -72,7 +72,7 @@ class Server(models.Model):
 
 	def _regenerate_key(self, field_name):
 		if not field_name in ('public_key', 'private_key'):
-			raise ValueError("_update_key() can only be used with"
+			raise ValueError("_regenerate_key() can only be used with"
 				" public_key/private_key fields")
 		new_key = generate_random_key()
 		setattr(self, field_name, new_key)

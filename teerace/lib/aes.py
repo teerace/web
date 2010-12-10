@@ -40,7 +40,7 @@ def aes_encrypt(string, key):
 
 	encodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
 
-	return aes_helper(encodeAES, cipher, string)
+	return aes_helper(encodeAES, string, key)
 
 
 def aes_decrypt(string, key):
@@ -51,4 +51,4 @@ def aes_decrypt(string, key):
 
 	decodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
 
-	return aes_helper(decodeAES, cipher, string)
+	return aes_helper(decodeAES, string, key)
