@@ -64,10 +64,20 @@ class RunTestCase(TestCase):
 		response = self.client.post('/api/1/runs/', data, **self.extra)
 		self.assertEqual(response.status_code, 201)
 
-	def testCreateRunFailure(self):
+	def testCreateRunWrongMapFailure(self):
 		data = {
 			'map_name': "wrong_map",
 			'user_id': self.user.id,
+			'nickname': "[AUS] Lame Badass",
+			'time': 151.02,
+		}
+		response = self.client.post('/api/1/runs/', data, **self.extra)
+		self.assertEqual(response.status_code, 400)
+
+	def testValidateUserWrongUserFailure(self):
+		data = {
+			'map_name': "wrong_map",
+			'user_id': 2, # what
 			'nickname': "[AUS] Lame Badass",
 			'time': 151.02,
 		}
@@ -86,7 +96,7 @@ class UserTestCase(TestCase):
 		response = self.client.post('/api/1/users/validate/', data, **self.extra)
 		self.assertTrue(simplejson.loads(response.content))
 
-	def testValidateUserFailure(self):
+	def testValidateUserWrongPasswordFailure(self):
 		data = {
 			'username': "test",
 			'password': "toast", # WHOOOPS, A TYPO!
@@ -94,3 +104,13 @@ class UserTestCase(TestCase):
 		data['password'] = aes_encrypt(data['password'], self.server.private_key)
 		response = self.client.post('/api/1/users/validate/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
+
+	def testValidateUserWrongUsernameFailure(self):
+		data = {
+			'username': "toast", # O NOEZ
+			'password': "toast", # WHOOOPS, A TYPO!
+		}
+		data['password'] = aes_encrypt(data['password'], self.server.private_key)
+		response = self.client.post('/api/1/users/validate/', data, **self.extra)
+		self.assertFalse(simplejson.loads(response.content))
+
