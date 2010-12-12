@@ -1,0 +1,24 @@
+[
+	{
+		"pk": 1,
+		"model": "race.map",
+		"fields": {
+			"name": "test",
+			"author": "nobody",
+			"created_by": 1,
+			"crc": "fd23d879",
+			"map_file": "uploads/maps/test_fd23d879.map"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "race.server",
+		"fields": {
+			"name": "test server",
+			"public_key": "fSXPjSaS8SvzwnVTpUHbaS7bNYKRDzVJ",
+			"private_key": "fCYwPg4JjPGb4PHAx7LsuetCBGH4vXfw",
+			"description": "",
+			"maintained_by": 1
+		}
+	}
+]

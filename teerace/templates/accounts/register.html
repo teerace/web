@@ -4,14 +4,21 @@ context variables:
 	register_form
 	next - URI to redirect after successful registration
 {% endcomment %}
+{% block title %}register - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Sign up' 'register' %}
+{% endblock %}
 {% block content %}
-	<h1>Sign up</h1>
-
-	<form method="post" action="{% url accounts.views.register %}">
-		{% with register_form as form %}
-			{% include "snippets/form.html" %}
-		{% endwith %}
-		<input type="hidden" name="next" value="{{ next }}" />
-		<input type="submit" value="Sign up" />
-	</form>
+	<div class="box full">
+		<div class="header">Sign up</div>
+		<form method="post" action="{% url register %}">
+			{% with register_form as form %}
+				{% include "snippets/form.html" %}
+			{% endwith %}
+			<input type="hidden" name="next" value="{{ next }}" />
+			<input type="submit" value="Sign up" />
+		</form>
+	</div>
 {% endblock %}

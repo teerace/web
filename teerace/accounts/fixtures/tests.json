@@ -1,0 +1,11 @@
+[
+    {
+        "pk": "1",
+        "model": "auth.user",
+        "fields": {
+            "username": "testclient",
+            "password": "sha1$f2063$ae05dffc3d93ae82e901d1bc9a00b19cd0f8ae4a",
+            "email": "testclient@example.com"
+        }
+    }
+]

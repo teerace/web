@@ -3,9 +3,11 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.views.generic.list_detail import object_list
 from annoying.functions import get_config
 from annoying.decorators import render_to
 from accounts.forms import LoginForm, RegisterForm
+from accounts.models import UserProfile
 
 
 @render_to('accounts/login.html')
@@ -26,7 +28,7 @@ def login(request):
 		if login_form.is_valid() and login_form.user:
 			auth_login(request, login_form.user)
 			messages.success(request, "Hello, {0}.".format(login_form.user))
-			redirect(next_uri)
+			return redirect(next_uri)
 
 	return {
 		'login_form': login_form,
@@ -80,4 +82,14 @@ def first_login(request):
 def welcome(request):
 	return {
 
+	}
+
+
+@render_to('accounts/userlist.html')
+def userlist(request):
+	profiles = UserProfile.objects.all().select_related()
+	profile_count = profiles.count()
+	return {
+		'profiles': profiles,
+		'profile_count': profile_count,
 	}

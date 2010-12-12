@@ -1,3 +1,6 @@
+{% for error in form.non_field_errors %}
+	<div class="form-error">{{ error }}</div>
+{% endfor %}
 {% for field in form %}
 	<div class="form_field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
 		{{ field.label_tag }}{{ field }}

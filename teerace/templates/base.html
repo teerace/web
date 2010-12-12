@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{% block title %}{% endblock title %} - teerace</title>
+	<title>{% block title %}teerace{% endblock title %}</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css">
 	{% block extra_js %}
@@ -20,16 +20,7 @@
 	<div id="page">
 		<div id="menu">
 			<ul>
-				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li>
-				<li><a href="">Blog</a></li>
-				<li><a href="">Players</a></li>
-				<li><a href="">Maps</a></li>
-				<li><a href="">Awards</a></li>
-				<li><a href="">Ranks</a></li>
-				<li><a href="">Help</a></li>
-				{% if user.is_staff or user.is_superuser %}
-				<li class="glow"><a href="/admin/">Admin</a></li>
-				{% endif %}
+				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li><a href="">Blog</a></li><li><a href="">Players</a></li><li><a href="">Maps</a></li><li><a href="">Awards</a></li><li><a href="">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
 			</ul>
 			<div id="submenu" class="full">
 				<ul class="left">

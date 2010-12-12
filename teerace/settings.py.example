@@ -117,7 +117,7 @@ AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 FIRST_LOGIN_REDIRECT_URL = '/user/tour/'
-LOGIN_REDIRECT_URL = '/user/profile/'
+LOGIN_REDIRECT_URL = '/user/welcome/'
 LOGIN_URL = '/user/login/'
 LOGOUT_URL = '/user/logout/'
 

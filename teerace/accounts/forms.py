@@ -32,22 +32,22 @@ class RegisterForm(forms.Form):
 			pass
 		return username
 
-	def clean(self):
-		if ('password1' in self.cleaned_data and 'password2' in 
-			self.cleaned_data):
-			password1 = self.cleaned_data['password1']
-			password2 = self.cleaned_data['password2']
-			if password1 != password2:
-				raise forms.ValidationError(
-					"You must type the same password each time")
-		if ('email1' in self.cleaned_data and 'email2' in 
-			self.cleaned_data):
-			email1 = self.cleaned_data['email1']
-			email2 = self.cleaned_data['email2']
-			if email1 != email2:
-				raise forms.ValidationError(
-					"You must type the same e-mail address each time")
-		return self.cleaned_data
+
+	def clean_password2(self):
+		password1 = self.cleaned_data['password1']
+		password2 = self.cleaned_data['password2']
+		if password1 != password2:
+			raise forms.ValidationError(
+				"You must type the same password each time")
+		return password2
+
+	def clean_email2(self):
+		email1 = self.cleaned_data['email1']
+		email2 = self.cleaned_data['email2']
+		if email1 != email2:
+			raise forms.ValidationError(
+				"You must type the same e-mail address each time")
+		return email2
 
 	def save(self):
 		return User.objects.create_user(self.cleaned_data['username'],
