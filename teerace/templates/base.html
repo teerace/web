@@ -46,7 +46,11 @@
 
 		<div id="content">
 			<div id="breadcrumbs">
-				<a href="">Home</a> &raquo; FIXME
+				{% block breadcrumb %}
+					{% load breadcrumb_tags %}
+					{% add_crumb 'Home' 'home' %}
+				{% endblock %}
+				{% render_breadcrumbs %}
 			</div>
 
 			{% if messages %}

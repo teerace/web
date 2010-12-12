@@ -183,6 +183,7 @@ INSTALLED_APPS = (
 	'django.contrib.admin',
 	'django.contrib.markup',
 	'lib',
+	'crumbs',
 	'piston',
 	'recaptcha_works',
 	'django_coverage',
