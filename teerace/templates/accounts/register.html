@@ -17,8 +17,10 @@ context variables:
 			{% with register_form as form %}
 				{% include "snippets/form.html" %}
 			{% endwith %}
-			<input type="hidden" name="next" value="{{ next }}" />
-			<input type="submit" value="Sign up" />
+			<input type="hidden" name="next" value="{{ next }}">
+			<div class="form_field">
+				<input type="submit" value="Sign up">
+			</div>
 		</form>
 	</div>
 {% endblock %}

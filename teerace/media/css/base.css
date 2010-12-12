@@ -317,12 +317,12 @@ input {
 
 .form_field {
 	margin: 10px;
-	width: 300px;
+	width: 400px;
 	text-align: right;
 }
 
 	.form_field input {
-		width: 55%;
+		width: 50%;
 	}
 
 	.form_field input[type=submit] {
