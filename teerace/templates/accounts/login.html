@@ -17,8 +17,10 @@ context variables:
 			{% with login_form as form %}
 				{% include "snippets/form.html" %}
 			{% endwith %}
-			<input type="hidden" name="next" value="{{ next }}" />
-			<input type="submit" value="Login" />
+			<input type="hidden" name="next" value="{{ next }}">
+			<div class="form_field">
+				<input type="submit" value="Login">
+			</div>
 		</form>
 		<a href="{% url django.contrib.auth.views.password_reset %}">Lost your password?</a>
 	</div>

@@ -15,6 +15,27 @@ a:hover {
 	text-decoration: underline;
 }
 
+input,
+#user-box .button {
+	color: #4c4b33;
+	background-color: #918f61;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e7e5be), to(#918f61));
+	background-image: -moz-linear-gradient(top,  #e7e5be,  #918f61);
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#e7e5be',EndColorStr='#918f61');
+	border: thin solid #918f61;
+	padding: 5px;
+}
+
+input:hover,
+#user-box .button:hover  {
+	color: #e7e5be;
+	background-color: #918f61;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#918f61), to(#4c4b33));
+	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
+	border: thin solid #4c4b33;
+}
+
 table.players {
 	width: 100%;
 	border-collapse: collapse;
@@ -65,7 +86,8 @@ table.players {
 }
 
 #menu, .box,
-#user-box .button {
+#user-box .button,
+input {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -141,24 +163,8 @@ table.players {
 #user-box {}
 
 	#user-box .button {
-		color: #4c4b33;
-		background-color: #918f61;
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#e7e5be), to(#918f61));
-		background-image: -moz-linear-gradient(top,  #e7e5be,  #918f61);
-		filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#e7e5be',EndColorStr='#918f61');
-		border: thin solid #918f61;
 		display: inline-block;
-		padding: 5px;
 		margin: -6px 0 -6px 3px;
-	}
-
-	#user-box .button:hover {
-		color: #e7e5be;
-		background-color: #918f61;
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#918f61), to(#4c4b33));
-		background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
-		filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
-		border: thin solid #4c4b33;
 	}
 
 #content {
@@ -307,6 +313,31 @@ table.players {
 		font-size: 20px;
 		border-bottom: thin solid;
 		margin-bottom: 10px;
+	}
+
+.form_field {
+	margin: 10px;
+	width: 300px;
+	text-align: right;
+}
+
+	.form_field input {
+		width: 55%;
+	}
+
+	.form_field input[type=submit] {
+		width: 100%;
+	}
+
+	.form_field label {
+		font-weight: bold;
+		margin-right: 20px;
+	}
+
+	.form_field.required label:before {
+		color: #f00;
+		content: "*";
+		margin-right: 3px;
 	}
 
 .box.left { margin-right: 10px; }
