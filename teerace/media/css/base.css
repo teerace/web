@@ -191,11 +191,14 @@ input {
 #messages {
 }
 
+	#messages div {
+		padding: 10px 20px;
+	}
+
 	#messages p {
 		color: #fff;
 		margin: 0;
 		padding-left: 40px;
-		min-height: 32px;
 	}
 
 	#messages a {
@@ -211,7 +214,7 @@ input {
 	}
 
 		#messages .error p {
-			background: url(/media/images/error.png) top left no-repeat;
+			background: url(/media/images/error.png) center left no-repeat;
 		}
 
 	#messages .info {
@@ -223,7 +226,7 @@ input {
 	}
 
 		#messages .info p {
-			background: url(/media/images/info.png) top left no-repeat;
+			background: url(/media/images/info.png) center left no-repeat;
 		}
 
 	#messages .warning {
@@ -236,7 +239,7 @@ input {
 
 		#messages .warning p {
 			color: #000;
-			background: url(/media/images/warning.png) top left no-repeat;
+			background: url(/media/images/warning.png) center left no-repeat;
 		}
 
 		#messages .warning a {
@@ -252,7 +255,7 @@ input {
 	}
 
 		#messages .success p {
-			background: url(/media/images/tick.png) top left no-repeat;
+			background: url(/media/images/tick.png) center left no-repeat;
 		}
 
 #blog {}
@@ -316,13 +319,14 @@ input {
 	}
 
 .form_field {
-	margin: 10px;
-	width: 400px;
 	text-align: right;
+	width: 400px;
+	padding: 20px 0 0 0;
 }
 
 	.form_field input {
 		width: 50%;
+		margin-right: 10px;
 	}
 
 	.form_field input[type=submit] {
@@ -338,6 +342,27 @@ input {
 		color: #f00;
 		content: "*";
 		margin-right: 3px;
+	}
+
+.form_field.error {
+	color: #800;
+	background: #f66;
+	border-color: #d44;
+}
+
+.form_field.error:hover {
+	color: #600;
+	background: #e55;
+	border-color: #d33;
+}
+
+	.form_field.error span {
+		color: #a33;
+	}
+
+	.form_field.error .form-error {
+		text-align: center;
+		font-style: oblique;
 	}
 
 .box.left { margin-right: 10px; }
