@@ -64,6 +64,13 @@ table.players {
 	overflow: hidden;
 }
 
+#menu, .box,
+#user-box .button {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
 #menu {
 	background-color: #918f61;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#918f61), to(#4c4b33));
@@ -71,13 +78,6 @@ table.players {
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #918f61;
 	font-size: 12px;
-}
-
-#menu, .box,
-#user-box .button {
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 }
 
 	#menu a {
@@ -109,6 +109,10 @@ table.players {
 
 	#menu li:first-child {
 		border-left: thin solid #918f61;
+	}
+
+	#menu li.glow {
+		background: #916a61;
 	}
 
 /* submenu */
@@ -275,6 +279,7 @@ table.players {
 	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border-color: #4c4b33;
+	margin-bottom: 20px;
 	padding: 10px 20px;
 	float:right;
 }
@@ -319,4 +324,3 @@ table.players {
 .green { color: #9dc547; }
 .brown { color: #918f61; }
 .red { color: #f44; }
-
