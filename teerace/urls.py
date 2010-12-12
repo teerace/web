@@ -11,7 +11,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^$', 'django.views.generic.simple.direct_to_template',
-		{'template': 'proof.html'}, name='home'),
+		{'template': 'home.html'}, name='home'),
 	(r'^user/', include('accounts.urls')),
 	(r'^api/', include('api.urls')),
 	url(r'^admin_tools/', include('admin_tools.urls')),

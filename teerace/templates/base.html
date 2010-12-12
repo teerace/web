@@ -1,0 +1,71 @@
+{% load menu %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}{% endblock title %} - teerace</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css">
+	{% block extra_js %}
+	{% endblock extra_js %}
+	{% block extra_css %}
+	{% endblock extra_css %}
+</head>
+
+<body>
+	{% url home as url_home %}
+	<div id="header">
+			<h1><a href="{{ url_home }}"><span class="green">tee</span><span class="brown">race</span></a></h1>
+	</div>
+
+	<div id="page">
+		<div id="menu">
+			<ul>
+				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li>
+				<li><a href="">Blog</a></li>
+				<li><a href="">Players</a></li>
+				<li><a href="">Maps</a></li>
+				<li><a href="">Awards</a></li>
+				<li><a href="">Ranks</a></li>
+				<li><a href="">Help</a></li>
+				{% if user.is_staff or user.is_superuser %}
+				<li class="glow"><a href="/admin/">Admin</a></li>
+				{% endif %}
+			</ul>
+			<div id="submenu" class="full">
+				<ul class="left">
+					<li><a href="">Messages</a></li><li><a href="">Search</a></li><li><a href="">Members</a></li>
+				</ul>
+				<div id="user-box" class="right">
+					{% if user.is_authenticated %}Hi, <em>{{ user }}</em> <a class="button" href="">Settings</a> <a class="button" href="{% url logout %}">Logout</a>
+					{% else %}
+					<a class="button" href="{% url login %}">Login</a> <a class="button" href="{% url register %}">Register</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<div id="content">
+			<div id="breadcrumbs">
+				<a href="">Home</a> &raquo; FIXME
+			</div>
+
+			{% if messages %}
+			<div id="messages">
+			    {% for message in messages %}
+			    <div{% if message.tags %} class="{{ message.tags }} box full"{% endif %}>
+					<p>{{ message }}</p>
+				</div>
+			    {% endfor %}
+			</div>
+			{% endif %}
+
+			{% block content %}
+			{% endblock content %}
+
+			<div id="footer" class="box full">
+				<a href="#header">↑ Top</a>
+				<a href="http://www.djangoproject.com/"><img src="{{ MEDIA_URL }}images/poweredby.png" border="0" alt="Powered by Django." title="Powered by Django." /></a>
+			</div>
+		</div>
+	</div>
+</body>
