@@ -6,7 +6,7 @@ from race.models import Map, Server
 from lib.aes import aes_encrypt
 
 class TestCase(DjangoTestCase):
-	fixtures = ['accounts/fixtures/tests.json', 'race/fixtures/tests.json']
+	fixtures = ['tests.json']
 
 	def setUp(self):
 		self.client = JsonClient()
