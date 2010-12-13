@@ -6,11 +6,16 @@ import caching.base
 
 class UserProfile(caching.base.CachingMixin, models.Model):
 	user = models.OneToOneField(User, unique=True, related_name='profile')
+	# workaround for get_latest_by (I'd love to use user's attr)
+	created_at = models.DateTimeField(auto_now_add=True)
 	registration_ip = models.IPAddressField(blank=True, null=True)
 	last_activity_at = models.DateTimeField(auto_now_add=True)
 	last_activity_ip = models.IPAddressField(blank=True, null=True)
 
 	objects = caching.base.CachingManager()
+
+	class Meta:
+		get_latest_by = 'created_at'
 
 	def __unicode__(self):
 		return u"{0}'s profile".format(self.user.username)

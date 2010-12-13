@@ -2,7 +2,11 @@
 {% comment %}
 context variables:
 	latest_entry
-	stats
+	maps
+	users
+	run_count
+	runs_today
+	runs_yesterday
 {% endcomment %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
@@ -14,9 +18,9 @@ context variables:
 				<div class="post-line">(posted by: <span class="poster">{{ latest_entry.created_by }}</span>) | {{ latest_entry.created_at }}</div>
 				<p>
 					{% if latest_entry.excerpt_html %}
-						{{ latest_entry.excerpt_html }}
+						{{ latest_entry.excerpt_html|safe }}
 					{% else %}
-						{{ latest_entry.content_html }}
+						{{ latest_entry.content_html|safe }}
 					{% endif %}
 				</p>
 				{% if latest_entry.excerpt_html %}
@@ -30,24 +34,12 @@ context variables:
 				<div class="header">Statistics overview</div>
 				<table class="players">
 					<tr>
-						<td class="label">Logged players:</td>
-						<td class="content">88,478 <span class="info">(ever)</span></td>
-					</tr>
-					<tr>
-						<td class="label">Active players:</td>
-						<td class="content">6,800</td>
-					</tr>
-					<tr>
 						<td class="label">Registered users:</td>
-						<td class="content">1,128</td>
-					</tr>
-					<tr>
-						<td class="label">Linked nicknames:</td>
-						<td class="content">534</td>
+						<td class="content">{{ users|length }}{% if users %} (latest: {% with users.latest as last_profile %}{{ last_profile.user.username }}{% endwith %}){% endif %}</td>
 					</tr>
 					<tr>
 						<td class="label">Race maps:</td>
-						<td class="content">{{ map_count }}</td>
+						<td class="content">{{ maps|length }}{% if maps %} (latest: {{ maps.last.name }}){% endif%}</td>
 					</tr>
 					<tr>
 						<td class="label">Downloaded maps:</td>
@@ -55,15 +47,15 @@ context variables:
 					</tr>
 					<tr>
 						<td class="label">Races today:</td>
-						<td class="content">1,827</td>
+						<td class="content">{{ runs_today|length }}</td>
 					</tr>
 					<tr>
 						<td class="label">Races yesterday:</td>
-						<td class="content">1,951</td>
+						<td class="content">{{ runs_yesterday|length }}</td>
 					</tr>
 					<tr>
 						<td class="label">Finished races:</td>
-						<td class="content">145,015</td>
+						<td class="content">{{ run_count }}</td>
 					</tr>
 					<tr>
 						<td class="label">Time of finished races:</td>

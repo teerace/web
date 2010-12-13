@@ -10,8 +10,7 @@ import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^$', 'django.views.generic.simple.direct_to_template',
-		{'template': 'home.html'}, name='home'),
+	url(r'^$', 'race.views.homepage', name='home'),
 	(r'^user/', include('accounts.urls')),
 	(r'^api/', include('api.urls')),
 	(r'^blog/', include('blog.urls')),

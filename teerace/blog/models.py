@@ -17,6 +17,7 @@ class Entry(caching.base.CachingMixin, models.Model):
 	objects = caching.base.CachingManager()
 
 	class Meta:
+		get_latest_by = 'created_at'
 		verbose_name_plural = ('Entries')
 
 	def __unicode__(self):
