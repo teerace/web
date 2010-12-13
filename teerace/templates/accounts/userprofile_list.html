@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	object_list
+	is_paginated
+	paginator
+	page_obj
+{% endcomment %}
+{% block title %}userlist - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Userlist' 'accounts.views.userlist' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Userlist</div>
+		{% if is_paginated %}
+			<div class="pagination">
+				<span class="step-links">
+					{% if page_obj.has_previous %}
+					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+					{% endif %}
+
+					<span class="current">
+						Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+					</span>
+
+					{% if page_obj.has_next %}
+					<a href="?page={{ page_obj.next_page_number }}">next</a>
+					{% endif %}
+				</span>
+			</div>
+		{% endif %}
+		<table class="players">
+			<tr>
+				<th>Name</th>
+				<th>Date joined</th>
+			</tr>
+			{% for profile in object_list %}
+			<tr>
+				<td>{{ profile.user }}</td>
+				<td>{{ profile.user.date_joined }}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan="2">No users.</td>
+			</tr>
+			{% endfor %}
+		<tfoot>
+			<tr>
+				<td colspan="2">{{ object_list.count }} user{{ object_list.count|pluralize }}</td>
+			</tr>
+		</tfoot>
+		</table>
+		{% if is_paginated %}
+			<div class="pagination">
+				<span class="step-links">
+					{% if page_obj.has_previous %}
+					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+					{% endif %}
+
+					<span class="current">
+						Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+					</span>
+
+					{% if page_obj.has_next %}
+					<a href="?page={{ page_obj.next_page_number }}">next</a>
+					{% endif %}
+				</span>
+			</div>
+		{% endif %}
+	</div>
+{% endblock content %}

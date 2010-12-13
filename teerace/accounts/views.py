@@ -85,11 +85,6 @@ def welcome(request):
 	}
 
 
-@render_to('accounts/userlist.html')
 def userlist(request):
 	profiles = UserProfile.objects.all().select_related()
-	profile_count = profiles.count()
-	return {
-		'profiles': profiles,
-		'profile_count': profile_count,
-	}
+	return object_list(request, queryset=profiles)

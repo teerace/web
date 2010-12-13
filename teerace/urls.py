@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 		{'template': 'home.html'}, name='home'),
 	(r'^user/', include('accounts.urls')),
 	(r'^api/', include('api.urls')),
+	(r'^blog/', include('blog.urls')),
 	url(r'^admin_tools/', include('admin_tools.urls')),
 	(r'^admin/', include(admin.site.urls)),
 )

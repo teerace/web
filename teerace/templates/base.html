@@ -19,13 +19,19 @@
 
 	<div id="page">
 		<div id="menu">
+			{% url blog as url_blog %}
 			<ul>
-				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li><a href="">Blog</a></li><li><a href="">Players</a></li><li><a href="">Maps</a></li><li><a href="">Awards</a></li><li><a href="">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
+				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li><a href="">Players</a></li><li><a href="">Maps</a></li><li><a href="">Awards</a></li><li><a href="">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
 			</ul>
 			<div id="submenu" class="full">
-				<ul class="left">
-					<li><a href="">Messages</a></li><li><a href="">Search</a></li><li><a href="">Members</a></li>
-				</ul>
+				{% comment %}
+				{% block submenu %}
+					<ul class="left">
+						<li><a href="{% url blog %}">Entries</a></li>
+					</ul>
+				{% endblock submenu %}
+				{% endcomment %}
+				{% block submenu %}{% endblock submenu %}
 				<div id="user-box" class="right">
 					{% if user.is_authenticated %}Hi, <em>{{ user }}</em> <a class="button" href="">Settings</a> <a class="button" href="{% url logout %}">Logout</a>
 					{% else %}

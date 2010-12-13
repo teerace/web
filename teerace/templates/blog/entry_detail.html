@@ -1,0 +1,30 @@
+{% extends "blog/base.html" %}
+{% comment %}
+context variables:
+	object
+{% endcomment %}
+{% block title %}{{ object.title }} - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb object.title 'blog_entry' object.id %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></div>
+		<div class="post-line">(posted by: <span class="poster">{{ object.created_by }}</span>) | {{ object.created_at }}</div>
+		<p>
+			{% if object.excerpt_html %}
+				{{ object.excerpt_html|safe }}
+			{% else %}
+				{{ object.content_html|safe }}
+			{% endif %}
+		</p>
+		{% if object.excerpt_html %}
+		<a href="{{ object.get_absolute_url }}#read-more">Read more</a>
+		{% endif %}
+		<div class="comments"><a href="{{ object.get_absolute_url }}#comments">({{ object.comment_count }} comment{{ object.comment_count|pluralize }})</a></div>
+		
+		{# TODO add comments #}
+	</div>
+{% endblock %}

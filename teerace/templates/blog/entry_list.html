@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+{% comment %}
+context variables:
+	object_list
+	is_paginated
+	paginator
+	page_obj
+{% endcomment %}
+{% block content %}
+	{% if is_paginated %}
+		<div class="pagination">
+			<span class="step-links">
+				{% if page_obj.has_previous %}
+				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+				{% endif %}
+
+				<span class="current">
+					Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+				</span>
+
+				{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}">next</a>
+				{% endif %}
+			</span>
+		</div>
+	{% endif %}
+	{% for entry in object_list %}
+		<div class="box full">
+			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+			<div class="post-line">(posted by: <span class="poster">{{ entry.created_by }}</span>) | {{ entry.created_at }}</div>
+			<p>
+				{% if entry.excerpt_html %}
+					{{ entry.excerpt_html|safe }}
+				{% else %}
+					{{ entry.content_html|safe }}
+				{% endif %}
+			</p>
+			{% if entry.excerpt_html %}
+			<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
+			{% endif %}
+			<div class="comments"><a href="{{ entry.get_absolute_url }}#comments">({{ entry.comment_count }} comment{{ entry.comment_count|pluralize }})</a></div>
+		</div>
+	{% endfor %}
+	{% if is_paginated %}
+		<div class="pagination">
+			<span class="step-links">
+				{% if page_obj.has_previous %}
+				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+				{% endif %}
+
+				<span class="current">
+					Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+				</span>
+
+				{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}">next</a>
+				{% endif %}
+			</span>
+		</div>
+	{% endif %}
+{% endblock %}
