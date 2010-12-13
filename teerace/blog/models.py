@@ -1,10 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-import caching.base
 from markdown import markdown
 
 
-class Entry(caching.base.CachingMixin, models.Model):
+class Entry(models.Model):
 	created_by = models.ForeignKey(User)
 	created_at = models.DateTimeField(auto_now_add=True)
 	is_published = models.BooleanField(default=False)
@@ -13,8 +12,6 @@ class Entry(caching.base.CachingMixin, models.Model):
 	excerpt_html = models.TextField(blank=True)
 	content = models.TextField()
 	content_html = models.TextField()
-
-	objects = caching.base.CachingManager()
 
 	class Meta:
 		get_latest_by = 'created_at'

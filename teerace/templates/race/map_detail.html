@@ -1,0 +1,83 @@
+{% extends "race/map_base.html" %}
+{% comment %}
+context variables:
+	map
+{% endcomment %}
+{% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb map.name 'map_detail' map.id %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
+		<div class="post-line">(creator: <span class="poster">{{ map.created_by }}</span>) | added {{ map.created_at }}</div>
+		Best result: {{ map.best_score.time }}s by {{ map.best_score.user }} ({{ map.best_score.nickname }})
+		Average time: {{ map.average_score|floatformat:2 }}
+		<a href="{{ map.map_file.url }}">Download map</a>
+	</div>
+	<div class="box full">
+		<div class="header">Top 5</div>
+		<table class="players">
+			<tr>
+				<th>Player</th>
+				<th>Date</th>
+				<th>Time</td>
+			</tr>
+			{% for run in best_runs %}
+			<tr>
+				<td>{{ run.user }}</td>
+				<td>{{ run.created_at|timesince }} ago</td>
+				<td>{{ run.time }}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan="4">Hey! Nobody finished this map yet!</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% if latest_runs %}
+	<div class="box full">
+		<div class="header">Recent map completions</div>
+		<table class="players">
+			<tr>
+				<th>Player</th>
+				<th>Date</th>
+				<th>Time</td>
+			</tr>
+			{% for run in latest_runs %}
+			<tr>
+				<td>{{ run.user }}</td>
+				<td>{{ run.created_at|timesince }} ago</td>
+				<td>{{ run.time }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+	{% if user.is_authenticated %}
+	<div class="box full">
+		<div class="header">Your results</div>
+		<table class="players">
+			<tr>
+				<th>Player</th>
+				<th>Date</th>
+				<th>Time</td>
+			</tr>
+			{% for run in user_runs %}
+			<tr>
+				<td>{{ run.user }}</td>
+				<td>{{ run.created_at|timesince }} ago</td>
+				<td>{{ run.time }}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan="4">Hey! You haven't finished this map yet!</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endif %}
+{% endblock %}

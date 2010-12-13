@@ -20,8 +20,9 @@
 	<div id="page">
 		<div id="menu">
 			{% url blog as url_blog %}
+			{% url maps as url_maps %}
 			<ul>
-				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li><a href="">Players</a></li><li><a href="">Maps</a></li><li><a href="">Awards</a></li><li><a href="">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
+				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li><a href="">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li><a href="">Awards</a></li><li><a href="">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
 			</ul>
 			<div id="submenu" class="full">
 				{% comment %}
@@ -33,9 +34,9 @@
 				{% endcomment %}
 				{% block submenu %}{% endblock submenu %}
 				<div id="user-box" class="right">
-					{% if user.is_authenticated %}Hi, <em>{{ user }}</em> <a class="button" href="">Settings</a> <a class="button" href="{% url logout %}">Logout</a>
+					{% if user.is_authenticated %}Hi, <em>{{ user }}</em> <a class="button" href="">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
 					{% else %}
-					<a class="button" href="{% url login %}">Login</a> <a class="button" href="{% url register %}">Register</a>
+					<a class="button" href="{% url login %}?next={{ request.path }}">Login</a> <a class="button" href="{% url register %}">Register</a>
 					{% endif %}
 				</div>
 			</div>

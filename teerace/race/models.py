@@ -1,15 +1,15 @@
 from zlib import crc32
 from django.db import models
+from django.db.models import Avg, Sum
 from django.contrib.auth.models import User
 from lib.file_storage import OverwriteStorage
-import caching.base
 
 
 def generate_random_key():
 	return User.objects.make_random_password(length=32)
 
 
-class Map(caching.base.CachingMixin, models.Model):
+class Map(models.Model):
 	"""Representation of a map played in Teerace"""
 
 	name = models.CharField(max_length=50, unique=True)
@@ -26,7 +26,21 @@ class Map(caching.base.CachingMixin, models.Model):
 		upload_to=map_filename)
 	crc = models.CharField(max_length=8)
 
-	objects = caching.base.CachingManager()
+	@property
+	def run_count(self):
+		return Run.objects.filter(map=self).count()
+
+	@property
+	def total_playtime(self):
+		return Run.objects.filter(map=self).aggregate(Sum('time'))['time__sum']
+
+	@property
+	def average_score(self):
+		return Run.objects.filter(map=self).aggregate(Avg('time'))['time__avg']
+
+	@property
+	def best_score(self):
+		return Run.objects.filter(map=self).order_by('time')[0]
 
 	def __unicode__(self):
 		return self.name
@@ -37,8 +51,12 @@ class Map(caching.base.CachingMixin, models.Model):
 			self.map_file.close()
 		super(Map, self).save(*args, **kwargs)
 
+	@models.permalink
+	def get_absolute_url(self):
+		return ('race.views.map_detail', (), {'map_id': self.id})
 
-class Run(caching.base.CachingMixin, models.Model):
+
+class Run(models.Model):
 	"""Representation of one map finish"""
 
 	map = models.ForeignKey(Map)
@@ -49,13 +67,11 @@ class Run(caching.base.CachingMixin, models.Model):
 	reported_at = models.DateTimeField(auto_now_add=True)
 	created_at = models.DateTimeField()
 
-	objects = caching.base.CachingManager()
-
 	def __unicode__(self):
 		return u"{0} - {1} - {2}s".format(self.map, self.user, self.time)
 
 
-class Server(caching.base.CachingMixin, models.Model):
+class Server(models.Model):
 	"""
 	Representation of Teeworlds server hooked up to Teerace
 	
@@ -70,8 +86,6 @@ class Server(caching.base.CachingMixin, models.Model):
 		unique=True)
 	private_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
-
-	objects = caching.base.CachingManager()
 
 	def __unicode__(self):
 		return self.name

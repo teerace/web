@@ -1,18 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
-import caching.base
 
 
-class UserProfile(caching.base.CachingMixin, models.Model):
+class UserProfile(models.Model):
 	user = models.OneToOneField(User, unique=True, related_name='profile')
 	# workaround for get_latest_by (I'd love to use user's attr)
 	created_at = models.DateTimeField(auto_now_add=True)
 	registration_ip = models.IPAddressField(blank=True, null=True)
 	last_activity_at = models.DateTimeField(auto_now_add=True)
 	last_activity_ip = models.IPAddressField(blank=True, null=True)
-
-	objects = caching.base.CachingManager()
 
 	class Meta:
 		get_latest_by = 'created_at'

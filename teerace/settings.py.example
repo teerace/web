@@ -36,11 +36,11 @@ DATABASES = {
 }
 
 if DEBUG:
-	CACHE_BACKEND = 'caching.backends.locmem://'
+	CACHE_BACKEND = 'johnny.backends.locmem://'
 else:
-	CACHE_BACKEND = 'caching.backends.locmem://' # FIXME install memcached
-CACHE_PREFIX = 'teerace:'
-CACHE_COUNT_TIMEOUT = 60
+	CACHE_BACKEND = 'johnny.backends.locmem://'# FIXME install memcached
+# some johnny settings
+JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_teerace'
 
 # When you change this setting, you have to run
 # ./manage.py syncdb
@@ -140,6 +140,8 @@ if not TEMPLATE_CACHING:
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 MIDDLEWARE_CLASSES = (
+	'johnny.middleware.LocalStoreClearMiddleware',
+	'johnny.middleware.QueryCacheMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.transaction.TransactionMiddleware',
@@ -167,6 +169,7 @@ TEMPLATE_DIRS = (
 OUR_APPS = (
 	'accounts',
 	'api',
+	'blog',
 	'race',
 )
 
@@ -183,6 +186,7 @@ INSTALLED_APPS = (
 	'django.contrib.admin',
 	'django.contrib.markup',
 	'lib',
+	'johnny'
 	'crumbs',
 	'piston',
 	'recaptcha_works',

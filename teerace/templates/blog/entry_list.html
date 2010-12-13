@@ -40,6 +40,8 @@ context variables:
 			{% endif %}
 			<div class="comments"><a href="{{ entry.get_absolute_url }}#comments">({{ entry.comment_count }} comment{{ entry.comment_count|pluralize }})</a></div>
 		</div>
+	{% empty %}
+		{# sth #}
 	{% endfor %}
 	{% if is_paginated %}
 		<div class="pagination">

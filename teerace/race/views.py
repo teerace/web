@@ -1,8 +1,13 @@
 import datetime
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from django.views.generic.simple import direct_to_template
+from django.views.generic.list_detail import object_list, object_detail
 from accounts.models import UserProfile
 from blog.models import Entry
 from race.models import Map, Run
+from annoying.decorators import render_to
+
 
 def homepage(request):
 	try:
@@ -30,3 +35,25 @@ def homepage(request):
 		'runs_yesterday': runs_yesterday,
 	}
 	return direct_to_template(request, template, extra_context)
+
+
+def map_list(request):
+	maps = Map.objects.all().select_related()
+	return object_list(request, queryset=maps)
+
+
+@render_to('race/map_detail.html')
+def map_detail(request, map_id):
+	map = get_object_or_404(Map.objects.select_related(), pk=map_id)
+	best_runs = Run.objects.filter(map=map).order_by('time')[:5]
+	latest_runs = Run.objects.filter(map=map).order_by('-created_at')[:5]
+	if request.user.is_authenticated():
+		user_runs = Run.objects.filter(user=request.user)[:5]
+	else:
+		user_runs = None
+	return {
+		'map': map,
+		'best_runs': best_runs,
+		'latest_runs': latest_runs,
+		'user_runs': user_runs,
+	}
