@@ -40,7 +40,10 @@ class Map(models.Model):
 
 	@property
 	def best_score(self):
-		return Run.objects.filter(map=self).order_by('time')[0]
+		try:
+			return Run.objects.filter(map=self).order_by('time')[0]
+		except IndexError:
+			return None
 
 	def __unicode__(self):
 		return self.name
