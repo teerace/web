@@ -144,7 +144,9 @@ MIDDLEWARE_CLASSES = (
 	'johnny.middleware.QueryCacheMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.transaction.TransactionMiddleware',
+	#'django.middleware.transaction.TransactionMiddleware',
+	# see https://bitbucket.org/jmoiron/johnny-cache/issue/17/
+	'johnny.middleware.CommittingTransactionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.middleware.csrf.CsrfResponseMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',

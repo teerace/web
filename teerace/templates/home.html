@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load human_duration %}{% load race_diff %}
 {% comment %}
 context variables:
 	latest_entry
@@ -35,11 +35,11 @@ context variables:
 				<table class="players">
 					<tr>
 						<td class="label">Registered users:</td>
-						<td class="content">{{ users|length }}{% if users %} (latest: {% with users.latest as last_profile %}{{ last_profile.user.username }}{% endwith %}){% endif %}</td>
+						<td class="content">{{ users|length }}{% if users %} (latest: {% with users|last as last_profile %}{{ last_profile.user.username }}{% endwith %}){% endif %}</td>
 					</tr>
 					<tr>
 						<td class="label">Race maps:</td>
-						<td class="content">{{ maps|length }}{% if maps %} (latest: {{ maps.last.name }}){% endif%}</td>
+						<td class="content">{{ maps|length }}{% if maps %} (latest: {% with maps|last as last_map %}{{ last_map.name }}{% endwith %}){% endif %}</td>
 					</tr>
 					<tr>
 						<td class="label">Downloaded maps:</td>
@@ -59,34 +59,40 @@ context variables:
 					</tr>
 					<tr>
 						<td class="label">Time of finished races:</td>
-						<td class="content">1M 17D 23h 57m</td>
+						<td class="content">{{ total_playtime|sectodur }}</td>
 					</tr>
 				</table>
 			</div>
 
+			{% if user.is_authenticated %}
 			<div class="box right top">
 				<div class="header">Your activity</div>
 				<table class="players">
 					<tr>
 						<th>Date</th>
-						<th>Map</td>
-						<th>Time</td>
-						<th>Difference</td>
+						<th>Map</th>
+						<th>Time</th>
+						<th colspan="2">PB - Diff - WR</th>
 					</tr>
-					{% for run in user.latest_runs %}
+					{% for run in user_runs %}
 					<tr>
 						<td>{{ run.created_at|timesince }} ago</td>
 						<td>{{ run.map }}</td>
-						<td>{{ run.time }}</td>
-						<td>{#}{% run_diff user run %}#}</td>
+						<td>{{ run.time|floatformat:2 }}</td>
+						<td>{% race_diff run %}</td>
+						<td>{% race_diff run run.map.best_score %}</td>
 					</tr>
 					{% empty %}
 					<tr>
-						<td colspan="4">Hey! You haven't finished any run yet!</td>
+						<td colspan="5">Hey! You haven't finished any run yet!</td>
 					</tr>
 					{% endfor %}
+					<tfoot>
+						<td colspan="5"><a href="">More &raquo;</a></td>
+					</tfoot>
 				</table>
 			</div>
+			{% endif %}
 
 			<div class="box right">
 				<div class="header">Teerace Quickstart</div>

@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}
+{% extends "race/map_base.html" %}{% load race_diff %}
 {% comment %}
 context variables:
 	map
@@ -23,13 +23,15 @@ context variables:
 			<tr>
 				<th>Player</th>
 				<th>Date</th>
-				<th>Time</td>
+				<th>Time</th>
+				<th>Diff</th>
 			</tr>
 			{% for run in best_runs %}
 			<tr>
 				<td>{{ run.user }}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
 				<td>{{ run.time }}</td>
+				<td>{% race_diff run run.map.best_score "-" %}</td>
 			</tr>
 			{% empty %}
 			<tr>
@@ -45,7 +47,7 @@ context variables:
 			<tr>
 				<th>Player</th>
 				<th>Date</th>
-				<th>Time</td>
+				<th>Time</th>
 			</tr>
 			{% for run in latest_runs %}
 			<tr>
@@ -64,13 +66,15 @@ context variables:
 			<tr>
 				<th>Player</th>
 				<th>Date</th>
-				<th>Time</td>
+				<th>Time</th>
+				<th>Diff (PB)</th>
 			</tr>
 			{% for run in user_runs %}
 			<tr>
 				<td>{{ run.user }}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
 				<td>{{ run.time }}</td>
+				<td>{% race_diff run run "-" %}</td>
 			</tr>
 			{% empty %}
 			<tr>
