@@ -10,8 +10,70 @@ context variables:
 {% endcomment %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
+			{% if user.is_authenticated %}
+			<div class="box full">
+				<div class="header">Your activity</div>
+				<table class="players">
+					<tr>
+						<th>Date</th>
+						<th>Map</th>
+						<th>Time</th>
+						<th colspan="2">PB - Diff - WR</th>
+					</tr>
+					{% for run in user_runs %}
+					<tr>
+						<td>{{ run.created_at|timesince }} ago</td>
+						<td>{{ run.map }}</td>
+						<td>{{ run.time|floatformat:2 }}</td>
+						<td>{% race_diff run %}</td>
+						<td>{% race_diff run run.map.best_score %}</td>
+					</tr>
+					{% empty %}
+					<tr>
+						<td colspan="5">Hey! You haven't finished any run yet!</td>
+					</tr>
+					{% endfor %}
+					<tfoot>
+						<td colspan="5"><a href="">More &raquo;</a></td>
+					</tfoot>
+				</table>
+			</div>
+			{% endif %}
+
+			<div class="box right top">
+				<div class="header">Teerace Quickstart</div>
+				<h2>1. <a href="">register a racenetID</a></h2>
+				<h2>2. <a href="">get your inGame Nickname</a></h2>
+				Benefits of registration and ingame linkage:
+				<ul>
+					<li>
+						play with any nickname but collect<br/>
+						your stats under the linked one
+					</li>
+					<li>
+						protect your linked nickname from<br/>
+						beeing used by other players
+					</li>
+					<li>
+						display your ingame nickname in<br/>
+						the warsow-race.net communiy
+					</li>
+				</ul>
+
+				<div class="header">Useful Downloads</div>
+				<p><a href="">Warsow 0.5 Download Page</a></p>
+				<p><a href="">Quake 3 Texture Replacement Pack</a></p>
+				<p><a href="">Warsow 0.21 Compatibility Texture Pack</a></p>
+
+				<div class="header">Teerace Links</div>
+				<span><a href="http://racesow.warsow-race.net">Project page</a></span>,
+				<span><a href="http://www.moddb.com/mods/racesow">ModDB</a></span>,
+				<span><a href="https://www.ohloh.net/p/racesow">Ohloh</a></span>,
+				<span><a href="http://www.comboutique.com/shop/homeboutique-4951.html?lang=EN" target="_blank">Race Clothing</a></span>
+			</div>
+
 			{% if latest_entry %}
-			<div id="blog" class="box full">
+			<div id="blog" class="box left">
 				<div class="header">Blog</div>
 
 				<h2><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></h2>
@@ -59,70 +121,8 @@ context variables:
 					</tr>
 					<tr>
 						<td class="label">Time of finished races:</td>
-						<td class="content">{{ total_playtime|sectodur }}</td>
+						<td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
 					</tr>
 				</table>
-			</div>
-
-			{% if user.is_authenticated %}
-			<div class="box right top">
-				<div class="header">Your activity</div>
-				<table class="players">
-					<tr>
-						<th>Date</th>
-						<th>Map</th>
-						<th>Time</th>
-						<th colspan="2">PB - Diff - WR</th>
-					</tr>
-					{% for run in user_runs %}
-					<tr>
-						<td>{{ run.created_at|timesince }} ago</td>
-						<td>{{ run.map }}</td>
-						<td>{{ run.time|floatformat:2 }}</td>
-						<td>{% race_diff run %}</td>
-						<td>{% race_diff run run.map.best_score %}</td>
-					</tr>
-					{% empty %}
-					<tr>
-						<td colspan="5">Hey! You haven't finished any run yet!</td>
-					</tr>
-					{% endfor %}
-					<tfoot>
-						<td colspan="5"><a href="">More &raquo;</a></td>
-					</tfoot>
-				</table>
-			</div>
-			{% endif %}
-
-			<div class="box right">
-				<div class="header">Teerace Quickstart</div>
-				<h2>1. <a href="">register a racenetID</a></h2>
-				<h2>2. <a href="">get your inGame Nickname</a></h2>
-				Benefits of registration and ingame linkage:
-				<ul>
-					<li>
-						play with any nickname but collect<br/>
-						your stats under the linked one
-					</li>
-					<li>
-						protect your linked nickname from<br/>
-						beeing used by other players
-					</li>
-					<li>
-						display your ingame nickname in<br/>
-						the warsow-race.net communiy
-					</li>
-				</ul>
-
-				<div class="header">Useful Downloads</div>
-				<p><a href="">Warsow 0.5 Download Page</a></p>
-				<p><a href="">Quake 3 Texture Replacement Pack</a></p>
-				<p><a href="">Warsow 0.21 Compatibility Texture Pack</a></p>
-
-				<div class="header">Teerace Links</div>
-				<span><a href="http://racesow.warsow-race.net">Project page</a></span>,
-				<span><a href="http://www.moddb.com/mods/racesow">ModDB</a></span>,
-				<span><a href="https://www.ohloh.net/p/racesow">Ohloh</a></span>,
-				<span><a href="http://www.comboutique.com/shop/homeboutique-4951.html?lang=EN" target="_blank">Race Clothing</a></span>
 			</div>
 {% endblock content %}
