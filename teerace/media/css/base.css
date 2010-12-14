@@ -16,7 +16,7 @@ a:hover {
 }
 
 input,
-#user-box .button {
+.button {
 	color: #4c4b33;
 	background-color: #918f61;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#e7e5be), to(#918f61));
@@ -27,7 +27,7 @@ input,
 }
 
 input:hover,
-#user-box .button:hover  {
+.button:hover  {
 	color: #e7e5be;
 	background-color: #918f61;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#918f61), to(#4c4b33));
@@ -36,28 +36,36 @@ input:hover,
 	border: thin solid #4c4b33;
 }
 
-table.players {
+table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-	table.players tr {
+	table tr {
 		border-bottom: thin solid #e7e5be;
 	}
 
-	table.players th {
+	table tr.no-border {
+		border: none;
+	}
+
+	table th {
 		text-align: left;
 	}
 
-	table.players td {
+	table th.center {
+		text-align: center;
+	}
+
+	table td {
 		padding: 5px 0;
 	}
 
-	table.players .content {
+	table .content {
 		font-weight: bold;
 	}
 
-		table.players .content .info {
+		table .content .info {
 			font-size: 11px;
 			font-weight: normal;
 		}
@@ -86,8 +94,7 @@ table.players {
 }
 
 #menu, .box,
-#user-box .button,
-input {
+.button, input {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -281,6 +288,10 @@ input {
 		float: right;
 	}
 
+	#blog .header {
+		margin: 10px 0 0 0;
+	}
+
 #footer {
 	color: #e7e5be;
 	background-color: #918f61;
@@ -316,6 +327,10 @@ input {
 		font-size: 20px;
 		border-bottom: thin solid;
 		margin-bottom: 10px;
+	}
+
+	.box .header a {
+		color: inherit;
 	}
 
 .form_field {
@@ -364,6 +379,10 @@ input {
 		text-align: center;
 		font-style: oblique;
 	}
+
+.map-detail {
+	width: 50%;
+}
 
 .box.left { margin-right: 10px; }
 .box.right { margin-top: 5px; }

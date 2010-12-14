@@ -24,10 +24,10 @@ context variables:
 			</span>
 		</div>
 	{% endif %}
+	<div class="box full" id="blog">
 	{% for entry in object_list %}
-		<div class="box full">
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-			<div class="post-line">(posted by: <span class="poster">{{ entry.created_by }}</span>) | {{ entry.created_at }}</div>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
 			<p>
 				{% if entry.excerpt_html %}
 					{{ entry.excerpt_html|safe }}
@@ -39,10 +39,10 @@ context variables:
 			<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
 			{% endif %}
 			<div class="comments"><a href="{{ entry.get_absolute_url }}#comments">({{ entry.comment_count }} comment{{ entry.comment_count|pluralize }})</a></div>
-		</div>
 	{% empty %}
 		{# sth #}
 	{% endfor %}
+	</div>
 	{% if is_paginated %}
 		<div class="pagination">
 			<span class="step-links">

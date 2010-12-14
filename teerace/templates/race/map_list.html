@@ -42,7 +42,7 @@ context variables:
 				<td>{{ map.run_count }}</td>
 				<td>{{ map.total_playtime }}</td>
 				<td>{{ map.average_score|floatformat:2 }}</td>
-				<td><a href="{{ map.best_score.get_absolute_url }}">{{ map.best_score.time }}</a></td>
+				<td>{% if map.best_score %}<a href="{{ map.best_score.get_absolute_url }}">{{ map.best_score.time }}</a>{% else %}-{% endif %}</td>
 			</tr>
 			{% empty %}
 			<tr>

@@ -14,19 +14,23 @@ context variables:
 			<div class="box full">
 				<div class="header">Your activity</div>
 				<table class="players">
+					<tr class="no-border">
+						<th rowspan="2">Date</th>
+						<th rowspan="2">Map</th>
+						<th rowspan="2">Time</th>
+						<th class="center" colspan="2">Diff</th>
+					</tr>
 					<tr>
-						<th>Date</th>
-						<th>Map</th>
-						<th>Time</th>
-						<th colspan="2">PB - Diff - WR</th>
+						<th class="center">PB</th>
+						<th class="center">WR</th>
 					</tr>
 					{% for run in user_runs %}
 					<tr>
 						<td>{{ run.created_at|timesince }} ago</td>
 						<td>{{ run.map }}</td>
 						<td>{{ run.time|floatformat:2 }}</td>
-						<td>{% race_diff run %}</td>
-						<td>{% race_diff run run.map.best_score %}</td>
+						<td class="center">{% race_diff run %}</td>
+						<td class="center">{% race_diff run run.map.best_score %}</td>
 					</tr>
 					{% empty %}
 					<tr>

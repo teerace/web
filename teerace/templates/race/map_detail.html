@@ -12,10 +12,40 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
-		<div class="post-line">(creator: <span class="poster">{{ map.created_by }}</span>) | added {{ map.created_at }}</div>
-		Best result: {{ map.best_score.time }}s by {{ map.best_score.user }} ({{ map.best_score.nickname }})
-		Average time: {{ map.average_score|floatformat:2 }}
-		<a href="{{ map.map_file.url }}">Download map</a>
+		<div class="left map-detail">
+			<table>
+				<tr>
+					<td class="label">Author</td>
+					<td class="content">{{ map.created_by }}</td>
+				</tr>
+				<tr>
+					<td class="label">Added</td>
+					<td class="content">{{ map.created_at }}</td>
+				</tr>
+			{% if map.best_score %}
+				<tr>
+					<td class="label">Best result</td>
+					<td class="content">{{ map.best_score.time }}s by {{ map.best_score.user }} ({{ map.best_score.nickname }})</td>
+				</tr>
+			{% endif %}
+				<tr>
+					<td class="label">Average time</td>
+					<td class="content">{% if map.average_score %}{{ map.average_score|floatformat:2 }}{% else %}-{% endif %}</td>
+				</tr>
+<!--
+				<tr>
+					<td class="label"></td>
+					<td class="content"></td>
+				</tr>
+-->
+			</table>
+			<br>
+			<a class="button" href="{{ map.map_file.url }}">Download map</a>&nbsp;(10.4 KiB)
+		</div>
+
+		<div class="right map-detail">
+			<img src="/media/images/error.png" alt="image" width="400" height="200" title="">
+		</div>
 	</div>
 	<div class="box full">
 		<div class="header">Top 5</div>
