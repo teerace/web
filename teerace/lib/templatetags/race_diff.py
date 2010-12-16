@@ -1,4 +1,3 @@
-import re
 from django import template
 from race.models import Run
 
@@ -11,8 +10,8 @@ def race_diff(run, compare_to=None, custom_green=None):
 		compare_to = None
 	if compare_to is None:
 		user = run.user
-		map = run.map
-		best_result = Run.objects.filter(map=map, user=user).order_by('time')[0]
+		map_obj = run.map
+		best_result = Run.objects.filter(map=map_obj, user=user).order_by('time')[0]
 		diff = run.time - best_result.time
 	else:
 		diff = run.time - compare_to.time

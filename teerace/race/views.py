@@ -54,15 +54,15 @@ def map_list(request):
 
 @render_to('race/map_detail.html')
 def map_detail(request, map_id):
-	map = get_object_or_404(Map.objects.select_related(), pk=map_id)
-	best_runs = Run.objects.filter(map=map).order_by('time')[:5]
-	latest_runs = Run.objects.filter(map=map).order_by('-created_at')[:5]
+	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
+	best_runs = Run.objects.filter(map=map_obj).order_by('time')[:5]
+	latest_runs = Run.objects.filter(map=map_obj).order_by('-created_at')[:5]
 	if request.user.is_authenticated():
 		user_runs = Run.objects.filter(user=request.user).order_by('-created_at')[:5]
 	else:
 		user_runs = None
 	return {
-		'map': map,
+		'map': map_obj,
 		'best_runs': best_runs,
 		'latest_runs': latest_runs,
 		'user_runs': user_runs,

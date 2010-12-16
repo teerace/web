@@ -3,7 +3,7 @@ from django.utils.safestring import mark_safe
 
 
 class SubmitTextWidget(forms.Widget):
-	def __init__(self, name, label=None, attrs={}):
+	def __init__(self, name, label=None, attrs=None):
 		if label == None:
 			label = name
 		self.name, self.label = name, label

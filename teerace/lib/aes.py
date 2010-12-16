@@ -38,9 +38,9 @@ def aes_encrypt(string, key):
 	AND encodes result with base64.
 	"""
 
-	encodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
+	encode_aes = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
 
-	return aes_helper(encodeAES, string, key)
+	return aes_helper(encode_aes, string, key)
 
 
 def aes_decrypt(string, key):
@@ -49,6 +49,6 @@ def aes_decrypt(string, key):
 	result using cipher generated from `key`.
 	"""
 
-	decodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
+	decode_aes = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
 
-	return aes_helper(decodeAES, string, key)
+	return aes_helper(decode_aes, string, key)

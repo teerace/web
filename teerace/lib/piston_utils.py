@@ -46,6 +46,7 @@ def validate_mime(v_form, operation='POST'):
 	from request.data because we always expect JSON data
 	It is otherwise a copy of piston.util.validate.
 	"""
+	del operation
 
 	@decorator
 	def wrap(wrapped_function, self, request, *a, **kwa):

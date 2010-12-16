@@ -16,7 +16,7 @@ def current(request, pattern):
 
 
 @register.simple_tag
-def current_unique(request, pattern, id):
+def current_unique(request, pattern, element_id):
 	if re.search(pattern, request.path):
-		return ' id="%s-current"' % id
-	return ' id="%s"' % id
+		return ' id="%s-current"' % element_id
+	return ' id="%s"' % element_id

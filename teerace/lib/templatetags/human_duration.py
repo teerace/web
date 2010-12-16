@@ -33,56 +33,56 @@ def sectodur(value, arg = ''):
 		import math
 
 		# Place durations of given units in to variables
-		daySecs = 86400
-		hourSecs = 3600
-		minSecs = 60
+		day_secs = 86400
+		hour_secs = 3600
+		min_secs = 60
 
 		# If short string is enabled
 		if arg != 'long':
 
 			# Set short names
-			dayUnitName = ' day'
-			hourUnitName = ' hr'
-			minUnitName = ' min'
-			secUnitName = ' sec'
+			day_unit_name = ' day'
+			hour_unit_name = ' hr'
+			min_unit_name = ' min'
+			sec_unit_name = ' sec'
 			
 			# Set short duration unit splitters
-			lastDurSplitter = ' '
-			nextDurSplitter = lastDurSplitter
+			last_dur_splitter = ' '
+			next_dur_splitter = last_dur_splitter
 		
 			# If short string is not provided or any other value
 		else:
 
 			# Set long names
-			dayUnitName = ' day'
-			hourUnitName = ' hour'
-			minUnitName = ' minute'
-			secUnitName = ' second'
+			day_unit_name = ' day'
+			hour_unit_name = ' hour'
+			min_unit_name = ' minute'
+			sec_unit_name = ' second'
 
 			# Set long duration unit splitters
-			lastDurSplitter = ' and '
-			nextDurSplitter = ', '
+			last_dur_splitter = ' and '
+			next_dur_splitter = ', '
 		
 		# Create string to hold outout
-		durationString = ''
+		duration_string = ''
 		
 		# Calculate number of days from seconds
-		days = int(math.floor(secs / int(daySecs)))
+		days = int(math.floor(secs / int(day_secs)))
 		
 		# Subtract days from seconds
-		secs = secs - (days * int(daySecs))
+		secs = secs - (days * int(day_secs))
 		
 		# Calculate number of hours from seconds (minus number of days)
-		hours = int(math.floor(secs / int(hourSecs)))
+		hours = int(math.floor(secs / int(hour_secs)))
 		
 		# Subtract hours from seconds
-		secs = secs - (hours * int(hourSecs))
+		secs = secs - (hours * int(hour_secs))
 		
 		# Calculate number of minutes from seconds (minus number of days and hours)
-		minutes = int(math.floor(secs / int(minSecs)))
+		minutes = int(math.floor(secs / int(min_secs)))
 		
 		# Subtract days from seconds
-		secs = secs - (minutes * int(minSecs))
+		secs = secs - (minutes * int(min_secs))
 		
 		# Calculate number of seconds (minus days, hours and minutes)
 		seconds = secs
@@ -91,7 +91,7 @@ def sectodur(value, arg = ''):
 		if days > 0:
 			
 			# Add multiple days to duration string
-			durationString += ' ' + str(days) + dayUnitName + (days > 1 and 's' or '')
+			duration_string += ' ' + str(days) + day_unit_name + (days > 1 and 's' or '')
 		
 		# Determine if next string is to be shown
 		if hours > 0:
@@ -100,19 +100,20 @@ def sectodur(value, arg = ''):
 			if minutes <= 0 and seconds <= 0:
 
 				# Set hour splitter to last
-				hourSplitter = lastDurSplitter
+				hour_splitter = last_dur_splitter
 
 			# If there are unit after this
 			else:
 
 				# Set hour splitter to next
-				hourSplitter = (len(durationString) > 0 and nextDurSplitter or '')
+				hour_splitter = (len(duration_string) > 0 and next_dur_splitter or '')
 
 		# If number of hours is greater than 0
 		if hours > 0:
 
 			# Add multiple days to duration string
-			durationString += hourSplitter + ' ' + str(hours) + hourUnitName + (hours > 1 and 's' or '')
+			duration_string += hour_splitter + ' ' + str(hours) + hour_unit_name +
+				(hours > 1 and 's' or '')
 
 		# Determine if next string is to be shown
 		if minutes > 0:
@@ -121,34 +122,36 @@ def sectodur(value, arg = ''):
 			if seconds <= 0:
 
 				# Set minute splitter to last
-				minSplitter = lastDurSplitter
+				min_splitter = last_dur_splitter
 
 			# If there are unit after this
 			else:
 
 				# Set minute splitter to next
-				minSplitter = (len(durationString) > 0 and nextDurSplitter or '')
+				min_splitter = (len(duration_string) > 0 and next_dur_splitter or '')
 
 		# If number of minutes is greater than 0
 		if minutes > 0:
 
 			# Add multiple days to duration string
-			durationString += minSplitter + ' ' + str(minutes) + minUnitName + (minutes > 1 and 's' or '')
+			duration_string += min_splitter + ' ' + str(minutes) + min_unit_name +
+				(minutes > 1 and 's' or '')
 
 		# Determine if next string is last
 		if seconds > 0:
 
 			# Set second splitter
-			secSplitter = (len(durationString) > 0 and lastDurSplitter or '')
+			sec_splitter = (len(duration_string) > 0 and last_dur_splitter or '')
 
 		# If number of seconds is greater than 0
 		if seconds > 0:
 
 			# Add multiple days to duration string
-			durationString += secSplitter + ' ' + str(seconds) + secUnitName + (seconds > 1 and 's' or '')
+			duration_string += sec_splitter + ' ' + str(seconds) + sec_unit_name +
+				(seconds > 1 and 's' or '')
 
 		# Return duration string
-		return durationString.strip()
+		return duration_string.strip()
 
 	# If seconds are not greater than 0
 	else:
