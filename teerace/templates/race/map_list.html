@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}
+{% extends "race/map_base.html" %}{% load human_duration %}
 {% comment %}
 context variables:
 	object_list
@@ -32,7 +32,7 @@ context variables:
 				<th>Date added</th>
 				<th>Completions</th>
 				<th>Total playtime</th>
-				<th>Avg</th>
+				<th>Avg time</th>
 				<th>Record</th>
 			</tr>
 			{% for map in object_list %}
@@ -40,9 +40,9 @@ context variables:
 				<td><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></td>
 				<td>{{ map.created_at }}</td>
 				<td>{{ map.run_count }}</td>
-				<td>{{ map.total_playtime }}</td>
-				<td>{{ map.average_score|floatformat:2 }}</td>
-				<td>{% if map.best_score %}<a href="{{ map.best_score.get_absolute_url }}">{{ map.best_score.time }}</a>{% else %}-{% endif %}</td>
+				<td>{{ map.total_playtime|default_if_none:0|sectodur }}</td>
+				<td>{{ map.average_score|floatformat:2|default:"-" }}</td>
+				<td>{% if map.best_score %}<a href="{{ map.best_score.get_absolute_url }}">{{ map.best_score.time }}</a> by {{ map.best_score.user }}{% else %}-{% endif %}</td>
 			</tr>
 			{% empty %}
 			<tr>

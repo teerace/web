@@ -23,3 +23,15 @@ def race_diff(run, compare_to=None, custom_green=None):
 		if custom_green:
 			return custom_green
 	return '<span class="{0}">{1:+.2f}</span>'.format(style, diff)
+
+
+@register.simple_tag
+def diff_color(diff):
+	if diff > 0.0:
+		style = 'red'
+	elif diff < 0.0:
+		style = 'green'
+	else:
+		return '{0:.2f}'.format(diff)
+	return '<span class="{0}">{1:+.2f}</span>'.format(style, diff)
+	

@@ -24,10 +24,10 @@ def homepage(request):
 	today = datetime.date.today()
 	yesterday = today - datetime.timedelta(days=1)
 
-	runs_today = Run.objects.filter(reported_at__range=
+	runs_today = Run.objects.filter(created_at__range=
 		(datetime.datetime.combine(today, datetime.time.min),
 		datetime.datetime.combine(today, datetime.time.max)))
-	runs_yesterday = Run.objects.filter(reported_at__range=
+	runs_yesterday = Run.objects.filter(created_at__range=
 		(datetime.datetime.combine(yesterday, datetime.time.min),
 		datetime.datetime.combine(yesterday, datetime.time.max)))
 

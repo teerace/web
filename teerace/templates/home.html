@@ -19,6 +19,7 @@ context variables:
 						<th rowspan="2">Map</th>
 						<th rowspan="2">Time</th>
 						<th class="center" colspan="2">Diff</th>
+						<th rowspan="2"></th>
 					</tr>
 					<tr>
 						<th class="center">PB</th>
@@ -29,8 +30,9 @@ context variables:
 						<td>{{ run.created_at|timesince }} ago</td>
 						<td>{{ run.map }}</td>
 						<td>{{ run.time|floatformat:2 }}</td>
-						<td class="center">{% race_diff run %}</td>
+						<td class="center">{% diff_color run.diff_from_personal_best %}</td>
 						<td class="center">{% race_diff run run.map.best_score %}</td>
+						<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 					</tr>
 					{% empty %}
 					<tr>

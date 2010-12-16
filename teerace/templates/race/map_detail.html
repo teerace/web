@@ -25,12 +25,16 @@ context variables:
 			{% if map.best_score %}
 				<tr>
 					<td class="label">Best result</td>
-					<td class="content">{{ map.best_score.time }}s by {{ map.best_score.user }} ({{ map.best_score.nickname }})</td>
+					<td class="content">{{ map.best_score.time }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>
 					<td class="content">{% if map.average_score %}{{ map.average_score|floatformat:2 }}{% else %}-{% endif %}</td>
+				</tr>
+				<tr>
+					<td class="label">Map completions</td>
+					<td class="content">{{ map.run_count }}</td>
 				</tr>
 <!--
 				<tr>
@@ -40,7 +44,7 @@ context variables:
 -->
 			</table>
 			<br>
-			<a class="button" href="{{ map.map_file.url }}">Download map</a>&nbsp;(10.4 KiB)
+			<a class="button" href="{{ map.map_file.url }}">Download map</a>&nbsp;({{ map.map_file.size|filesizeformat }})
 		</div>
 
 		<div class="right map-detail">
@@ -51,16 +55,20 @@ context variables:
 		<div class="header">Top 5</div>
 		<table class="players">
 			<tr>
+				<th>#</th>
 				<th>Player</th>
+				<th>Points</th>
 				<th>Date</th>
 				<th>Time</th>
 				<th>Diff</th>
 			</tr>
 			{% for run in best_runs %}
 			<tr>
+				<td>{{ forloop.counter }}</td>
 				<td>{{ run.user }}</td>
+				<td></td>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time }}</td>
+				<td>{{ run.time|floatformat:2 }}</td>
 				<td>{% race_diff run run.map.best_score "-" %}</td>
 			</tr>
 			{% empty %}
@@ -68,6 +76,11 @@ context variables:
 				<td colspan="4">Hey! Nobody finished this map yet!</td>
 			</tr>
 			{% endfor %}
+		<tfoot>
+			<tr>
+				<td colspan="6"><a href="">See whole rank &raquo;</a></td>
+			</tr>
+		</tfoot>
 		</table>
 	</div>
 	{% if latest_runs %}
@@ -78,12 +91,16 @@ context variables:
 				<th>Player</th>
 				<th>Date</th>
 				<th>Time</th>
+				<th>Diff (PB)</th>
+				<th></th>
 			</tr>
 			{% for run in latest_runs %}
 			<tr>
 				<td>{{ run.user }}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time }}</td>
+				<td>{{ run.time|floatformat:2 }}</td>
+				<td>{% diff_color run.diff_from_personal_best %}</td>
+				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
 			{% endfor %}
 		</table>
@@ -94,17 +111,17 @@ context variables:
 		<div class="header">Your results</div>
 		<table class="players">
 			<tr>
-				<th>Player</th>
 				<th>Date</th>
 				<th>Time</th>
 				<th>Diff (PB)</th>
+				<th></th>
 			</tr>
 			{% for run in user_runs %}
 			<tr>
-				<td>{{ run.user }}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time }}</td>
-				<td>{% race_diff run run "-" %}</td>
+				<td>{{ run.time|floatformat:2 }}</td>
+				<td>{% diff_color run.diff_from_personal_best %}</td>
+				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
 			{% empty %}
 			<tr>

@@ -33,7 +33,6 @@ class RunHandler(BaseHandler):
 			user = request.form.user,
 			nickname = request.form.cleaned_data['nickname'],
 			time = request.form.cleaned_data['time'],
-			created_at = request.form.cleaned_data['created_at']
 		).save()
 		return rc.CREATED
 

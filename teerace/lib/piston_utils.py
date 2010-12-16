@@ -71,6 +71,7 @@ class Resource(PistonResource):
 
 		# Create a 400 status_code response
 		resp = rc.BAD_REQUEST
+		resp.content = ""
 
 		# Serialize the error.form.errors object
 		json_errors = json.dumps(
