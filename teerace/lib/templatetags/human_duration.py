@@ -112,7 +112,7 @@ def sectodur(value, arg = ''):
 		if hours > 0:
 
 			# Add multiple days to duration string
-			duration_string += hour_splitter + ' ' + str(hours) + hour_unit_name +
+			duration_string += hour_splitter + ' ' + str(hours) + hour_unit_name + \
 				(hours > 1 and 's' or '')
 
 		# Determine if next string is to be shown
@@ -134,7 +134,7 @@ def sectodur(value, arg = ''):
 		if minutes > 0:
 
 			# Add multiple days to duration string
-			duration_string += min_splitter + ' ' + str(minutes) + min_unit_name +
+			duration_string += min_splitter + ' ' + str(minutes) + min_unit_name + \
 				(minutes > 1 and 's' or '')
 
 		# Determine if next string is last
@@ -147,7 +147,7 @@ def sectodur(value, arg = ''):
 		if seconds > 0:
 
 			# Add multiple days to duration string
-			duration_string += sec_splitter + ' ' + str(seconds) + sec_unit_name +
+			duration_string += sec_splitter + ' ' + str(seconds) + sec_unit_name + \
 				(seconds > 1 and 's' or '')
 
 		# Return duration string

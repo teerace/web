@@ -1,9 +1,8 @@
 import datetime
-from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django.views.generic.simple import direct_to_template
-from django.views.generic.list_detail import object_list, object_detail
+from django.views.generic.list_detail import object_list
 from accounts.models import UserProfile
 from blog.models import Entry
 from race.models import Map, Run
