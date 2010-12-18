@@ -70,22 +70,9 @@ table {
 			font-weight: normal;
 		}
 
-#header {
+#header {}
 
-}
-
-	#header a {
-		color: #333;
-		text-decoration: none;
-	}
-
-	#header h1 {
-		font-size: 36px;
-		line-height: 30px;
-	}
-
-#page {
-}
+#page {}
 
 #header, #page {
 	margin: 0 auto;
