@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from race.models import Run, BestRun
 from celery.decorators import task
 
@@ -25,7 +24,7 @@ def redo_ranks(run_id):
 		print run.points
 		run.save()
 		c += 1
-	all_other = runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
+	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
 	logger = redo_ranks.get_logger()
