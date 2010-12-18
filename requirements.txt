@@ -1,7 +1,9 @@
+celery>=2.1.4
 coverage>=3.4
 Django>=1.2
 django-admin-tools>=0.3.0
 django-annoying>=0.7.5
+django-celery>=2.1.4
 django-coverage>=1.1
 django-crumbs>=0.5.0
 -e hg+http://bitbucket.org/jespern/django-piston#egg=django-piston

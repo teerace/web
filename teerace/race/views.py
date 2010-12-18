@@ -5,7 +5,7 @@ from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 from accounts.models import UserProfile
 from blog.models import Entry
-from race.models import Map, Run
+from race.models import Map, Run, BestRun
 from annoying.decorators import render_to
 
 
@@ -54,7 +54,7 @@ def map_list(request):
 @render_to('race/map_detail.html')
 def map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
-	best_runs = Run.objects.filter(map=map_obj).order_by('time')[:5]
+	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time')[:5]
 	latest_runs = Run.objects.filter(map=map_obj).order_by('-created_at')[:5]
 	if request.user.is_authenticated():
 		user_runs = Run.objects.filter(user=request.user).order_by('-created_at')[:5]

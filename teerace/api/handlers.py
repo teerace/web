@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from piston.handler import BaseHandler
 from piston.utils import rc, require_extended
 from api.forms import ValidateUserForm
+from race import tasks
 from race.forms import RunForm
 from race.models import Run
 from lib.aes import aes_decrypt
@@ -27,13 +28,15 @@ class RunHandler(BaseHandler):
 		Creates a Run object.
 		"""
 
-		Run(
+		run = Run(
 			map = request.form.map,
 			server = request.server,
 			user = request.form.user,
 			nickname = request.form.cleaned_data['nickname'],
 			time = request.form.cleaned_data['time'],
-		).save()
+		)
+		run.save()
+		tasks.redo_ranks.delay(run.id)
 		return rc.CREATED
 
 

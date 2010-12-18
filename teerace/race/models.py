@@ -120,15 +120,40 @@ class Run(models.Model):
 			is_record=True).order_by('time')
 		broken_qs.exclude(pk=broken_qs[0].id).update(is_record=False)
 
+	def promote_to_best(self):
+		best_run, created = BestRun.objects.get_or_create(map=self.map,
+			user=self.user, defaults={'run': self})
+		if not created:
+			best_run.run = self
+			best_run.save()
+
 	def __unicode__(self):
 		return u"{0} - {1} - {2:.2f}s".format(self.map, self.user, self.time)
 
 	def save(self, *args, **kwargs):
 		# imitate overriding create()
-		if not self.pk:
+		create = True if not self.pk else False
+		if create:
 			self.set_personal_record()
 			self.set_map_record()
 		super(Run, self).save(*args, **kwargs)
+		if create and self.is_personal_best:
+			self.promote_to_best()
+
+
+class BestRun(models.Model):
+	user = models.ForeignKey(User)
+	map = models.ForeignKey(Map)
+	run = models.ForeignKey(Run)
+
+	SCORING = [20, 14, 10, 8, 6, 5, 4, 3, 2, 1]
+	points = models.IntegerField(default=0)
+
+	class Meta:
+		unique_together = ('user', 'map')
+
+	def __unicode__(self):
+		return repr(self.run)
 
 
 class Server(models.Model):

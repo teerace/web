@@ -21,7 +21,6 @@ class RunForm(forms.Form):
 	user_id = forms.IntegerField()
 	nickname = forms.CharField()
 	time = forms.FloatField()
-	created_at = forms.DateTimeField()
 
 	def __init__(self, *args, **kwargs):
 		super(RunForm, self).__init__(*args, **kwargs)

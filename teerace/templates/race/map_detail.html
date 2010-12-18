@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}{% load race_diff %}
+{% extends "race/map_base.html" %}{% load race_diff %}{% load humanize %}
 {% comment %}
 context variables:
 	map
@@ -25,7 +25,7 @@ context variables:
 			{% if map.best_score %}
 				<tr>
 					<td class="label">Best result</td>
-					<td class="content">{{ map.best_score.time }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
+					<td class="content">{{ map.best_score.time|floatformat:2 }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
 			{% endif %}
 				<tr>
@@ -47,8 +47,8 @@ context variables:
 			<a class="button" href="{{ map.map_file.url }}">Download map</a>&nbsp;({{ map.map_file.size|filesizeformat }})
 		</div>
 
-		<div class="right map-detail">
-			<img src="/media/images/error.png" alt="image" width="400" height="200" title="">
+		<div class="right map-detail no-map-image">
+			<div>Map screenshot missing</div>
 		</div>
 	</div>
 	<div class="box full">
@@ -62,14 +62,14 @@ context variables:
 				<th>Time</th>
 				<th>Diff</th>
 			</tr>
-			{% for run in best_runs %}
+			{% for best_run in best_runs %}
 			<tr>
-				<td>{{ forloop.counter }}</td>
-				<td>{{ run.user }}</td>
-				<td></td>
-				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|floatformat:2 }}</td>
-				<td>{% race_diff run run.map.best_score "-" %}</td>
+				<td>{{ forloop.counter|ordinal }}</td>
+				<td><a href="#FIXME">{{ best_run.run.user }}</a></td>
+				<td>{{ best_run.points }}</td>
+				<td><span title="{{ run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
+				<td>{{ best_run.run.time|floatformat:2 }}</td>
+				<td>{% race_diff best_run.run best_run.run.map.best_score "-" %}</td>
 			</tr>
 			{% empty %}
 			<tr>

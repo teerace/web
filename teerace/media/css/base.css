@@ -384,6 +384,23 @@ table {
 	width: 50%;
 }
 
+.no-map-image {
+	width: 49%;
+}
+
+	.no-map-image div {
+		text-align: center;
+		margin: 0 auto;
+		width: 80%;
+		border: 3px solid #c5c5c5;
+		border-radius: 3px;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		padding: 5px;
+		color: #c5c5c5;
+		font: 175% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+	}
+
 .box.left { margin-right: 10px; }
 .box.right { margin-top: 5px; }
 .box.right.top { margin-top: 5px; }

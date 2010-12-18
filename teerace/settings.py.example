@@ -83,6 +83,18 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'foobar'
 
+
+import djcelery
+djcelery.setup_loader()
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+BROKER_VHOST = "/"
+CELERY_RESULT_BACKEND = "amqp"
+CELERY_IMPORTS = ("tasks", )
+
 ###                                                            ###
 ### You probably won't need to change anything below this line ###
 ###                                                            ###
@@ -187,11 +199,13 @@ INSTALLED_APPS = (
 	'django.contrib.messages',
 	'django.contrib.admin',
 	'django.contrib.markup',
+	'django.contrib.humanize',
 	'lib',
 	'johnny',
 	'crumbs',
 	'piston',
 	'recaptcha_works',
+	'djcelery',
 	'django_coverage',
 ) + OUR_APPS
 
