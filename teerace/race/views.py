@@ -47,7 +47,12 @@ def homepage(request):
 
 
 def ranks(request):
-	users = UserProfile.objects.filter(points__gt=0).order_by('-points')
+	users = UserProfile.objects.filter(points__gt=0).extra(
+		select={'position':
+			"SELECT COUNT(*)+1 FROM accounts_userprofile s "
+			"WHERE s.points > accounts_userprofile.points"
+		}
+	).order_by('position')
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_runs = Run.objects.count()
 	extra_context = {

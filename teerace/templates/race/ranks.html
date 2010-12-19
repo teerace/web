@@ -44,7 +44,7 @@ context variables:
 			</tr>
 			{% for profile in object_list %}
 			<tr>
-				<td>{#{{ page_obj.number|default:1|FIXME }}#}</td>
+				<td>{{ profile.position }}</td>
 				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
 				<td>{{ profile.points }}</td>
 				<td>{{ profile.completions }}</td>
