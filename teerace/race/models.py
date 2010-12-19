@@ -146,6 +146,9 @@ class BestRun(models.Model):
 	map = models.ForeignKey(Map)
 	run = models.ForeignKey(Run)
 
+	# UGLY hack to make rank rebuilding relatively easy
+	time = models.FloatField()
+
 	SCORING = [20, 14, 10, 8, 6, 5, 4, 3, 2, 1]
 	points = models.IntegerField(default=0)
 
@@ -154,6 +157,10 @@ class BestRun(models.Model):
 
 	def __unicode__(self):
 		return repr(self.run)
+
+	def save(self, *args, **kwargs):
+		self.time = self.run.time
+		super(BestRun, self).save(*args, **kwargs)
 
 
 class Server(models.Model):

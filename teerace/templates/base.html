@@ -39,7 +39,7 @@
 				{% endcomment %}
 				{% block submenu %}{% endblock submenu %}
 				<div id="user-box" class="right">
-					{% if user.is_authenticated %}Hi, <em>{{ user }}</em> <a class="button" href="">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
+					{% if user.is_authenticated %}Hi, <em>{{ user }}</em> <a class="button" href="#FIXME">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
 					{% else %}
 					<a class="button" href="{% url login %}?next={{ request.path }}">Login</a> <a class="button" href="{% url register %}">Register</a>
 					{% endif %}
@@ -70,7 +70,7 @@
 			{% endblock content %}
 
 			<div id="footer" class="box full">
-				<div class="left"><a href="#header">↑ Top</a> &middot; <a href="">About</a></div>
+				<div class="left"><a href="#header">↑ Top</a> &middot; <a href="#FIXME">About</a></div>
 				<div class="right">powered by<a href="http://www.djangoproject.com/"><img src="{{ MEDIA_URL }}admin_tools/images/django.png" height="22" alt="Powered by Django." title="Powered by Django."></a></div>
 			</div>
 		</div>

@@ -27,7 +27,7 @@ context variables:
 					</tr>
 					{% for run in user_runs %}
 					<tr>
-						<td>{{ run.created_at|timesince }} ago</td>
+						<td><span title="{{ run.created_at }}">{{ run.created_at|timesince }} ago</span></td>
 						<td>{{ run.map }}</td>
 						<td>{{ run.time|floatformat:2 }}</td>
 						<td class="center">{% diff_color run.diff_from_personal_best %}</td>
@@ -40,7 +40,7 @@ context variables:
 					</tr>
 					{% endfor %}
 					<tfoot>
-						<td colspan="5"><a href="">More &raquo;</a></td>
+						<td colspan="5"><a href="#FIXME">More &raquo;</a></td>
 					</tfoot>
 				</table>
 			</div>

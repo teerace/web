@@ -48,11 +48,12 @@ def homepage(request):
 
 def ranks(request):
 	users = UserProfile.objects.filter(points__gt=0).extra(
-		select={'position':
+		select = {'position':
 			"SELECT COUNT(*)+1 FROM accounts_userprofile s "
 			"WHERE s.points > accounts_userprofile.points"
-		}
-	).order_by('position')
+		},
+		order_by = ['position']
+	)
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_runs = Run.objects.count()
 	extra_context = {
@@ -63,6 +64,21 @@ def ranks(request):
 		extra_context=extra_context)
 
 
+def ranks_map(request, map_id):
+	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
+	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time').extra(
+		select = {'position':
+			"SELECT COUNT(*)+1 FROM race_bestrun s "
+			"WHERE s.time < race_bestrun.time"
+		},
+	)
+	print best_runs.query
+	extra_context = {
+		'map': map_obj,
+	}
+	return object_list(request, queryset=best_runs,
+		template_name='race/ranks_map.html', extra_context=extra_context)
+
 def map_list(request):
 	maps = Map.objects.all().select_related()
 	return object_list(request, queryset=maps)
@@ -71,7 +87,12 @@ def map_list(request):
 @render_to('race/map_detail.html')
 def map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
-	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time')[:5]
+	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time').extra(
+		select = {'position':
+			"SELECT COUNT(*)+1 FROM race_bestrun s "
+			"WHERE s.time < race_bestrun.time"
+		},
+	)[:5]
 	latest_runs = Run.objects.filter(map=map_obj).order_by('-created_at')[:5]
 	if request.user.is_authenticated():
 		user_runs = Run.objects.filter(user=request.user).order_by('-created_at')[:5]
