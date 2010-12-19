@@ -193,6 +193,13 @@ table {
 		padding: 10px 20px;
 	}
 
+	#messages div:before {
+		font-size: 32px;
+		line-height: 15px;
+		text-align: center;
+		float: left;
+	}
+
 	#messages p {
 		color: #fff;
 		margin: 0;
@@ -211,9 +218,14 @@ table {
 		border-color: #c54747;
 	}
 
-		#messages .error p {
-			background: url(/media/images/error.png) center left no-repeat;
-		}
+	#messages .error:before {
+		color: #ab3b00;
+		content: '✕';
+		text-shadow: 1px 1px 1px #f09859;
+		-moz-text-shadow: 1px 1px 1px #f09859;
+		-webkit-text-shadow: 1px 1px 1px #f09859;
+		margin-left: 1px;
+	}
 
 	#messages .info {
 		background-color: #5673aa;
@@ -223,9 +235,14 @@ table {
 		border-color: #5673aa;
 	}
 
-		#messages .info p {
-			background: url(/media/images/info.png) center left no-repeat;
-		}
+	#messages .info:before {
+		color: #435a85;
+		content: 'ⓘ';
+		text-shadow: 1px 1px 1px #c0d4f0;
+		-moz-text-shadow: 1px 1px 1px #c0d4f0;
+		-webkit-text-shadow: 1px 1px 1px #c0d4f0;
+		margin-left: -2px;
+	}
 
 	#messages .warning {
 		background-color: #f19b07;
@@ -235,14 +252,16 @@ table {
 		border-color: #f19b07;
 	}
 
-		#messages .warning p {
-			color: #000;
-			background: url(/media/images/warning.png) center left no-repeat;
-		}
+	#messages .warning:before {
+		color: #b77b00;
+		content: '⚠';
+		text-shadow: 1px 1px 1px #ffefc4;
+		-moz-text-shadow: 1px 1px 1px #ffefc4;
+		-webkit-text-shadow: 1px 1px 1px #ffefc4;
+	}
 
-		#messages .warning a {
-			color: #333;
-		}
+		#messages .warning p { color: #000; }
+		#messages .warning a { color: #333; }
 
 	#messages .success {
 		background-color: #7ca629;
@@ -252,9 +271,14 @@ table {
 		border-color: #7ca629;
 	}
 
-		#messages .success p {
-			background: url(/media/images/tick.png) center left no-repeat;
-		}
+	#messages .success:before {
+		color: #5a781e;
+		content: '✓';
+		text-shadow: 1px 1px 1px #a8db2c;
+		-moz-text-shadow: 1px 1px 1px #a8db2c;
+		-webkit-text-shadow: 1px 1px 1px #a8db2c;
+		margin-left: 4px;
+	}
 
 #blog {}
 
