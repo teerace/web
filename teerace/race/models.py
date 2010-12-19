@@ -149,7 +149,9 @@ class BestRun(models.Model):
 	# UGLY hack to make rank rebuilding relatively easy
 	time = models.FloatField()
 
-	SCORING = [20, 14, 10, 8, 6, 5, 4, 3, 2, 1]
+	#SCORING = (20, 14, 10, 8, 6, 5, 4, 3, 2, 1)
+	#          40  34  31    27, 26...3, 2, 1
+	SCORING = (40, 34, 31) + tuple(range(27, 0, -1))
 	points = models.IntegerField(default=0)
 
 	class Meta:
