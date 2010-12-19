@@ -10,7 +10,7 @@ def current(request, pattern):
 			return ' id="current"'
 		else:
 			return ''
-	if re.search(pattern, request.path):
+	if request.path.startswith(pattern):
 		return ' id="current"'
 	return ''
 
