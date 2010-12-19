@@ -2,6 +2,7 @@ from zlib import crc32
 from django.db import models
 from django.db.models import Avg, Sum
 from django.contrib.auth.models import User
+from race.validators import is_map_file
 from lib.file_storage import OverwriteStorage
 
 
@@ -23,7 +24,7 @@ class Map(models.Model):
 		del filename
 		return 'uploads/maps/{0}_{1}.map'.format(self.name, self.crc)
 	map_file = models.FileField(storage=OverwriteStorage(),
-		upload_to=map_filename)
+		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8)
 
 	@property
