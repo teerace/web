@@ -2,6 +2,9 @@
 {% comment %}
 context variables:
 	map
+	best_runs
+	latest_runs
+	user_runs
 {% endcomment %}
 {% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -79,7 +82,7 @@ context variables:
 		{% if best_runs %}
 		<tfoot>
 			<tr>
-				<td colspan="6"><a href="{% url ranks_map map.id %}">See whole rank &raquo;</a></td>
+				<td colspan="6"><a href="{% url ranks_map_detail map.id %}">See whole rank &raquo;</a></td>
 			</tr>
 		</tfoot>
 		{% endif %}
