@@ -50,11 +50,11 @@ def register(request):
 		return redirect(reverse('home'))
 
 	next_uri = request.REQUEST.get('next', get_config('FIRST_LOGIN_REDIRECT_URL',
-		reverse('accounts.views.first_login')))
+		reverse('accounts.views.first_steps')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):
 		next_uri = get_config('FIRST_LOGIN_REDIRECT_URL',
-			reverse('accounts.views.first_login'))
+			reverse('accounts.views.first_steps'))
 
 	register_form = RegisterForm()
 
@@ -71,8 +71,8 @@ def register(request):
 	}
 
 
-@render_to('accounts/first_login.html')
-def first_login(request):
+@render_to('accounts/first_steps.html')
+def first_steps(request):
 	return {
 
 	}

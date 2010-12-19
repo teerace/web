@@ -31,6 +31,6 @@ def diff_color(diff):
 	elif diff < 0.0:
 		style = 'green'
 	else:
-		return '{0:.2f}'.format(diff)
+		return '-'
 	return '<span class="{0}">{1:+.2f}</span>'.format(style, diff)
 	

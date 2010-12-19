@@ -1,4 +1,5 @@
 import datetime
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django.views.generic.simple import direct_to_template
@@ -64,7 +65,14 @@ def ranks(request):
 		extra_context=extra_context)
 
 
-def ranks_map(request, map_id):
+def ranks_map_list(request):
+	maps = Map.objects.all().select_related()
+	return object_list(request, queryset=maps,
+		template_name='race/ranks_map_list.html')
+
+
+# actually, it's a list of records of a particular map
+def ranks_map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
 	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time').extra(
 		select = {'position':
@@ -72,12 +80,12 @@ def ranks_map(request, map_id):
 			"WHERE s.time < race_bestrun.time"
 		},
 	)
-	print best_runs.query
 	extra_context = {
 		'map': map_obj,
 	}
 	return object_list(request, queryset=best_runs,
-		template_name='race/ranks_map.html', extra_context=extra_context)
+		template_name='race/ranks_map_detail.html', extra_context=extra_context)
+
 
 def map_list(request):
 	maps = Map.objects.all().select_related()
@@ -104,3 +112,10 @@ def map_detail(request, map_id):
 		'latest_runs': latest_runs,
 		'user_runs': user_runs,
 	}
+
+
+@login_required
+def user_activity(request):
+	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
+	return object_list(request, queryset=latest_runs,
+		template_name='race/user_activity.html')

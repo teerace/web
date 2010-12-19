@@ -1,16 +1,22 @@
-{% extends "race/ranks_base.html" %}{% load human_duration %}{% load humanize %}
+{% extends "race/ranks_base.html" %}{% load human_duration %}{% load race_diff %}{% load humanize %}
 {% comment %}
 context variables:
-	object_list (it's made of UserProfile objects, be aware!)
+	map
+	object_list (it's made of BestRun objects, be aware!)
 	is_paginated
 	paginator
 	page_obj
-	total_playtime
-	total_runs
 {% endcomment %}
+{% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb "Map list" 'ranks_map_list' %}
+	{% add_crumb map.name %}
+{% endblock %}
 {% block content %}
 	<div class="box full">
-		<div class="header">Rank</div>
+		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
 		{% if is_paginated %}
 			<div class="pagination">
 				<span class="step-links">
@@ -33,16 +39,18 @@ context variables:
 				<th>Rank</th>
 				<th>Name</th>
 				<th>Points</th>
-				<th>Completions</th>
-				<th>Total playtime</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Diff</th>
 			</tr>
-			{% for profile in object_list %}
+			{% for best_run in object_list %}
 			<tr>
-				<td>{{ profile.position|ordinal }}</td>
-				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
-				<td>{{ profile.points }}</td>
-				<td>{{ profile.completions }}</td>
-				<td>{{ profile.playtime|default_if_none:0|sectodur }}</td>
+				<td>{{ best_run.position|ordinal }}</td>
+				<td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
+				<td>{{ best_run.points }}</td>
+				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
+				<td>{{ best_run.run.time|floatformat:2 }}</td>
+				<td>{% race_diff best_run.run map.best_score "-" %}</td>
 			</tr>
 			{% empty %}
 			<tr>
