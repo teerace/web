@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from race.models import Run, BestRun
 from celery.decorators import task
 
@@ -21,8 +22,12 @@ def redo_ranks(run_id):
 	c = 0
 	for run in ranked:
 		run.points = BestRun.SCORING[c]
-		print run.points
 		run.save()
+		# FIXME it's 3 AM, sorry for that
+		run.user.profile.points = BestRun.objects.filter(user=run.user).aggregate(
+			Sum('points')
+		)['points__sum']
+		run.user.profile.save()
 		c += 1
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0

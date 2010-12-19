@@ -46,6 +46,18 @@ def homepage(request):
 	return direct_to_template(request, template, extra_context)
 
 
+def ranks(request):
+	users = UserProfile.objects.filter(points__gt=0).order_by('-points')
+	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	total_runs = Run.objects.count()
+	extra_context = {
+		'total_playtime': total_playtime,
+		'total_runs': total_runs,
+	}
+	return object_list(request, queryset=users, template_name='race/ranks.html',
+		extra_context=extra_context)
+
+
 def map_list(request):
 	maps = Map.objects.all().select_related()
 	return object_list(request, queryset=maps)

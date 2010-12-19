@@ -1,14 +1,22 @@
-{% extends "race/map_base.html" %}{% load human_duration %}
+{% extends "base.html" %}{% load human_duration %}
 {% comment %}
 context variables:
-	object_list
+	object_list (it's made of UserProfile objects, be aware!)
 	is_paginated
 	paginator
 	page_obj
+	total_playtime
+	total_runs
 {% endcomment %}
+{% block title %}rank - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Ranks' 'ranks' %}
+{% endblock %}
 {% block content %}
 	<div class="box full">
-		<div class="header">Maps</div>
+		<div class="header">Rank</div>
 		{% if is_paginated %}
 			<div class="pagination">
 				<span class="step-links">
@@ -28,31 +36,29 @@ context variables:
 		{% endif %}
 		<table class="players">
 			<tr>
+				<th>Rank</th>
 				<th>Name</th>
-				<th>Date added</th>
+				<th>Points</th>
 				<th>Completions</th>
 				<th>Total playtime</th>
-				<th>Avg time</th>
-				<th>Record</th>
 			</tr>
-			{% for map in object_list %}
+			{% for profile in object_list %}
 			<tr>
-				<td><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></td>
-				<td>{{ map.created_at }}</td>
-				<td>{{ map.run_count }}</td>
-				<td>{{ map.total_playtime|default_if_none:0|sectodur }}</td>
-				<td>{{ map.average_score|floatformat:2|default:"-" }}</td>
-				<td>{% if map.best_score %}<a href="{{ map.best_score.get_absolute_url }}">{{ map.best_score.time }}</a> by {{ map.best_score.user }}{% else %}-{% endif %}</td>
+				<td>{#{{ page_obj.number|default:1|FIXME }}#}</td>
+				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
+				<td>{{ profile.points }}</td>
+				<td>{{ profile.completions }}</td>
+				<td>{{ profile.playtime|default_if_none:0|sectodur }}</td>
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="6">No maps.</td>
+				<td colspan="6">No ranked players.</td>
 			</tr>
 			{% endfor %}
 		{% if object_list %}
 		<tfoot>
 			<tr>
-				<td colspan="6">{{ object_list.count }} map{{ object_list.count|pluralize }}</td>
+				<td colspan="6">{{ object_list.count }} ranked player{{ object_list.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		{% endif %}

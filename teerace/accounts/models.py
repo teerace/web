@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 from django.db.models.signals import post_save
-from race.models import Map, BestRun
+from race.models import Map, Run, BestRun
 
 
 class UserProfile(models.Model):
@@ -10,12 +10,17 @@ class UserProfile(models.Model):
 	registration_ip = models.IPAddressField(blank=True, null=True)
 	last_activity_at = models.DateTimeField(auto_now_add=True)
 	last_activity_ip = models.IPAddressField(blank=True, null=True)
+	points = models.IntegerField(default=0)
 
 	@property
-	def points(self):
-		return BestRun.objects.filter(user=self).aggregate(
-			Sum('points')
-		)['points__sum']
+	def completions(self):
+		return Run.objects.filter(user=self.user).count()
+
+	@property
+	def playtime(self):
+		return Run.objects.filter(user=self.user).aggregate(
+			Sum('time')
+		)['time__sum']
 
 	def best_score(self, map_id):
 		try:
@@ -29,6 +34,9 @@ class UserProfile(models.Model):
 
 	def __unicode__(self):
 		return u"{0}'s profile".format(self.user.username)
+
+	def get_absolute_url(self):
+		return self.user.get_absolute_url()
 
 
 def post_user_save(instance, **kwargs):
