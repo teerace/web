@@ -26,8 +26,9 @@
 			{% url blog as url_blog %}
 			{% url maps as url_maps %}
 			{% url ranks as url_ranks %}
+			{% url user_activity as url_activity %}{# hack #}
 			<ul>
-				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li><a href="">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li><a href="">Awards</a></li><li{% current request url_ranks %}><a href="{{ url_ranks }}">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
+				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li><a href="">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li><a href="">Awards</a></li><li{% current request url_ranks %}{% current request url_activity %}><a href="{{ url_ranks }}">Ranks</a></li><li><a href="">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
 			</ul>
 			<div id="submenu" class="full">
 				{% comment %}

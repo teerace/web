@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_list
-from annoying.functions import get_config
-from annoying.decorators import render_to
 from accounts.forms import LoginForm, RegisterForm
 from accounts.models import UserProfile
+from annoying.functions import get_config
+from annoying.decorators import render_to
 
 
 @render_to('accounts/login.html')
@@ -87,4 +87,4 @@ def welcome(request):
 
 def userlist(request):
 	profiles = UserProfile.objects.all().select_related()
-	return object_list(request, queryset=profiles)
+	return object_list(request, queryset=profiles, paginate_by=get_config('ITEMS_PER_PAGE', 20))

@@ -60,7 +60,7 @@ context variables:
 		{% if object_list %}
 		<tfoot>
 			<tr>
-				<td colspan="6">{{ object_list.count }} ranked player{{ object_list.count|pluralize }}</td>
+				<td colspan="6">{{ paginator.count }} ranked player{{ paginator.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		{% endif %}

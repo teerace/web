@@ -63,7 +63,7 @@ RECAPTCHA_OPTIONS = {}
 RECAPTCHA_VALIDATION_OVERRIDE = False
 
 # Paginator
-GENERIC_ITEMS_PER_PAGE = 25
+ITEMS_PER_PAGE = 20
 PAGINATION_INVALID_PAGE_RAISES_404 = True
 
 # Absolute path to the directory that holds media.

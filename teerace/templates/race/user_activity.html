@@ -6,15 +6,20 @@ context variables:
 	paginator
 	page_obj
 {% endcomment %}
-{% block title %}your activity - {{ block.super }}{% endblock title %}
+{% block title %}my activity - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}
-	{% add_crumb "Your activity" 'user_activity' %}
+	{% add_crumb "My activity" 'user_activity' %}
 {% endblock %}
+{% block submenu %}
+	<ul class="left">
+		<li><a href="{% url ranks %}">Global</a></li><li><a href="{% url ranks_map_list %}">Per-map</a></li><li><a href="{% url user_activity %}">My activity</a></li>
+	</ul>
+{% endblock submenu %}
 {% block content %}
 	<div class="box full">
-		<div class="header">Your activity</div>
+		<div class="header">My activity</div>
 		{% if is_paginated %}
 			<div class="pagination">
 				<span class="step-links">
@@ -61,7 +66,7 @@ context variables:
 		{% if object_list %}
 		<tfoot>
 			<tr>
-				<td colspan="6">{{ object_list.count }} run{{ object_list.count|pluralize }}</td>
+				<td colspan="6">{{ paginator.count }} run{{ paginator.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		{% endif %}

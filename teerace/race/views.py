@@ -8,6 +8,7 @@ from accounts.models import UserProfile
 from blog.models import Entry
 from race.models import Map, Run, BestRun
 from annoying.decorators import render_to
+from annoying.functions import get_config
 
 
 def homepage(request):
@@ -67,7 +68,7 @@ def ranks(request):
 
 def ranks_map_list(request):
 	maps = Map.objects.all().select_related()
-	return object_list(request, queryset=maps,
+	return object_list(request, queryset=maps, paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/ranks_map_list.html')
 
 
@@ -83,13 +84,13 @@ def ranks_map_detail(request, map_id):
 	extra_context = {
 		'map': map_obj,
 	}
-	return object_list(request, queryset=best_runs,
+	return object_list(request, queryset=best_runs, paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/ranks_map_detail.html', extra_context=extra_context)
 
 
 def map_list(request):
 	maps = Map.objects.all().select_related()
-	return object_list(request, queryset=maps)
+	return object_list(request, queryset=maps, paginate_by=get_config('ITEMS_PER_PAGE', 20))
 
 
 @render_to('race/map_detail.html')
@@ -117,5 +118,5 @@ def map_detail(request, map_id):
 @login_required
 def user_activity(request):
 	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
-	return object_list(request, queryset=latest_runs,
+	return object_list(request, queryset=latest_runs, paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/user_activity.html')

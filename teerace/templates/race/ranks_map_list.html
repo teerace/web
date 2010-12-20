@@ -58,7 +58,7 @@ context variables:
 		{% if object_list %}
 		<tfoot>
 			<tr>
-				<td colspan="6">{{ object_list.count }} map{{ object_list.count|pluralize }}</td>
+				<td colspan="6">{{ paginator.count }} map{{ paginator.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		{% endif %}

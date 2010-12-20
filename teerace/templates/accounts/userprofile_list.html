@@ -49,7 +49,7 @@ context variables:
 			{% endfor %}
 		<tfoot>
 			<tr>
-				<td colspan="2">{{ object_list.count }} user{{ object_list.count|pluralize }}</td>
+				<td colspan="2">{{ paginator.count }} user{{ paginator.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		</table>
