@@ -33,7 +33,8 @@ class UserProfile(models.Model):
 		get_latest_by = 'user__created_at'
 
 	def __unicode__(self):
-		return u"{0}'s profile".format(self.user.username)
+		possessive = '' if self.user.username.endswith('s') else 's'
+		return u"{0}'{1} profile".format(self.user.username, possessive)
 
 	def get_absolute_url(self):
 		return self.user.get_absolute_url()
