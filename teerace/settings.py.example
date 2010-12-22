@@ -128,10 +128,10 @@ AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 # Message storage backend
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
-FIRST_LOGIN_REDIRECT_URL = '/user/tour/'
-LOGIN_REDIRECT_URL = '/user/welcome/'
-LOGIN_URL = '/user/login/'
-LOGOUT_URL = '/user/logout/'
+FIRST_LOGIN_REDIRECT_URL = '/getstarted/'
+LOGIN_REDIRECT_URL = '/user/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 
 ABSOLUTE_URL_OVERRIDES = {
 	'auth.user': lambda u: "/profile/%s/" % u.id,
