@@ -1,12 +1,13 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('accounts.views',
-	(r'^$', 'welcome'),
+	(r'^user/$', 'welcome'),
 	url(r'^login/$', 'login', name='login'),
 	url(r'^logout/$', 'logout', name='logout'),
 	url(r'^register/$', 'register', name='register'),
-	(r'^list/$', 'userlist'),
+	(r'^users/$', 'userlist'),
 	url(r'^getstarted/$', 'first_steps', name='first_steps'),
+	url(r'^profile/(?P<user_id>\d+)/$', 'profile', name='profile'),
 ) + patterns('django.contrib.auth.views',
 	(r'^password_reset/$', 'password_reset', {'template_name':
 		'accounts/password_reset.html',

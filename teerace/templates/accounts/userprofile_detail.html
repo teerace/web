@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	object
+{% endcomment %}
+{% block title %}{{ object.user.username }} - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb object 'profile' object.id %}
+{% endblock %}
+{% block content %}
+{% endblock %}
