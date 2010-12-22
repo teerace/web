@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.views.generic.list_detail import object_list
+from django.views.generic.list_detail import object_detail, object_list
 from accounts.forms import LoginForm, RegisterForm
 from accounts.models import UserProfile
 from annoying.functions import get_config
