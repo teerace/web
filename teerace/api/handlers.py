@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from brabeion import badges
 from piston.handler import BaseHandler
 from piston.utils import rc, require_extended
 from api.forms import ValidateUserForm
@@ -26,6 +27,7 @@ class RunHandler(BaseHandler):
 	def create(self, request):
 		"""
 		Creates a Run object.
+		Checks for new badges and adds a Celery task to rebuild ranks.
 		"""
 
 		run = Run(
@@ -36,6 +38,7 @@ class RunHandler(BaseHandler):
 			time = request.form.cleaned_data['time'],
 		)
 		run.save()
+		badges.possibly_award_badge("run_finished", user=request.form.user, run=run)
 		tasks.redo_ranks.delay(run.id)
 		return rc.CREATED
 
@@ -48,7 +51,7 @@ class ValidateUserHandler(BaseHandler):
 	using your server private key to generate cipher.
 	
 	Example of password encoding:
-		base64_encode(aes_encrypt('password', PRIVATE_KEY))
+		`base64_encode(aes_encrypt('password', PRIVATE_KEY))`
 	"""
 
 	allowed_methods = ('POST',)
