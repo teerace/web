@@ -87,8 +87,7 @@ def welcome(request):
 
 def profile(request, user_id):
 	profiles = UserProfile.objects.all().select_related()
-	return object_detail(request, queryset=profiles, object_id=user_id,
-		paginate_by=get_config('ITEMS_PER_PAGE', 20))
+	return object_detail(request, queryset=profiles, object_id=user_id)
 	
 
 def userlist(request):
