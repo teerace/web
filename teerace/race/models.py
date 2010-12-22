@@ -199,3 +199,6 @@ class Server(models.Model):
 
 	def regenerate_private_key(self):
 		return self._regenerate_key('private_key')
+
+# DIRTY is this even allowed?
+from race import badges
