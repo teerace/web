@@ -42,6 +42,9 @@ class UserProfile(models.Model):
 
 def post_user_save(instance, **kwargs):
 	if kwargs['created']:
+		# very special case
+		if instance.id == 0:
+			return
 		profile = UserProfile(user=instance)
 		profile.save()
 

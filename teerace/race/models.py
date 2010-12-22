@@ -136,7 +136,9 @@ class Run(models.Model):
 		create = True if not self.pk else False
 		if create:
 			self.set_personal_record()
-			self.set_map_record()
+			# we don't want anonymous users to own map records
+			if self.user.id != 0:
+				self.set_map_record()
 		super(Run, self).save(*args, **kwargs)
 		if create and self.is_personal_best:
 			self.promote_to_best()

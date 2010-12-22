@@ -49,7 +49,9 @@ def homepage(request):
 
 
 def ranks(request):
-	users = UserProfile.objects.filter(points__gt=0).extra(
+	# exclude anonymous from rank
+	# (that user shouldn't have any points anyway, just a precaution)
+	users = UserProfile.objects.filter(points__gt=0).exclude(pk=0).extra(
 		select = {'position':
 			"SELECT COUNT(*)+1 FROM accounts_userprofile s "
 			"WHERE s.points > accounts_userprofile.points"
@@ -78,7 +80,7 @@ def ranks_map_detail(request, map_id):
 	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time').extra(
 		select = {'position':
 			"SELECT COUNT(*)+1 FROM race_bestrun s "
-			"WHERE s.time < race_bestrun.time"
+			"WHERE s.map_id = race_bestrun.map_id AND s.time < race_bestrun.time"
 		},
 	)
 	extra_context = {
@@ -99,7 +101,7 @@ def map_detail(request, map_id):
 	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time').extra(
 		select = {'position':
 			"SELECT COUNT(*)+1 FROM race_bestrun s "
-			"WHERE s.time < race_bestrun.time"
+			"WHERE s.map_id = race_bestrun.map_id AND s.time < race_bestrun.time"
 		},
 	)[:5]
 	latest_runs = Run.objects.filter(map=map_obj).order_by('-created_at')[:5]

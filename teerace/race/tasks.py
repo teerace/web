@@ -13,7 +13,9 @@ def redo_ranks(run_id):
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
-	ranked = runs.order_by('run__time')[:ranked_count]
+	# exclude anonymous user from scoring
+	ranked = runs.exclude(user__pk=0)
+	ranked = ranked.order_by('run__time')[:ranked_count]
 	try:
 		if user_run.time >= ranked[ranked_count-1].run.time:
 			return
