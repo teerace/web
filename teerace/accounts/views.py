@@ -88,8 +88,8 @@ def welcome(request):
 def profile(request, user_id):
 	profiles = UserProfile.objects.all().select_related()
 	return object_detail(request, queryset=profiles, object_id=user_id)
-	
 
 def userlist(request):
-	profiles = UserProfile.objects.all().select_related()
+	# exclude anonymous
+	profiles = UserProfile.objects.exclude(id=0).select_related()
 	return object_list(request, queryset=profiles, paginate_by=get_config('ITEMS_PER_PAGE', 20))
