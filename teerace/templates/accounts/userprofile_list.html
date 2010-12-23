@@ -39,7 +39,7 @@ context variables:
 			</tr>
 			{% for profile in object_list %}
 			<tr>
-				<td>{{ profile.user }}</td>
+				<td><a href="{{ profile.user.get_absolute_url }}">{{ profile.user }}</a></td>
 				<td>{{ profile.user.date_joined }}</td>
 			</tr>
 			{% empty %}
