@@ -13,7 +13,7 @@ context variables:
 			{% if user.is_authenticated %}
 			<div class="box full">
 				<div class="header">Your activity</div>
-				<table class="players">
+				<table>
 					<tr class="no-border">
 						<th rowspan="2">Date</th>
 						<th rowspan="2">Map</th>
@@ -78,7 +78,7 @@ context variables:
 
 			<div class="box left">
 				<div class="header">Statistics overview</div>
-				<table class="players">
+				<table>
 					<tr>
 						<td class="label">Registered users:</td>
 						<td class="content">{{ users|length }}{% if users %} (latest: {% with users|last as last_profile %}{{ last_profile.user.username }}{% endwith %}){% endif %}</td>

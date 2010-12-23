@@ -1,13 +1,91 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load race_diff %}
 {% comment %}
 context variables:
 	object
 {% endcomment %}
-{% block title %}{{ object.user.username }} - {{ block.super }}{% endblock title %}
+{% block title %}{{ profile.user.username }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}
-	{% add_crumb object 'profile' object.id %}
+	{% add_crumb profile 'profile' profile.id %}
 {% endblock %}
 {% block content %}
-{% endblock %}
+	{% if user.is_authenticated %}
+	<div class="box full">
+		<div class="header">{{ profile }}</div>
+		<table>
+			<tbody>
+				<tr>
+					<td class="label">First name:</td>
+					<td class="content">{{ profile.user.first_name }}</td>
+				</tr>
+				<tr>
+					<td class="label">Last name:</td>
+					<td class="content">{{ profile.user.last_name }}</td>
+				</tr>
+				<tr>
+					<td class="label">Location:</td>
+					<td class="content"></td>
+				</tr>
+				<tr>
+					<td class="label">Website:</td>
+					<td class="content"></td>
+				</tr>
+				<tr>
+					<td class="label">E-mail:</td>
+					<td class="content">{{ profile.user.email }}</td>
+				</tr>
+				<tr>
+					<td class="label">Total playtime:</td>
+					<td class="content">{{ total_playtime }} secs</td>
+				</tr>
+				<tr>
+					<td class="label">Date joined:</td>
+					<td class="content">{{ profile.user.date_joined }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="box full">
+		<div class="header">{{ profile.user.username }}'s activity</div>
+		<table>
+			<tr class="no-border">
+				<th rowspan="2">Date</th>
+				<th rowspan="2">Map</th>
+				<th rowspan="2">Time</th>
+				<th class="center" colspan="2">Diff</th>
+				<th rowspan="2"></th>
+			</tr>
+			<tr>
+				<th class="center">PB</th>
+				<th class="center">WR</th>
+			</tr>
+			{% for run in user_runs %}
+			<tr>
+				<td><span title="{{ run.created_at }}">{{ run.created_at|timesince }} ago</span></td>
+				<td>{{ run.map }}</td>
+				<td>{{ run.time|floatformat:2 }}</td>
+				<td class="center">{% diff_color run.diff_from_personal_best %}</td>
+				<td class="center">{% race_diff run run.map.best_score %}</td>
+				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan="5">Hey! He/she hasn't finished any run yet!</td>
+			</tr>
+			{% endfor %}
+<!--
+			<tfoot>
+				<td colspan="5"><a href="{% url user_activity %}">More &raquo;</a></td>
+			</tfoot>
+-->
+		</table>
+	</div>
+	{% else %}
+<!--
+	FIXME: 401?
+-->
+	{% endif %}
+{% endblock content %}
+

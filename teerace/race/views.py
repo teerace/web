@@ -11,6 +11,7 @@ from annoying.decorators import render_to
 from annoying.functions import get_config
 
 
+@render_to('home.html')
 def homepage(request):
 	try:
 		latest_entry = Entry.objects.select_related().latest()
@@ -34,8 +35,7 @@ def homepage(request):
 
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
 
-	template = 'home.html'
-	extra_context = {
+	return {
 		'latest_entry': latest_entry,
 		'users': list(UserProfile.objects.select_related()),
 		'maps': list(Map.objects.all()),
@@ -45,7 +45,6 @@ def homepage(request):
 		'runs_yesterday': runs_yesterday,
 		'total_playtime': total_playtime,
 	}
-	return direct_to_template(request, template, extra_context)
 
 
 def ranks(request):

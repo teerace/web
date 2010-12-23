@@ -1,11 +1,13 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.db.models import Sum
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_detail, object_list
 from accounts.forms import LoginForm, RegisterForm
 from accounts.models import UserProfile
+from race.models import Run
 from annoying.functions import get_config
 from annoying.decorators import render_to
 
@@ -84,10 +86,17 @@ def welcome(request):
 
 	}
 
-
+@render_to('accounts/userprofile_detail.html')
 def profile(request, user_id):
-	profiles = UserProfile.objects.all().select_related()
-	return object_detail(request, queryset=profiles, object_id=user_id)
+	profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
+	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
+	total_playtime = Run.objects.filter(user=user_id).aggregate(Sum('time'))['time__sum']
+
+	return {
+		'profile': profile,
+		'user_runs': user_runs,
+		'total_playtime': total_playtime,
+	}
 
 def userlist(request):
 	# exclude anonymous

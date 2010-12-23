@@ -15,7 +15,7 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
-		<div class="left map-detail">
+		<div class="left detail">
 			<table>
 				<tr>
 					<td class="label">Author</td>
@@ -50,13 +50,13 @@ context variables:
 			<a class="button" href="{{ map.map_file.url }}">Download map</a>&nbsp;({{ map.map_file.size|filesizeformat }})
 		</div>
 
-		<div class="right map-detail no-map-image">
+		<div class="right detail no-map-image">
 			<div>Map screenshot missing</div>
 		</div>
 	</div>
 	<div class="box full">
 		<div class="header">Top 5</div>
-		<table class="players">
+		<table>
 			<tr>
 				<th>#</th>
 				<th>Player</th>
@@ -91,7 +91,7 @@ context variables:
 	{% if latest_runs %}
 	<div class="box full">
 		<div class="header">Recent map completions</div>
-		<table class="players">
+		<table>
 			<tr>
 				<th>Player</th>
 				<th>Date</th>
@@ -114,7 +114,7 @@ context variables:
 	{% if user.is_authenticated %}
 	<div class="box full">
 		<div class="header">Your results</div>
-		<table class="players">
+		<table>
 			<tr>
 				<th>Date</th>
 				<th>Time</th>
