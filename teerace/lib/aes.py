@@ -1,4 +1,5 @@
 from Crypto.Cipher import AES
+from django.core.cache import cache
 import base64
 
 """
@@ -26,8 +27,10 @@ def aes_helper(function, string, key):
 		raise TypeError("Length of key used to generate"
 			" cipher have to match BLOCK_SIZE")
 
-	# TODO add cipher caching
-	cipher = AES.new(key)
+	cipher = cache.get(key)
+	if cipher is None:
+		cipher = AES.new(key)
+		cache.set(key, cipher)
 
 	return function(cipher, string)
 
