@@ -10,7 +10,6 @@ context variables:
 	{% add_crumb profile 'profile' profile.id %}
 {% endblock %}
 {% block content %}
-	{% if user.is_authenticated %}
 	<div class="box full">
 		<div class="header">{{ profile }}</div>
 		<table>
@@ -82,10 +81,5 @@ context variables:
 -->
 		</table>
 	</div>
-	{% else %}
-<!--
-	FIXME: 401?
--->
-	{% endif %}
 {% endblock content %}
 
