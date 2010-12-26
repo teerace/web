@@ -27,10 +27,7 @@ def aes_helper(function, string, key):
 		raise TypeError("Length of key used to generate"
 			" cipher have to match BLOCK_SIZE")
 
-	cipher = cache.get(key)
-	if cipher is None:
-		cipher = AES.new(key)
-		cache.set(key, cipher)
+	cipher = AES.new(key)
 
 	return function(cipher, string)
 
