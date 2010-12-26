@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_detail, object_list
-from accounts.forms import LoginForm, RegisterForm
+from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
+	SettingsProfileForm)
 from accounts.models import UserProfile
 from race.models import Run
 from annoying.functions import get_config
@@ -86,19 +87,40 @@ def welcome(request):
 
 	}
 
+
 @render_to('accounts/userprofile_detail.html')
 def profile(request, user_id):
 	profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
 	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
-	total_playtime = Run.objects.filter(user=user_id).aggregate(Sum('time'))['time__sum']
 
 	return {
 		'profile': profile,
 		'user_runs': user_runs,
-		'total_playtime': total_playtime,
 	}
+
 
 def userlist(request):
 	# exclude anonymous
 	profiles = UserProfile.objects.exclude(id=0).select_related()
-	return object_list(request, queryset=profiles, paginate_by=get_config('ITEMS_PER_PAGE', 20))
+	return object_list(request, queryset=profiles,
+		paginate_by=get_config('ITEMS_PER_PAGE', 20))
+
+
+@login_required
+@render_to('accounts/settings.html')
+def settings(request):
+	settings_user_form = SettingsUserForm(instance=request.user)
+	settings_profile_form = SettingsProfileForm(instance=request.user.profile)
+	if request.method == 'POST':
+		settings_user_form = SettingsUserForm(request.POST, instance=request.user)
+		settings_profile_form = SettingsProfileForm(request.POST,
+			instance=request.user.profile)
+		if settings_user_form.is_valid() and settings_profile_form.is_valid():
+			settings_user_form.save()
+			settings_profile_form.save()
+			messages.success(request, "Successfully updated your profile and settings.")
+			return redirect(reverse('settings'))
+	return {
+		'settings_user_form': settings_user_form,
+		'settings_profile_form': settings_profile_form,
+	}

@@ -2,8 +2,10 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
+from accounts.models import UserProfile
 from annoying.functions import get_config
 from recaptcha_works.fields import RecaptchaField
+from django_countries import countries
 
 class RegisterForm(forms.Form):
 	username = forms.RegexField(label="Username", regex=r'^\w+$', min_length=2,
@@ -75,3 +77,17 @@ class LoginForm(forms.Form):
 		if not self.user.is_active:
 			raise forms.ValidationError("Your account has been disabled")
 		return self.cleaned_data
+
+
+class SettingsUserForm(forms.ModelForm):
+
+	class Meta:
+		model = User
+		fields = ('first_name', 'last_name')
+
+
+class SettingsProfileForm(forms.ModelForm):
+
+	class Meta:
+		model = UserProfile
+		fields = ('country',)

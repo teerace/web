@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	settings_user_form
+	settings_profile_form
+{% endcomment %}
+{% block title %}settings - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Settings' 'settings' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Settings</div>
+		<form method="post" action="{% url settings %}">
+			{% with settings_user_form as form %}
+				{% include "snippets/form.html" %}
+			{% endwith %}
+			{% with settings_profile_form as form %}
+				{% include "snippets/form.html" %}
+			{% endwith %}
+			<div class="form_field">
+				<input type="submit" value="Submit">
+			</div>
+		</form>
+	</div>
+{% endblock %}

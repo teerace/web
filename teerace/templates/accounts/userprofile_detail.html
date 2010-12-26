@@ -1,7 +1,8 @@
-{% extends "base.html" %}{% load race_diff %}
+{% extends "base.html" %}{% load race_diff %}{% load human_duration %}
 {% comment %}
 context variables:
-	object
+	profile
+	user_runs
 {% endcomment %}
 {% block title %}{{ profile.user.username }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -22,21 +23,15 @@ context variables:
 					<td class="label">Last name:</td>
 					<td class="content">{{ profile.user.last_name }}</td>
 				</tr>
+				{% if profile.country %}
 				<tr>
-					<td class="label">Location:</td>
-					<td class="content"></td>
+					<td class="label">Country:</td>
+					<td class="content"><img src="{{ profile.country.flag }}" /> {{ profile.country.name }}</td>
 				</tr>
-				<tr>
-					<td class="label">Website:</td>
-					<td class="content"></td>
-				</tr>
-				<tr>
-					<td class="label">E-mail:</td>
-					<td class="content">{{ profile.user.email }}</td>
-				</tr>
+				{% endif %}
 				<tr>
 					<td class="label">Total playtime:</td>
-					<td class="content">{{ total_playtime }} secs</td>
+					<td class="content">{{ profile.total_playtime|default:0|sectodur }}</td>
 				</tr>
 				<tr>
 					<td class="label">Date joined:</td>
