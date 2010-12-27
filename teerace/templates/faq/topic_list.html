@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}help - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Help' 'faq-topic-list' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Help topics</div>
+		<ol>
+			{% for topic in topic_list %}
+			<li>
+				<a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a>
+				<ol>
+					{% for question in topic.questions.published %}
+					<li><a href="#{{ question.slug }}">{{ question.question }}</a></h3></li>
+					{% endfor %}
+				</ol>
+			</li>
+			{% endfor %}
+		</ol>
+	</div>
+
+	{% for topic in topic_list %}
+	<div class="box full" id="{{ topic.slug }}">
+		<div class="header">{{ topic.title }} <a href="#{{ topic.slug }}">#</a></div>
+		<ol>
+		{% for question in topic.questions.published %}
+		<li id="{{ question.slug }}">
+		<h3>{{ question.question }}
+		<a href="#{{ question.slug }}">#</a></h3>
+		{{ question.answer|linebreaks|urlize }}
+		</li>
+		{% endfor %}
+		</ol>
+	</div>
+	{% endfor %}
+{% endblock %}

@@ -203,6 +203,7 @@ INSTALLED_APPS = (
 	'lib',
 	'johnny',
 	'crumbs',
+	'faq',
 	'piston',
 	'recaptcha_works',
 	'brabeion',

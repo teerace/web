@@ -15,7 +15,8 @@ urlpatterns = patterns('',
 	(r'^blog/', include('blog.urls')),
 	(r'^', include('accounts.urls')),
 	(r'^', include('race.urls')),
-	url(r'^admin_tools/', include('admin_tools.urls')),
+	(r'^admin_tools/', include('admin_tools.urls')),
+	(r'^help/', include('faq.urls.shallow')),
 	(r'^admin/', include(admin.site.urls)),
 )
 
