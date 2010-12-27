@@ -27,6 +27,8 @@ class Map(models.Model):
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8)
 
+	download_count = models.IntegerField(default=0)
+
 	@property
 	def run_count(self):
 		return Run.objects.filter(map=self).count()

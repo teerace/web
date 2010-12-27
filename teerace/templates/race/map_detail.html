@@ -25,6 +25,10 @@ context variables:
 					<td class="label">Added</td>
 					<td class="content">{{ map.created_at }}</td>
 				</tr>
+				<tr>
+					<td class="label">Map downloads</td>
+					<td class="content">{{ map.download_count }}</td>
+				</tr>
 			{% if map.best_score %}
 				<tr>
 					<td class="label">Best result</td>
@@ -47,7 +51,7 @@ context variables:
 -->
 			</table>
 			<br>
-			<a class="button" href="{{ map.map_file.url }}">Download map</a>&nbsp;({{ map.map_file.size|filesizeformat }})
+			<a class="button" href="{% url map_download map.id %}">Download map</a>&nbsp;({{ map.map_file.size|filesizeformat }})
 		</div>
 
 		<div class="right detail no-map-image">

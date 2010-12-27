@@ -1,7 +1,7 @@
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 from accounts.models import UserProfile
@@ -34,6 +34,9 @@ def homepage(request):
 		datetime.datetime.combine(yesterday, datetime.time.max)))
 
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	total_downloads = Map.objects.aggregate(
+		Sum('download_count')
+	)['download_count__sum']
 
 	return {
 		'latest_entry': latest_entry,
@@ -44,6 +47,7 @@ def homepage(request):
 		'runs_today': runs_today,
 		'runs_yesterday': runs_yesterday,
 		'total_playtime': total_playtime,
+		'total_downloads': total_downloads,
 	}
 
 
@@ -121,3 +125,10 @@ def user_activity(request):
 	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
 	return object_list(request, queryset=latest_runs, paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/user_activity.html')
+
+
+def map_download(request, map_id):
+	map_obj = get_object_or_404(Map, pk=map_id)
+	map_obj.download_count += 1
+	map_obj.save()
+	return redirect(map_obj.map_file.url)

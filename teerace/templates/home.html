@@ -7,6 +7,8 @@ context variables:
 	run_count
 	runs_today
 	runs_yesterday
+	total_playtime
+	total_downloads
 {% endcomment %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
@@ -89,7 +91,7 @@ context variables:
 					</tr>
 					<tr>
 						<td class="label">Downloaded maps:</td>
-						<td class="content">50,936 <span class="info">(web)</span></td>
+						<td class="content">{{ total_downloads }} <span class="info">(web)</span></td>
 					</tr>
 					<tr>
 						<td class="label">Races today:</td>
