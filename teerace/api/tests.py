@@ -30,8 +30,8 @@ class JsonClient(Client):
 class ApiTest(TestCase):
 
 	def test_auth_success(self):
-		# we intentionally want to receive 405 Not Implemented
-		response = self.client.get('/api/1/runs/', {}, **self.extra)
+		# we intentionally want to receive 405 Method Not Allowed
+		response = self.client.put('/api/1/runs/show/1/', {}, **self.extra)
 		self.assertEqual(response.status_code, 405)
 
 	def test_auth_invalid_key(self):

@@ -24,6 +24,15 @@ class UserProfile(models.Model):
 			Sum('time')
 		)['time__sum']
 
+	@property
+	def position(self):
+		return User.objects.exclude(profile__points__lte=0) \
+			.filter(profile__points__gte=self.points) \
+			.order_by('profile__points').count()
+
+	def map_position(self, map_id):
+		raise NotImplemented
+
 	def best_score(self, map_id):
 		try:
 			map_obj = Map.objects.get(pk=map_id)
