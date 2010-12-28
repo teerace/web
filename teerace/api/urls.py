@@ -1,24 +1,41 @@
 from django.conf.urls.defaults import patterns, url
 from piston.doc import documentation_view
-from api.handlers import RunHandler, UserHandler
+from api.handlers import RunHandler, UserHandler, MapHandler, PingHandler
 from lib.piston_utils import APIKeyAuthentication
 from lib.piston_utils import Resource
 
 auth = APIKeyAuthentication(realm="Teerace")
 run_resource = Resource(RunHandler, authentication=auth)
 user_resource = Resource(UserHandler, authentication=auth)
+map_resource = Resource(MapHandler, authentication=auth)
+ping_resource = Resource(PingHandler, authentication=auth)
 
 # 1st revision of API
 urlpatterns = patterns('',
-	url(r'^1/runs/show/(?P<id>\d+)/$', run_resource,
-		name='api_run_manage'),
-	url(r'^1/runs/best/(?P<map_name>\w+)/$', run_resource,
-		name='api_run_manage'),
-	url(r'^1/runs/new/$', run_resource, name='api_run_manage'),
-	url(r'^1/users/validate/$', user_resource,
-		name='api_user_validate'),
-	url(r'^1/users/(?P<id>\d+)/$', user_resource,
-		name='api_user_validate'),
+	url(r'^1/runs/detail/(?P<id>\d+)/$', run_resource, {'action': 'detail'},
+		name='api_runs_detail'),
+	url(r'^1/runs/(?P<action>\w+)/(?P<id>\d+)/$', run_resource,
+		name='api_runs'),
+	url(r'^1/runs/(?P<action>\w+)/(?P<map_name>\w+)/$', run_resource,
+		name='api_runs'),
+	url(r'^1/runs/(?P<action>\w+)/$', run_resource,
+		name='api_runs'),
+	url(r'^1/users/detail/(?P<id>\d+)/$', user_resource, {'action': 'detail'},
+		name='api_users_detail'),
+	url(r'^1/users/(?P<action>\w+)/(?P<id>\d+)/(?P<map_name>\w+)/$', user_resource,
+		name='api_users'),
+	url(r'^1/users/(?P<action>\w+)/(?P<id>\d+)/$', user_resource,
+		name='api_users'),
+	url(r'^1/users/(?P<action>\w+)/$', user_resource,
+		name='api_users'),
+	url(r'^1/maps/detail/(?P<map_name>\w+)/$', map_resource, {'action': 'detail'},
+		name='api_maps_detail'),
+	url(r'^1/maps/(?P<action>\w+)/(?P<map_name>\w+)/$', map_resource,
+		name='api_maps'),
+	url(r'^1/maps/(?P<action>\w+)/$', map_resource,
+		name='api_maps'),
+	url(r'^1/hello/$', ping_resource,
+		name='api_ping'),
 	# automated documentation
 	url(r'^1/docs/$', documentation_view),
 )

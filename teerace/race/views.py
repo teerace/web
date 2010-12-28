@@ -131,4 +131,4 @@ def map_download(request, map_id):
 	map_obj = get_object_or_404(Map, pk=map_id)
 	map_obj.download_count += 1
 	map_obj.save()
-	return redirect(map_obj.map_file.url)
+	return redirect(map_obj.get_download_url())

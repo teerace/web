@@ -48,6 +48,9 @@ class Map(models.Model):
 		except Run.DoesNotExist:
 			return None
 
+	def get_download_url(self):
+		return self.map_file.url
+
 	def __unicode__(self):
 		return self.name
 

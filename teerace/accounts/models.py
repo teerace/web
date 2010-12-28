@@ -31,7 +31,7 @@ class UserProfile(models.Model):
 			.order_by('profile__points').count()
 
 	def map_position(self, map_id):
-		raise NotImplemented
+		raise NotImplementedError
 
 	def best_score(self, map_id):
 		try:
