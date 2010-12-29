@@ -16,16 +16,16 @@ DESC = " ".join(__import__('teerace').__doc__.splitlines()).strip()
 setup(
 	name = "teerace",
 	version = __import__('teerace').get_version().replace(' ', '-'),
-	url = '',
+	url = 'http://code.ksocha.com/teerace/',
 	author = 'Krzysztof Socha',
-	author_email = '',
+	author_email = 'ksocha+teerace@ksocha.com',
 	description = DESC,
 	long_description = read_file('README'),
 	packages = find_packages(),
 	include_package_data = True,
 	install_requires=read_file('requirements.txt'),
 	classifiers = [
-		'License :: OSI Approved :: Apache Software License',
+		'License :: OSI Approved :: BSD License',
 		'Framework :: Django',
 	],
 )
