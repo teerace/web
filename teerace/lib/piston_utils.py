@@ -61,6 +61,7 @@ def validate_mime(v_form, operation='POST'):
 			raise FormValidationError(form)
 	return wrap
 
+
 class rcs_factory(object):
 	CODES = dict(
 		ALL_OK = ('OK', 200),
@@ -81,8 +82,8 @@ class rcs_factory(object):
 			return self.CODES.get(attr)
 		except TypeError:
 			raise AttributeError(attr)
-
 rcs = rcs_factory()
+
 
 def rc(attr, content=None, already_rich=False):
 	(response, status_code) = attr

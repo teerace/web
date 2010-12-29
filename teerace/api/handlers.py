@@ -75,7 +75,8 @@ class RunHandler(BaseHandler):
 			time = request.form.cleaned_data['time'],
 		)
 		run.save()
-		badges.possibly_award_badge("run_finished", user=request.form.user, run=run)
+		badges.possibly_award_badge("run_finished",
+			user=request.form.user, run=run)
 		tasks.redo_ranks.delay(run.id)
 		return rc(rcs.CREATED)
 
