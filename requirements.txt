@@ -16,3 +16,4 @@ feedparser>=4.1
 -e hg+https://bitbucket.org/jmoiron/johnny-cache#egg=johnny-cache
 Markdown>=2.0.3
 pycrypto>=2.3
+-e git+https://github.com/erdbeere/tml.git#egg=tml

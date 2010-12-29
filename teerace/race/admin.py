@@ -1,10 +1,11 @@
 from django.contrib import admin
+from race import tasks
 from race.forms import ServerAdminForm
 from race.models import Map, Server
 
 
 class MapAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'author')
+	list_display = ('id', 'name', 'author', 'crc')
 	list_display_links = ('id', 'name')
 	fields = ('name', 'author', 'map_file')
 
@@ -12,6 +13,7 @@ class MapAdmin(admin.ModelAdmin):
 		if not change:
 			obj.created_by = request.user
 		obj.save()
+		tasks.retrieve_map_details.delay(obj.id)
 
 
 class ServerAdmin(admin.ModelAdmin):

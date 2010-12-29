@@ -1,4 +1,3 @@
-from zlib import crc32
 from django.db import models
 from django.db.models import Avg, Sum
 from django.contrib.auth.models import User
@@ -22,10 +21,21 @@ class Map(models.Model):
 
 	def map_filename(self, filename):
 		del filename
-		return 'uploads/maps/{0}_{1}.map'.format(self.name, self.crc)
+		return 'uploads/maps/{0}.map'.format(self.name)
 	map_file = models.FileField(storage=OverwriteStorage(),
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8)
+
+	has_unhookables = models.BooleanField(default=False)
+	has_deathtiles = models.BooleanField(default=False)
+	shield_count = models.IntegerField(default=0)
+	heart_count = models.IntegerField(default=0)
+	grenade_count = models.IntegerField(default=0)
+	has_image = models.BooleanField(default=False)
+
+	# def get_map_image(self):
+	# 	return "{0}images/maps/full/{1}.png".format(settings.MEDIA_ROOT,
+	# 		self.name) if self.has_image else None
 
 	download_count = models.IntegerField(default=0)
 
@@ -53,12 +63,6 @@ class Map(models.Model):
 
 	def __unicode__(self):
 		return self.name
-
-	def save(self, *args, **kwargs):
-		if self.map_file:
-			self.crc = '{0:x}'.format(crc32(self.map_file.read()) & 0xffffffff)
-			self.map_file.close()
-		super(Map, self).save(*args, **kwargs)
 
 	@models.permalink
 	def get_absolute_url(self):
@@ -206,6 +210,7 @@ class Server(models.Model):
 
 	def regenerate_private_key(self):
 		return self._regenerate_key('private_key')
+
 
 # DIRTY is this even allowed?
 from race import badges
