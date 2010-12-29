@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from brabeion import badges
 from piston.handler import BaseHandler
-from piston.utils import rc, require_extended
+from piston.utils import require_extended
 from accounts.models import UserProfile
 from api.forms import ValidateUserForm
 from race import tasks
 from race.forms import RunForm
 from race.models import Run, Map, BestRun, Server
 from lib.aes import AES
-from lib.piston_utils import validate_mime
+from lib.piston_utils import rc, rcs, validate_mime
 
 
 class RunHandler(BaseHandler):
@@ -33,10 +33,9 @@ class RunHandler(BaseHandler):
 				run = Run.objects.get(pk=kwargs['id'])
 				return run
 			except Run.DoesNotExist:
-				return rc.NOT_FOUND
+				return rc(rcs.NOT_FOUND)
 		# FIXME jsonize output
-		resp = rc.BAD_REQUEST
-		resp.write("'id' parameter missing")
+		resp = rc(rcs.BAD_REQUEST, "'id' parameter missing")
 		return resp
 
 	def _read_best(self, request, *args, **kwargs):
@@ -56,7 +55,7 @@ class RunHandler(BaseHandler):
 		# elif map_name:
 		# 	map_obj = Map.objects.get(name=map_name)
 		# 	return BestRun.objects.filter(map=map_obj)[:10]
-		return rc.BAD_REQUEST
+		return rc(rcs.BAD_REQUEST)
 
 
 	@require_extended
@@ -67,7 +66,7 @@ class RunHandler(BaseHandler):
 		Checks for new badges and adds a Celery task to rebuild ranks.
 		"""
 		if not action == 'new':
-			return rc.BAD_REQUEST
+			return rc(rcs.BAD_REQUEST)
 		run = Run(
 			map = request.form.map,
 			server = request.server,
@@ -78,7 +77,7 @@ class RunHandler(BaseHandler):
 		run.save()
 		badges.possibly_award_badge("run_finished", user=request.form.user, run=run)
 		tasks.redo_ranks.delay(run.id)
-		return "Created"
+		return rc(rcs.CREATED)
 
 
 class UserProfileHandler(BaseHandler):
@@ -112,23 +111,23 @@ class UserHandler(BaseHandler):
 	def _read_detail(self, request, *args, **kwargs):
 		if 'id' in kwargs:
 			return User.objects.get(pk=kwargs['id'])
-		return rc.BAD_REQUEST
+		return rc(rcs.BAD_REQUEST)
 
 	def _read_profile(self, request, *args, **kwargs):
 		if 'id' in kwargs:
 			return UserProfile.objects.get(pk=kwargs['id'])
-		return rc.BAD_REQUEST
+		return rc(rcs.BAD_REQUEST)
 
 	def _read_rank(self, request, *args, **kwargs):
 		if 'id' in kwargs:
 			return UserProfile.objects.get(pk=kwargs['id']).position
-		return rc.BAD_REQUEST
+		return rc(rcs.BAD_REQUEST)
 
 	def _read_map_rank(self, request, *args, **kwargs):
 		if 'id' in kwargs and 'map_name' in kwargs:
 			return UserProfile.objects.get(pk=kwargs['id']) \
 				.map_position(kwargs['map_name'])
-		return rc.BAD_REQUEST
+		return rc(rcs.BAD_REQUEST)
 
 	def read(self, request, action, *args, **kwargs):
 		# without '_read_' prefix
@@ -144,7 +143,7 @@ class UserHandler(BaseHandler):
 		username and password pass the test.
 		"""
 		if not action == 'auth':
-			return rc.BAD_REQUEST
+			return rc(rcs.BAD_REQUEST)
 		key = request.server.private_key
 		try:
 			password = AES(key).decrypt(request.form.cleaned_data['password'])
@@ -175,8 +174,8 @@ class MapHandler(BaseHandler):
 				map_obj = Map.objects.get(pk=kwargs['map_name'])
 				return map_obj
 			except Map.DoesNotExist:
-				return rc.NOT_FOUND
-		return rc.BAD_REQUEST
+				return rc(rcs.NOT_FOUND)
+		return rc(rcs.BAD_REQUEST)
 
 	def read(self, request, action, *args, **kwargs):
 		# without '_read_' prefix

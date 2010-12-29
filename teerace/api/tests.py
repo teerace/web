@@ -3,7 +3,7 @@ from django.test import TestCase as DjangoTestCase
 from django.test.client import Client
 from django.utils import simplejson
 from race.models import Map, Server
-from lib.aes import aes_encrypt
+from lib.aes import AES
 
 class TestCase(DjangoTestCase):
 	fixtures = ['tests.json']
@@ -31,12 +31,12 @@ class ApiTest(TestCase):
 
 	def test_auth_success(self):
 		# we intentionally want to receive 405 Method Not Allowed
-		response = self.client.put('/api/1/runs/show/1/', {}, **self.extra)
+		response = self.client.put('/api/1/runs/detail/1/', {}, **self.extra)
 		self.assertEqual(response.status_code, 405)
 
 	def test_auth_invalid_key(self):
 		self.extra['HTTP_API_AUTH'] = 'invalid'
-		response = self.client.get('/api/1/runs/', {}, **self.extra)
+		response = self.client.get('/api/1/runs/detail/1/', {}, **self.extra)
 		self.assertEqual(response.status_code, 401)
 
 
@@ -50,7 +50,7 @@ class RunTest(TestCase):
 			'time': 14.72,
 			'created_at': "2010-12-10 16:53:20",
 		}
-		response = self.client.post('/api/1/runs/', data, **self.extra)
+		response = self.client.post('/api/1/runs/new/', data, **self.extra)
 		self.assertEqual(response.status_code, 201)
 
 	def test_create_run_wrong_map(self):
@@ -60,7 +60,7 @@ class RunTest(TestCase):
 			'nickname': "[AUS] Lame Badass",
 			'time': 151.02,
 		}
-		response = self.client.post('/api/1/runs/', data, **self.extra)
+		response = self.client.post('/api/1/runs/new/', data, **self.extra)
 		self.assertEqual(response.status_code, 400)
 
 	def test_create_map_wrong_user(self):
@@ -70,7 +70,7 @@ class RunTest(TestCase):
 			'nickname': "[AUS] Lame Badass",
 			'time': 151.02,
 		}
-		response = self.client.post('/api/1/runs/', data, **self.extra)
+		response = self.client.post('/api/1/runs/new/', data, **self.extra)
 		self.assertEqual(response.status_code, 400)
 
 
@@ -81,8 +81,8 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "test123",
 		}
-		data['password'] = aes_encrypt(data['password'], self.server.private_key)
-		response = self.client.post('/api/1/users/validate/', data, **self.extra)
+		data['password'] = AES(self.server.private_key).encrypt(data['password'])
+		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertTrue(simplejson.loads(response.content))
 
 	def test_validate_user_wrong_password(self):
@@ -90,8 +90,8 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = aes_encrypt(data['password'], self.server.private_key)
-		response = self.client.post('/api/1/users/validate/', data, **self.extra)
+		data['password'] = AES(self.server.private_key).encrypt(data['password'])
+		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
 	def test_validate_user_wrong_username(self):
@@ -99,7 +99,7 @@ class UserTestCase(TestCase):
 			'username': "toastclient", # O NOEZ
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = aes_encrypt(data['password'], self.server.private_key)
-		response = self.client.post('/api/1/users/validate/', data, **self.extra)
+		data['password'] = AES(self.server.private_key).encrypt(data['password'])
+		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
