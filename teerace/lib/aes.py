@@ -1,5 +1,4 @@
 from Crypto.Cipher import AES as Cipher_AES
-from django.core.cache import cache
 import base64
 
 """
@@ -17,7 +16,8 @@ class AES(object):
 	PADDING = '{'
 
 	def __init__(self, key):
-		self.key = key		
+		self.key = key
+		self.cipher = None
 		self._generate_cipher()
 
 	def pad(self, string):

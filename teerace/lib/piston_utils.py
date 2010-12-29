@@ -85,10 +85,10 @@ class rcs_factory(object):
 rcs = rcs_factory()
 
 def rc(attr, content=None, already_rich=False):
-	(r, c) = attr
+	(response, status_code) = attr
 
 	if content is None:
-		content = r
+		content = response
 
 	if not already_rich:
 		content = json.dumps({'message': content})
@@ -114,10 +114,10 @@ def rc(attr, content=None, already_rich=False):
 				self._container = [content]
 				self._is_string = True
 
-			content = property(HttpResponse._get_content, _set_content)
+			content = property(HttpResponse._get_content, self._set_content)
 
 	return HttpResponseWrapper(content,
-		content_type='application/json', status=c)
+		content_type='application/json', status=status_code)
 
 
 class Resource(PistonResource):
