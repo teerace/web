@@ -11,7 +11,7 @@ class MapAdmin(admin.ModelAdmin):
 
 	def save_model(self, request, obj, form, change):
 		if not change:
-			obj.created_by = request.user
+			obj.added_by = request.user
 		obj.save()
 		tasks.retrieve_map_details.delay(obj.id)
 
