@@ -79,7 +79,7 @@ class RunHandler(BaseHandler):
 		badges.possibly_award_badge("run_finished",
 			user=request.form.user, run=run)
 		tasks.redo_ranks.delay(run.id)
-		return rc(rcs.CREATED)
+		return run
 
 
 class UserProfileHandler(BaseHandler):
