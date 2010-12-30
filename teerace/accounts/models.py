@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
@@ -13,6 +14,13 @@ class UserProfile(models.Model):
 	last_activity_ip = models.IPAddressField(blank=True, null=True)
 	country = CountryField(blank=True)
 	points = models.IntegerField(default=0)
+
+	has_skin = models.BooleanField(default=False)
+	skin_name = models.CharField(max_length=40, blank=True)
+	skin_body_color = models.CharField(max_length=7, blank=True)
+	skin_feet_color = models.CharField(max_length=7, blank=True)
+	skin_body_color_raw = models.IntegerField(max_length=8, blank=True, null=True)
+	skin_feet_color_raw = models.IntegerField(max_length=8, blank=True, null=True)
 
 	@property
 	def completions(self):
@@ -36,9 +44,25 @@ class UserProfile(models.Model):
 	def best_score(self, map_id):
 		try:
 			map_obj = Map.objects.get(pk=map_id)
-			return BestRun.objects.get(map=map_obj).run
+			return BestRun.objects.get(map=map_obj, user=self.user).run
 		except (Map.DoesNotExist, BestRun.DoesNotExist):
 			return None
+
+	SKIN_LIST = (
+		'bluekitty', 'bluestripe', 'brownbear', 'cammo',
+		'cammostripes', 'coala', 'default', 'limekitty',
+		'pinky', 'redbopp', 'redstripe', 'saddo', 'toptri',
+		'twinbop', 'twintri', 'warpaint'
+	)
+
+	def get_skin(self):
+		if not self.has_skin:
+			return None
+		return {
+			'url': '{0}images/skins/{1}.png'.format(settings.MEDIA_URL, self.skin_name),
+			'body_color': self.skin_body_color,
+			'feet_color': self.skin_feet_color,
+		}
 
 	class Meta:
 		get_latest_by = 'user__created_at'

@@ -3,12 +3,13 @@ from brabeion import badges
 from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
-from api.forms import ValidateUserForm
+from api.forms import ValidateUserForm, SkinUserForm
 from race import tasks
 from race.forms import RunForm
 from race.models import Run, Map, BestRun, Server
 from lib.aes import AES
 from lib.piston_utils import rc, rcs, validate_mime
+from lib.rgb import rgblong_to_hex
 
 
 class RunHandler(BaseHandler):
@@ -83,7 +84,7 @@ class RunHandler(BaseHandler):
 
 class UserProfileHandler(BaseHandler):
 	allowed_methods = ()
-	fields = ('points', 'country')
+	fields = ('points', 'country', 'get_skin')
 	model = UserProfile
 
 
@@ -98,7 +99,7 @@ class UserHandler(BaseHandler):
 		`base64_encode(AES(PRIVATE_KEY).encrypt(password))`
 	"""
 
-	allowed_methods = ('GET', 'POST')
+	allowed_methods = ('GET', 'POST', 'PUT')
 	fields = ('id', 'username', 'is_superuser', 'is_staff', 'profile')
 	model = User
 
@@ -152,6 +153,31 @@ class UserHandler(BaseHandler):
 		except (TypeError, User.DoesNotExist):
 			return False
 		return user if user.check_password(password) else False
+
+	@validate_mime(SkinUserForm, 'PUT')
+	def _update_skin(self, request, *args, **kwargs):
+		if 'id' in kwargs:
+			try:
+				profile = UserProfile.objects.get(id=kwargs['id'])
+				profile.has_skin = True
+				form = request.form.cleaned_data
+				profile.skin_name = form['skin_name']
+				profile.skin_body_color_raw = form['body_color']
+				profile.skin_body_color = rgblong_to_hex(form['body_color'])
+				profile.skin_feet_color_raw = form['feet_color']
+				profile.skin_feet_color = rgblong_to_hex(form['feet_color'])
+				profile.save()
+				return profile
+			except UserProfile.DoesNotExist:
+				return rc(rcs.BAD_REQUEST)
+		return rc(rcs.BAD_REQUEST)
+
+	@require_extended
+	def update(self, request, action, *args, **kwargs):
+		# without '_update_' prefix
+		allowed_actions = ['skin']
+		if action in allowed_actions:
+			return getattr(self, '_update_' + action)(request, *args, **kwargs)
 
 
 class MapHandler(BaseHandler):
