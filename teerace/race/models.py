@@ -13,7 +13,7 @@ class Map(models.Model):
 	"""Representation of a map played in Teerace"""
 
 	name = models.CharField(max_length=50, unique=True)
-	created_by = models.CharField(max_length=100, blank=True)
+	author = models.CharField(max_length=100, blank=True)
 
 	added_at = models.DateTimeField(auto_now_add=True)
 	added_by = models.ForeignKey(User)
