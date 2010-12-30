@@ -4,9 +4,9 @@
 		"model": "race.map",
 		"fields": {
 			"name": "test",
+			"added_at": "2010-12-13 01:53:28",
+			"added_by": 1,
 			"author": "nobody",
-			"created_at": "2010-12-13 01:53:28",
-			"created_by": 1,
 			"crc": "fd23d879",
 			"map_file": "uploads/maps/test_fd23d879.map"
 		}

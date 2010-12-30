@@ -13,11 +13,10 @@ class Map(models.Model):
 	"""Representation of a map played in Teerace"""
 
 	name = models.CharField(max_length=50, unique=True)
-	author = models.CharField(max_length=100, blank=True)
+	created_by = models.CharField(max_length=100, blank=True)
 
-	# Just a convention. It should be 'added_at/by', though.
-	created_at = models.DateTimeField(auto_now_add=True)
-	created_by = models.ForeignKey(User)
+	added_at = models.DateTimeField(auto_now_add=True)
+	added_by = models.ForeignKey(User)
 
 	def map_filename(self, filename):
 		del filename
