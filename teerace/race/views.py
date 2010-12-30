@@ -13,7 +13,8 @@ from annoying.functions import get_config
 @render_to('home.html')
 def homepage(request):
 	try:
-		latest_entry = Entry.objects.select_related().latest()
+		latest_entry = Entry.objects.exclude(is_published=False) \
+			.select_related().latest()
 	except Entry.DoesNotExist:
 		latest_entry = None
 

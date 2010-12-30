@@ -10,6 +10,9 @@ context variables:
 	total_playtime
 	total_downloads
 {% endcomment %}
+{% block extra_head %}
+	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url blog_feed %}">
+{% endblock extra_head %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
 			{% if user.is_authenticated %}
