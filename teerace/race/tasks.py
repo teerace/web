@@ -9,7 +9,11 @@ from tml.tml import Teemap
 
 @task(rate_limit='10/m', ignore_result=True)
 def redo_ranks(run_id):
-	user_run = Run.objects.get(pk=run_id)
+	logger = redo_ranks.get_logger()
+	try:
+		user_run = Run.objects.get(pk=run_id)
+	except Run.DoesNotExist:
+		logger.error("How is that possible? (Run doesn't exist)")
 	map_obj = user_run.map
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run == user_run:
@@ -38,7 +42,6 @@ def redo_ranks(run_id):
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
-	logger = redo_ranks.get_logger()
 	logger.info("Processed rank for \"{0}\" map.".format(map_obj))
 
 
