@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}about - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'About' 'about' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		Content needed:
+		<ul>
+			<li>Basic info about Teerace and software used</li>
+			<li>List of contributors</li>
+			<li>Team</li>
+		</ul>
+	</div>
+{% endblock content %}
