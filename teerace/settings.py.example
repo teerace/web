@@ -137,6 +137,9 @@ ABSOLUTE_URL_OVERRIDES = {
 	'auth.user': lambda u: "/profile/%s/" % u.id,
 }
 
+GRAVATAR_DEFAULT_IMG = "mm"
+GRAVATAR_SIZE = 16
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
 	'django.template.loaders.filesystem.Loader',
@@ -203,6 +206,7 @@ INSTALLED_APPS = (
 	'lib',
 	'johnny',
 	'crumbs',
+	'threadedcomments',
 	'faq',
 	'piston',
 	'recaptcha_works',
