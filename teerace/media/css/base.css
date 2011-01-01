@@ -307,30 +307,33 @@ td {
 		font-weight: bold;
 	}
 
-	#blog .comment_count, #comments .comment-permalink {
+	#blog .comment-count, #comments .comment-permalink {
 		font-size: 11px;
 		margin-top: -10px;
 		float: right;
 	}
 
-	#blog #comments {
-		padding-top: 30px;
+#comments {
+	padding-top: 30px;
+}
+
+	#comments .comment {
+		overflow: hidden;
+		margin: 10px 0;
 	}
 
-	#blog #comments .odd {
-		background:#ccc;
+	#comments .odd {
+		background: #fbfbfb;
 	}
-	#blog #comments .odd.staff {
+	#comments .odd.staff {
 		background: #cf4800;
 	}
-	#blog #comments .even {
-		background:#eee;
+	#comments .even {
+		background: #f6f6eb;
 	}
-	#blog #comments .even.staff {
+	#comments .even.staff {
 		background: #f07c28;
 	}
-
-
 
 #footer {
 	color: #b7b6a4;
