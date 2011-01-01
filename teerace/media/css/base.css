@@ -297,21 +297,40 @@ td {
 		margin-bottom: 0;
 	}
 
-	#blog .post-line {
+	#blog .post-line, #comments .comment-line {
 		color: #918f61;
 		font-size: 10px;
 		font-style: italic;
 	}
 
-	#blog .poster {
+	#blog .poster, #comments .comment-author {
 		font-weight: bold;
 	}
 
-	#blog .comments {
+	#blog .comment_count, #comments .comment-permalink {
 		font-size: 11px;
 		margin-top: -10px;
 		float: right;
 	}
+
+	#blog #comments {
+		padding-top: 30px;
+	}
+
+	#blog #comments .odd {
+		background:#ccc;
+	}
+	#blog #comments .odd.staff {
+		background: #cf4800;
+	}
+	#blog #comments .even {
+		background:#eee;
+	}
+	#blog #comments .even.staff {
+		background: #f07c28;
+	}
+
+
 
 #footer {
 	color: #b7b6a4;
@@ -381,7 +400,7 @@ td {
 	padding: 20px 0 0 0;
 }
 
-	.form_field input {
+	.form_field input, .form_field select {
 		width: 50%;
 		margin-right: 10px;
 	}

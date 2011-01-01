@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %}
 {% comment %}
 context variables:
-	object_list
+	entry_list
 	is_paginated
 	paginator
 	page_obj
@@ -25,7 +25,7 @@ context variables:
 		</div>
 	{% endif %}
 	<div class="box full" id="blog">
-	{% for entry in object_list %}
+	{% for entry in entry_list %}
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 			<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
 			<p>
@@ -38,7 +38,7 @@ context variables:
 			{% if entry.excerpt_html %}
 			<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
 			{% endif %}
-			<div class="comments"><a href="{{ entry.get_absolute_url }}#comments">({{ entry.comment_count }} comment{{ entry.comment_count|pluralize }})</a></div>
+			<div class="comment_count"><a href="{{ entry.get_absolute_url }}#comments">{{ entry.comment_count }} comment{{ entry.comment_count|pluralize }}</a></div>
 	{% empty %}
 		No entries were found.
 	{% endfor %}

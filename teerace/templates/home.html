@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load human_duration %}{% load race_diff %}
+{% extends "base.html" %}{% load human_duration %}{% load race_diff %}{% load threadedcommentstags %}
 {% comment %}
 context variables:
 	latest_entry
@@ -66,7 +66,7 @@ context variables:
 				<div class="header">Blog</div>
 
 				<h2><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></h2>
-				<div class="post-line">(posted by: <span class="poster">{{ latest_entry.created_by }}</span>) | {{ latest_entry.created_at }}</div>
+				<div class="post-line">{{ latest_entry.created_at }} / <span class="poster">{{ latest_entry.created_by }}</span></div>
 				<p>
 					{% if latest_entry.excerpt_html %}
 						{{ latest_entry.excerpt_html|safe }}
@@ -77,7 +77,8 @@ context variables:
 				{% if latest_entry.excerpt_html %}
 				<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
 				{% endif %}
-				<div class="comments"><a href="{{ latest_entry.get_absolute_url }}#comments">({{ latest_entry.comment_count }} comment{{ latest_entry.comment_count|pluralize }})</a></div>
+				{% get_comment_count for latest_entry as comment_count %}
+				<div class="comment_count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
 			</div>
 			{% endif %}
 

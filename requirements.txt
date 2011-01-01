@@ -11,6 +11,7 @@ django-crumbs>=0.5.0
 -e git+https://github.com/benspaulding/django-faq.git#egg=django-faq
 -e hg+https://bitbucket.org/jespern/django-piston#egg=django-piston
 django-recaptcha-works>=0.3.4
+django-threadedcomments>=0.5.3
 docutils>=0.7
 feedparser>=4.1
 -e hg+https://bitbucket.org/jmoiron/johnny-cache#egg=johnny-cache

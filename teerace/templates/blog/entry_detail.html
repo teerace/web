@@ -1,30 +1,53 @@
-{% extends "blog/base.html" %}
+{% extends "blog/base.html" %}{% load threadedcommentstags %}{% load gravatar %}
 {% comment %}
 context variables:
-	object
+	entry
 {% endcomment %}
-{% block title %}{{ object.title }} - {{ block.super }}{% endblock title %}
+{% block title %}{{ entry.title }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}
-	{% add_crumb object.title 'blog_entry' object.id %}
+	{% add_crumb entry.title 'blog_entry' entry.id %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></div>
-		<div class="post-line">(posted by: <span class="poster">{{ object.created_by }}</span>) | {{ object.created_at }}</div>
+	<div id="blog" class="box full">
+		<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+		<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
 		<p>
-			{% if object.excerpt_html %}
-				{{ object.excerpt_html|safe }}
+			{% if entry.excerpt_html %}
+				{{ entry.excerpt_html|safe }}
 			{% else %}
-				{{ object.content_html|safe }}
+				{{ entry.content_html|safe }}
 			{% endif %}
 		</p>
-		{% if object.excerpt_html %}
-		<a href="{{ object.get_absolute_url }}#read-more">Read more</a>
+		{% if entry.excerpt_html %}
+		<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
 		{% endif %}
-		<div class="comments"><a href="{{ object.get_absolute_url }}#comments">({{ object.comment_count }} comment{{ object.comment_count|pluralize }})</a></div>
+		{% get_comment_count for entry as comment_count %}
 		
-		{# TODO add comments #}
+		<div class="comment_count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / <a href="{{ entry.get_absolute_url }}">#</a></div>
+		<div id="comments">
+			{% get_threaded_comment_tree for entry as tree %}
+			{% for comment in tree %}
+				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
+					<div class="comment-line">
+						<img src="{{ user.email|gravatar }}" alt="Gravatar for {{ user.get_full_name|default:comment.user }}"> <span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span> / <span title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
+					</div>
+					<p>
+						{% auto_transform_markup comment %}
+					</p>
+					<div class="comment-permalink"><a href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+				</div>
+			{% endfor %}
+		</div>
+		<h4>Reply to Original:</h4>
+		<form method="POST" action="{% get_comment_url entry %}">
+			{% get_threaded_comment_form as form %}
+			{% include "snippets/form.html" %}
+			<div class="form_field">
+				<input type="submit" value="Submit comment">
+				<input type="submit" name="preview" value="Preview comment">
+			</div>
+		</form>
 	</div>
 {% endblock %}
