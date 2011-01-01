@@ -24,14 +24,14 @@ context variables:
 		<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
 		{% endif %}
 		{% get_comment_count for entry as comment_count %}
-		
+
 		<div class="comment_count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / <a href="{{ entry.get_absolute_url }}">#</a></div>
 		<div id="comments">
 			{% get_threaded_comment_tree for entry as tree %}
 			{% for comment in tree %}
 				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
 					<div class="comment-line">
-						<img src="{{ user.email|gravatar }}" alt="Gravatar for {{ user.get_full_name|default:comment.user }}"> <span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span> / <span title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
+						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ user.get_full_name|default:comment.user }}"> <span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span> / <span title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
 					</div>
 					<p>
 						{% auto_transform_markup comment %}
