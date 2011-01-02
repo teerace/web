@@ -30,13 +30,19 @@ context variables:
 			{% get_threaded_comment_tree for entry as tree %}
 			{% for comment in tree %}
 				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
+					<div class="comment-permalink"><a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
-						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}"> <span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span> / <span title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
+						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
+						<div class="comment-author-info">
+							<span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
+							<span class="comment-date" title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
+						</div>
 					</div>
-					<p>
-						{% auto_transform_markup comment %}
-					</p>
-					<div class="comment-permalink"><a href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+					<div class="comment-content">
+						<p>
+							{% auto_transform_markup comment %}
+						</p>
+					</div>
 				</div>
 			{% endfor %}
 		</div>

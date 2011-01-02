@@ -38,7 +38,7 @@ context variables:
 			{% if entry.excerpt_html %}
 			<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
 			{% endif %}
-			<div class="comment_count"><a href="{{ entry.get_absolute_url }}#comments">{{ entry.comment_count }} comment{{ entry.comment_count|pluralize }}</a></div>
+			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ entry.comment_count }} comment{{ entry.comment_count|pluralize }}</a></div>
 	{% empty %}
 		No entries were found.
 	{% endfor %}
