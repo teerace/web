@@ -3,6 +3,7 @@ from django.db.models import Avg, Sum
 from django.contrib.auth.models import User
 from race.validators import is_map_file
 from lib.file_storage import OverwriteStorage
+from annoying.functions import get_config
 
 
 def generate_random_key():
@@ -137,7 +138,8 @@ class Run(models.Model):
 			best_run.save()
 
 	def __unicode__(self):
-		return u"{0} - {1} - {2:.2f}s".format(self.map, self.user, self.time)
+		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user, self.time,
+			precision=get_config('RESULT_PRECISION', 3))
 
 	def save(self, *args, **kwargs):
 		# imitate overriding create()

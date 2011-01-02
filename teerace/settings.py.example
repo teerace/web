@@ -137,8 +137,13 @@ ABSOLUTE_URL_OVERRIDES = {
 	'auth.user': lambda u: "/profile/%s/" % u.id,
 }
 
+DEFAULT_MAX_COMMENT_DEPTH = 4
+# hack-ish, 1 = markdown
+DEFAULT_MARKUP = 1
 GRAVATAR_DEFAULT_IMG = "mm"
-GRAVATAR_SIZE = 16
+GRAVATAR_SIZE = 50
+
+RESULT_PRECISION = 3
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

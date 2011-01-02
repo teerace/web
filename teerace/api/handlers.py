@@ -14,7 +14,7 @@ from lib.rgb import rgblong_to_hex
 
 class RunHandler(BaseHandler):
 	allowed_methods = ('GET', 'POST')
-	fields = ('id', 'user', 'map')
+	fields = ('id', 'user', 'map', 'time')
 	model = Run
 
 	@classmethod
@@ -291,14 +291,16 @@ class UserHandler(BaseHandler):
 				profile.save()
 				return profile
 			except UserProfile.DoesNotExist:
+				return "a"
 				return rc(rcs.BAD_REQUEST)
+		return "a"
 		return rc(rcs.BAD_REQUEST)
 
 	@require_extended
 	def update(self, request, action, *args, **kwargs):
 		"""
 		URL
-			**/api/1/users/skin/**
+			**/api/1/users/skin/{id}/**
 		Shortdesc
 			Updates user skin settings
 		Arguments

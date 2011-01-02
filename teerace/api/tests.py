@@ -26,6 +26,12 @@ class JsonClient(Client):
 			data = simplejson.dumps(data)
 		return super(JsonClient, self).post(path, data, content_type, follow, **extra)
 
+	def put(self, path, data=None, content_type='application/json',
+		follow=False, **extra):
+		if content_type == 'application/json':
+			data = simplejson.dumps(data)
+		return super(JsonClient, self).put(path, data, content_type, follow, **extra)
+
 
 class ApiTest(TestCase):
 
@@ -51,7 +57,7 @@ class RunTest(TestCase):
 			'created_at': "2010-12-10 16:53:20",
 		}
 		response = self.client.post('/api/1/runs/new/', data, **self.extra)
-		self.assertEqual(response.status_code, 201)
+		self.assertEqual(response.status_code, 200)
 
 	def test_create_run_wrong_map(self):
 		data = {
@@ -102,4 +108,31 @@ class UserTestCase(TestCase):
 		data['password'] = AES(self.server.private_key).encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
+
+	def test_update_skin_success(self):
+		data = {
+			'skin_name': "bluekitty",
+			'body_color': 16777215,
+			'feet_color': 16777215,
+		}
+		response = self.client.put('/api/1/users/skin/1/', data, **self.extra)
+		self.assertEqual(response.status_code, 200)
+
+	def test_update_skin_custom_name_success(self):
+		data = {
+			'skin_name': "coolbanana",
+			'body_color': 16777215,
+			'feet_color': 16777215,
+		}
+		response = self.client.put('/api/1/users/skin/1/', data, **self.extra)
+		self.assertEqual(response.status_code, 200)
+
+	def test_update_skin_too_big_int(self):
+		data = {
+			'skin_name': "bluekitty",
+			'body_color': 16777215,
+			'feet_color': 16777216,
+		}
+		response = self.client.put('/api/1/users/skin/1/', data, **self.extra)
+		self.assertEqual(response.status_code, 400)
 
