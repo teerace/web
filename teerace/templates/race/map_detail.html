@@ -32,12 +32,12 @@ context variables:
 			{% if map.best_score %}
 				<tr>
 					<td class="label">Best result</td>
-					<td class="content">{{ map.best_score.time|floatformat:2 }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
+					<td class="content">{{ map.best_score.time|floatformat:settings.RESULT_PRECISION }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>
-					<td class="content">{% if map.average_score %}{{ map.average_score|floatformat:2 }}{% else %}-{% endif %}</td>
+					<td class="content">{% if map.average_score %}{{ map.average_score|floatformat:settings.RESULT_PRECISION }}{% else %}-{% endif %}</td>
 				</tr>
 				<tr>
 					<td class="label">Map completions</td>
@@ -85,7 +85,7 @@ context variables:
 				<td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
 				<td>{{ best_run.points }}</td>
 				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
-				<td>{{ best_run.run.time|floatformat:2 }}</td>
+				<td>{{ best_run.run.time|floatformat:settings.RESULT_PRECISION }}</td>
 				<td>{% race_diff best_run.run map.best_score "-" %}</td>
 			</tr>
 			{% empty %}
@@ -117,7 +117,7 @@ context variables:
 			<tr>
 				<td>{{ run.user }}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|floatformat:2 }}</td>
+				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
 				<td>{% diff_color run.diff_from_personal_best %}</td>
 				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
@@ -138,7 +138,7 @@ context variables:
 			{% for run in user_runs %}
 			<tr>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|floatformat:2 }}</td>
+				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
 				<td>{% diff_color run.diff_from_personal_best %}</td>
 				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
