@@ -43,6 +43,15 @@ context variables:
 							{% auto_transform_markup comment %}
 						</p>
 					</div>
+					reply:
+					<form method="POST" action="{% get_comment_url entry comment %}">
+						{% get_threaded_comment_form as form %}
+						{% include "snippets/form.html" %}
+						<div class="form_field">
+							<input type="submit" value="Submit comment">
+							<input type="submit" name="preview" value="Preview comment">
+						</div>
+					</form>
 				</div>
 			{% endfor %}
 		</div>

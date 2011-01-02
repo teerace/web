@@ -37,5 +37,5 @@ urlpatterns = patterns('',
 	url(r'^1/hello/$', ping_resource,
 		name='api_ping'),
 	# automated documentation
-	url(r'^1/docs/$', documentation_view),
+	url(r'^1/docs/$', documentation_view, name='api_docs'),
 )

@@ -1,32 +1,19 @@
-{% load markup %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-<html>
-	<head>
-		<title>
-			Piston generated documentation
-		</title>
-		<style type="text/css">
-			body {
-				background: #fffff0;
-				font: 1em "Helvetica Neue", Verdana;
-				padding: 0 0 0 25px;
-			}
-		</style>
-	</head>
-	<body>
+{% extends "base.html" %}{% load markup %}
+{% block title %}api docs - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'API documentation' 'api_docs' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
 		<h1>API Documentation</h1>
 		
 		{% for doc in docs %}
 		
-			<h3>{{ doc.name|cut:"Handler" }}:</h3>
-
+			<div class="header">{{ doc.name|cut:"Handler" }}</div>
 			<p>
 				{{ doc.get_doc|default:""|restructuredtext }}
-			</p>
-			
-			<p>
-				URL: <b>{{ doc.get_resource_uri_template }}</b>
 			</p>
 			
 			<p>
@@ -51,5 +38,5 @@
 			</dl>
 		
 		{% endfor %}
-	</body>
-</html>
+	</div>
+{% endblock content %}
