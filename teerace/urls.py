@@ -11,8 +11,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^$', 'race.views.homepage', name='home'),
-	url(r'^about/', 'django.views.generic.simple.direct_to_template',
-		{'template': 'static/about.html'}, name='about'),
 	(r'^api/', include('api.urls')),
 	(r'^blog/', include('blog.urls')),
 	(r'^', include('accounts.urls')),
@@ -21,6 +19,11 @@ urlpatterns = patterns('',
 	(r'^admin_tools/', include('admin_tools.urls')),
 	(r'^help/', include('faq.urls.shallow')),
 	(r'^admin/', include(admin.site.urls)),
+) + patterns('django.views.generic.simple',
+	url(r'^about/', 'direct_to_template',
+		{'template': 'static/about.html'}, name='about'),
+	url(r'^awards/', 'direct_to_template',
+		{'template': 'static/awards.html'}, name='awards'),
 )
 
 if settings.DEBUG:
