@@ -40,6 +40,10 @@ input:hover,
 	border: thin solid #4c4b33;
 }
 
+textarea {
+	width: 100%;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
