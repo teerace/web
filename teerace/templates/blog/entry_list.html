@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "blog/base.html" %}{% load threadedcommentstags %}
 {% comment %}
 context variables:
 	entry_list
@@ -38,7 +38,8 @@ context variables:
 			{% if entry.excerpt_html %}
 			<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
 			{% endif %}
-			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ entry.comment_count }} comment{{ entry.comment_count|pluralize }}</a></div>
+			{% get_comment_count for entry as comment_count %}
+			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
 	{% empty %}
 		No entries were found.
 	{% endfor %}
