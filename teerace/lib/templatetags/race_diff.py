@@ -1,5 +1,6 @@
 from django import template
 from race.models import Run
+from annoying.functions import get_config
 
 register = template.Library()
 
@@ -21,7 +22,8 @@ def race_diff(run, compare_to=None, custom_green=None):
 		style = 'green'
 		if custom_green:
 			return custom_green
-	return '<span class="{0}">{1:+.2f}</span>'.format(style, diff)
+	return '<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
+		precision=get_config('RESULT_PRECISION', 3))
 
 
 @register.simple_tag
@@ -32,5 +34,6 @@ def diff_color(diff):
 		style = 'green'
 	else:
 		return '-'
-	return '<span class="{0}">{1:+.2f}</span>'.format(style, diff)
+	return '<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
+		precision=get_config('RESULT_PRECISION', 3))
 	
