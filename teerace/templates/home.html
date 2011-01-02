@@ -78,7 +78,7 @@ context variables:
 				<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
 				{% endif %}
 				{% get_comment_count for latest_entry as comment_count %}
-				<div class="comment_count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+				<div class="comment-count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
 			</div>
 			{% endif %}
 
