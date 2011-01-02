@@ -11,10 +11,12 @@ class RegisterForm(forms.Form):
 	username = forms.RegexField(label="Username", regex=r'^\w+$', min_length=2,
 		max_length=30)
 	password1 = forms.CharField(label="Password", min_length=4,
-		widget=forms.PasswordInput(render_value=False))
+		widget=forms.PasswordInput(render_value=False),
+		help_text="At least 4 chars long")
 	password2 = forms.CharField(label="Password (again)", min_length=4,
 		widget=forms.PasswordInput(render_value=False))
-	email1 = forms.EmailField(label="E-mail address")
+	email1 = forms.EmailField(label="E-mail address",
+		help_text="We won't share this to any 3rd-parties!")
 	email2 = forms.EmailField(label="E-mail address (again)")
 
 	if get_config('ENABLE_CAPTCHA', False):
