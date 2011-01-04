@@ -26,6 +26,16 @@ class Map(models.Model):
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8)
 
+	MAP_RACE = 1
+	MAP_FASTCAP = 2
+	MAP_FASTCAP_NO_WEAPONS = 3
+	MAP_TYPES = (
+		(MAP_RACE, "Race"),
+		(MAP_FASTCAP, "Fastcap"),
+		(MAP_FASTCAP_NO_WEAPONS, "Fastcap (no weapons)"),
+	)
+	map_type = models.IntegerField(choices=MAP_TYPES, default=MAP_RACE)
+	
 	has_unhookables = models.BooleanField(default=False)
 	has_deathtiles = models.BooleanField(default=False)
 	shield_count = models.IntegerField(default=0)
@@ -147,7 +157,7 @@ class Run(models.Model):
 		if create:
 			self.set_personal_record()
 			# we don't want anonymous users to own map records
-			if self.user.id != 0:
+			if self.user_id != 0:
 				self.set_map_record()
 		super(Run, self).save(*args, **kwargs)
 		if create and self.is_personal_best:

@@ -4,6 +4,7 @@ from django.db.models import Sum
 from accounts.models import UserProfile
 from race.models import Map, Run, BestRun
 from celery.decorators import task
+from celery.task.sets import subtask
 from tml.tml import Teemap
 
 
@@ -16,7 +17,7 @@ def redo_ranks(run_id):
 		logger.error("How is that possible? (Run doesn't exist)")
 	map_obj = user_run.map
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
-	if not user_best.run == user_run:
+	if not user_best.run_id == user_run.id:
 		return
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
@@ -81,9 +82,11 @@ class index_factory(object):
 	INDEXES = dict(
 		DEATHTILE = 2,
 		UNHOOKABLE = 3,
-		SHIELD = 196,
-		HEART = 197,
-		GRENADE = 199
+		RED_FLAG = 195,
+		BLUE_FLAG = 196,
+		SHIELD = 197,
+		HEART = 198,
+		GRENADE = 200,
 	)
 
 	def __getattr__(self, attr):
@@ -116,13 +119,15 @@ def retrieve_map_details(map_id):
 	logger.info("Loaded \"{0}\" map.".format(map_obj.name))
 
 	logger.info("Counting map items...")
-	has_unhookables = has_deathtiles = False
+	has_unhookables = has_deathtiles = is_fastcap = False
 	shield_count = heart_count = grenade_count = 0
 	for tile in teemap.gamelayer.tiles:
 		if tile.index == indexes.DEATHTILE:
 			has_deathtiles = True
 		elif tile.index == indexes.UNHOOKABLE:
 			has_unhookables = True
+		elif tile.index in (indexes.RED_FLAG, indexes.BLUE_FLAG):
+			is_fastcap = True
 		elif tile.index == indexes.SHIELD:
 			shield_count += 1
 		elif tile.index == indexes.HEART:
@@ -148,5 +153,20 @@ def retrieve_map_details(map_id):
 	map_obj.crc = '{0:x}'.format(crc32(map_obj.map_file.read()) & 0xffffffff)
 	map_obj.map_file.close()
 
+	if is_fastcap:
+		logger.info("Turning map into fastcap type...")
+		map_obj.map_type = Map.MAP_FASTCAP
+		logger.info("Creating a non-weapon twin...")
+		new_map = Map(
+			name="{0}-noweapon".format(map_obj.name),
+			author=map_obj.author,
+			added_by=map_obj.added_by,
+			map_file=map_obj.map_file,
+			crc=map_obj.crc,
+			map_type=Map.MAP_FASTCAP_NO_WEAPONS,
+			has_unhookables=has_unhookables,
+			has_deathtiles=has_deathtiles,
+		)
+		new_map.save()
 	map_obj.save()
 	logger.info("Finished processing \"{0}\" map.".format(map_obj.name))

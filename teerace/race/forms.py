@@ -17,6 +17,7 @@ class ServerAdminForm(forms.ModelForm):
 
 
 class RunForm(forms.Form):
+	no_weapons = forms.BooleanField(required=False)
 	map_name = forms.CharField()
 	user_id = forms.IntegerField()
 	nickname = forms.CharField()
@@ -29,6 +30,8 @@ class RunForm(forms.Form):
 
 	def clean_map_name(self):
 		map_name = self.cleaned_data.get('map_name')
+		if self.cleaned_data.get('no_weapons', False):
+			map_name = '{0}-noweapon'.format(map_name)
 		try:
 			self.map = Map.objects.get(name=map_name)
 		except Map.DoesNotExist:

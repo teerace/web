@@ -76,9 +76,22 @@ class RunHandler(BaseHandler):
 			return getattr(self, '_read_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
 
-
 	@require_extended
 	@validate_mime(RunForm)
+	def _create_new(self, request, *args, **kwargs):
+		run = Run(
+			map = request.form.map,
+			server = request.server,
+			user = request.form.user,
+			nickname = request.form.cleaned_data['nickname'],
+			time = request.form.cleaned_data['time'],
+		)
+		run.save()
+		badges.possibly_award_badge("run_finished",
+			user=request.form.user, run=run)
+		tasks.redo_ranks.delay(run.id)
+		return run
+
 	def create(self, request, action, *args, **kwargs):
 		"""
 		URL
@@ -95,26 +108,18 @@ class RunHandler(BaseHandler):
 			- user_id / integer / ID of the user who finished the map
 			- nickname / string / currently used nickname by the user
 			- time / float / user result
+			- (optional) no_weapons / bool / Send True when run was finished
+				on a map with weapons disabled
 		Results
 			- 400 - when data fails validation
 				dictionary containing error message(s)
 			- 200 - when everything went fine
 				Run object
 		"""
-		if not action == 'new':
-			return rc(rcs.BAD_REQUEST)
-		run = Run(
-			map = request.form.map,
-			server = request.server,
-			user = request.form.user,
-			nickname = request.form.cleaned_data['nickname'],
-			time = request.form.cleaned_data['time'],
-		)
-		run.save()
-		badges.possibly_award_badge("run_finished",
-			user=request.form.user, run=run)
-		tasks.redo_ranks.delay(run.id)
-		return run
+		allowed_actions = ['new']
+		if action in allowed_actions:
+			return getattr(self, '_create_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 
 class UserProfileHandler(BaseHandler):
@@ -240,6 +245,15 @@ class UserHandler(BaseHandler):
 
 	@require_extended
 	@validate_mime(ValidateUserForm)
+	def _create_auth(self, request, *args, **kwargs):
+		key = request.server.private_key
+		try:
+			password = AES(key).decrypt(request.form.cleaned_data['password'])
+			user = User.objects.get(username=request.form.cleaned_data['username'])
+		except (TypeError, User.DoesNotExist):
+			return False
+		return user if user.check_password(password) else False
+
 	def create(self, request, action, *args, **kwargs):
 		"""
 		URL
@@ -266,15 +280,10 @@ class UserHandler(BaseHandler):
 			- 200, when user data are correct
 				User object
 		"""
-		if not action == 'auth':
-			return rc(rcs.BAD_REQUEST)
-		key = request.server.private_key
-		try:
-			password = AES(key).decrypt(request.form.cleaned_data['password'])
-			user = User.objects.get(username=request.form.cleaned_data['username'])
-		except (TypeError, User.DoesNotExist):
-			return False
-		return user if user.check_password(password) else False
+		allowed_actions = ['auth']
+		if action in allowed_actions:
+			return getattr(self, '_create_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 	@validate_mime(SkinUserForm, 'PUT')
 	def _update_skin(self, request, *args, **kwargs):

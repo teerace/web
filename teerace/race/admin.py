@@ -5,7 +5,7 @@ from race.models import Map, Server
 
 
 class MapAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'author', 'crc')
+	list_display = ('id', 'name', 'author', 'crc', 'get_map_type_display')
 	list_display_links = ('id', 'name')
 	fields = ('name', 'author', 'map_file')
 
