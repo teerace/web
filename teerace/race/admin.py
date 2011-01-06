@@ -17,8 +17,9 @@ class MapAdmin(admin.ModelAdmin):
 
 
 class ServerAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'maintained_by', 'api_key')
+	list_display = ('id', 'name', 'maintained_by', 'is_active', 'api_key')
 	list_display_links = ('id', 'name')
+	list_filter = ('is_active', )
 	form = ServerAdminForm
 
 	def add_view(self, request):
@@ -37,6 +38,16 @@ class ServerAdmin(admin.ModelAdmin):
 			obj.regenerate_secret_key()
 			del request.POST['_regenerate_secret']
 		obj.save()
+
+	def suspend_server(modeladmin, request, queryset):
+		queryset.update(is_active=False)
+	suspend_server.short_description = "Suspend selected servers"
+
+	def reactivate_server(modeladmin, request, queryset):
+		queryset.update(is_active=True)
+	reactivate_server.short_description = "Reactivate selected servers"
+
+	actions = [suspend_server, reactivate_server]
 
 
 admin.site.register(Map, MapAdmin)

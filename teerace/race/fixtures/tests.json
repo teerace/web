@@ -16,6 +16,7 @@
 		"model": "race.server",
 		"fields": {
 			"name": "test server",
+			"is_active": true,
 			"api_key": "fSXPjSaS8SvzwnVTpUHbaS7bNYKRDzVJ",
 			"secret_key": "fCYwPg4JjPGb4PHAx7LsuetCBGH4vXfw",
 			"description": "",
