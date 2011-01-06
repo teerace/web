@@ -242,6 +242,7 @@ class UserHandler(BaseHandler):
 		allowed_actions = ['detail', 'profile', 'rank', 'map_rank']
 		if action in allowed_actions:
 			return getattr(self, '_read_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 	@require_extended
 	@validate_mime(ValidateUserForm)
@@ -300,9 +301,7 @@ class UserHandler(BaseHandler):
 				profile.save()
 				return profile
 			except UserProfile.DoesNotExist:
-				return "a"
 				return rc(rcs.BAD_REQUEST)
-		return "a"
 		return rc(rcs.BAD_REQUEST)
 
 	@require_extended
@@ -330,6 +329,7 @@ class UserHandler(BaseHandler):
 		allowed_actions = ['skin']
 		if action in allowed_actions:
 			return getattr(self, '_update_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 
 class MapHandler(BaseHandler):
@@ -389,6 +389,7 @@ class MapHandler(BaseHandler):
 		allowed_actions = ['list', 'detail']
 		if action in allowed_actions:
 			return getattr(self, '_read_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 
 class ServerHandler(BaseHandler):
