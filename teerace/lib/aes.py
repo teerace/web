@@ -8,7 +8,7 @@ http://www.codekoala.com/blog/2009/aes-encryption-python-using-pycrypto/
 
 class AES(object):
 	# the block size for the cipher object; must be 16, 24, or 32 for AES
-	BLOCK_SIZE = 32
+	BLOCK_SIZE = 16
 
 	# the character used for padding--with a block cipher such as AES, the value
 	# you encrypt must be a multiple of BLOCK_SIZE in length.  This character is

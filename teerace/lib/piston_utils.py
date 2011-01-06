@@ -39,7 +39,6 @@ class APIKeyAuthentication(object):
 		return not request.user in (False, None, AnonymousUser())
 
 	def challenge(self):
-		print self.forbidden
 		if self.forbidden:
 			resp = HttpResponse("{0} API - Forbidden".format(self.realm))
 			resp.status_code = 403

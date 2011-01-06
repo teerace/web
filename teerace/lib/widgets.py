@@ -6,8 +6,11 @@ class SubmitTextWidget(forms.Widget):
 	def __init__(self, name, label=None, attrs=None):
 		if label == None:
 			label = name
+		if attrs == None:
+			attrs = {}
 		self.name, self.label = name, label
 		self.attrs = attrs
+		
 
 	def render(self, name, value, attrs=None):
 		final_attrs = self.build_attrs(
