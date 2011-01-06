@@ -9,10 +9,10 @@ class ServerAdminForm(forms.ModelForm):
 	class Meta:
 		model = Server
 		widgets = {
-			'public_key': SubmitTextWidget(name='_regenerate_public',
-				label="Regenerate public key"),
-			'private_key': SubmitTextWidget(name='_regenerate_private',
-				label="Regenerate private key"),
+			'api_key': SubmitTextWidget(name='_regenerate_api',
+				label="Regenerate API key"),
+			'secret_key': SubmitTextWidget(name='_regenerate_secret',
+				label="Regenerate server secret"),
 		}
 
 

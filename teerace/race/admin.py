@@ -17,25 +17,25 @@ class MapAdmin(admin.ModelAdmin):
 
 
 class ServerAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'maintained_by', 'public_key')
+	list_display = ('id', 'name', 'maintained_by', 'api_key')
 	list_display_links = ('id', 'name')
 	form = ServerAdminForm
 
 	def add_view(self, request):
-		self.exclude = ('public_key', 'private_key')
+		self.exclude = ('api_key', 'secret_key')
 		return super(ServerAdmin, self).add_view(request)
 
 	def change_view(self, request, obj_id):
-		#self.readonly_fields = ('public_key', 'private_key')
+		#self.readonly_fields = ('api_key', 'secret_key')
 		return super(ServerAdmin, self).change_view(request, obj_id)
 
 	def save_model(self, request, obj, form, change):
-		if '_regenerate_public' in request.POST:
-			obj.regenerate_public_key()
-			del request.POST['_regenerate_public']
-		if '_regenerate_private' in request.POST:
-			obj.regenerate_private_key()
-			del request.POST['_regenerate_private']
+		if '_regenerate_api' in request.POST:
+			obj.regenerate_api_key()
+			del request.POST['_regenerate_api']
+		if '_regenerate_secret' in request.POST:
+			obj.regenerate_secret_key()
+			del request.POST['_regenerate_secret']
 		obj.save()
 
 

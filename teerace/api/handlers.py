@@ -247,7 +247,7 @@ class UserHandler(BaseHandler):
 	@require_extended
 	@validate_mime(ValidateUserForm)
 	def _create_auth(self, request, *args, **kwargs):
-		key = request.server.private_key
+		key = request.server.secret_key
 		try:
 			password = AES(key).decrypt(request.form.cleaned_data['password'])
 			user = User.objects.get(username=request.form.cleaned_data['username'])
@@ -269,7 +269,7 @@ class UserHandler(BaseHandler):
 			using your server private key to generate cipher.
 
 			Example of password encoding:
-				`base64_encode(AES(PRIVATE_KEY).encrypt(password))`
+				`AES(SECRET_KEY).encrypt(password)`
 		Arguments
 			- none
 		Data

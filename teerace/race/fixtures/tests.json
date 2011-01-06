@@ -16,8 +16,8 @@
 		"model": "race.server",
 		"fields": {
 			"name": "test server",
-			"public_key": "fSXPjSaS8SvzwnVTpUHbaS7bNYKRDzVJ",
-			"private_key": "fCYwPg4JjPGb4PHAx7LsuetCBGH4vXfw",
+			"api_key": "fSXPjSaS8SvzwnVTpUHbaS7bNYKRDzVJ",
+			"secret_key": "fCYwPg4JjPGb4PHAx7LsuetCBGH4vXfw",
 			"description": "",
 			"maintained_by": 1
 		}

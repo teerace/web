@@ -26,9 +26,7 @@ class Map(models.Model):
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8)
 
-	MAP_RACE = 1
-	MAP_FASTCAP = 2
-	MAP_FASTCAP_NO_WEAPONS = 3
+	MAP_RACE, MAP_FASTCAP, MAP_FASTCAP_NO_WEAPONS = range(3)
 	MAP_TYPES = (
 		(MAP_RACE, "Race"),
 		(MAP_FASTCAP, "Fastcap"),
@@ -199,28 +197,28 @@ class Server(models.Model):
 	description = models.TextField(blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
 	last_connection_at = models.DateTimeField(auto_now=True)
-	public_key = models.CharField(max_length=32, default=generate_random_key,
+	api_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
-	private_key = models.CharField(max_length=32, default=generate_random_key,
+	secret_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
 
 	def __unicode__(self):
 		return self.name
 
 	def _regenerate_key(self, field_name):
-		if not field_name in ('public_key', 'private_key'):
+		if not field_name in ('api_key', 'secret_key'):
 			raise ValueError("_regenerate_key() can only be used with"
-				" public_key/private_key fields")
+				" api_key/secret_key fields")
 		new_key = generate_random_key()
 		setattr(self, field_name, new_key)
 		self.save()
 		return new_key
 
-	def regenerate_public_key(self):
-		return self._regenerate_key('public_key')
+	def regenerate_api_key(self):
+		return self._regenerate_key('api_key')
 
-	def regenerate_private_key(self):
-		return self._regenerate_key('private_key')
+	def regenerate_secret_key(self):
+		return self._regenerate_key('secret_key')
 
 
 # DIRTY is this even allowed?

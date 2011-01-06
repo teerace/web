@@ -14,7 +14,7 @@ class TestCase(DjangoTestCase):
 		self.map = Map.objects.get(pk=1)
 		self.server = Server.objects.get(pk=1)
 		self.extra = {
-			'HTTP_API_AUTH': self.server.public_key,
+			'HTTP_API_AUTH': self.server.api_key,
 		}
 
 
@@ -87,7 +87,7 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "test123",
 		}
-		data['password'] = AES(self.server.private_key).encrypt(data['password'])
+		data['password'] = AES(self.server.secret_key).encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertTrue(simplejson.loads(response.content))
 
@@ -96,7 +96,7 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = AES(self.server.private_key).encrypt(data['password'])
+		data['password'] = AES(self.server.secret_key).encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
@@ -105,7 +105,7 @@ class UserTestCase(TestCase):
 			'username': "toastclient", # O NOEZ
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = AES(self.server.private_key).encrypt(data['password'])
+		data['password'] = AES(self.server.secret_key).encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
