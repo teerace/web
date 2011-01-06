@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import (authenticate, login as auth_login,
+	logout as auth_logout)
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
@@ -63,8 +64,13 @@ def register(request):
 	if request.method == 'POST':
 		register_form = RegisterForm(request.POST)
 		if register_form.is_valid():
-			auth_login(request, register_form.save())
-			messages.success(request, "Welcome aboard, {0}.".format(register_form.user))
+			register_form.save()
+			username = register_form.cleaned_data['username']
+			password = register_form.cleaned_data['password1']
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				auth_login(request, user)
+				messages.success(request, "Welcome aboard, {0}.".format(user))
 			redirect(next_uri)
 
 	return {
