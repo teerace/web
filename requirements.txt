@@ -15,6 +15,7 @@ django-threadedcomments>=0.5.3
 docutils>=0.7
 feedparser>=4.1
 -e hg+https://bitbucket.org/jmoiron/johnny-cache#egg=johnny-cache
+M2Crypto>=0.20.2
 Markdown>=2.0.3
 pycrypto>=2.3
 -e git+https://github.com/erdbeere/tml.git#egg=tml
