@@ -7,8 +7,6 @@ context variables:
 	page_obj
 {% endcomment %}
 {% block content %}
-	<div class="box full">
-		<div class="header">Maps</div>
 		{% if is_paginated %}
 			<div class="pagination">
 				<span class="step-links">
@@ -26,37 +24,37 @@ context variables:
 				</span>
 			</div>
 		{% endif %}
-		<table class="players">
-			<tr>
-				<th>Name</th>
-				<th>Date added</th>
-				<th>Completions</th>
-				<th>Total playtime</th>
-				<th>Avg time</th>
-				<th>Record</th>
-			</tr>
-			{% for map in object_list %}
-			<tr>
-				<td><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></td>
-				<td>{{ map.added_at }}</td>
-				<td>{{ map.run_count }}</td>
-				<td>{{ map.total_playtime|default_if_none:0|sectodur }}</td>
-				<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
-				<td>{% if map.best_score %}{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>{% else %}-{% endif %}</td>
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="6">No maps.</td>
-			</tr>
-			{% endfor %}
-		{% if object_list %}
-		<tfoot>
-			<tr>
-				<td colspan="6">{{ paginator.count }} map{{ paginator.count|pluralize }}</td>
-			</tr>
-		</tfoot>
-		{% endif %}
-		</table>
+		{% for map in object_list %}
+		<div class="box map {% cycle 'left' 'right' %}">
+			<div class="right">
+				{% if not map.grenade_count %}<img src="{{ MEDIA_URL }}images/grenade.png" alt="grenade" title="There is grenade launcher">{% endif %}
+				{% if not map.has_unhookables %}<img src="{{ MEDIA_URL }}images/unhookable.png" alt="unhookable" title="There are unhookable tiles">{% endif %}
+				{% if not map.has_deathtiles %}<img src="{{ MEDIA_URL }}images/deathtiles.png" alt="deathtiles" title="There are death tiles">{% endif %}
+			</div>
+
+			<div class="header">
+				<a href="{{ map.get_absolute_url }}">{{ map.name }}</a>
+			</div>
+			<table>
+				<tr>
+					<td class="label">Date added:</td>
+					<td class="content">{{ map.added_at|date:"M. d, Y" }}</td>
+				</tr>
+				<tr>
+					<td class="label">Completions:</td>
+					<td class="content">{{ map.run_count }}</td>
+				</tr>
+				<tr>
+					<td class="label">Average score:</td>
+					<td class="content">{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
+				</tr>
+				<tr>
+					<td class="label">Best score:</td>
+					<td class="content">{% if map.best_score %}{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>{% else %}-{% endif %}</td>
+				</tr>
+			</table>
+		</div>
+		{% endfor %}
 		{% if is_paginated %}
 			<div class="pagination">
 				<span class="step-links">
@@ -74,5 +72,4 @@ context variables:
 				</span>
 			</div>
 		{% endif %}
-	</div>
 {% endblock content %}
