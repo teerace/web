@@ -9,4 +9,5 @@ urlpatterns = patterns('race.views',
 	url(r'^ranks/$', 'ranks', name='ranks'),
 	url(r'^ranks/maps/$', 'ranks_map_list', name='ranks_map_list'),
 	url(r'^ranks/maps/(?P<map_id>\d+)/$', 'ranks_map_detail', name='ranks_map_detail'),
+	url(r'^awards/', 'awards', name='awards'),
 )

@@ -22,8 +22,6 @@ urlpatterns = patterns('',
 ) + patterns('django.views.generic.simple',
 	url(r'^about/', 'direct_to_template',
 		{'template': 'static/about.html'}, name='about'),
-	url(r'^awards/', 'direct_to_template',
-		{'template': 'static/awards.html'}, name='awards'),
 )
 
 if settings.DEBUG:

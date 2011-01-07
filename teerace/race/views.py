@@ -6,6 +6,7 @@ from django.views.generic.list_detail import object_list
 from accounts.models import UserProfile
 from blog.models import Entry
 from race.models import Map, Run, BestRun
+from race import badges
 from annoying.decorators import render_to
 from annoying.functions import get_config
 
@@ -125,6 +126,22 @@ def user_activity(request):
 	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
 	return object_list(request, queryset=latest_runs, paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/user_activity.html')
+
+
+@render_to('race/awards.html')
+def awards(request):
+	"""
+	magic.
+	
+	yes, you will hate me for this one.
+	"""
+	award_names = [x for x in dir(badges) if x.endswith('Badge')]
+	award_list = []
+	for award in award_names:
+		award_list.append(getattr(badges, award))
+	return {
+		'award_list': award_list
+	}
 
 
 def map_download(request, map_id):

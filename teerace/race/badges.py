@@ -1,9 +1,9 @@
 from brabeion import badges
-from brabeion.base import Badge, BadgeAwarded, BadgeDetail
+from brabeion.base import Badge as BadgeBase, BadgeAwarded, BadgeDetail
 from race.models import Map, Run
 
 
-class RunCountBadge(Badge):
+class RunCountBadge(BadgeBase):
 	slug = 'runcount'
 	levels = [
 		BadgeDetail("Newcomer", "Finished one run"),
@@ -28,7 +28,7 @@ class RunCountBadge(Badge):
 		return BadgeAwarded(level=1)
 
 
-class PlaytimeBadge(Badge):
+class PlaytimeBadge(BadgeBase):
 	slug = 'playtime'
 	levels = [
 		BadgeDetail("Happy Hour", "Accumulate one hour of time played"),
@@ -54,7 +54,7 @@ class PlaytimeBadge(Badge):
 			return BadgeAwarded(level=1)
 
 
-class GlobetrotterBadge(Badge):
+class GlobetrotterBadge(BadgeBase):
 	slug = 'globetrotter'
 	levels = [
 		BadgeDetail("Globetrotter", "Complete 1 run on each map"),

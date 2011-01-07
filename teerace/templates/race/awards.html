@@ -6,10 +6,14 @@
 	{% add_crumb 'Awards' 'awards' %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		Content needed:
-		<ul>
-			<li>Badges from race/badges.py</li>
-		</ul>
+	{% for award in award_list %}
+	{% for level in award.levels %}
+	<div class="box {% cycle 'left' 'right' %}">
+		<div class="header">{{ level.name }}</div>
+		<p>
+			{{ level.description }}
+		</p>
 	</div>
+	{% endfor %}
+	{% endfor %}
 {% endblock content %}
