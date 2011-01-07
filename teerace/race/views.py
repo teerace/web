@@ -53,9 +53,9 @@ def homepage(request):
 
 
 def ranks(request):
-	# exclude anonymous from rank
+	# exclude anonymous and banned users from rank
 	# (that user shouldn't have any points anyway, just a precaution)
-	users = UserProfile.objects.filter(points__gt=0).exclude(pk=0).extra(
+	users = UserProfile.objects.filter(points__gt=0).exclude(is_active=False).extra(
 		select = {'position':
 			"SELECT COUNT(*)+1 FROM accounts_userprofile s "
 			"WHERE s.points > accounts_userprofile.points"

@@ -22,8 +22,8 @@ def redo_ranks(run_id):
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
-	# exclude anonymous user from scoring
-	ranked = runs.exclude(user__pk=0)
+	# exclude anonymous and banned users from scoring
+	ranked = runs.exclude(user__is_active=False)
 	ranked = ranked.order_by('run__time')[:ranked_count]
 	try:
 		if user_run.time >= ranked[ranked_count-1].run.time:
@@ -52,8 +52,9 @@ def rebuild_map_rank(map_id):
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
-	# exclude anonymous user from scoring
-	ranked = runs.exclude(user__pk=0).order_by('run__time')[:ranked_count]
+	# exclude anonymous and banned users from scoring
+	ranked = runs.exclude(user__is_active=False) \
+		.order_by('run__time')[:ranked_count]
 	for run in ranked:
 		run.points = BestRun.SCORING[c]
 		run.save()
