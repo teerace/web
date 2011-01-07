@@ -71,13 +71,13 @@ class CustomIndexDashboard(Dashboard):
 					'external': True,
 				},
 				{
-					'title': "Django \"django-users\" mailing list",
-					'url': 'http://groups.google.com/group/django-users',
+					'title': "Teerace GitHub issues",
+					'url': 'http://github.com/chaosk/teerace/issues',
 					'external': True,
 				},
 				{
-					'title': "Django irc channel",
-					'url': 'irc://irc.freenode.net/django',
+					'title': "Teerace irc channel",
+					'url': 'irc://irc.quakenet.org/teerace',
 					'external': True,
 				},
 			]
