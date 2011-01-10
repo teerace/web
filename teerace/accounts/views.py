@@ -107,7 +107,7 @@ def profile(request, user_id):
 def userlist(request):
 	# exclude anonymous
 	# UPDATED also excluding banned players
-	profiles = UserProfile.objects.exclude(is_active=False).select_related()
+	profiles = UserProfile.objects.exclude(user__is_active=False).select_related()
 	return object_list(request, queryset=profiles,
 		paginate_by=get_config('ITEMS_PER_PAGE', 20))
 

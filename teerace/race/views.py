@@ -19,8 +19,12 @@ def homepage(request):
 	except Entry.DoesNotExist:
 		latest_entry = None
 
+	users =list(UserProfile.objects.exclude(user__is_active=False) \
+		.select_related())
+
 	if request.user.is_authenticated():
-		user_runs = Run.objects.filter(user=request.user).order_by('-created_at')[:5]
+		user_runs = Run.objects.filter(user=request.user) \
+			.order_by('-created_at')[:5]
 	else:
 		user_runs = None
 
@@ -41,7 +45,7 @@ def homepage(request):
 
 	return {
 		'latest_entry': latest_entry,
-		'users': list(UserProfile.objects.select_related()),
+		'users': users,
 		'maps': list(Map.objects.all()),
 		'user_runs': user_runs,
 		'run_count': Run.objects.count(),
@@ -55,12 +59,13 @@ def homepage(request):
 def ranks(request):
 	# exclude anonymous and banned users from rank
 	# (that user shouldn't have any points anyway, just a precaution)
-	users = UserProfile.objects.filter(points__gt=0).exclude(is_active=False).extra(
-		select = {'position':
+	users = UserProfile.objects.filter(points__gt=0) \
+		.exclude(user__is_active=False).extra(
+		select = {'_position':
 			"SELECT COUNT(*)+1 FROM accounts_userprofile s "
 			"WHERE s.points > accounts_userprofile.points"
 		},
-		order_by = ['position']
+		order_by = ['_position']
 	)
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_runs = Run.objects.count()
