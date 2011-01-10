@@ -330,6 +330,19 @@ td {
 		width: 500px;
 	}
 
+		#comments .comment .comment-reply {
+			display: none;
+		}
+
+			#comments .comment .comment-reply h2 {
+				border-top: thin solid #999;
+				padding-top: 10px;
+			}
+
+		#comments .comment:target .comment-reply {
+			display: block;
+		}
+
 		#comments .comment:hover .comment-permalink {
 			visibility: visible;
 		}
@@ -389,6 +402,12 @@ td {
 			text-decoration: none;
 		}
 
+		#comments .comment-permalink .reply-link {
+			font-size: 16px;
+			line-height: 50px;
+			vertical-align: middle;
+		}
+
 	#comments .comment-content {
 		overflow: hidden;
 		line-height: 20px;
@@ -429,6 +448,32 @@ td {
 		background: #f6f6a5;
 	}
 */
+
+	/* comments depth */
+	#comments .depth-1 {
+		margin-left: 30px;
+	}
+
+	#comments .depth-2 {
+		margin-left: 60px;
+	}
+
+	#comments .depth-3 {
+		margin-left: 90px;
+	}
+
+	#comments .depth-4 {
+		margin-left: 120px;
+	}
+
+	/* probably not needed, saved for historical reasons */
+	#comments .depth-5 {
+		margin-left: 150px;
+	}
+
+	#comments .depth-6 {
+		margin-left: 180px;
+	}
 
 #footer {
 	color: #b7b6a4;

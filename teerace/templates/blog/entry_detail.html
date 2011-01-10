@@ -9,6 +9,27 @@ context variables:
 	{% load breadcrumb_tags %}
 	{% add_crumb entry.title 'blog_entry' entry.id %}
 {% endblock %}
+{% block extra_head %}
+	{{ block.super }}
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.reply-link').click(function(){
+				var comment = $(this).parent().parent('.comment');
+				var child = $(comment).children('.comment-reply');
+
+				if (child.css('display') == 'none') {
+					child.show("fast");
+					$(this).html('hide form');
+				} else {
+					child.hide("fast");
+					$(this).html('reply');
+				}
+				return false;
+			});
+		});
+	</script>
+{% endblock %}
 {% block content %}
 	<div id="blog" class="box full">
 		<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
@@ -30,7 +51,7 @@ context variables:
 			{% get_threaded_comment_tree for entry as tree %}
 			{% for comment in tree %}
 				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
-					<div class="comment-permalink"><a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+					<div class="comment-permalink"><a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
 						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 						<div class="comment-author-info">
@@ -43,15 +64,17 @@ context variables:
 							{% auto_transform_markup comment %}
 						</p>
 					</div>
-					reply:
-					<form method="POST" action="{% get_comment_url entry comment %}">
-						{% get_threaded_comment_form as form %}
-						{% include "snippets/form.html" %}
-						<div class="form_field">
-							<input type="submit" value="Submit comment">
-							<input type="submit" name="preview" value="Preview comment">
-						</div>
-					</form>
+					<div class="comment-reply">
+						<h2>Reply:</h2>
+						<form method="POST" action="{% get_comment_url entry comment %}">
+							{% get_threaded_comment_form as form %}
+							{% include "snippets/form.html" %}
+							<div class="form_field">
+								<input type="submit" value="Submit comment">
+								<input type="submit" name="preview" value="Preview comment">
+							</div>
+						</form>
+					</div>
 				</div>
 			{% endfor %}
 		</div>
