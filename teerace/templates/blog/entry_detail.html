@@ -63,8 +63,9 @@ context variables:
 					<div class="comment-reply">
 						<h2>Reply:</h2>
 						<form method="POST" action="{% get_comment_url entry comment %}">
-							{% get_threaded_comment_form as form %}
-							{% include "snippets/form.html" %}
+							<div class="form_field required"> 
+								<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea> 
+							</div>
 							<div class="form_field">
 								<input type="submit" value="Submit comment">
 								<input type="submit" name="preview" value="Preview comment">
@@ -74,10 +75,11 @@ context variables:
 				</div>
 			{% endfor %}
 		</div>
-		<h4>Reply to Original:</h4>
+		<h2>Reply to Original:</h2>
 		<form method="POST" action="{% get_comment_url entry %}">
-			{% get_threaded_comment_form as form %}
-			{% include "snippets/form.html" %}
+			<div class="form_field required"> 
+				<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea> 
+			</div>
 			<div class="form_field">
 				<input type="submit" value="Submit comment">
 				<input type="submit" name="preview" value="Preview comment">
