@@ -492,6 +492,24 @@ td {
 		color: inherit;
 	}
 
+.ownprofile {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffeec), to(#fff));
+	background-image: -moz-linear-gradient(top,  #fffeec,  #fff);
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#fffeec',EndColorStr='#fff');
+	background-color: #fffeec;
+}
+
+#itsyou {
+	float: right;
+	background: none;
+	border: 0;
+	font-weight: bold;
+}
+
+#itsyou:hover {
+	color: #4c4b33 !important;
+}
+
 .form_field {
 	text-align: right;
 	width: 400px;
