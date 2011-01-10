@@ -37,20 +37,14 @@ context variables:
 			</div>
 			<table>
 				<tr>
-					<td class="label">Date added:</td>
-					<td class="content">{{ map.added_at|date:"M. d, Y" }}</td>
+					<th>Completions:</th>
+					<th>Average score:</th>
+					<th>Best score:</th>
 				</tr>
 				<tr>
-					<td class="label">Completions:</td>
-					<td class="content">{{ map.run_count }}</td>
-				</tr>
-				<tr>
-					<td class="label">Average score:</td>
-					<td class="content">{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
-				</tr>
-				<tr>
-					<td class="label">Best score:</td>
-					<td class="content">{% if map.best_score %}{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>{% else %}-{% endif %}</td>
+					<td>{{ map.run_count }}</td>
+					<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
+					<td>{% if map.best_score %}{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>{% else %}-{% endif %}</td>
 				</tr>
 			</table>
 		</div>
