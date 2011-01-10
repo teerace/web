@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load race_diff %}{% load human_duration %}
+{% extends "accounts/userprofile_list.html" %}{% load race_diff %}{% load human_duration %}
 {% comment %}
 context variables:
 	profile
@@ -17,7 +17,7 @@ context variables:
 	{% else %}
 	<div class="box full">
 	{% endif %}
-		<div class="header">{{ profile }}</div>
+		<div class="header">{% if user.id == profile.user_id %}Your profile{% else %}{{ profile }}{% endif %}</div>
 		<table>
 			<tbody>
 				<tr>
@@ -47,7 +47,7 @@ context variables:
 	</div>
 
 	<div class="box full">
-		<div class="header">{{ profile.user.username }}'s activity</div>
+		<div class="header">{% if user.id == profile.user_id %}Your{% else %}{{ profile.user.username }}'s{% endif %} activity</div>
 		<table>
 			<tr class="no-border">
 				<th rowspan="2">Date</th>
@@ -71,7 +71,7 @@ context variables:
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="5">Hey! He/she hasn't finished any run yet!</td>
+				<td colspan="5">Hey! {% if user.id == profile.user_id %}You haven't{% else %}He/she hasn't{% endif %} finished any run yet!</td>
 			</tr>
 			{% endfor %}
 <!--
