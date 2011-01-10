@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 from markdown import markdown
+from threadedcomments.models import ThreadedComment, DEFAULT_MAX_COMMENT_DEPTH
 
 
 class Entry(models.Model):
@@ -28,3 +30,19 @@ class Entry(models.Model):
 	@models.permalink
 	def get_absolute_url(self):
 		return ('blog.views.entry_detail', (), {'entry_id': self.id})
+
+
+def post_comment_save(instance, **kwargs):
+	if kwargs['created']:
+		i = 0
+		c = instance.parent
+		while c != None:
+			c = c.parent
+			i = i + 1
+			if i > DEFAULT_MAX_COMMENT_DEPTH:
+				instance.parent = instance.parent.parent
+				instance.save()
+				return
+		
+post_save.connect(post_comment_save, sender=ThreadedComment,
+	dispatch_uid='accounts.models')

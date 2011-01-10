@@ -29,7 +29,7 @@ context variables:
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 			<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
 			<p>
-				{% if entry.excerpt_html %}
+				{% if entry.excerpt %}
 					{{ entry.excerpt_html|safe }}
 				{% else %}
 					{{ entry.content_html|safe }}
