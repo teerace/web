@@ -71,7 +71,7 @@ def register(request):
 			if user is not None:
 				auth_login(request, user)
 				messages.success(request, "Welcome aboard, {0}.".format(user))
-			redirect(next_uri)
+			return redirect(next_uri)
 
 	return {
 		'register_form': register_form,
