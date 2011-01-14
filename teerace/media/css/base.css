@@ -557,13 +557,13 @@ td {
 
 .form_field {
 	text-align: right;
-	width: 400px;
+	width: 500px;
 	padding: 20px 0 0 0;
+	clear: both;
 }
 
 	.form_field input, .form_field select {
-		width: 50%;
-		margin-right: 10px;
+		width: 43%;
 	}
 
 	.form_field input[type=submit] {
@@ -572,13 +572,26 @@ td {
 
 	.form_field label {
 		font-weight: bold;
+		width: 50%;
+		height: 28px;
+		line-height: 28px;
 		margin-right: 20px;
+		display: block;
+		float: left;
 	}
 
 	.form_field.required label:before {
 		color: #f00;
 		content: "*";
 		margin-right: 3px;
+	}
+
+	.form_field span {
+		color: #666;
+		font-size: 11px;
+		font-weight: normal;
+		margin-top: -14px;
+		display: block;
 	}
 
 .form_field.error {
