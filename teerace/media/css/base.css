@@ -1,6 +1,6 @@
 body {
 	background: #91c5ff url("/media/images/bg.png") repeat-x;
-	font-family: "Droid Sans", "Myriad", "Myriad Pro", "Tahoma", "Helvetica", "Liberation Sans", "Bitstream Vera Sans", "Sans";
+	font-family: "Droid Sans", "Helvetica", "Myriad", "Myriad Pro", "Tahoma", "Liberation Sans", "Bitstream Vera Sans", "Sans";
 	font-size: 16px;
 	margin: 0;
 }
@@ -113,7 +113,7 @@ td {
 	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #918f61;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 	#menu a {
@@ -304,7 +304,7 @@ td {
 
 	#blog .post-line {
 		color: #918f61;
-		font-size: 10px;
+		font-size: 11px;
 		font-style: italic;
 	}
 
