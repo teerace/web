@@ -125,7 +125,7 @@ def settings(request):
 			settings_user_form.save()
 			settings_profile_form.save()
 			messages.success(request, "Successfully updated your profile and settings.")
-			return redirect(reverse('settings'))
+			return redirect(reverse('profile', args=[request.user.id]))
 	return {
 		'settings_user_form': settings_user_form,
 		'settings_profile_form': settings_profile_form,
