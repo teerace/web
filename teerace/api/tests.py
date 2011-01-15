@@ -43,6 +43,11 @@ class ApiTest(TestCase):
 	def test_auth_invalid_key(self):
 		self.extra['HTTP_API_AUTH'] = 'invalid'
 		response = self.client.get('/api/1/runs/detail/1/', {}, **self.extra)
+		self.assertEqual(response.status_code, 403)
+
+	def test_auth_wrong_key(self):
+		self.extra['HTTP_API_AUTH'] = 'invalid-but-has-correct-length12'
+		response = self.client.get('/api/1/runs/detail/1/', {}, **self.extra)
 		self.assertEqual(response.status_code, 401)
 
 
