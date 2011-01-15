@@ -558,21 +558,23 @@ td {
 .form_field {
 	text-align: right;
 	width: 500px;
-	padding: 20px 0 0 0;
+	padding: 10px 0;
 	clear: both;
+	position: relative;
 }
 
 	.form_field input, .form_field select {
 		width: 43%;
+		margin-right: 10px;
 	}
 
 	.form_field input[type=submit] {
-		width: 100%;
+		width: 490px;
 	}
 
 	.form_field label {
 		font-weight: bold;
-		width: 50%;
+		width: 45%;
 		height: 28px;
 		line-height: 28px;
 		margin-right: 20px;
@@ -611,8 +613,10 @@ td {
 	}
 
 	.form_field.error .form-error {
-		text-align: center;
-		font-style: oblique;
+		font-size: 85%;
+		position: absolute;
+		right: -260px;
+		top: 20px;
 	}
 
 .detail {
