@@ -10,7 +10,7 @@ context variables:
 	{% load breadcrumb_tags %}
 	{% add_crumb profile 'profile' profile.id %}
 {% endblock %}
-{% block content %}	
+{% block content %}
 	{% if user.id == profile.user_id %}
 	<div class="box full ownprofile">
 		<span class="button" id="itsyou">It's you!</span>
@@ -20,14 +20,18 @@ context variables:
 		<div class="header">{% if user.id == profile.user_id %}Your profile{% else %}{{ profile }}{% endif %}</div>
 		<table>
 			<tbody>
+				{% if profile.user.first_name %}
 				<tr>
 					<td class="label">First name:</td>
 					<td class="content">{{ profile.user.first_name }}</td>
 				</tr>
+				{% endif %}
+				{% if profile.user.last_name %}
 				<tr>
 					<td class="label">Last name:</td>
 					<td class="content">{{ profile.user.last_name }}</td>
 				</tr>
+				{% endif %}
 				{% if profile.country %}
 				<tr>
 					<td class="label">Country:</td>
@@ -82,4 +86,3 @@ context variables:
 		</table>
 	</div>
 {% endblock content %}
-
