@@ -27,7 +27,7 @@ class RegisterForm(forms.Form):
 		recaptcha = RecaptchaField(label="Human test", required=True)
 
 	def clean_username(self):
-		username = self.cleaned_data['username']
+		username = self.cleaned_data.get('username')
 		try:
 			user = User.objects.get(username__iexact=username)
 			del user
@@ -36,26 +36,25 @@ class RegisterForm(forms.Form):
 			pass
 		return username
 
-
 	def clean_password2(self):
-		password1 = self.cleaned_data['password1']
-		password2 = self.cleaned_data['password2']
+		password1 = self.cleaned_data.get('password1')
+		password2 = self.cleaned_data.get('password2')
 		if password1 != password2:
 			raise forms.ValidationError(
 				"You must type the same password each time")
 		return password2
 
 	def clean_email2(self):
-		email1 = self.cleaned_data['email1']
-		email2 = self.cleaned_data['email2']
+		email1 = self.cleaned_data.get('email1')
+		email2 = self.cleaned_data.get('email2')
 		if email1 != email2:
 			raise forms.ValidationError(
 				"You must type the same e-mail address each time")
 		return email2
 
 	def save(self):
-		return User.objects.create_user(self.cleaned_data['username'],
-			self.cleaned_data['email1'], self.cleaned_data['password1'])
+		return User.objects.create_user(self.cleaned_data.get('username'),
+			self.cleaned_data.get('email1'), self.cleaned_data.get('password1'))
 
 
 class LoginForm(forms.Form):
