@@ -1,4 +1,4 @@
-{% extends "accounts/userprofile_list.html" %}{% load race_diff %}{% load human_duration %}
+{% extends "accounts/userprofile_list.html" %}{% load race_diff %}{% load human_duration %}{% load brabeion_tags %}{% load gravatar %}
 {% comment %}
 context variables:
 	profile
@@ -11,25 +11,15 @@ context variables:
 	{% add_crumb profile 'profile' profile.id %}
 {% endblock %}
 {% block content %}
-	{% if user.id == profile.user_id %}
-	<div class="box full ownprofile">
-		<span class="button" id="itsyou">It's you!</span>
-	{% else %}
-	<div class="box full">
-	{% endif %}
+	<div id="userprofile" class="box full{% if user.id == profile.user_id %} ownprofile{% endif %}">
 		<div class="header">{% if user.id == profile.user_id %}Your profile{% else %}{{ profile }}{% endif %}</div>
+		<img src="{% get_gravatar_url for emailvar size 80 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
 		<table>
 			<tbody>
-				{% if profile.user.first_name %}
+				{% if profile.user.get_full_name %}
 				<tr>
-					<td class="label">First name:</td>
-					<td class="content">{{ profile.user.first_name }}</td>
-				</tr>
-				{% endif %}
-				{% if profile.user.last_name %}
-				<tr>
-					<td class="label">Last name:</td>
-					<td class="content">{{ profile.user.last_name }}</td>
+					<td class="label">Full name:</td>
+					<td class="content">{{ profile.user.get_full_name }}</td>
 				</tr>
 				{% endif %}
 				{% if profile.country %}
@@ -48,6 +38,21 @@ context variables:
 				</tr>
 			</tbody>
 		</table>
+	</div>
+
+	<div class="box full">
+		<div class="header">{% if user.id == profile.user_id %}Your{% else %}{{ profile.user.username }}'s{% endif %} badges</div>
+		{% badges_for_user profile.user as badges %}
+		{% for badge in badges %}
+			{% cycle '<div class="full">' '' '' %}
+				<div class="badge">
+					<b>{{ badge.name }}</b>
+					<img src="{{ MEDIA_URL }}images/temporary-badge.png" alt="{{ badge.slug }}">
+					<div class="date">{{ badge.awarded_at }}</div>
+					<div class="desc">{{ badge.description }}</div>
+				</div>
+			{% if forloop.counter|divisibleby:3 or forloop.last %}</div>{% endif %}
+		{% endfor %}
 	</div>
 
 	<div class="box full">

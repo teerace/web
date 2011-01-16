@@ -1,4 +1,4 @@
-{% load menu %}
+{% load menu %}{% load gravatar %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +41,7 @@
 				{% endcomment %}
 				{% block submenu %}{% endblock submenu %}
 				<div id="user-box" class="right">
-					{% if user.is_authenticated %}Hi, <em><a href="{% url profile user.id %}">{{ user }}</a></em> <a class="button" href="{% url settings %}">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
+					{% if user.is_authenticated %}<img src="{% get_gravatar_url for emailvar size 20 %}" class="gravatar" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url profile user.id %}">{{ user.username }}</a> <a class="button" href="{% url settings %}">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
 					{% else %}
 					<a class="button" href="{% url login %}?next={{ request.path }}">Login</a> <a class="button" href="{% url register %}">Register</a>
 					{% endif %}
