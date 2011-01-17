@@ -42,12 +42,12 @@ context variables:
 		</p>
 		{% get_comment_count for entry as comment_count %}
 
-		<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / <a href="{{ entry.get_absolute_url }}">#</a></div>
+		<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / <a href="#comment-form">reply</a> / <a href="{{ entry.get_absolute_url }}">#</a></div>
 		<div id="comments">
 			{% get_threaded_comment_tree for entry as tree %}
 			{% for comment in tree %}
 				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
-					<div class="comment-permalink"><a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+					<div class="comment-permalink">{% if user.is_staff or user.is_superuser or user.id == comment.user_id %}<a href="{% url tc_comment_delete comment.id %}">delete</a> {% endif %}<a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
 						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 						<div class="comment-author-info">
@@ -63,10 +63,8 @@ context variables:
 					<div class="comment-reply">
 						<h2>Reply:</h2>
 						<form method="POST" action="{% get_comment_url entry comment %}">
-							<div class="form_field required"> 
-								<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea> 
-							</div>
-							<div class="form_field">
+							<div class="form_field required">
+								<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
 								<input type="submit" value="Submit comment">
 								<input type="submit" name="preview" value="Preview comment">
 							</div>
@@ -75,12 +73,10 @@ context variables:
 				</div>
 			{% endfor %}
 		</div>
-		<h2>Reply to Original:</h2>
+		<h2 id="comment-form">Reply to Original:</h2>
 		<form method="POST" action="{% get_comment_url entry %}">
-			<div class="form_field required"> 
-				<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea> 
-			</div>
 			<div class="form_field">
+				<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
 				<input type="submit" value="Submit comment">
 				<input type="submit" name="preview" value="Preview comment">
 			</div>
