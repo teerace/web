@@ -2,7 +2,7 @@ from zlib import crc32
 from django.conf import settings
 from django.db.models import Sum
 from accounts.models import UserProfile
-from race.models import Map, Run, BestRun
+from race.models import Map, MapType, Run, BestRun
 from celery.decorators import task
 from celery.task.sets import subtask
 from tml.tml import Teemap
@@ -15,6 +15,7 @@ def redo_ranks(run_id):
 		user_run = Run.objects.get(pk=run_id)
 	except Run.DoesNotExist:
 		logger.error("How is that possible? (Run doesn't exist)")
+		return False
 	map_obj = user_run.map
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run_id == user_run.id:
@@ -114,6 +115,7 @@ def retrieve_map_details(map_id):
 		map_obj = Map.objects.get(pk=map_id)
 	except Map.DoesNotExist:
 		logger.error("Are you kidding me? (map doesn't exist)")
+		return False
 
 	# I actually can use that! Thanks, erd!
 	teemap = Teemap().load(map_obj.map_file.path)
@@ -156,7 +158,7 @@ def retrieve_map_details(map_id):
 
 	if is_fastcap:
 		logger.info("Turning map into fastcap type...")
-		map_obj.map_type = Map.MAP_FASTCAP
+		map_obj.map_type = MapType.object.get(slug='fastcap')
 		logger.info("Creating a non-weapon twin...")
 		new_map = Map(
 			name="{0}-noweapon".format(map_obj.name),
@@ -164,7 +166,7 @@ def retrieve_map_details(map_id):
 			added_by=map_obj.added_by,
 			map_file=map_obj.map_file,
 			crc=map_obj.crc,
-			map_type=Map.MAP_FASTCAP_NO_WEAPONS,
+			map_type=MapType.object.get(slug='fastcap-no-weapons'),
 			has_unhookables=has_unhookables,
 			has_deathtiles=has_deathtiles,
 		)

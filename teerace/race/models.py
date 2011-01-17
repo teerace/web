@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Avg, Sum
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from race.validators import is_map_file
 from lib.file_storage import OverwriteStorage
 from annoying.functions import get_config
@@ -26,13 +27,7 @@ class Map(models.Model):
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8)
 
-	MAP_RACE, MAP_FASTCAP, MAP_FASTCAP_NO_WEAPONS = range(3)
-	MAP_TYPES = (
-		(MAP_RACE, "Race"),
-		(MAP_FASTCAP, "Fastcap"),
-		(MAP_FASTCAP_NO_WEAPONS, "Fastcap (no weapons)"),
-	)
-	map_type = models.IntegerField(choices=MAP_TYPES, default=MAP_RACE)
+	map_type = models.ForeignKey('MapType', default=1)
 	
 	has_unhookables = models.BooleanField(default=False)
 	has_deathtiles = models.BooleanField(default=False)
@@ -77,10 +72,22 @@ class Map(models.Model):
 		return ('race.views.map_detail', (), {'map_id': self.id})
 
 
+class MapType(models.Model):
+	slug = models.SlugField(max_length=20)
+	displayed_name = models.CharField(max_length=50)
+
+	def __unicode__(self):
+		return self.displayed_name
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.displayed_name)
+		super(MapType, self).save(*args, **kwargs)
+
+
 class Run(models.Model):
 	"""Representation of one map finish"""
 
-	map = models.ForeignKey(Map)
+	map = models.ForeignKey('Map')
 	server = models.ForeignKey('Server', related_name='runs')
 	user = models.ForeignKey(User)
 	nickname = models.CharField(max_length=24)
@@ -164,8 +171,8 @@ class Run(models.Model):
 
 class BestRun(models.Model):
 	user = models.ForeignKey(User)
-	map = models.ForeignKey(Map)
-	run = models.ForeignKey(Run)
+	map = models.ForeignKey('Map')
+	run = models.ForeignKey('Run')
 
 	# UGLY hack to make rank rebuilding relatively easy
 	time = models.FloatField()

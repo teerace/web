@@ -1,11 +1,11 @@
-import datetime
+from datetime import date, datetime, time, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.list_detail import object_list
 from accounts.models import UserProfile
 from blog.models import Entry
-from race.models import Map, Run, BestRun
+from race.models import Map, MapType, Run, BestRun, Server
 from race import badges
 from annoying.decorators import render_to
 from annoying.functions import get_config
@@ -26,17 +26,17 @@ def homepage(request):
 		user_runs = Run.objects.filter(user=request.user) \
 			.order_by('-created_at')[:5]
 	else:
-		user_runs = None
+		user_runs = []
 
-	today = datetime.date.today()
-	yesterday = today - datetime.timedelta(days=1)
+	today = date.today()
+	yesterday = today - timedelta(days=1)
 
 	runs_today = Run.objects.filter(created_at__range=
-		(datetime.datetime.combine(today, datetime.time.min),
-		datetime.datetime.combine(today, datetime.time.max)))
+		(datetime.combine(today, time.min),
+		datetime.combine(today, time.max)))
 	runs_yesterday = Run.objects.filter(created_at__range=
-		(datetime.datetime.combine(yesterday, datetime.time.min),
-		datetime.datetime.combine(yesterday, datetime.time.max)))
+		(datetime.combine(yesterday, time.min),
+		datetime.combine(yesterday, time.max)))
 
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_downloads = Map.objects.aggregate(
@@ -79,7 +79,8 @@ def ranks(request):
 
 def ranks_map_list(request):
 	maps = Map.objects.all().select_related()
-	return object_list(request, queryset=maps, paginate_by=get_config('ITEMS_PER_PAGE', 20),
+	return object_list(request, queryset=maps,
+		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/ranks_map_list.html')
 
 
@@ -96,13 +97,25 @@ def ranks_map_detail(request, map_id):
 	extra_context = {
 		'map': map_obj,
 	}
-	return object_list(request, queryset=best_runs, paginate_by=get_config('ITEMS_PER_PAGE', 20),
+	return object_list(request, queryset=best_runs,
+		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/ranks_map_detail.html', extra_context=extra_context)
 
 
-def map_list(request):
+def map_list(request, map_type=None):
 	maps = Map.objects.all().select_related()
-	return object_list(request, queryset=maps, paginate_by=get_config('ITEMS_PER_PAGE', 20))
+	filtered_type = None
+	if map_type:
+		filtered_type = get_object_or_404(MapType, slug=map_type)
+		maps = maps.filter(map_type__slug=map_type)
+	map_types = MapType.objects.all()
+	extra_context = {
+		'map_types': map_types,
+		'filtered_type': filtered_type,
+	}
+	return object_list(request, queryset=maps,
+		paginate_by=get_config('ITEMS_PER_PAGE', 20),
+		extra_context=extra_context)
 
 
 @render_to('race/map_detail.html')
@@ -130,7 +143,8 @@ def map_detail(request, map_id):
 @login_required
 def user_activity(request):
 	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
-	return object_list(request, queryset=latest_runs, paginate_by=get_config('ITEMS_PER_PAGE', 20),
+	return object_list(request, queryset=latest_runs,
+		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/user_activity.html')
 
 
@@ -155,3 +169,17 @@ def map_download(request, map_id):
 	map_obj.download_count += 1
 	map_obj.save()
 	return redirect(map_obj.get_download_url())
+
+# NOT JUST YET 
+# @render_to('race/live_stats.html')
+# def live_stats(request):
+# 	servers_online = Server.objects.filter(
+# 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
+# 	)
+# 	players_online = UserProfile.objects.filter(
+# 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
+# 	)
+# 	return {
+# 		'servers_online': servers_online,
+# 		'players_online': players_online,
+# 	}

@@ -5,7 +5,21 @@ context variables:
 	is_paginated
 	paginator
 	page_obj
+	map_types
+	filtered_type
 {% endcomment %}
+{% block submenu %}
+	<ul class="left">
+		<li><a href="{% url maps %}">All</a></li>{% for type in map_types %}<li><a href="{% url maps__type type.slug %}">{{ type.displayed_name }}</a></li>{% endfor %}
+	</ul>
+{% endblock submenu %}
+{% block breadcrumb %}
+	{{ block.super }}
+{% if filtered_type %}
+	{% load breadcrumb_tags %}
+	{% add_crumb filtered_type 'maps__type' filtered_type.slug %}
+{% endif %}
+{% endblock %}
 {% block content %}
 		{% if is_paginated %}
 			<div class="pagination">

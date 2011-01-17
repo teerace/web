@@ -31,7 +31,7 @@ class RunForm(forms.Form):
 	def clean_map_name(self):
 		map_name = self.cleaned_data.get('map_name')
 		if self.cleaned_data.get('no_weapons', False):
-			map_name = '{0}-noweapon'.format(map_name)
+			map_name = '{0}-no-weapons'.format(map_name)
 		try:
 			self.map = Map.objects.get(name=map_name)
 		except Map.DoesNotExist:
