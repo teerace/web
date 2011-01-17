@@ -30,7 +30,7 @@ context variables:
 				{% endif %}
 				<tr>
 					<td class="label">Total playtime:</td>
-					<td class="content">{{ profile.total_playtime|default:0|sectodur }}</td>
+					<td class="content">{{ profile.playtime|default:0|sectodur }}</td>
 				</tr>
 				<tr>
 					<td class="label">Date joined:</td>
