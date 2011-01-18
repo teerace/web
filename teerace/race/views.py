@@ -170,16 +170,17 @@ def map_download(request, map_id):
 	map_obj.save()
 	return redirect(map_obj.get_download_url())
 
-# NOT JUST YET 
-# @render_to('race/live_stats.html')
-# def live_stats(request):
-# 	servers_online = Server.objects.filter(
-# 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
-# 	)
-# 	players_online = UserProfile.objects.filter(
-# 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
-# 	)
-# 	return {
-# 		'servers_online': servers_online,
-# 		'players_online': players_online,
-# 	}
+
+@render_to('race/live_stats.html')
+def live_stats(request):
+	servers_online = Server.objects.filter(
+		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
+	)
+	players_online = UserProfile.objects.filter(
+		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
+	)
+	# TODO graph?
+	return {
+		'servers_online': servers_online,
+		'players_online': players_online,
+	}

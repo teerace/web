@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	servers_online
+	players_online
+{% endcomment %}
+{% block title %}live stats - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb "Live stats" 'live_stats' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Live stats</div>
+		{% for server in servers_online %}
+			{{ server }}
+			{% for player in server.players.all %}
+				{% if player.is_online %}
+					{{ player }}
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+		{{ servers_online|length }} server{{ servers_online|length|pluralize }} online
+		{{ players_online|length }} player{{ players_online|length|pluralize }} online
+	</div>
+{% endblock content %}

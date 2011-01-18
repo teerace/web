@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -7,11 +8,20 @@ from race.models import Map, Run, BestRun
 from django_countries import CountryField
 
 
+def generate_random_key():
+	return User.objects.make_random_password(length=32)
+
+
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, unique=True, related_name='profile')
+	api_token = models.CharField(max_length=32, default=generate_random_key,
+		unique=True)
 	registration_ip = models.IPAddressField(blank=True, null=True)
-	last_activity_at = models.DateTimeField(auto_now_add=True)
-	last_activity_ip = models.IPAddressField(blank=True, null=True)
+	last_connection_at = models.DateTimeField(auto_now_add=True)
+	last_played_server = models.ForeignKey('race.Server', blank=True, null=True,
+		related_name='players')
+	#last_activity_at = models.DateTimeField(auto_now_add=True)
+	#last_activity_ip = models.IPAddressField(blank=True, null=True)
 	country = CountryField(blank=True)
 	points = models.IntegerField(default=0)
 
@@ -38,6 +48,17 @@ class UserProfile(models.Model):
 			.exclude(is_active=False) \
 			.filter(profile__points__gte=self.points) \
 			.order_by('profile__points').count()
+
+	def update_connection(self, server):
+		self.last_connection_at = datetime.now()
+		self.last_played_server = server
+		self.save()
+
+	def is_online(self):
+		return self.last_connection_at >= datetime.now()-timedelta(minutes=10)
+
+	def playing_on(self):
+		return self.last_played_server if self.is_online() else None
 
 	def map_position(self, map_id):
 		raise NotImplementedError

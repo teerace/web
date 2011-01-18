@@ -27,9 +27,10 @@
 			{% url maps as url_maps %}
 			{% url ranks as url_ranks %}
 			{% url user_activity as url_activity %}{# hack #}
+			{% url live_stats as url_live %}
 			{% url faq-topic-list as url_help %}
 			<ul>
-				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li{% current request url_userlist %}{% current request "/profile/" %}><a href="{{ url_userlist }}">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li{% current request url_awards %}><a href="{{ url_awards }}">Awards</a></li><li{% current request url_ranks %}{% current request url_activity %}><a href="{{ url_ranks }}">Ranks</a></li><li{% current request url_help %}><a href="{{ url_help }}">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
+				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li{% current request url_userlist %}{% current request "/profile/" %}><a href="{{ url_userlist }}">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li{% current request url_awards %}><a href="{{ url_awards }}">Awards</a></li><li{% current request url_ranks %}{% current request url_activity %}><a href="{{ url_ranks }}">Ranks</a></li><li{% current request url_live %}><a href="{{ url_live }}">Live</a></li><li{% current request url_help %}><a href="{{ url_help }}">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
 			</ul>
 			<div id="submenu" class="full">
 				{% comment %}

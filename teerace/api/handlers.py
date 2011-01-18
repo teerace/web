@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.models import User
 from brabeion import badges
 from piston.handler import BaseHandler
@@ -86,6 +87,7 @@ class RunHandler(BaseHandler):
 			nickname = request.form.cleaned_data['nickname'],
 			time = request.form.cleaned_data['time'],
 		)
+		request.form.user.profile.update_connection(request.server)
 		run.save()
 		badges.possibly_award_badge("run_finished",
 			user=request.form.user, run=run)
@@ -400,9 +402,34 @@ class ServerHandler(BaseHandler):
 class PingHandler(BaseHandler):
 	"""
 	Used to check if server is online.
+	
+	Updates server and its users last connection time.
 	"""
 
-	allowed_methods = ('GET',)
+	allowed_methods = ('POST',)
 
-	def read(self, request):
+	@require_extended
+	def create(self, request):
+		"""
+		URL
+			**/api/1/ping/**
+		Shortdesc
+			Updates server and its users last connection time.
+		Arguments
+			- none
+		Data
+			- users - dictionary - (int)user_id:(string)nickname dictionary
+			- anonymous - tuple - a tuple with anonymous' nicknames
+		Result
+			- 200 - when everything went fine
+				PONG
+		"""
+		users_dict = request.data.get('users')
+		if users_dict:
+			del users_dict[0] # let's be certain not to include Anonymous
+			UserProfile.objects.filter(id__in=users_dict.keys()).update(
+				last_played_server=self.server,
+				last_connection_at=datetime.now()
+			)
+			# TODO save nicknames somewhere
 		return "PONG"
