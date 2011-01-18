@@ -4,7 +4,7 @@ from brabeion import badges
 from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
-from api.forms import ValidateUserForm, SkinUserForm
+from api.forms import ValidateUserForm, ValidateUserTokenForm, SkinUserForm
 from race import tasks
 from race.forms import RunForm
 from race.models import Run, Map, BestRun, Server
@@ -248,14 +248,26 @@ class UserHandler(BaseHandler):
 
 	@require_extended
 	@validate_mime(ValidateUserForm)
-	def _create_auth(self, request, *args, **kwargs):
+	def _create_auth_simple(self, request, *args, **kwargs):
 		key = request.server.secret_key
 		try:
-			password = AES(key).decrypt(request.form.cleaned_data['password'])
-			user = User.objects.get(username=request.form.cleaned_data['username'])
+			password = AES(key).decrypt(request.form.cleaned_data.get('password'))
+			user = User.objects.get(username=request.form.cleaned_data.get('username'))
 		except (TypeError, User.DoesNotExist):
 			return False
 		return user if user.check_password(password) else False
+
+	@require_extended
+	@validate_mime(ValidateUserTokenForm)
+	def _create_auth_token(self, request, *args, **kwargs):
+		key = request.server.secret_key
+		try:
+			user = User.objects.get(
+				profile__api_token=request.form.cleaned_data.get('api_token')
+			)
+		except User.DoesNotExist:
+			return False
+		return user
 
 	def create(self, request, action, *args, **kwargs):
 		"""
@@ -282,8 +294,26 @@ class UserHandler(BaseHandler):
 				False
 			- 200, when user data are correct
 				User object
+
+		URL
+			**/api/1/users/auth_token/**
+		Shortdesc
+			Handles user/password checking.
+		Longdesc
+			Returns User object or False, whether provided
+			api token passes the test.
+		Arguments
+			- none
+		Data
+			- api_token / string / user's API token
+		Result
+			- 200, when data fails validation
+				False
+			- 200, when user data are correct
+				User object
+
 		"""
-		allowed_actions = ['auth']
+		allowed_actions = ['auth', 'auth_token']
 		if action in allowed_actions:
 			return getattr(self, '_create_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
@@ -418,8 +448,8 @@ class PingHandler(BaseHandler):
 		Arguments
 			- none
 		Data
-			- users - dictionary - (int)user_id:(string)nickname dictionary
-			- anonymous - tuple - a tuple with anonymous' nicknames
+			- users / dictionary / (int)user_id:(string)nickname dictionary
+			- anonymous / tuple / a tuple with anonymous' nicknames
 		Result
 			- 200 - when everything went fine
 				PONG

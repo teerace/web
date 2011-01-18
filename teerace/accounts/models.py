@@ -14,6 +14,7 @@ def generate_random_key():
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, unique=True, related_name='profile')
+	# TODO change token every password change
 	api_token = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
 	registration_ip = models.IPAddressField(blank=True, null=True)

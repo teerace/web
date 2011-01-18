@@ -7,6 +7,10 @@ class ValidateUserForm(forms.Form):
 	password = forms.CharField()
 
 
+class ValidateUserTokenForm(forms.Form):
+	api_token = forms.CharField(min_length=32, max_length=32)
+
+
 class SkinUserForm(forms.Form):
 	skin_name = forms.CharField()
 	"""
