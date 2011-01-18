@@ -40,9 +40,10 @@ context variables:
 		</table>
 	</div>
 
+	{% badges_for_user profile.user as badges %}
+	{% if badges %}
 	<div class="box full">
 		<div class="header">{% if user.id == profile.user_id %}Your{% else %}{{ profile.user.username }}'s{% endif %} badges</div>
-		{% badges_for_user profile.user as badges %}
 		{% for badge in badges %}
 			{% cycle '<div class="full">' '' '' %}
 				<div class="badge">
@@ -54,6 +55,7 @@ context variables:
 			{% if forloop.counter|divisibleby:3 or forloop.last %}</div>{% endif %}
 		{% endfor %}
 	</div>
+	{% endif %}
 
 	<div class="box full">
 		<div class="header">{% if user.id == profile.user_id %}Your{% else %}{{ profile.user.username }}'s{% endif %} activity</div>
