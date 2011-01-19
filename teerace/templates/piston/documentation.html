@@ -10,10 +10,10 @@
 		<h1>API Documentation</h1>
 		
 		{% for doc in docs %}
-		
+		{% if doc.allowed_methods %}
 			<div class="header">{{ doc.name|cut:"Handler" }}</div>
 			<p>
-				{{ doc.get_doc|default:""|restructuredtext }}
+				{{ doc.doc|default:""|restructuredtext }}
 			</p>
 			
 			<p>
@@ -21,22 +21,20 @@
 			</p>
 					
 			<dl>
-				{% for method in doc.get_all_methods %}
-				
+				{% for method in doc.get_methods %}
 					<dt>
-						method <i>{{ method.name }}</i>({{ method.signature }}){% if method.stale %} <i>- inherited</i>{% else %}:{% endif %}
+						method <i>{{ method.name }}</i>({{ method.signature }}):
 						
 					</dt>				
 										
-					{% if method.get_doc %}
+					{% if method.doc %}
 						<dd>
-							{{ method.get_doc|default:""|restructuredtext }}
+							{{ method.doc|default:""|restructuredtext }}
 						<dd>
 					{% endif %}
-				
 				{% endfor %}
 			</dl>
-		
+		{% endif %}
 		{% endfor %}
 	</div>
 {% endblock content %}
