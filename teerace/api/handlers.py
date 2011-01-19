@@ -4,9 +4,9 @@ from brabeion import badges
 from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
-from api.forms import ValidateUserForm, ValidateUserTokenForm, SkinUserForm
+from api.forms import (ValidateUserForm, ValidateUserTokenForm,
+	SkinUserForm, RunForm)
 from race import tasks
-from race.forms import RunForm
 from race.models import Run, Map, BestRun, Server
 from lib.aes import AES
 from lib.piston_utils import rc, rcs, validate_mime
@@ -109,7 +109,7 @@ class RunHandler(BaseHandler):
 			- map_name / string / name of the finished map
 			- user_id / integer / ID of the user who finished the map
 			- nickname / string / currently used nickname by the user
-			- time / float / user result
+			- time / decimal / user result
 			- (optional) no_weapons / bool / Send True when run was finished
 				on a map with weapons disabled
 		Results

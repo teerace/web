@@ -1,5 +1,7 @@
 from django import forms
+from django.contrib.auth.models import User
 from accounts.models import UserProfile
+from race.models import Map, Run
 
 
 class ValidateUserForm(forms.Form):
@@ -29,3 +31,35 @@ class SkinUserForm(forms.Form):
 		if not skin_name in UserProfile.SKIN_LIST:
 			skin_name = 'default'
 		return skin_name
+
+
+class RunForm(forms.Form):
+	no_weapons = forms.BooleanField(required=False)
+	map_name = forms.CharField()
+	user_id = forms.FloatField()
+	nickname = forms.CharField()
+	time = forms.DecimalField(decimal_places=Run.DECIMAL_PLACES,
+		max_digits=Run.MAX_DIGITS)
+
+	def __init__(self, *args, **kwargs):
+		super(RunForm, self).__init__(*args, **kwargs)
+		self.user = None
+		self.map = None
+
+	def clean_map_name(self):
+		map_name = self.cleaned_data.get('map_name')
+		if self.cleaned_data.get('no_weapons', False):
+			map_name = '{0}-no-weapons'.format(map_name)
+		try:
+			self.map = Map.objects.get(name=map_name)
+		except Map.DoesNotExist:
+			raise forms.ValidationError("That map doesn't exist.")
+		return map_name
+
+	def clean_user_id(self):
+		user_id = self.cleaned_data.get('user_id')
+		try:
+			self.user = User.objects.get(pk=user_id)
+		except User.DoesNotExist:
+			raise forms.ValidationError("That user doesn't exist.")
+		return user_id

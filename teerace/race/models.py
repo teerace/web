@@ -91,7 +91,12 @@ class Run(models.Model):
 	server = models.ForeignKey('Server', related_name='runs')
 	user = models.ForeignKey(User)
 	nickname = models.CharField(max_length=24)
-	time = models.FloatField()
+	
+	DECIMAL_PLACES = get_config('RESULT_PRECISION', 3)
+	MAX_DIGITS = DECIMAL_PLACES + 9
+
+	time = models.DecimalField(max_digits=MAX_DIGITS,
+		decimal_places=DECIMAL_PLACES)
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	# denormalised data, also gives us primitive object history
