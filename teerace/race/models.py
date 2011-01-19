@@ -212,26 +212,15 @@ class Server(models.Model):
 	last_connection_at = models.DateTimeField(auto_now=True)
 	api_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
-	secret_key = models.CharField(max_length=32, default=generate_random_key,
-		unique=True)
 
 	def __unicode__(self):
 		return self.name
 
-	def _regenerate_key(self, field_name):
-		if not field_name in ('api_key', 'secret_key'):
-			raise ValueError("_regenerate_key() can only be used with"
-				" api_key/secret_key fields")
+	def regenerate_api_key(self):
 		new_key = generate_random_key()
-		setattr(self, field_name, new_key)
+		setattr(self, 'api_key', new_key)
 		self.save()
 		return new_key
-
-	def regenerate_api_key(self):
-		return self._regenerate_key('api_key')
-
-	def regenerate_secret_key(self):
-		return self._regenerate_key('secret_key')
 
 
 # DIRTY is this even allowed?

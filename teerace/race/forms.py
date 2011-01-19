@@ -10,6 +10,4 @@ class ServerAdminForm(forms.ModelForm):
 		widgets = {
 			'api_key': SubmitTextWidget(name='_regenerate_api',
 				label="Regenerate API key"),
-			'secret_key': SubmitTextWidget(name='_regenerate_secret',
-				label="Regenerate server secret"),
 		}

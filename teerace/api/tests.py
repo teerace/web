@@ -3,7 +3,7 @@ from django.test import TestCase as DjangoTestCase
 from django.test.client import Client
 from django.utils import simplejson
 from race.models import Map, Server
-from lib.aes import AES
+from lib.rsa import RSA
 
 class TestCase(DjangoTestCase):
 	fixtures = ['tests.json']
@@ -92,7 +92,7 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "test123",
 		}
-		data['password'] = AES(self.server.secret_key).encrypt(data['password'])
+		data['password'] = RSA().encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertTrue(simplejson.loads(response.content))
 
@@ -101,7 +101,7 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = AES(self.server.secret_key).encrypt(data['password'])
+		data['password'] = RSA().encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
@@ -110,7 +110,7 @@ class UserTestCase(TestCase):
 			'username': "toastclient", # O NOEZ
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = AES(self.server.secret_key).encrypt(data['password'])
+		data['password'] = RSA().encrypt(data['password'])
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 

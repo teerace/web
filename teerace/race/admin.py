@@ -23,20 +23,17 @@ class ServerAdmin(admin.ModelAdmin):
 	form = ServerAdminForm
 
 	def add_view(self, request):
-		self.exclude = ('api_key', 'secret_key')
+		self.exclude = ('api_key', )
 		return super(ServerAdmin, self).add_view(request)
 
 	def change_view(self, request, obj_id):
-		#self.readonly_fields = ('api_key', 'secret_key')
+		#self.readonly_fields = ('api_key', )
 		return super(ServerAdmin, self).change_view(request, obj_id)
 
 	def save_model(self, request, obj, form, change):
 		if '_regenerate_api' in request.POST:
 			obj.regenerate_api_key()
 			del request.POST['_regenerate_api']
-		if '_regenerate_secret' in request.POST:
-			obj.regenerate_secret_key()
-			del request.POST['_regenerate_secret']
 		obj.save()
 
 	def suspend_server(modeladmin, request, queryset):

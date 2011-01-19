@@ -1,5 +1,6 @@
 *.DS_Store
 *.pyc
+*.pem
 *.sqlite
 *.svn*
 *.tmproj

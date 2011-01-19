@@ -8,9 +8,10 @@ from api.forms import (ValidateUserForm, ValidateUserTokenForm,
 	SkinUserForm, RunForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
-from lib.aes import AES
+from lib.rsa import RSA
 from lib.piston_utils import rc, rcs, validate_mime
 from lib.rgb import rgblong_to_hex
+from annoying.functions import get_config
 
 
 class RunHandler(BaseHandler):
@@ -249,9 +250,10 @@ class UserHandler(BaseHandler):
 	@require_extended
 	@validate_mime(ValidateUserForm)
 	def _create_auth(self, request, *args, **kwargs):
-		key = request.server.secret_key
 		try:
-			password = AES(key).decrypt(request.form.cleaned_data.get('password'))
+			# we will grab the private key automatically from settings.py
+			password = request.form.cleaned_data.get('password')
+			password = RSA().decrypt(password.decode('base64'))
 			user = User.objects.get(username=request.form.cleaned_data.get('username'))
 		except (TypeError, User.DoesNotExist):
 			return False
@@ -260,7 +262,6 @@ class UserHandler(BaseHandler):
 	@require_extended
 	@validate_mime(ValidateUserTokenForm)
 	def _create_auth_token(self, request, *args, **kwargs):
-		key = request.server.secret_key
 		try:
 			user = User.objects.get(
 				profile__api_token=request.form.cleaned_data.get('api_token')
@@ -279,11 +280,11 @@ class UserHandler(BaseHandler):
 			Returns User object or False, whether provided
 			username and password pass the test.
 
-			Uses AES and base64 to receive password, remember of
-			using your server private key to generate cipher.
+			Uses RSA and base64 to receive password,
+			remember of using the public key you received to generate cipher.
 
 			Example of password encoding:
-				`AES(SECRET_KEY).encrypt(password)`
+				`RSA(PUBLIC_KEY).encrypt(password).encode('base64')`
 		Arguments
 			- none
 		Data
