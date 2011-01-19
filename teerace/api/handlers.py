@@ -248,7 +248,7 @@ class UserHandler(BaseHandler):
 
 	@require_extended
 	@validate_mime(ValidateUserForm)
-	def _create_auth_simple(self, request, *args, **kwargs):
+	def _create_auth(self, request, *args, **kwargs):
 		key = request.server.secret_key
 		try:
 			password = AES(key).decrypt(request.form.cleaned_data.get('password'))
