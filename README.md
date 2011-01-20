@@ -8,9 +8,9 @@ Modified server is also a part of this project, it is able to communicate with w
 
 This repository covers web application part only.
 
-Graph
+Network graph
 -----
-TODO Add the network graph
+![network graph](https://github.com/chaosk/teerace/raw/master/teerace/media/images/network_graph.png)
 
 License
 -------
