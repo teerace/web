@@ -22,8 +22,7 @@
         "model": "accounts.userprofile",
         "fields": {
             "user": "0",
-            "last_activity_at": "2010-12-13 01:53:28",
-            "last_activity_ip": null,
+            "last_connection_at": "2010-12-13 01:53:28",
             "points": "0",
             "registration_ip": null
         }

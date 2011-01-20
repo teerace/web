@@ -40,15 +40,15 @@ class ApiTest(TestCase):
 		response = self.client.put('/api/1/runs/detail/1/', {}, **self.extra)
 		self.assertEqual(response.status_code, 405)
 
+	def test_auth_no_key(self):
+		self.extra['HTTP_API_AUTH'] = ''
+		response = self.client.get('/api/1/runs/detail/1/', {}, **self.extra)
+		self.assertEqual(response.status_code, 401)
+
 	def test_auth_invalid_key(self):
 		self.extra['HTTP_API_AUTH'] = 'invalid'
 		response = self.client.get('/api/1/runs/detail/1/', {}, **self.extra)
 		self.assertEqual(response.status_code, 403)
-
-	def test_auth_wrong_key(self):
-		self.extra['HTTP_API_AUTH'] = 'invalid-but-has-correct-length12'
-		response = self.client.get('/api/1/runs/detail/1/', {}, **self.extra)
-		self.assertEqual(response.status_code, 401)
 
 
 class RunTest(TestCase):
@@ -92,7 +92,7 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "test123",
 		}
-		data['password'] = RSA().encrypt(data['password'])
+		data['password'] = RSA().encrypt(data['password']).encode('base64')
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertTrue(simplejson.loads(response.content))
 
@@ -101,7 +101,7 @@ class UserTestCase(TestCase):
 			'username': "testclient",
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = RSA().encrypt(data['password'])
+		data['password'] = RSA().encrypt(data['password']).encode('base64')
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
@@ -110,7 +110,7 @@ class UserTestCase(TestCase):
 			'username': "toastclient", # O NOEZ
 			'password': "toast123", # WHOOOPS, A TYPO!
 		}
-		data['password'] = RSA().encrypt(data['password'])
+		data['password'] = RSA().encrypt(data['password']).encode('base64')
 		response = self.client.post('/api/1/users/auth/', data, **self.extra)
 		self.assertFalse(simplejson.loads(response.content))
 
