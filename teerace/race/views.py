@@ -19,7 +19,7 @@ def homepage(request):
 	except Entry.DoesNotExist:
 		latest_entry = None
 
-	users =list(UserProfile.objects.exclude(user__is_active=False) \
+	users = list(UserProfile.objects.exclude(user__is_active=False) \
 		.select_related())
 
 	if request.user.is_authenticated():

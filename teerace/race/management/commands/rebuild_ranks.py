@@ -8,10 +8,10 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options):
 		maps = Map.objects.all()
-		for map in maps:
-			tasks.rebuild_map_rank.delay(map.id)
+		for map_obj in maps:
+			tasks.rebuild_map_rank.delay(map_obj.id)
 			self.stdout.write("Assigned rank rebuild of \"{0}\" map\n".format(
-				map.name)
+				map_obj.name)
 			)
 		tasks.rebuild_global_rank.delay()
 		self.stdout.write("Assigned global rank rebuild\n")

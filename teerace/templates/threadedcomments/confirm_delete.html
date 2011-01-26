@@ -1,3 +1,4 @@
+{% extends "base.html" %}{% load threadedcommentstags %}{% load gravatar %}
 {% comment %}	
 	:comment:
 	    The comment object to be deleted.
@@ -15,3 +16,30 @@
 	    a comment.  This is usually to be used in a hidden input field in a form
 	    that tells the view where to go next.
 {% endcomment %}
+{% block title %}delete confirmation - {{ block.super }}{% endblock title %}
+{% block content %}
+	<div id="comments" class="box full">
+		<div class="header">Are you sure you want to delete this comment?</div>
+		<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %} even" id="cm-{{ comment.id }}">
+			<div class="comment-permalink"></div>
+			<div class="comment-line">
+				<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
+				<div class="comment-author-info">
+					<span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
+					<span class="comment-date" title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
+				</div>
+			</div>
+			<div class="comment-content">
+				<p>
+					{% auto_transform_markup comment %}
+				</p>
+			</div>
+		</div>
+		<form method="POST" action="">
+			<div class="form_field required">
+				<input type="hidden" name="next" value="{{ next }}" id="next">
+				<input type="submit" value="Yes, remove it now, please.">
+			</div>
+		</form>
+	</div>
+{% endblock %}

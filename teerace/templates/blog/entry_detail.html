@@ -47,7 +47,7 @@ context variables:
 			{% get_threaded_comment_tree for entry as tree %}
 			{% for comment in tree %}
 				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
-					<div class="comment-permalink">{% if user.is_staff or user.is_superuser or user.id == comment.user_id %}<a href="{% url tc_comment_delete comment.id %}">delete</a> {% endif %}<a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+					<div class="comment-permalink">{% if user.is_staff or user.is_superuser or user.id == comment.user_id %}<a class="delete-link" href="{% url tc_comment_delete comment.id %}">delete</a> {% endif %}<a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
 						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 						<div class="comment-author-info">

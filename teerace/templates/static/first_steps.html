@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}get started - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Get started' 'first_steps' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="step{% if user.is_authenticated %} step-done{% endif %}" id="s-1">
+			<div class="header">1. Sign up to teerace</div>
+			<p>
+				You can still use our game servers and your results will be logged, but they will be saved anonymously.
+			</p>
+		</div>
+		<div class="step" id="s-2">
+			<div class="header">2. Install Raceclient <em>(optional)</em></div>
+			<p>
+				Raceclient by SushiTee is designed to work with our servers flawlessly, so it's preferred client to compete in Teerace.
+			</p>
+			<p>
+				Please note that the only officially supported clients are <a href="#FIXME">Raceclient</a> and <a href="http://teeworlds.com">official Teeworlds client</a>.
+			</p>
+		</div>
+		<div class="step" id="s-3">
+			<div class="header">3. Configure your client</div>
+			<p>
+				After logging into Teerace website, go to settings page.<br>
+				Locate &quot;API token&quot; tab and copy your token.<br>
+				Go to your teeworlds configuration file and add at the end of this file: `bind button_of_your_choice "rcon_password teerace:<em>your api key</em>`.
+			</p>
+		</div>
+		<div class="step" id="s-4">
+			<div class="header">4. No more steps, it's THAT simple!</div>
+		</div>
+	</div>
+{% endblock content %}

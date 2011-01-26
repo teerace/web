@@ -79,7 +79,7 @@ def register(request):
 	}
 
 
-@render_to('accounts/first_steps.html')
+@render_to('static/first_steps.html')
 def first_steps(request):
 	return {
 
@@ -95,11 +95,11 @@ def welcome(request):
 
 @render_to('accounts/userprofile_detail.html')
 def profile(request, user_id):
-	profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
+	user_profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
 	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
 
 	return {
-		'profile': profile,
+		'profile': user_profile,
 		'user_runs': user_runs,
 	}
 
@@ -111,6 +111,14 @@ def userlist(request):
 	return object_list(request, queryset=profiles,
 		paginate_by=get_config('ITEMS_PER_PAGE', 20))
 
+
+@login_required
+@render_to('accounts/api_token.html')
+def api_token(request):
+	# api_token is accessible in `user` template variable
+	return {
+
+	}
 
 @login_required
 @render_to('accounts/settings.html')

@@ -7,6 +7,7 @@ class RSA(object):
 	LENGTH = 2048
 	PUBLIC_EXPONENT = 3
 	public_key = private_key = None
+	rsa_public = rsa_private = None
 
 	PROJECT_DIR = get_config('PROJECT_DIR', '')
 	public_key_filename = PROJECT_DIR + '/public_key.pem'
@@ -47,6 +48,7 @@ class RSA(object):
 			raise AttributeError("public_key.pem file missing.")
 		return self.rsa_public.public_encrypt(string, self.PADDING)
 
+	@staticmethod
 	def dpc(*args):
 		""" dummy passphrase callback """
 		return 'teerace'

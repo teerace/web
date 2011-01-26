@@ -37,7 +37,7 @@ if DEBUG:
 else:
 	CACHE_BACKEND = 'johnny.backends.locmem://'# FIXME install memcached
 # some johnny settings
-JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_teerace'
+JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_teerace'
 
 # When you change this setting, you have to run
 # ./manage.py syncdb

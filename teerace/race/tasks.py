@@ -1,10 +1,8 @@
 from zlib import crc32
-from django.conf import settings
 from django.db.models import Sum
 from accounts.models import UserProfile
 from race.models import Map, MapType, Run, BestRun
 from celery.decorators import task
-from celery.task.sets import subtask
 from tml.tml import Teemap
 
 
@@ -31,16 +29,16 @@ def redo_ranks(run_id):
 			return
 	except IndexError:
 		pass
-	c = 0
+	i = 0
 	for run in ranked:
-		run.points = BestRun.SCORING[c]
+		run.points = BestRun.SCORING[i]
 		run.save()
 		# FIXME it's 3 AM, sorry for that
 		run.user.profile.points = BestRun.objects.filter(user=run.user).aggregate(
 			Sum('points')
 		)['points__sum']
 		run.user.profile.save()
-		c += 1
+		i += 1
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
@@ -56,10 +54,11 @@ def rebuild_map_rank(map_id):
 	# exclude anonymous and banned users from scoring
 	ranked = runs.exclude(user__is_active=False) \
 		.order_by('run__time')[:ranked_count]
+	i = 0
 	for run in ranked:
-		run.points = BestRun.SCORING[c]
+		run.points = BestRun.SCORING[i]
 		run.save()
-		c += 1
+		i += 1
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
@@ -161,7 +160,7 @@ def retrieve_map_details(map_id):
 		map_obj.map_type = MapType.object.get(slug='fastcap')
 		logger.info("Creating a non-weapon twin...")
 		new_map = Map(
-			name="{0}-noweapon".format(map_obj.name),
+			name="{0}-no-weapons".format(map_obj.name),
 			author=map_obj.author,
 			added_by=map_obj.added_by,
 			map_file=map_obj.map_file,

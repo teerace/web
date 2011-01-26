@@ -35,9 +35,9 @@ class Entry(models.Model):
 def post_comment_save(instance, **kwargs):
 	if kwargs['created']:
 		i = 0
-		c = instance.parent
-		while c != None:
-			c = c.parent
+		comment = instance.parent
+		while comment != None:
+			comment = comment.parent
 			i = i + 1
 			if i > DEFAULT_MAX_COMMENT_DEPTH:
 				instance.parent = instance.parent.parent

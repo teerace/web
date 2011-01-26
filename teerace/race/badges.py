@@ -1,15 +1,16 @@
 from brabeion import badges
-from brabeion.base import Badge as BadgeBase, BadgeAwarded, BadgeDetail
+from brabeion.base import Badge as BadgeBase, BadgeAwarded
+from lib.brabeion_utils import BadgeDetail
 from race.models import Map, Run
 
 
 class RunCountBadge(BadgeBase):
 	slug = 'runcount'
 	levels = [
-		BadgeDetail("Newcomer", "Finished one run"),
-		BadgeDetail("Experienced", "Finished 100 runs"),
-		BadgeDetail("Legend", "Finished 1000 runs"),
-		BadgeDetail("???", "Finished 5000 runs"),
+		BadgeDetail("Newcomer", "Finished one run", 10),
+		BadgeDetail("Experienced", "Finished 100 runs", 30),
+		BadgeDetail("Legend", "Finished 1000 runs", 70),
+		BadgeDetail("???", "Finished 5000 runs", 200),
 	]
 	events = [
 		'run_finished',
@@ -31,9 +32,9 @@ class RunCountBadge(BadgeBase):
 class PlaytimeBadge(BadgeBase):
 	slug = 'playtime'
 	levels = [
-		BadgeDetail("Happy Hour", "Accumulate one hour of time played"),
-		BadgeDetail("Hang 10", "Accumulate 10 hours of time played"),
-		BadgeDetail("Hooked", "Accumulate 24 hours of time played"),
+		BadgeDetail("Happy Hour", "Accumulate one hour of time played", 10),
+		BadgeDetail("Hang 10", "Accumulate 10 hours of time played", 30),
+		BadgeDetail("Hooked", "Accumulate 24 hours of time played", 70),
 	]
 	events = [
 		'run_finished',
@@ -57,7 +58,7 @@ class PlaytimeBadge(BadgeBase):
 class GlobetrotterBadge(BadgeBase):
 	slug = 'globetrotter'
 	levels = [
-		BadgeDetail("Globetrotter", "Complete 1 run on each map"),
+		BadgeDetail("Globetrotter", "Complete 1 run on each map", 20),
 	]
 	events = [
 		'run_finished',

@@ -413,10 +413,19 @@ td {
 			text-decoration: none;
 		}
 
+		#comments .comment-permalink .delete-link,
 		#comments .comment-permalink .reply-link {
 			font-size: 16px;
 			line-height: 50px;
 			vertical-align: middle;
+		}
+
+		#comments .comment-permalink a.delete-link {
+			color: #e99;
+		}
+
+		#comments .comment-permalink a.delete-link:hover {
+			color: #b66;
 		}
 
 	#comments .comment-content {

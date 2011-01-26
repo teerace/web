@@ -30,7 +30,8 @@ urlpatterns = patterns('',
 	url(r'^1/maps/(?P<action>\w+)/(?P<map_name>\w+)/$', map_resource,
 		name='api_maps'),
 	url(r'^1/maps/(?P<action>\w+)/$', map_resource, name='api_maps'),
-	url(r'^1/hello/$', ping_resource, name='api_ping'),
+	url(r'^1/ping/$', ping_resource, {'action': 'ping'}, name='api_ping_post'),
+	url(r'^1/hello/$', ping_resource, {'action': 'hello'}, name='api_ping'),
 	# automated documentation
 	url(r'^1/docs/$', documentation_view, name='api_docs'),
 )

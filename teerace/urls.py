@@ -1,11 +1,6 @@
-from django.conf.urls.defaults import (patterns, url, include,
-	handler404, handler500)
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib import admin
 import settings
-
-# FIXME add 404/500 handlers
-# handler404 = ''
-# handler500 = ''
 
 admin.autodiscover()
 

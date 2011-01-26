@@ -11,7 +11,6 @@ from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
 from lib.piston_utils import rc, rcs, validate_mime
 from lib.rgb import rgblong_to_hex
-from annoying.functions import get_config
 
 
 class RunHandler(BaseHandler):
@@ -430,17 +429,36 @@ class ServerHandler(BaseHandler):
 	fields = ('id', 'name', 'description')
 	model = Server
 
+
 class PingHandler(BaseHandler):
 	"""
-	Used to check if server is online.
+	GET: Used to check if server is online.
 	
-	Updates server and its users last connection time.
+	POST: Updates server and its users last connection time.
 	"""
 
-	allowed_methods = ('POST',)
+	allowed_methods = ('GET', 'POST',)
+
+	def read(self, request, action):
+		"""
+		URL
+			**/api/1/hello/**
+		Shortdesc
+			Allows gameserver to check if webapp is online.
+		Arguments
+			- none
+		Data
+			- none
+		Result
+			- 200 - always
+				PONG
+		"""
+		if action != 'hello':
+			return rc(rcs.BAD_REQUEST)
+		return "PONG"
 
 	@require_extended
-	def create(self, request):
+	def create(self, request, action):
 		"""
 		URL
 			**/api/1/ping/**
@@ -455,11 +473,14 @@ class PingHandler(BaseHandler):
 			- 200 - when everything went fine
 				PONG
 		"""
+		if action != 'ping':
+			return rc(rcs.BAD_REQUEST)
+
 		users_dict = request.data.get('users')
 		if users_dict:
 			del users_dict[0] # let's be certain not to include Anonymous
 			UserProfile.objects.filter(id__in=users_dict.keys()).update(
-				last_played_server=self.server,
+				last_played_server=request.server,
 				last_connection_at=datetime.now()
 			)
 			# TODO save nicknames somewhere

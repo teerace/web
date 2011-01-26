@@ -7,11 +7,39 @@
 {% endblock %}
 {% block content %}
 	<div class="box full">
-		Content needed:
-		<ul>
-			<li>Basic info about Teerace and software used</li>
-			<li>List of contributors</li>
-			<li>Team</li>
-		</ul>
+		<div class="header">What is Teerace?</div>
+		<p>
+			#FIXME
+		</p>
+		
+		<div class="header">Who runs Teerace?</div>
+		<p>
+			#FIXME
+		</p>
+
+		<div class="header">What builds Teerace?</div>
+		<p>
+			Teerace depends on many 3rd-party projects. Here's complete list of them:
+			<ul>
+				<li><strong>brabeion</strong> - badges, unleashed</li>
+				<li><strong>celery</strong> - distributed task queue</li>
+				<li><strong>django</strong> - PONIES &lt;3</li>
+				<li><strong>django-admin-tools</strong> - pretty admin site</li>
+				<li><strong>django-annoying</strong> - a must-have for fixing django annoying things</li>
+				<li><strong>django-countries</strong> - provides country list</li>
+				<li><strong>django-crumbs</strong> - breadcrumbs solution</li>
+				<li><strong>django-faq</strong> - simple FAQ app</li>
+				<li><strong>django-piston</strong> - RESTful API framework</li>
+				<li><strong>django-threadedcomments</strong> - we just got served</li>
+				<li><strong>johnny-cache</strong> - low-level caching framework</li>
+				<li><strong>M2Crypto</strong> - Python encryption module, Teerace uses it for encrypting connection with its gameservers</li>
+				<li><strong>Markdown</strong> - ultimate markup language</li>
+				<li><strong>memcached</strong> - cache backend</li>
+				<li><strong>nginx</strong> - high-performance HTTP server</li>
+				<li><strong>rabbitmq</strong> - AMQP messaging system, backend for celery</li>
+				<li><strong>tml</strong> - Teeworlds map library, map data extraction and screenshot creation</li>
+				<li><strong>uwsgi</strong> - application container server</li>
+			</ul>
+		</p>
 	</div>
 {% endblock content %}

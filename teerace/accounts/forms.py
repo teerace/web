@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 from accounts.models import UserProfile
 from annoying.functions import get_config
 from recaptcha_works.fields import RecaptchaField
-from django_countries import countries
+
 
 class RegisterForm(forms.Form):
 	username = forms.RegexField(label="Username", regex=r'^\w+$', min_length=2,

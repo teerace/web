@@ -41,9 +41,9 @@ context variables:
 		{% for map in object_list %}
 		<div class="box map {% cycle 'left' 'right' %}">
 			<div class="right">
-				{% if not map.grenade_count %}<img src="{{ MEDIA_URL }}images/grenade.png" alt="grenade" title="There is grenade launcher">{% endif %}
-				{% if not map.has_unhookables %}<img src="{{ MEDIA_URL }}images/unhookable.png" alt="unhookable" title="There are unhookable tiles">{% endif %}
-				{% if not map.has_deathtiles %}<img src="{{ MEDIA_URL }}images/deathtiles.png" alt="deathtiles" title="There are death tiles">{% endif %}
+				{% if not map.grenade_count %}<img src="{{ MEDIA_URL }}images/tiles/grenade.png" alt="grenade" title="There is grenade launcher">{% endif %}
+				{% if not map.has_unhookables %}<img src="{{ MEDIA_URL }}images/tiles/unhookable.png" alt="unhookable" title="There are unhookable tiles">{% endif %}
+				{% if not map.has_deathtiles %}<img src="{{ MEDIA_URL }}images/tiles/deathtiles.png" alt="deathtiles" title="There are death tiles">{% endif %}
 			</div>
 
 			<div class="header">

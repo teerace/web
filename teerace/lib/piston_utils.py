@@ -4,7 +4,7 @@ from django.contrib.auth.models import AnonymousUser
 from race.models import Server
 from piston.decorator import decorator
 from piston.resource import Resource as PistonResource
-from piston.utils import rc, FormValidationError
+from piston.utils import FormValidationError
 
 
 class APIKeyAuthentication(object):

@@ -36,11 +36,11 @@ class ServerAdmin(admin.ModelAdmin):
 			del request.POST['_regenerate_api']
 		obj.save()
 
-	def suspend_server(modeladmin, request, queryset):
+	def suspend_server(self, request, queryset):
 		queryset.update(is_active=False)
 	suspend_server.short_description = "Suspend selected servers"
 
-	def reactivate_server(modeladmin, request, queryset):
+	def reactivate_server(self, request, queryset):
 		queryset.update(is_active=True)
 	reactivate_server.short_description = "Reactivate selected servers"
 

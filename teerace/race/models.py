@@ -158,8 +158,8 @@ class Run(models.Model):
 			best_run.save()
 
 	def __unicode__(self):
-		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user, self.time,
-			precision=get_config('RESULT_PRECISION', 3))
+		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user,
+			self.time, precision=get_config('RESULT_PRECISION', 3))
 
 	def save(self, *args, **kwargs):
 		# imitate overriding create()

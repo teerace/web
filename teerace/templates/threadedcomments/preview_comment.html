@@ -1,3 +1,4 @@
+{% extends "base.html" %}{% load gravatar %}{% load markup %}
 {% comment %}
 	:next:
 	    The page to which the user should be redirected after successfully posting
@@ -12,3 +13,34 @@
 	    If the parameters in POST validate correctly with the appropriate form, the
 	    unsaved comment will be passed in through this variable.
 {% endcomment %}
+{% block title %}comment preview - {{ block.super }}{% endblock title %}
+{% block content %}
+	<div id="comments" class="box full">
+		<div class="header">Comment preview</div>
+		<div class="comment {% if user.is_staff or user.is_superuser %}staff {% endif %}even" id="cm-0">
+			<div class="comment-permalink"></div>
+			<div class="comment-line">
+				<img src="{{ user.email|gravatar }}" alt="Gravatar for {{ user.get_full_name|default:user }}">
+				<div class="comment-author-info">
+					<span class="comment-author"><a href="{{ user.get_absolute_url }}">{{ user.get_real_name|default:user }}</a></span>
+					<span class="comment-date" title="Right now">few moments ago</span>
+				</div>
+			</div>
+			<div class="comment-content">
+				<p>
+					{{ comment|default_if_none:"**Comment field is required**"|markdown }}
+				</p>
+			</div>
+		</div>
+		<div class="comment-reply" style="display:block;">
+			<form method="POST" action="">
+				<div class="form_field required">
+					<textarea id="id_comment" rows="10" cols="40" name="comment">{{ comment|default_if_none:"" }}</textarea>
+					<input type="hidden" name="next" value="{{ next }}" id="next">
+					<input type="submit" value="Submit comment">
+					<input type="submit" name="preview" value="Preview comment">
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}
