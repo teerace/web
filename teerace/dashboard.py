@@ -57,7 +57,7 @@ class CustomIndexDashboard(Dashboard):
 		# append a feed module
 		self.children.append(modules.Feed(
 			title="Teerace development news",
-			feed_url='http://github.com/chaosk/teerace/commits/master.atom',
+			feed_url='https://github.com/chaosk/teerace/commits/master.atom',
 			limit=5
 		))
 
@@ -72,7 +72,7 @@ class CustomIndexDashboard(Dashboard):
 				},
 				{
 					'title': "Teerace GitHub issues",
-					'url': 'http://github.com/chaosk/teerace/issues',
+					'url': 'https://github.com/chaosk/teerace/issues',
 					'external': True,
 				},
 				{
