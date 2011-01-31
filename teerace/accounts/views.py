@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import (authenticate, login as auth_login,
 	logout as auth_logout)
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm)
@@ -19,10 +20,10 @@ def login(request):
 		return redirect(reverse('home'))
 
 	next_uri = request.REQUEST.get('next', get_config('LOGIN_REDIRECT_URL',
-		reverse('accounts.views.welcome')))
+		reverse('welcome')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):
-		next_uri = get_config('LOGIN_REDIRECT_URL', reverse('accounts.views.welcome'))
+		next_uri = get_config('LOGIN_REDIRECT_URL', reverse('welcome'))
 
 	login_form = LoginForm()
 
@@ -53,11 +54,11 @@ def register(request):
 		return redirect(reverse('home'))
 
 	next_uri = request.REQUEST.get('next', get_config('FIRST_LOGIN_REDIRECT_URL',
-		reverse('accounts.views.first_steps')))
+		reverse('first_steps')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):
 		next_uri = get_config('FIRST_LOGIN_REDIRECT_URL',
-			reverse('accounts.views.first_steps'))
+			reverse('first_steps'))
 
 	register_form = RegisterForm()
 
@@ -110,6 +111,16 @@ def userlist(request):
 	profiles = UserProfile.objects.exclude(user__is_active=False).select_related()
 	return object_list(request, queryset=profiles,
 		paginate_by=get_config('ITEMS_PER_PAGE', 20))
+
+
+@render_to('accounts/staff_list.html')
+def staff_list(request):
+	staff_members = UserProfile.objects.filter(
+		Q(user__is_staff=True) | Q(user__is_superuser=True)
+	)
+	return {
+		'staff_members': staff_members,
+	}
 
 
 @login_required

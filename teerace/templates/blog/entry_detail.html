@@ -33,7 +33,7 @@ context variables:
 {% block content %}
 	<div id="blog" class="box full">
 		<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-		<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
+		<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by.get_full_name }}</span></div>
 		<p>
 			{{ entry.excerpt_html|safe }}
 		</p>
