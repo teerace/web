@@ -13,4 +13,14 @@ class EntryAdmin(admin.ModelAdmin):
 			obj.created_by = request.user
 		obj.save()
 
+	def publish_entry(self, request, queryset):
+		queryset.update(is_published=True)
+	publish_entry.short_description = "Publishes selected entries"
+
+	def unpublish_entry(self, request, queryset):
+		queryset.update(is_published=False)
+	unpublish_entry.short_description = "Unpulishes selected entries"
+
+	actions = [publish_entry, unpublish_entry]
+
 admin.site.register(Entry, EntryAdmin)
