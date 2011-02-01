@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}403 - {{ block.super }}{% endblock title %}
+{% block content %}
+	<div class="box full">
+		<h1>Ooop! You're not allowed to see this!</h1>
+
+		<p>Sorry but you don't have permission to access {{ request.path }} on this server!</p>
+	</div>
+{% endblock content %}
+<!-- Internet Explorer and Chrome(ium) has a "feature" called "friendly error messages" that defaults to being turned on, where it detects certain remote error conditions (among them, 404s) such that the response (presumably an error descriptor page) is less than some size (512 bytes for 404s). If that happens, it replaces the remote error message with a more "friendly" description of the error, which obscures the server's error message. Historically, this is because Apache's and IIS's error messages are famously non-helpful, and were less than that minimum size. This unnecessarily verbose comment serves only to cause this page to go over that minimum size, so that we can force our content to be shown to IE users with "friendly error messages", even on braindead browsers. -->
