@@ -10,7 +10,6 @@ urlpatterns = patterns('accounts.views',
 	url(r'^user/api_token/$', 'api_token', name='api_token'),
 	url(r'^getstarted/$', 'first_steps', name='first_steps'),
 	url(r'^profile/(?P<user_id>\d+)/$', 'profile', name='profile'),
-	url(r'^staff/$', 'staff_list', name='staff_list'),
 ) + patterns('django.contrib.auth.views',
 	(r'^password_reset/$', 'password_reset', {'template_name':
 		'accounts/password_reset.html',
