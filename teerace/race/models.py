@@ -92,6 +92,11 @@ class Run(models.Model):
 	user = models.ForeignKey(User)
 	nickname = models.CharField(max_length=24)
 	
+	# yep, 24 semicolons and 25 time decimals,
+	# which length is MAX_DIGITS + decimal separator (.)
+	# 24 + 25 * (12 + 1) = 349
+	checkpoints = models.CharField(max_length=349, blank=True)
+	
 	DECIMAL_PLACES = get_config('RESULT_PRECISION', 3)
 	MAX_DIGITS = DECIMAL_PLACES + 9
 
@@ -156,6 +161,9 @@ class Run(models.Model):
 		if not created:
 			best_run.run = self
 			best_run.save()
+
+	def checkpoints_list(self):
+		return self.checkpoints.split(';')
 
 	def __unicode__(self):
 		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user,

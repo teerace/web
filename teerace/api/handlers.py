@@ -15,7 +15,7 @@ from lib.rgb import rgblong_to_hex
 
 class RunHandler(BaseHandler):
 	allowed_methods = ('GET', 'POST')
-	fields = ('id', 'user', 'map', 'time')
+	fields = ('id', 'user', 'map', 'time', 'checkpoints_list')
 	model = Run
 
 	@classmethod
@@ -86,6 +86,7 @@ class RunHandler(BaseHandler):
 			user = request.form.user,
 			nickname = request.form.cleaned_data['nickname'],
 			time = request.form.cleaned_data['time'],
+			checkpoints = request.form.cleaned_data['checkpoints'],
 		)
 		request.form.user.profile.update_connection(request.server)
 		run.save()
@@ -110,6 +111,7 @@ class RunHandler(BaseHandler):
 			- user_id / integer / ID of the user who finished the map
 			- nickname / string / currently used nickname by the user
 			- time / decimal / user result
+			- checkpoints / string / semicolon-delimited (;) list of checkpoint times
 			- (optional) no_weapons / bool / Send True when run was finished
 				on a map with weapons disabled
 		Results

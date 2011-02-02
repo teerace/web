@@ -41,6 +41,7 @@ class RunForm(forms.Form):
 	nickname = forms.CharField()
 	time = forms.DecimalField(decimal_places=Run.DECIMAL_PLACES,
 		max_digits=Run.MAX_DIGITS)
+	checkpoints = forms.CharField(required=False)
 
 	def __init__(self, *args, **kwargs):
 		super(RunForm, self).__init__(*args, **kwargs)
