@@ -1,6 +1,6 @@
 recursive-include teerace/media *
 recursive-include teerace/templates *
 
-include LICENSE
+include LICENCE
 include README
 include *.txt
