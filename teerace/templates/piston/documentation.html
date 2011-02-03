@@ -6,27 +6,29 @@
 	{% add_crumb 'API documentation' 'api_docs' %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
+	<div class="box full" id="docs">
 		<h1>API Documentation</h1>
-		
+
 		{% for doc in docs %}
 		{% if doc.allowed_methods %}
-			<div class="header">{{ doc.name|cut:"Handler" }}</div>
-			<p>
+			<div class="header">
+				{{ doc.name|cut:"Handler" }}
+			</div>
+
+			<div class="doc">
 				{{ doc.doc|default:""|restructuredtext }}
-			</p>
-			
-			<p>
+			</div>
+
+			<div class="allowed-methods">
 				Accepted methods: {% for meth in doc.allowed_methods %}<b>{{ meth }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}
-			</p>
-					
+			</div>
+
 			<dl>
 				{% for method in doc.get_methods %}
-					<dt>
-						method <i>{{ method.name }}</i>({{ method.signature }}):
-						
-					</dt>				
-										
+					<dt class="name">
+						{{ method.name }}(<i>{{ method.signature }}</i>)
+					</dt>
+
 					{% if method.doc %}
 						<dd>
 							{{ method.doc|default:""|restructuredtext }}
