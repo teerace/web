@@ -64,19 +64,6 @@ context variables:
 					<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
 				</tr>
 				{% endfor %}
-<!--
-				{% for checkpoint in map.best_score.checkpoints_list %}
-				{% if map.best_score.checkpoints_list|length > 2 and forloop.counter == 2 %}
-				<tr class="more">
-					<td colspan="2" class="content"><a href="">more ↓</a></td>
-				</tr>
-				{% endif %}
-				<tr class="checklist-{% if forloop.first %}first{% else %}{% if forloop.last %}last{% else %}{{ forloop.counter }}{% endif %}{% endif %}">
-					<td class="label">Checkpoint {{ forloop.counter }}</td>
-					<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
-				</tr>
-				{% endfor %}
--->
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>
