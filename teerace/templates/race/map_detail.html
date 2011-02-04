@@ -12,6 +12,26 @@ context variables:
 	{% load breadcrumb_tags %}
 	{% add_crumb map.name 'map_detail' map.id %}
 {% endblock %}
+{% block extra_head %}
+	{{ block.super }}
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript">
+		function ckp() {
+			var more = $('.more');
+			if (more.text() == 'Show') {
+				$('.more').text('Hide');
+				$('tr[class^="checklist"]').css('display', 'table-row');
+			} else {
+				$('.more').text('Show');
+				$('tr[class^="checklist"]').css('display', 'none');
+			}
+			return false;
+		}
+		$(document).ready(function(){
+			$('tr[class^="checklist"]').hide();
+		});
+	</script>
+{% endblock extra_head %}
 {% block content %}
 	<div class="box full">
 		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
@@ -34,12 +54,29 @@ context variables:
 					<td class="label">Best result</td>
 					<td class="content">{{ map.best_score.time|floatformat:settings.RESULT_PRECISION }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
+				<tr>
+					<td class="label">Checkpoints</td>
+					<td class="content"><a class="more" href="javascript:ckp()">Show</a></td>
+				</tr>
 				{% for checkpoint in map.best_score.checkpoints_list %}
-					<tr>
-						<td class="label">{% if forloop.first %}Checkpoints {% endif %}{{ forloop.counter }}</td>
-						<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
-					</tr>
+				<tr class="checklist-{{ forloop.counter }}">
+					<td class="label">Checkpoint {{ forloop.counter }}</td>
+					<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
+				</tr>
 				{% endfor %}
+<!--
+				{% for checkpoint in map.best_score.checkpoints_list %}
+				{% if map.best_score.checkpoints_list|length > 2 and forloop.counter == 2 %}
+				<tr class="more">
+					<td colspan="2" class="content"><a href="">more ↓</a></td>
+				</tr>
+				{% endif %}
+				<tr class="checklist-{% if forloop.first %}first{% else %}{% if forloop.last %}last{% else %}{{ forloop.counter }}{% endif %}{% endif %}">
+					<td class="label">Checkpoint {{ forloop.counter }}</td>
+					<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
+				</tr>
+				{% endfor %}
+-->
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>

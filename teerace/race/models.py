@@ -28,7 +28,7 @@ class Map(models.Model):
 	crc = models.CharField(max_length=8)
 
 	map_type = models.ForeignKey('MapType', default=1)
-	
+
 	has_unhookables = models.BooleanField(default=False)
 	has_deathtiles = models.BooleanField(default=False)
 	shield_count = models.IntegerField(default=0)
@@ -91,12 +91,12 @@ class Run(models.Model):
 	server = models.ForeignKey('Server', related_name='runs')
 	user = models.ForeignKey(User)
 	nickname = models.CharField(max_length=24)
-	
+
 	# yep, 24 semicolons and 25 time decimals,
 	# which length is MAX_DIGITS + decimal separator (.)
 	# 24 + 25 * (12 + 1) = 349
 	checkpoints = models.CharField(max_length=349, blank=True)
-	
+
 	DECIMAL_PLACES = get_config('RESULT_PRECISION', 3)
 	MAX_DIGITS = DECIMAL_PLACES + 9
 
@@ -163,7 +163,9 @@ class Run(models.Model):
 			best_run.save()
 
 	def checkpoints_list(self):
-		return self.checkpoints.split(';')
+		li = self.checkpoints.split(';')
+		li.sort()
+		return li
 
 	def __unicode__(self):
 		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user,
@@ -209,7 +211,7 @@ class BestRun(models.Model):
 class Server(models.Model):
 	"""
 	Representation of Teeworlds server hooked up to Teerace
-	
+
 	We use maintainer account to interact with API.
 	"""
 
