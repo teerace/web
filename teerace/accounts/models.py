@@ -50,6 +50,17 @@ class UserProfile(models.Model):
 			.filter(profile__points__gte=self.points) \
 			.order_by('profile__points').count()
 
+	def map_position(self, map_name):
+		# first, retrieve players map points
+		try:
+			map_obj = Map.objects.get(name=map_name)
+			player_points = BestRun.objects.get(map=map_obj, user=self.user).points
+		except (Map.DoesNotExist, BestRun.DoesNotExist):
+			return None
+		# now, count all players with equal/greater point count
+		return BestRun.objects.filter(map=map_obj).exclude(points__lte=0) \
+			.exclude(user__is_active=False).filter(points__gte=player_points).count()
+
 	def update_connection(self, server):
 		self.last_connection_at = datetime.now()
 		self.last_played_server = server
@@ -60,9 +71,6 @@ class UserProfile(models.Model):
 
 	def playing_on(self):
 		return self.last_played_server if self.is_online() else None
-
-	def map_position(self, map_id):
-		raise NotImplementedError
 
 	def best_score(self, map_id):
 		try:
