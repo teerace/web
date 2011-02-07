@@ -38,14 +38,14 @@ class CustomIndexDashboard(Dashboard):
 		# append an app list module for "Applications"
 		self.children.append(modules.AppList(
 			title="Applications",
-			exclude_list=('django.contrib', 'piston', 'djcelery',
+			exclude=('django.contrib', 'piston', 'djcelery',
 				'threadedcomments.models.FreeThreadedComment'),
 		))
 
 		# append an app list module for "Administration"
 		self.children.append(modules.AppList(
 			title="Administration",
-			include_list=('django.contrib',),
+			models=('django.contrib',),
 		))
 
 		# append a recent actions module
@@ -107,7 +107,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
 		# append a model list module
 		self.children.append(modules.ModelList(
 			title=self.app_title,
-			include_list=self.models,
+			models=self.models,
 		))
 
 		# append a recent actions module
