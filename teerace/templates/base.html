@@ -13,9 +13,6 @@
 <body>
 	{% url home as url_home %}
 	<div id="header">
-<!--
-			<h1><a href="{{ url_home }}"><span class="green">tee</span><span class="brown">race</span></a></h1>
--->
 			<a href="{{ url_home }}"><img src="/media/images/teeracelogo.png" alt="teerace" title="teerace logo"></a>
 	</div>
 
@@ -42,7 +39,7 @@
 				{% endcomment %}
 				{% block submenu %}{% endblock submenu %}
 				<div id="user-box" class="right">
-					{% if user.is_authenticated %}<img src="{% get_gravatar_url for user.email size 20 %}" class="gravatar" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url profile user.id %}">{{ user.username }}</a> <a class="button" href="{% url settings %}">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
+					{% if user.is_authenticated %}<img src="{% gravatar_for_user user 20 %}" class="gravatar" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url profile user.id %}">{{ user.username }}</a> <a class="button" href="{% url settings %}">Settings</a> <a class="button" href="{% url logout %}?next={{ request.path }}">Logout</a>
 					{% else %}
 					<a class="button" href="{% url login %}?next={{ request.path }}">Login</a> <a class="button" href="{% url register %}">Register</a>
 					{% endif %}
@@ -61,11 +58,11 @@
 
 			{% if messages %}
 			<div id="messages">
-			    {% for message in messages %}
-			    <div{% if message.tags %} class="{{ message.tags }} box full"{% endif %}>
+				{% for message in messages %}
+				<div{% if message.tags %} class="{{ message.tags }} box full"{% endif %}>
 					<p>{{ message }}</p>
 				</div>
-			    {% endfor %}
+				{% endfor %}
 			</div>
 			{% endif %}
 

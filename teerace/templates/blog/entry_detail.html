@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}{% load threadedcommentstags %}{% load gravatar %}
+{% extends "blog/base.html" %}{% load comments %}{% load threadedcomments_tags %}{% load markup %}{% load gravatar %}
 {% comment %}
 context variables:
 	entry
@@ -33,53 +33,55 @@ context variables:
 {% block content %}
 	<div id="blog" class="box full">
 		<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-		<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by.get_full_name }}</span></div>
+		<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by.get_full_name|default:entry.created_by }}</span></div>
 		<p>
 			{{ entry.excerpt_html|safe }}
 		</p>
 		<p id="read-more">
 			{{ entry.content_html|safe }}
 		</p>
-		{% get_comment_count for entry as comment_count %}
 
+		{% if not entry.enable_comments %}
+		<div class="comment-count">comments disabled / <a href="{{ entry.get_absolute_url }}">#</a></div>
+		{% else %}
+		{% get_comment_count for entry as comment_count %}
 		<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / <a href="#comment-form">reply</a> / <a href="{{ entry.get_absolute_url }}">#</a></div>
 		<div id="comments">
-			{% get_threaded_comment_tree for entry as tree %}
-			{% for comment in tree %}
+			{% get_comment_list for entry as comment_list %}
+			{% for comment in comment_list|fill_tree|annotate_tree %}
+				{% if comment.is_removed %}
+				<div class="comment depth-{{ comment.depth }} {% cycle 'even' 'odd' %} removed" id="cm-{{ comment.id }}">
+					<div class="comment-content">
+						<p>
+							This comment has been removed by the site staff
+						</p>
+					</div>
+				</div>
+				{% else %}
 				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
-					<div class="comment-permalink">{% if user.is_staff or user.is_superuser or user.id == comment.user_id %}<a class="delete-link" href="{% url tc_comment_delete comment.id %}">delete</a> {% endif %}<a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+					<div class="comment-permalink">{% if user.is_staff or user.is_superuser %}<a class="delete-link" href="{% url comments-delete comment.id %}">delete</a> {% endif %}<a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
-						<img src="{{ comment.user.email|gravatar }}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
+						<img src="{% gravatar_for_user comment.user 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 						<div class="comment-author-info">
 							<span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
-							<span class="comment-date" title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} ago</span>
+							<span class="comment-date" title="{{ comment.submit_date }}">{{ comment.submit_date|timesince }} ago{% if user.is_staff or user.is_superuser %} / {{ comment.ip_address }}{% endif %}</span>
 						</div>
 					</div>
 					<div class="comment-content">
 						<p>
-							{% auto_transform_markup comment %}
+							{{ comment.comment|markdown }}
 						</p>
 					</div>
 					<div class="comment-reply">
 						<h2>Reply:</h2>
-						<form method="POST" action="{% get_comment_url entry comment %}">
-							<div class="form_field required">
-								<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
-								<input type="submit" value="Submit comment">
-								<input type="submit" name="preview" value="Preview comment">
-							</div>
-						</form>
+						{% render_comment_form for entry with comment.id %}
 					</div>
 				</div>
+				{% endif %}
 			{% endfor %}
 		</div>
 		<h2 id="comment-form">Reply to Original:</h2>
-		<form method="POST" action="{% get_comment_url entry %}">
-			<div class="form_field">
-				<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
-				<input type="submit" value="Submit comment">
-				<input type="submit" name="preview" value="Preview comment">
-			</div>
-		</form>
+		{% render_comment_form for entry %}
+		{% endif %}
 	</div>
 {% endblock %}

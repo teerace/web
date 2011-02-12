@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load comments %}
+{% block topic %}Thanks for commenting.{% endblock topic %}
+{% block extra_head %}
+	<!-- Sorry, I don't like it either. -->
+	<meta http-equiv="refresh" content="2;url={% get_comment_permalink comment "#cm-%(id)s" %}">
+{% endblock extra_head %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Thank you for your comment.</div>
+		
+		You will be redirected back shortly. If it won't happen in next few seconds, <a href="{% get_comment_permalink comment "#cm-%(id)s" %}">click here</a>.
+	</div>
+{% endblock content %}

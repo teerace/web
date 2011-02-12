@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load human_duration %}{% load race_diff %}{% load threadedcommentstags %}
+{% extends "base.html" %}{% load human_duration %}{% load race_diff %}{% load comments %}
 {% comment %}
 context variables:
 	latest_entry
@@ -77,8 +77,10 @@ context variables:
 				{% if latest_entry.excerpt_html %}
 				<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
 				{% endif %}
+				{% if latest_entry.enable_comments %}
 				{% get_comment_count for latest_entry as comment_count %}
 				<div class="comment-count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+				{% endif %}
 			</div>
 			{% endif %}
 

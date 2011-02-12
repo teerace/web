@@ -6,7 +6,7 @@ class EntryAdmin(admin.ModelAdmin):
 	list_display = ('title', 'created_at', 'created_by', 'is_published')
 	list_display_links = ('created_at', 'title')
 	list_filter = ('is_published', 'created_at')
-	fields = ('title', 'excerpt', 'content', 'is_published')
+	fields = ('title', 'excerpt', 'content', 'is_published', 'enable_comments')
 
 	def save_model(self, request, obj, form, change):
 		if not change:
@@ -15,11 +15,11 @@ class EntryAdmin(admin.ModelAdmin):
 
 	def publish_entry(self, request, queryset):
 		queryset.update(is_published=True)
-	publish_entry.short_description = "Publishes selected entries"
+	publish_entry.short_description = "Publish selected entries"
 
 	def unpublish_entry(self, request, queryset):
 		queryset.update(is_published=False)
-	unpublish_entry.short_description = "Unpulishes selected entries"
+	unpublish_entry.short_description = "Unpublish selected entries"
 
 	actions = [publish_entry, unpublish_entry]
 

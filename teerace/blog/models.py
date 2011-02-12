@@ -1,14 +1,16 @@
 from django.contrib.auth.models import User
+from django.contrib.comments.moderation import CommentModerator, moderator
 from django.db import models
 from django.db.models.signals import post_save
 from markdown import markdown
-from threadedcomments.models import ThreadedComment, DEFAULT_MAX_COMMENT_DEPTH
+from annoying.functions import get_config
 
 
 class Entry(models.Model):
 	created_by = models.ForeignKey(User)
 	created_at = models.DateTimeField(auto_now_add=True)
-	is_published = models.BooleanField(default=False)
+	is_published = models.BooleanField(default=True)
+	enable_comments = models.BooleanField(default=True)
 	title = models.CharField(max_length=100)
 	excerpt = models.TextField(blank=True)
 	excerpt_html = models.TextField(blank=True)
@@ -32,17 +34,7 @@ class Entry(models.Model):
 		return ('blog.views.entry_detail', (), {'entry_id': self.id})
 
 
-def post_comment_save(instance, **kwargs):
-	if kwargs['created']:
-		i = 0
-		comment = instance.parent
-		while comment != None:
-			comment = comment.parent
-			i = i + 1
-			if i > DEFAULT_MAX_COMMENT_DEPTH:
-				instance.parent = instance.parent.parent
-				instance.save()
-				return
-		
-post_save.connect(post_comment_save, sender=ThreadedComment,
-	dispatch_uid='accounts.models')
+class EntryModerator(CommentModerator):
+	enable_field = 'enable_comments'
+
+moderator.register(Entry, EntryModerator)
