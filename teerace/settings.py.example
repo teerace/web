@@ -134,11 +134,9 @@ ABSOLUTE_URL_OVERRIDES = {
 	'auth.user': lambda u: "/profile/%s/" % u.id,
 }
 
-DEFAULT_MAX_COMMENT_DEPTH = 4
-# hack-ish, 1 = markdown
-DEFAULT_MARKUP = 1
-GRAVATAR_DEFAULT_IMG = "retro"
-GRAVATAR_SIZE = 50
+GRAVATAR_DEFAULT_IMAGE = "mm"
+GRAVATAR_DEFAULT_SIZE = 50
+COMMENTS_HIDE_REMOVED = False
 
 RESULT_PRECISION = 3
 
@@ -209,14 +207,17 @@ INSTALLED_APPS = (
 	'lib',
 	'johnny',
 	'crumbs',
+	'gravatar',
+	'django.contrib.comments',
 	'threadedcomments',
 	'faq',
 	'piston',
 	'recaptcha_works',
 	'brabeion',
 	'djcelery',
-	'django_coverage',
 ) + OUR_APPS
+
+COMMENTS_APP = 'threadedcomments'
 
 TEST_RUNNER = 'local_tests.LocalTestSuiteRunner'
 
