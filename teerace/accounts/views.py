@@ -112,16 +112,6 @@ def userlist(request):
 	return object_list(request, queryset=profiles)
 
 
-@render_to('accounts/staff_list.html')
-def staff_list(request):
-	staff_members = UserProfile.objects.filter(
-		Q(user__is_staff=True) | Q(user__is_superuser=True)
-	)
-	return {
-		'staff_members': staff_members,
-	}
-
-
 @login_required
 @render_to('accounts/api_token.html')
 def api_token(request):
