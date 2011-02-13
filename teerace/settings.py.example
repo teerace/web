@@ -166,6 +166,7 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.csrf.CsrfResponseMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
+	'pagination.middleware.PaginationMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -211,6 +212,7 @@ INSTALLED_APPS = (
 	'django.contrib.comments',
 	'threadedcomments',
 	'faq',
+	'pagination',
 	'piston',
 	'recaptcha_works',
 	'brabeion',

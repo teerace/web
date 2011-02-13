@@ -1,29 +1,12 @@
-{% extends "blog/base.html" %}{% load comments %}
+{% extends "blog/base.html" %}{% load comments %}{% load pagination_tags %}
 {% comment %}
 context variables:
 	entry_list
-	is_paginated
 	paginator
-	page_obj
 {% endcomment %}
 {% block content %}
-	{% if is_paginated %}
-		<div class="pagination">
-			<span class="step-links">
-				{% if page_obj.has_previous %}
-				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-				{% endif %}
-
-				<span class="current">
-					Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-				</span>
-
-				{% if page_obj.has_next %}
-				<a href="?page={{ page_obj.next_page_number }}">next</a>
-				{% endif %}
-			</span>
-		</div>
-	{% endif %}
+	{% autopaginate entry_list %}
+	{% paginate %}
 	<div class="box full" id="blog">
 	{% for entry in entry_list %}
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
@@ -44,21 +27,5 @@ context variables:
 		No entries were found.
 	{% endfor %}
 	</div>
-	{% if is_paginated %}
-		<div class="pagination">
-			<span class="step-links">
-				{% if page_obj.has_previous %}
-				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-				{% endif %}
-
-				<span class="current">
-					Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-				</span>
-
-				{% if page_obj.has_next %}
-				<a href="?page={{ page_obj.next_page_number }}">next</a>
-				{% endif %}
-			</span>
-		</div>
-	{% endif %}
+	{% paginate %}
 {% endblock %}

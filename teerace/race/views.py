@@ -8,7 +8,6 @@ from blog.models import Entry
 from race.models import Map, MapType, Run, BestRun, Server
 from race import badges
 from annoying.decorators import render_to
-from annoying.functions import get_config
 
 
 @render_to('home.html')
@@ -80,7 +79,6 @@ def ranks(request):
 def ranks_map_list(request):
 	maps = Map.objects.all().select_related()
 	return object_list(request, queryset=maps,
-		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/ranks_map_list.html')
 
 
@@ -98,7 +96,6 @@ def ranks_map_detail(request, map_id):
 		'map': map_obj,
 	}
 	return object_list(request, queryset=best_runs,
-		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/ranks_map_detail.html', extra_context=extra_context)
 
 
@@ -114,7 +111,6 @@ def map_list(request, map_type=None):
 		'filtered_type': filtered_type,
 	}
 	return object_list(request, queryset=maps,
-		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		extra_context=extra_context)
 
 
@@ -144,7 +140,6 @@ def map_detail(request, map_id):
 def user_activity(request):
 	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
 	return object_list(request, queryset=latest_runs,
-		paginate_by=get_config('ITEMS_PER_PAGE', 20),
 		template_name='race/user_activity.html')
 
 

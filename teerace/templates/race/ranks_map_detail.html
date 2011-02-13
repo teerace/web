@@ -1,11 +1,9 @@
-{% extends "race/ranks_base.html" %}{% load human_duration %}{% load race_diff %}{% load humanize %}
+{% extends "race/ranks_base.html" %}{% load human_duration %}{% load race_diff %}{% load humanize %}{% load pagination_tags %}
 {% comment %}
 context variables:
 	map
 	object_list (it's made of BestRun objects, be aware!)
-	is_paginated
 	paginator
-	page_obj
 {% endcomment %}
 {% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -17,23 +15,8 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
-		{% if is_paginated %}
-			<div class="pagination">
-				<span class="step-links">
-					{% if page_obj.has_previous %}
-					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-					{% endif %}
-
-					<span class="current">
-						Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-					</span>
-
-					{% if page_obj.has_next %}
-					<a href="?page={{ page_obj.next_page_number }}">next</a>
-					{% endif %}
-				</span>
-			</div>
-		{% endif %}
+		{% autopaginate object_list %}
+		{% paginate %}
 		<table class="players">
 			<tr>
 				<th>Rank</th>
@@ -65,22 +48,6 @@ context variables:
 		</tfoot>
 		{% endif %}
 		</table>
-		{% if is_paginated %}
-			<div class="pagination">
-				<span class="step-links">
-					{% if page_obj.has_previous %}
-					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-					{% endif %}
-
-					<span class="current">
-						Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-					</span>
-
-					{% if page_obj.has_next %}
-					<a href="?page={{ page_obj.next_page_number }}">next</a>
-					{% endif %}
-				</span>
-			</div>
-		{% endif %}
+		{% paginate %}
 	</div>
 {% endblock content %}

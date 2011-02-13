@@ -1,10 +1,8 @@
-{% extends "base.html" %}{% load human_duration %}{% load race_diff %}{% load humanize %}
+{% extends "base.html" %}{% load human_duration %}{% load race_diff %}{% load humanize %}{% load pagination_tags %}
 {% comment %}
 context variables:
 	object_list
-	is_paginated
 	paginator
-	page_obj
 {% endcomment %}
 {% block title %}my activity - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -20,23 +18,8 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header">My activity</div>
-		{% if is_paginated %}
-			<div class="pagination">
-				<span class="step-links">
-					{% if page_obj.has_previous %}
-					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-					{% endif %}
-
-					<span class="current">
-						Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-					</span>
-
-					{% if page_obj.has_next %}
-					<a href="?page={{ page_obj.next_page_number }}">next</a>
-					{% endif %}
-				</span>
-			</div>
-		{% endif %}
+		{% autopaginate object_list %}
+		{% paginate %}
 		<table class="players">
 			<tr class="no-border">
 				<th rowspan="2">Date</th>
@@ -71,22 +54,6 @@ context variables:
 		</tfoot>
 		{% endif %}
 		</table>
-		{% if is_paginated %}
-			<div class="pagination">
-				<span class="step-links">
-					{% if page_obj.has_previous %}
-					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
-					{% endif %}
-
-					<span class="current">
-						Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-					</span>
-
-					{% if page_obj.has_next %}
-					<a href="?page={{ page_obj.next_page_number }}">next</a>
-					{% endif %}
-				</span>
-			</div>
-		{% endif %}
+		{% paginate %}
 	</div>
 {% endblock content %}
