@@ -60,7 +60,11 @@ RECAPTCHA_OPTIONS = {}
 RECAPTCHA_VALIDATION_OVERRIDE = False
 
 # Paginator
-ITEMS_PER_PAGE = 20
+PAGINATION_DEFAULT_PAGINATION = 20
+# ... 2 3 4 [5] 6 7 8 ...
+PAGINATION_DEFAULT_WINDOW = 3
+# If the last page has 1 object, the object gets attached to previous one instead.
+PAGINATION_DEFAULT_ORPHANS = 1
 PAGINATION_INVALID_PAGE_RAISES_404 = True
 
 # Absolute path to the directory that holds media.
