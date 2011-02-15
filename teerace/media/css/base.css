@@ -470,29 +470,38 @@ td {
 */
 
 	/* comments depth */
-	#comments .depth-1 {
-		margin-left: 30px;
-	}
-
-	#comments .depth-2 {
-		margin-left: 60px;
-	}
-
-	#comments .depth-3 {
-		margin-left: 90px;
-	}
-
-	#comments .depth-4 {
-		margin-left: 120px;
-	}
-
-	/* probably not needed, saved for historical reasons */
-	#comments .depth-5 {
+	
+	/* ok, this one sets max depth margin */
+	#comments [class*="depth"] {
 		margin-left: 150px;
 	}
 
-	#comments .depth-6 {
-		margin-left: 180px;
+		/* holy crap */
+		#comments .comment:not(.depth-1):not(.depth-2):not(.depth-3):not(.depth-4):not(.depth-5):not(.close) .reply-link,
+		#comments .comment:not(.depth-1):not(.depth-2):not(.depth-3):not(.depth-4):not(.depth-5):not(.close) .comment-reply {
+			display: none;
+		}
+
+
+	/* overriding default margin */
+	#comments .depth-1 {
+		margin-left: 0px;
+	}
+
+	#comments .depth-2 {
+		margin-left: 30px;
+	}
+
+	#comments .depth-3 {
+		margin-left: 60px;
+	}
+
+	#comments .depth-4 {
+		margin-left: 90px;
+	}
+
+	#comments .depth-5 {
+		margin-left: 120px;
 	}
 
 #footer {

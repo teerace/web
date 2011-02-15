@@ -11,6 +11,7 @@ context variables:
 {% endblock %}
 {% block extra_head %}
 	{{ block.super }}
+{% if user.is_authenticated %}
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -29,6 +30,7 @@ context variables:
 			});
 		});
 	</script>
+{% endif %}
 {% endblock %}
 {% block content %}
 	<div id="blog" class="box full">
@@ -45,12 +47,12 @@ context variables:
 		<div class="comment-count">comments disabled / <a href="{{ entry.get_absolute_url }}">#</a></div>
 		{% else %}
 		{% get_comment_count for entry as comment_count %}
-		<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / <a href="#comment-form">reply</a> / <a href="{{ entry.get_absolute_url }}">#</a></div>
+		<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / {% if user.is_authenticated %}<a href="#comment-form">reply</a>{% else %}<a href="{% url login %}?next={{ entry.get_absolute_url }}%23comment-form">login to reply</a>{% endif %} / <a href="{{ entry.get_absolute_url }}">#</a></div>
 		<div id="comments">
 			{% get_comment_list for entry as comment_list %}
 			{% for comment in comment_list|fill_tree|annotate_tree %}
 				{% if comment.is_removed %}
-				<div class="comment depth-{{ comment.depth }} {% cycle 'even' 'odd' %} removed" id="cm-{{ comment.id }}">
+				<div class="comment depth-{{ comment.depth }} {% if comment.last %}close {% endif %}{% cycle 'even' 'odd' %} removed" id="cm-{{ comment.id }}">
 					<div class="comment-content">
 						<p>
 							This comment has been removed by the site staff
@@ -58,8 +60,8 @@ context variables:
 					</div>
 				</div>
 				{% else %}
-				<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %}depth-{{ comment.depth }} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
-					<div class="comment-permalink">{% if user.is_staff or user.is_superuser %}<a class="delete-link" href="{% url comments-delete comment.id %}">delete</a> {% endif %}<a class="reply-link" href="#">reply</a> <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
+				<div class="comment depth-{{ comment.depth }} {% if comment.last %}close {% endif %}{% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
+					<div class="comment-permalink">{% if user.is_staff or user.is_superuser %}<a class="delete-link" href="{% url comments-delete comment.id %}">delete</a> {% endif %}{% if user.is_authenticated %}<a class="reply-link" href="#">reply</a>{% else %}<a class="reply-link" href="{% url login %}?next={{ entry.get_absolute_url }}%23cm-{{ comment.id }}">login to reply</a>{% endif %} <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
 						<img src="{% gravatar_for_user comment.user 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 						<div class="comment-author-info">
@@ -72,16 +74,22 @@ context variables:
 							{{ comment.comment|markdown }}
 						</p>
 					</div>
+					{% if user.is_authenticated %}
 					<div class="comment-reply">
 						<h2>Reply:</h2>
 						{% render_comment_form for entry with comment.id %}
 					</div>
+					{% endif %}
 				</div>
 				{% endif %}
 			{% endfor %}
 		</div>
+		{% if user.is_authenticated %}
 		<h2 id="comment-form">Reply to Original:</h2>
 		{% render_comment_form for entry %}
+		{% else %}
+		<h2 id="comment-form"><a href="{% url login %}?next={{ entry.get_absolute_url }}%23comment-form">Login to reply</a></h2>
 		{% endif %}
+		{% endif %}{# end of if: not enable_comments #}
 	</div>
 {% endblock %}
