@@ -82,6 +82,14 @@ Default: SQLite database
 #}
 
 """
+CACHE_BACKEND
+
+Default: cache will be stored in local RAM.
+With memcached: 'johnny.backends.memcached://localhost:11211/'
+"""
+#CACHE_BACKEND = 'johnny.backends.locmem://'
+
+"""
 WEBMASTER_EMAIL
 
 E-mail address displayed when 404/500 is raised.

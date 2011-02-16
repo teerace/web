@@ -43,6 +43,7 @@ if DEBUG:
 	CACHE_BACKEND = 'johnny.backends.locmem://'
 else:
 	CACHE_BACKEND = 'johnny.backends.locmem://'# FIXME install memcached
+	#CACHE_BACKEND = 'johnny.backends.memcached://localhost:11211/'
 # some johnny settings
 JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_teerace'
 
