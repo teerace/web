@@ -1,4 +1,4 @@
-# pylint: disable-msg-cat=WCREFI
+# pylint: disable-all
 
 try:
 	from settings_local import *
