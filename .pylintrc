@@ -10,7 +10,8 @@ ignore=.git
 [MESSAGES CONTROL]
 
 # C0111 - Missing docstring
-disable=C0111
+# W0105 - String statement has no effect
+disable=C0111,W0105
 
 [REPORTS]
 
