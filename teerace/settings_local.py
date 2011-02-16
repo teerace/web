@@ -17,7 +17,7 @@ Turns Django into development mode.
 
 Default: False
 """
-#DEBUG = False
+DEBUG = True
 
 """
 TEMPLATE_DEBUG
@@ -26,7 +26,7 @@ Additional debug data for templates.
 
 Default: False
 """
-#TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 """
 TEMPLATE_CACHING
@@ -87,7 +87,7 @@ CACHE_BACKEND
 Default: cache will be stored in local RAM.
 With memcached: 'johnny.backends.memcached://localhost:11211/'
 """
-#CACHE_BACKEND = 'johnny.backends.locmem://'
+CACHE_BACKEND = 'johnny.backends.memcached://localhost:11211/'
 
 """
 WEBMASTER_EMAIL
@@ -96,7 +96,7 @@ E-mail address displayed when 404/500 is raised.
 
 Default: ""
 """
-#WEBMASTER_EMAIL = ''
+WEBMASTER_EMAIL = 'ksocha@ksocha.com'
 
 """
 RECAPTCHA_PUBLIC_KEY
@@ -105,7 +105,7 @@ RECAPTCHA_PUBLIC_KEY
 
 Default: ""
 """
-#RECAPTCHA_PUBLIC_KEY = ''
+RECAPTCHA_PUBLIC_KEY = '6LeMg7oSAAAAAHJhj90vfJQpxBFsxtPmlwf_N58Z'
 
 """
 RECAPTCHA_PRIVATE_KEY
@@ -114,7 +114,7 @@ RECAPTCHA_PRIVATE_KEY
 
 Default: ""
 """
-#RECAPTCHA_PRIVATE_KEY = ''
+RECAPTCHA_PRIVATE_KEY = '6LeMg7oSAAAAAJHvY0W8rMvmzqrmpYGc2f7Jrgfc'
 
 
 """
@@ -160,7 +160,9 @@ MIDDLEWARE_CLASSES
 
 You might want to add some debug stuff here.
 """
-#MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ()
+MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
+		'debug_toolbar.middleware.DebugToolbarMiddleware',
+	)
 
 
 """
@@ -168,4 +170,4 @@ INSTALLED_APPS
 
 You might want to add some debug stuff here.
 """
-#INSTALLED_APPS = INSTALLED_APPS + ()
+INSTALLED_APPS = INSTALLED_APPS + ('django_coverage', 'debug_toolbar',)

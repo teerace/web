@@ -5,4 +5,6 @@
 *.svn*
 *.tmproj
 teerace/settings_local.py
+build/
+pip-log.txt
 src/
