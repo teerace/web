@@ -1,7 +1,7 @@
 from zlib import crc32
 from django.db.models import Sum
 from accounts.models import UserProfile
-from race.models import Map, MapType, Run, BestRun
+from race.models import Map, MapType, Run, BestRun, Server
 from celery.decorators import task
 from tml.tml import Teemap
 
@@ -157,7 +157,7 @@ def retrieve_map_details(map_id):
 
 	if is_fastcap:
 		logger.info("Turning map into fastcap type...")
-		map_obj.map_type = MapType.object.get(slug='fastcap')
+		map_obj.map_type = MapType.objects.get(slug='fastcap')
 		logger.info("Creating a non-weapon twin...")
 		new_map = Map(
 			name="{0}-no-weapons".format(map_obj.name),
@@ -165,10 +165,21 @@ def retrieve_map_details(map_id):
 			added_by=map_obj.added_by,
 			map_file=map_obj.map_file,
 			crc=map_obj.crc,
-			map_type=MapType.object.get(slug='fastcap-no-weapons'),
+			map_type=MapType.objects.get(slug='fastcap-no-weapons'),
 			has_unhookables=has_unhookables,
 			has_deathtiles=has_deathtiles,
 		)
 		new_map.save()
 	map_obj.save()
 	logger.info("Finished processing \"{0}\" map.".format(map_obj.name))
+
+
+@task(ignore_result=True)
+def set_server_map(server_id, map_id):
+	try:
+		map_obj = Map.objects.get(pk=map_id)
+		server = Server.objects.get(pk=server_id)
+	except (Map.DoesNotExist, Server.DoesNotExist):
+		return False
+	server.played_map = map_obj
+	server.save()

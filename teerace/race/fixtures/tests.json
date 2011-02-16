@@ -19,6 +19,7 @@
 			"is_active": true,
 			"api_key": "fSXPjSaS8SvzwnVTpUHbaS7bNYKRDzVJ",
 			"description": "",
+			"address": "127.0.0.1:8303",
 			"maintained_by": 1
 		}
 	}

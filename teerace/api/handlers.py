@@ -94,6 +94,7 @@ class RunHandler(BaseHandler):
 		badges.possibly_award_badge("run_finished",
 			user=request.form.user, run=run)
 		tasks.redo_ranks.delay(run.id)
+		tasks.set_server_map.delay(request.server.id, request.form.map.id)
 		return run
 
 	def create(self, request, action, *args, **kwargs):

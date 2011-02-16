@@ -23,7 +23,7 @@ class ServerAdmin(admin.ModelAdmin):
 	form = ServerAdminForm
 
 	def add_view(self, request):
-		self.exclude = ('api_key', )
+		self.exclude = ('api_key', 'played_map', 'anonymous_players')
 		return super(ServerAdmin, self).add_view(request)
 
 	def change_view(self, request, obj_id):

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load race_tags %}
 {% comment %}
 context variables:
 	servers_online
@@ -18,12 +18,16 @@ context variables:
 		{% for server in servers_online %}
 			<div class="live">
 				<h3>{{ server.name }}</h3>
-				<div class="address">{{ server.address }}, <a href="{{ server.played_map.get_absolute_url }}">{{ server.played_map.name }}</a> map</div>
+				<div class="address">{{ server.address }}{% if server.played_map %}{% if server.address %}, {% endif %}<a href="{{ server.played_map.get_absolute_url }}">{{ server.played_map.name }}</a> map{% endif %}</div>
+				<div class="description">{{ server.description }}</div>
 				<ul>
 				{% for player in server.players.all %}
 					{% if player.is_online %}
-						<li><span class="name">{{ player.user.username }}</span><span class="time">FIXME</span><span class="points">{{ player.points }}</span></li>
+						<li><span class="name">{{ player.user.username }}</span>{% if server.played_map %}<span class="time">{{ player|map_time:server.played_map }}</span><span class="points">{{ player|map_points:server.played_map }}</span>{% endif %}</li>
 					{% endif %}
+				{% endfor %}
+				{% for anonymous in server.anonymous_players %}
+					<li><span class="name">{{ anonymous }}</span></li>
 				{% endfor %}
 				</ul>
 			</div>

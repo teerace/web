@@ -218,6 +218,7 @@ class Server(models.Model):
 
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True)
+	address = models.CharField(max_length=50, blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
 	is_active = models.BooleanField(default=True)
 	last_connection_at = models.DateTimeField(auto_now=True)
