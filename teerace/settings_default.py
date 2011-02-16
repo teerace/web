@@ -1,3 +1,4 @@
+# pylint: disable-msg-cat=WCREFI
 """
 settings_default.py
 
