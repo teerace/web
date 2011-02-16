@@ -4,5 +4,4 @@
 *.sqlite
 *.svn*
 *.tmproj
-teerace/settings.py
 src/

@@ -1,11 +1,18 @@
+"""
+settings_default.py
+
+Do NOT (!!!) edit this file!
+Please override settings in settings_local.py instead.
+"""
+
 import os
 # Django settings for teerace project.
 
 PROJECT_DIR = os.path.dirname(__file__)
 
-DEBUG = True
-TEMPLATE_DEBUG = True
-TEMPLATE_CACHING = TEMPLATE_DEBUG
+DEBUG = False
+TEMPLATE_DEBUG = False
+TEMPLATE_CACHING = True
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -84,7 +91,6 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'foobar'
 
-
 import djcelery
 djcelery.setup_loader()
 
@@ -95,10 +101,6 @@ BROKER_PASSWORD = "guest"
 BROKER_VHOST = "/"
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_IMPORTS = ("tasks", )
-
-###                                                            ###
-### You probably won't need to change anything below this line ###
-###                                                            ###
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
