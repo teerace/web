@@ -313,7 +313,8 @@ td {
 		margin-bottom: 0;
 	}
 
-	#blog .post-line {
+	#blog .post-line,
+	div.live .address {
 		color: #918f61;
 		font-size: 11px;
 		font-style: italic;
@@ -470,7 +471,7 @@ td {
 */
 
 	/* comments depth */
-	
+
 	/* ok, this one sets max depth margin */
 	#comments [class*="depth"] {
 		margin-left: 150px;
@@ -614,6 +615,49 @@ td {
 
 	#docs .docutils dd {
 
+	}
+
+div.live h3 {
+	font-size: 16px;
+	margin: 10px 0 0;
+}
+
+div.live ul {
+	margin-top: 0;
+	padding: 0;
+}
+
+div.live li {
+	color: #9dc547;
+	font-size: 15px;
+	line-height: 13px;
+	border-bottom: thin dotted;
+	margin: 0 0 0 20px;
+	padding: 3px;
+	display: inline-block;
+}
+
+	div.live li span.name {
+		color: #000;
+		font-size: 13px;
+		width: 255px;
+		display: inline-block;
+		overflow: hidden;
+	}
+
+	div.live li span.time {
+		color: #666;
+		font-size: 13px;
+		margin: 0 10px;
+	}
+
+div.live-stats {
+	font-size: 16px;
+	margin: 10px 0 10px 20px;
+}
+
+	div.live-stats span {
+		font-weight: bold;
 	}
 
 .box {

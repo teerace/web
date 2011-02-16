@@ -12,16 +12,28 @@ context variables:
 {% endblock %}
 {% block content %}
 	<div class="box full">
+		{% if servers_online %}
 		<div class="header">Live stats</div>
+		{% endif %}
 		{% for server in servers_online %}
-			{{ server }}
-			{% for player in server.players.all %}
-				{% if player.is_online %}
-					{{ player }}
-				{% endif %}
-			{% endfor %}
+			<div class="live">
+				<h3>{{ server.name }}</h3>
+				<div class="address">{{ server.address }}, <a href="{{ server.played_map.get_absolute_url }}">{{ server.played_map.name }}</a> map</div>
+				<ul>
+				{% for player in server.players.all %}
+					{% if player.is_online %}
+						<li><span class="name">{{ player.user.username }}</span><span class="time">FIXME</span><span class="points">{{ player.points }}</span></li>
+					{% endif %}
+				{% endfor %}
+				</ul>
+			</div>
 		{% endfor %}
-		{{ servers_online|length }} server{{ servers_online|length|pluralize }} online
-		{{ players_online|length }} player{{ players_online|length|pluralize }} online
+		<div class="header"></div>
+		<div class="live-stats">
+			<span>{{ servers_online|length }}</span> server{{ servers_online|length|pluralize }} online
+		</div>
+		<div class="live-stats">
+			<span>{{ players_online|length }}</span> player{{ players_online|length|pluralize }} online
+		</div>
 	</div>
 {% endblock content %}
