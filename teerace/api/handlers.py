@@ -11,6 +11,7 @@ from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
 from lib.piston_utils import rc, rcs, validate_mime
 from lib.rgb import rgblong_to_hex
+from annoying.functions import get_object_or_None
 
 
 class RunHandler(BaseHandler):
@@ -471,6 +472,7 @@ class PingHandler(BaseHandler):
 		Data
 			- users / dictionary / (int)user_id:(string)nickname dictionary
 			- anonymous / tuple / a tuple with anonymous' nicknames
+			- map / string / currently played map
 		Result
 			- 200 - when everything went fine
 				PONG
@@ -485,5 +487,12 @@ class PingHandler(BaseHandler):
 				last_played_server=request.server,
 				last_connection_at=datetime.now()
 			)
-			# TODO save nicknames somewhere
+			# TODO save nicknames of logged users
+		server = request.server
+		server.anonymous_players = request.data.get('anonymous') or ()
+		
+		map_obj = get_object_or_None(Map, name=request.data.get('map'))
+		if map_obj:
+			server.played_map = Map.objects.get(name=map_name)
+		server.save()
 		return "PONG"

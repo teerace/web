@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from race.validators import is_map_file
 from lib.file_storage import OverwriteStorage
+from lib.pickle_field import PickledObjectField
 from annoying.functions import get_config
 
 
@@ -220,6 +221,8 @@ class Server(models.Model):
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
 	is_active = models.BooleanField(default=True)
 	last_connection_at = models.DateTimeField(auto_now=True)
+	played_map = models.ForeignKey(Map, null=True, blank=True)
+	anonymous_players = PickledObjectField()
 	api_key = models.CharField(max_length=32, default=generate_random_key,
 		unique=True)
 
