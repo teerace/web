@@ -6,16 +6,24 @@ from race.models import Map, Server
 from lib.rsa import RSA
 
 class TestCase(DjangoTestCase):
-	fixtures = ['tests.json']
+	fixtures = ['tests']
 
 	def setUp(self):
 		self.client = JsonClient()
-		self.user = User.objects.get(pk=1)
+		try:
+			self.user = User.objects.get(pk=1)
+		except User.DoesNotExist:
+			self.user = User.objects.create_user('testclient', 'hello@world.com',
+				'test123')
+		self.user.save()
 		self.map = Map.objects.get(pk=1)
 		self.server = Server.objects.get(pk=1)
 		self.extra = {
 			'HTTP_API_AUTH': self.server.api_key,
 		}
+
+	def tearDown(self):
+		self.user.delete()
 
 
 class JsonClient(Client):

@@ -3,7 +3,7 @@ from accounts.forms import LoginForm, RegisterForm
 
 
 class RegisterTest(TestCase):
-	fixtures = ['tests.json']
+	fixtures = ['tests']
 
 	def setUp(self):
 		self.data = {
@@ -44,7 +44,7 @@ class RegisterTest(TestCase):
 
 
 class LoginTest(TestCase):
-	fixtures = ['tests.json']
+	fixtures = ['tests']
 
 	def setUp(self):
 		self.data = {
