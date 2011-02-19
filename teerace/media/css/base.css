@@ -782,6 +782,34 @@ div.live-stats {
 		top: 20px;
 	}
 
+.pagination {
+	color: #444;
+	text-align: center;
+	clear: both;
+}
+
+	.pagination a {
+		color: inherit;
+	}
+
+	.pagination .page {
+		padding: 3px;
+		display: inline-block;
+	}
+
+	.pagination .current {
+		background: #e7e6d0;
+		border-radius: 20px;
+		line-height: 15px;
+		vertical-align: top;
+		min-width: 15px;
+	}
+
+	.pagination .next,
+	.pagination .prev {
+		font-size: 90%;
+	}
+
 .detail {
 	width: 50%;
 }

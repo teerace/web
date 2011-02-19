@@ -6,8 +6,8 @@ context variables:
 {% endcomment %}
 {% block content %}
 	{% autopaginate entry_list %}
-	{% paginate %}
 	<div class="box full" id="blog">
+	{% paginate %}
 	{% for entry in entry_list %}
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 			<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
@@ -26,6 +26,6 @@ context variables:
 	{% empty %}
 		No entries were found.
 	{% endfor %}
-	</div>
 	{% paginate %}
+	</div>
 {% endblock %}
