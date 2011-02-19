@@ -13,7 +13,7 @@
 <body>
 	{% url home as url_home %}
 	<div id="header">
-			<a href="{{ url_home }}"><img src="/media/images/teeracelogo.png" alt="teerace" title="teerace logo"></a>
+			<a href="{{ url_home }}"><div sprite="logo" title="teerace logo"></div></a>
 	</div>
 
 	<div id="page">
@@ -71,7 +71,7 @@
 
 			<div id="footer" class="box full">
 				<div class="left"><a href="#header">↑ Top</a> &middot; <a href="{% url about %}">About</a></div>
-				<div class="right">powered by<a href="http://www.djangoproject.com/"><img src="{{ MEDIA_URL }}admin_tools/images/django.png" height="22" alt="Powered by Django." title="Powered by Django."></a></div>
+				<div class="right">powered by<a href="http://www.djangoproject.com/"><div sprite="django" alt="Powered by Django." title="Powered by Django."></div></a></div>
 			</div>
 		</div>
 	</div>

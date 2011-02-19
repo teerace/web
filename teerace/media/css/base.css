@@ -19,6 +19,59 @@ img {
 	border: 0;
 }
 
+div[sprite] {
+	display: inline-block;
+}
+
+div[sprite=logo] {
+	background: url(/media/images/main-sprite.png) no-repeat;
+	background-position: 0 0;
+	width: 293px;
+	height: 60px;
+}
+
+div[sprite=django] {
+	background: url(/media/images/main-sprite.png) no-repeat;
+	background-position: 0 -60px;
+	width: 60px;
+	height: 22px;
+}
+
+div[sprite=heart] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: 0 0;
+	width: 17px;
+	height: 16px;
+}
+
+div[sprite=shield] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: -17px 0;
+	width: 13px;
+	height: 16px;
+}
+
+div[sprite=grenade] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: -30px 0;
+	width: 17px;
+	height: 16px;
+}
+
+div[sprite=unhookable] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: -47px 0;
+	width: 16px;
+	height: 16px;
+}
+
+div[sprite=deathtiles] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: -63px 0;
+	width: 16px;
+	height: 16px;
+}
+
 input,
 .button {
 	color: #4c4b33;
@@ -522,17 +575,13 @@ td {
 	-webkit-text-shadow: 1px 1px 1px #444;
 }
 
-	#footer img {
+	#footer div[sprite=django] {
 		vertical-align: middle;
 		opacity: 0.5;
 	}
 
-	#footer img:hover {
+	#footer div[sprite=django]:hover {
 		opacity: 1;
-	}
-
-	#footer div {
-		display: inline-block;
 	}
 
 	#footer a {
