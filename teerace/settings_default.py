@@ -62,6 +62,7 @@ MAILER_ADDRESS = ''
 WEBMASTER_EMAIL = ''
 
 # You have to set this in order to use reCAPTCHA
+ENABLE_CAPTCHA = True
 RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''
 RECAPTCHA_USE_SSL = True

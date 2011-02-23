@@ -100,9 +100,19 @@ Default: ""
 #WEBMASTER_EMAIL = ''
 
 """
+ENABLE_CAPTCHA
+
+Enables reCAPTCHA. When set to True,
+please fill public/private key fields too.
+
+Default: True
+"""
+#ENABLE_CAPTCHA = True
+
+"""
 RECAPTCHA_PUBLIC_KEY
 
-
+ReCAPTCHA public key.
 
 Default: ""
 """
@@ -111,7 +121,7 @@ Default: ""
 """
 RECAPTCHA_PRIVATE_KEY
 
-
+ReCAPTCHA private key.
 
 Default: ""
 """
