@@ -110,8 +110,10 @@ def post_user_save(instance, **kwargs):
 		# very special case
 		if instance.id == 0:
 			return
-		profile = UserProfile(user=instance)
-		profile.api_key = generate_random_key()
+		profile = UserProfile(
+			user=instance,
+			api_token=generate_random_key()
+		)
 		profile.save()
 
 post_save.connect(post_user_save, sender=User,
