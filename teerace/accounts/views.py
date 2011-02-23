@@ -120,6 +120,7 @@ def api_token(request):
 
 	}
 
+
 @login_required
 @render_to('accounts/settings.html')
 def settings(request):
