@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from race.validators import is_map_file
 from lib.file_storage import OverwriteStorage
-from lib.pickle_field import PickledObjectField
+from picklefield.fields import PickledObjectField
 from annoying.functions import get_config
 
 
