@@ -226,6 +226,7 @@ INSTALLED_APPS = (
 	'recaptcha_works',
 	'brabeion',
 	'djcelery',
+	'south',
 ) + OUR_APPS
 
 COMMENTS_APP = 'threadedcomments'
