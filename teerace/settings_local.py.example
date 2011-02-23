@@ -105,9 +105,9 @@ ENABLE_CAPTCHA
 Enables reCAPTCHA. When set to True,
 please fill public/private key fields too.
 
-Default: True
+Default: False
 """
-#ENABLE_CAPTCHA = True
+#ENABLE_CAPTCHA = False
 
 """
 RECAPTCHA_PUBLIC_KEY
