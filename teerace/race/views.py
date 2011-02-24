@@ -7,7 +7,7 @@ from django.views.generic.list_detail import object_list
 from accounts.models import UserProfile
 from blog.models import Entry
 from race.models import Map, MapType, Run, BestRun, Server
-from race import badges
+from race import badges, tasks
 from annoying.decorators import render_to
 
 
