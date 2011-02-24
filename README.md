@@ -7,6 +7,7 @@ Teerace is a project gathering results from a network of trusted Teeworlds Race-
 Modified server is also a part of this project, it is able to communicate with webapp through its API.
 
 This repository covers web application part only.
+The [teerace-ready gameserver](https://github.com/SushiTee/teeworlds/tree/teerace) is developed by SushiTee and Redix.
 
 Network graph
 -----
