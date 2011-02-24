@@ -12,9 +12,8 @@ context variables:
 {% endblock %}
 {% block content %}
 	<div class="box full">
-		{% if servers_online %}
 		<div class="header">Live stats</div>
-		{% endif %}
+		{% if servers_online %}
 		{% for server in servers_online %}
 			<div class="live">
 				<h3>{{ server.name }}</h3>
@@ -27,17 +26,18 @@ context variables:
 					{% endif %}
 				{% endfor %}
 				{% for anonymous in server.anonymous_players %}
-					<li><span class="name">{{ anonymous }}</span></li>
+					<li><span class="name">{{ anonymous }}</span>{# FIXME #}</li>
 				{% endfor %}
 				</ul>
 			</div>
 		{% endfor %}
 		<div class="header"></div>
+		{% endif %}
 		<div class="live-stats">
 			<span>{{ servers_online|length }}</span> server{{ servers_online|length|pluralize }} online
 		</div>
 		<div class="live-stats">
-			<span>{{ players_online|length }}</span> player{{ players_online|length|pluralize }} online
+			<span>{{ players_online|length }}</span> registered player{{ players_online|length|pluralize }} online
 		</div>
 	</div>
 {% endblock content %}
