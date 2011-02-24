@@ -28,16 +28,25 @@ def homepage(request):
 		user_runs = []
 
 	today = date.today()
-	yesterday = today - timedelta(days=1)
-
 	runs_today = Run.objects.filter(created_at__range=
 		(datetime.combine(today, time.min),
 		datetime.combine(today, time.max)))
-	runs_yesterday = Run.objects.filter(created_at__range=
-		(datetime.combine(yesterday, time.min),
-		datetime.combine(yesterday, time.max)))
 
-	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	runs_yesterday = cache.get('runs_yesterday')
+	if runs_yesterday is None:
+		tasks.update_yesterday_runs.apply()
+		runs_yesterday = cache.get('runs_yesterday')
+
+	total_runs = cache.get('total_runs')
+	if total_runs is None:
+		tasks.update_totals.apply()
+		total_runs = cache.get('total_runs')
+
+	total_playtime = cache.get('total_playtime')
+	if total_playtime is None:
+		tasks.update_totals.apply()
+		total_playtime = cache.get('total_playtime')
+
 	total_downloads = Map.objects.aggregate(
 		Sum('download_count')
 	)['download_count__sum']
@@ -47,7 +56,7 @@ def homepage(request):
 		'users': users,
 		'maps': list(Map.objects.all()),
 		'user_runs': user_runs,
-		'run_count': Run.objects.count(),
+		'run_count': total_runs,
 		'runs_today': runs_today,
 		'runs_yesterday': runs_yesterday,
 		'total_playtime': total_playtime,

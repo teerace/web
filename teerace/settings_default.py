@@ -95,6 +95,7 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 SECRET_KEY = 'foobar'
 
 import djcelery
+from celery.schedules import crontab
 djcelery.setup_loader()
 
 BROKER_HOST = "localhost"
@@ -103,7 +104,25 @@ BROKER_USER = "guest"
 BROKER_PASSWORD = "guest"
 BROKER_VHOST = "/"
 CELERY_RESULT_BACKEND = "amqp"
-CELERY_IMPORTS = ("tasks", )
+CELERY_IMPORTS = ("race.tasks", )
+CELERYBEAT_SCHEDULE = {
+	# everyday, 4:30 AM
+	"points_history": {
+		"task": "race.tasks.update_user_points_history",
+		"schedule": crontab(hour=4, minute=30),
+	},
+	# everyday, 0:30 AM
+    "yesterday_runs": {
+		"task": "race.tasks.update_yesterday_runs",
+		"schedule": crontab(hour=0, minute=30),
+	},
+	# every 15 minutes
+    "totals": {
+		"task": "race.tasks.update_totals",
+		"schedule": crontab(minute="*/15"),
+	},
+}
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

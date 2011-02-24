@@ -1,12 +1,15 @@
+from datetime import date, datetime, timedelta
 from zlib import crc32
+from django.core.cache import cache
 from django.db.models import Sum
 from accounts.models import UserProfile
 from race.models import Map, MapType, Run, BestRun, Server
-from celery.decorators import task
+from lib.chunks import chunks
+from celery.task import task
 from tml.tml import Teemap
 
 
-@task(rate_limit='10/m', ignore_result=True)
+@task(rate_limit='60/m', ignore_result=True)
 def redo_ranks(run_id):
 	logger = redo_ranks.get_logger()
 	try:
@@ -183,3 +186,46 @@ def set_server_map(server_id, map_id):
 		return False
 	server.played_map = map_obj
 	server.save()
+
+
+@task(ignore_result=True)
+def update_user_points_history():
+	# everyday, around 4:30 AM
+	users = UserProfile.objects.values_list('id', flat=True)
+	for chunk in list(chunks(users, 200)):
+		update_user_points_history_chunked.delay(chunk)
+
+
+@task(ignore_result=True)
+def update_user_points_history_chunked(chunk):
+	today = date.today()
+	for user_id in chunk:
+		user = UserProfile.objects.get(pk=user_id)
+		if user.points_history:
+			yesterday_points = user.points_history[-1][1] # wee!
+			user.points_progress = user.points - yesterday_points
+		else:
+			user.points_progress = user.points
+			# let's make a list
+			user.points_history = []
+		user.points_history.append((today, user.points))
+		user.save()
+
+
+@task(ignore_result=True)
+def update_yesterday_runs():
+	# everyday, around 0:00 AM
+	yesterday = datetime.today() - timedelta(days=1)
+	runs_yesterday = Run.objects.filter(created_at__range=
+		(datetime.combine(yesterday, time.min),
+		datetime.combine(yesterday, time.max)))
+	cache.set('runs_yesterday', runs_yesterday, 0)
+
+
+@task(ignore_result=True)
+def update_totals():
+	# every 15 minutes
+	total_runs = Run.objects.count()
+	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	cache.set('total_runs', runs_total, 0)
+	cache.set('total_playtime', runs_total, 0)
