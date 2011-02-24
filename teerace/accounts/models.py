@@ -6,6 +6,7 @@ from django.db.models import Sum
 from django.db.models.signals import post_save
 from race.models import Map, Run, BestRun
 from django_countries import CountryField
+from picklefield.fields import PickledObjectField
 
 
 def generate_random_key():
@@ -24,6 +25,9 @@ class UserProfile(models.Model):
 	#last_activity_ip = models.IPAddressField(blank=True, null=True)
 	country = CountryField(blank=True)
 	points = models.IntegerField(default=0)
+	points_history = PickledObjectField(null=True)
+	# progress since previous day, taken from points_history
+	points_progress = models.IntegerField(default=0)
 
 	has_skin = models.BooleanField(default=False)
 	skin_name = models.CharField(max_length=40, blank=True)
