@@ -224,18 +224,21 @@ class Server(models.Model):
 	last_connection_at = models.DateTimeField(auto_now=True)
 	played_map = models.ForeignKey(Map, null=True, blank=True)
 	anonymous_players = PickledObjectField()
-	api_key = models.CharField(max_length=32, default=generate_random_key,
-		unique=True)
+	api_key = models.CharField(max_length=32, unique=True)
 
 	def __unicode__(self):
 		return self.name
 
 	def regenerate_api_key(self):
 		new_key = generate_random_key()
-		setattr(self, 'api_key', new_key)
+		self.api_key = new_key
 		self.save()
 		return new_key
 
+	def save(self, *args, **kwargs):
+		if not self.pk:
+			self.api_key = generate_random_key()
+		super(Server, self).save(*args, **kwargs)
 
 # DIRTY is this even allowed?
 from race import badges
