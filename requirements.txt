@@ -1,10 +1,10 @@
 -e git+https://github.com/eldarion/brabeion.git#egg=brabeion
-celery>=2.1.4
+celery>=2.2.3
 coverage>=3.4
 Django>=1.2
 django-admin-tools>=0.4.0
 django-annoying>=0.7.5
-django-celery>=2.1.4
+django-celery>=2.2.3
 django-countries>=1.0.5
 django-crumbs>=0.5.0
 -e git+https://github.com/benspaulding/django-faq.git#egg=django-faq
