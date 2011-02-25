@@ -127,6 +127,14 @@ Default: ""
 """
 #RECAPTCHA_PRIVATE_KEY = ''
 
+"""
+ANALYTICS_ID
+
+Google Analytics Profile ID
+
+Default: None
+"""
+#ANALYTICS_ID = ''
 
 """
 SECRET_KEY
