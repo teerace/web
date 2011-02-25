@@ -80,6 +80,9 @@ input,
 	background-image: -moz-linear-gradient(top,  #e7e5be,  #918f61);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#e7e5be',EndColorStr='#918f61');
 	border: thin solid #918f61;
+	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+	-moz-box-shadow: inset 0 0 1px #fff;
+	-webkit-box-shadow: inset 0 0 1px #fff;
 	padding: 5px;
 }
 
@@ -91,6 +94,9 @@ input:hover,
 	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #4c4b33;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	-moz-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	-webkit-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 }
 
 textarea {
@@ -155,7 +161,8 @@ td {
 #menu, .box,
 .button, input,
 #comments .comment,
-.badge {
+.badge,
+#userprofile .gravatar {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -167,6 +174,8 @@ td {
 	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #918f61;
+	-moz-box-shadow: inset 0 0 1px #fff;
+	-webkit-box-shadow: inset 0 0 1px #fff;
 	font-size: 13px;
 }
 
@@ -184,6 +193,9 @@ td {
 		display: inline-block;
 		border-right: thin solid #918f61;
 		padding: 10px;
+		text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+		-moz-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+		-webkit-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 	}
 
 	#menu li#current {
@@ -191,6 +203,9 @@ td {
 		background-image: -webkit-gradient(linear, left top, left bottom, from(#9dc547), to(#c6de92));
 		background-image: -moz-linear-gradient(top,  #9dc547,  #c6de92);
 		filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#9dc547',EndColorStr='#c6de92');
+		text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 	}
 
 		#menu li#current a {
@@ -205,7 +220,6 @@ td {
 		background: #916a61;
 	}
 
-/* submenu */
 #submenu {
 	background-color: #c6de92;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#c6de92), to(#9dc547));
@@ -222,6 +236,9 @@ td {
 	#submenu li, #submenu div {
 		border-color: #9dc547;
 		padding: 10px;
+		text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 	}
 
 	#submenu li:first-child {
@@ -243,6 +260,9 @@ td {
 
 	#user-box .user-name {
 		font-weight: bold;
+		text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 	}
 
 #content {
@@ -270,6 +290,8 @@ td {
 
 	#messages div {
 		padding: 10px 20px;
+		-moz-box-shadow: inset 0 0 1px #fff;
+		-webkit-box-shadow: inset 0 0 1px #fff;
 	}
 
 	#messages div:before {
@@ -570,9 +592,11 @@ td {
 	padding: 7px 15px 6px 20px;
 	width: 763px;
 	float:right;
-	text-shadow: 1px 1px 1px #444;
+	text-shadow: 0 1px 1px #444;
 	-moz-text-shadow: 1px 1px 1px #444;
 	-webkit-text-shadow: 1px 1px 1px #444;
+	-moz-box-shadow: inset 0 0 1px #fff;
+	-webkit-box-shadow: inset 0 0 1px #fff;
 }
 
 	#footer div[sprite=django] {
@@ -614,9 +638,12 @@ td {
 	}
 
 	#userprofile .gravatar {
+		background: #fff;
+		border: thin solid #b7b6a4;
+		padding: 5px;
 		position: absolute;
-		top: 20px;
-		right: 20px;
+		top: 15px;
+		right: 15px;
 	}
 
 #docs {}
@@ -672,7 +699,7 @@ div.live h3 {
 }
 
 div.live ul {
-	margin-top: 0;
+	margin-top: 10px;
 	padding: 0;
 }
 
@@ -684,14 +711,15 @@ div.live li {
 	margin: 0 0 0 20px;
 	padding: 3px;
 	display: inline-block;
+	width: 330px;
 }
 
 	div.live li span.name {
 		color: #000;
 		font-size: 13px;
-		width: 255px;
 		display: inline-block;
 		overflow: hidden;
+		width: 230px;
 	}
 
 	div.live li span.time {
@@ -733,16 +761,15 @@ div.live-stats {
 	background-image: -moz-linear-gradient(top,  #fffdd6,  #ebd8b2);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#fffdd6',EndColorStr='#ebd8b2');
 	background-color: #fffdd6;
-
 	border: 1px solid #918f61;
 	width: 200px;
 	padding: 20px;
-/*
-	min-height: 80px;
-*/
 	margin: 5px;
 	float: left;
 	position: relative;
+	text-shadow: 0 1px 1px #fff;
+	-moz-text-shadow: 1px 1px 1px #fff;
+	-webkit-text-shadow: 1px 1px 1px #fff;
 }
 
 	.badge b {
