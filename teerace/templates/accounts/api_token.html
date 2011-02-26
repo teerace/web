@@ -5,19 +5,67 @@
 	{% load breadcrumb_tags %}
 	{% add_crumb 'API token' 'api_token' %}
 {% endblock %}
+{% block extra_head %}
+	{{ block.super }}
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript">
+		function warn() {
+			$('#hide').fadeIn('slow');
+			var btn = $('#warn-button');
+			$(btn).html("I understand, generate new token");
+			$(btn).removeAttr('id');
+			var id = $(btn).attr('id');
+			if (id == '') {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		$(document).ready(function(){
+			$('#warn-button').click(warn);
+		});
+	</script>
+{% endblock extra_head %}
 {% block submenu %}
 	<ul class="left">
 		<li><a href="{% url api_token %}">API token</a></li>
 	</ul>
 {% endblock submenu %}
 {% block content %}
+	<div id="messages">
+		<div class="info box">
+			<p>API token is required to log in the game. You have to keep it secret!</p>
+		</div>
+		<div id="hide" class="warning box full">
+			<p><b>Make sure you want to do this!</b> No, really. We will permanently remove your token.{# FIXME (maybe) #}</p>
+		</div>
+	</div>
 	<div class="box full">
 		<div class="header">API token</div>
 		<p>
 			Your API token:
-			<div class="api_token">
-				{{ user.profile.api_token }}
-			</div>
+			<div id="api_token" class="api_token">{{ user.profile.api_token }}</div>
+			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" class="clippy">
+				<param name="movie" value="https://assets0.github.com/flash/clippy.swf?v5">
+				<param name="allowScriptAccess" value="always">
+			    <param name="quality" value="high">
+			    <param name="scale" value="noscale">
+			    <param name="FlashVars" value="id=api_token">
+			    <param name="bgcolor" value="#333333">
+				<embed src="https://assets0.github.com/flash/clippy.swf?v5"
+					width="14"
+					height="14"
+					name="clippy"
+					quality="high"
+					allowscriptaccess="always"
+					type="application/x-shockwave-flash"
+					pluginspage="http://www.macromedia.com/go/getflashplayer"
+					flashvars="id=api_token"
+					bgcolor="#333333"
+					wmode="opaque">
+		    </object>
+			<p>Remember, that you can generate new one any time (then the old one expires), by clicking the button below.</p>
+			<a href="{# FIXME #}" class="button" id="warn-button">Generate</a>
 		</p>
 	</div>
 {% endblock %}
