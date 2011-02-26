@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from zlib import crc32
 from django.core.cache import cache
 from django.db.models import Sum
