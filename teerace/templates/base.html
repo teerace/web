@@ -73,7 +73,7 @@
 			<div id="messages">
 				{% for message in messages %}
 				<div{% if message.tags %} class="{{ message.tags }} box full"{% endif %}>
-					<p>{{ message }}</p>
+					<p>{{ message|safe }}</p>
 				</div>
 				{% endfor %}
 			</div>
