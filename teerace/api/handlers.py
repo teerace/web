@@ -491,9 +491,6 @@ class PingHandler(BaseHandler):
 			# TODO save nicknames of logged users
 		server = request.server
 		server.anonymous_players = request.data.get('anonymous') or ()
-		
-		map_obj = get_object_or_None(Map, name=request.data.get('map'))
-		if map_obj:
-			server.played_map = Map.objects.get(name=map_name)
+		server.played_map = get_object_or_None(Map, name=request.data.get('map'))
 		server.save()
 		return "PONG"
