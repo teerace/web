@@ -116,6 +116,15 @@ def userlist(request):
 @render_to('accounts/api_token.html')
 def api_token(request):
 	# api_token is accessible in `user` template variable
+	if request.method == 'POST':
+		request.user.profile.regenerate_token()
+		messages.success(request, "New API token has been generated."
+			" Please update your game configuration file.")
+	messages.info(request, "API token is required to log in the game."
+		" You have to keep it secret!")
+	messages.warning(request, "<b>Make sure you want to do this!</b>"
+		" No, really. We will change your token (and disable current one).",
+		extra_tags="hide")
 	return {
 
 	}

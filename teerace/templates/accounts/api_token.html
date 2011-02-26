@@ -10,9 +10,9 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript">
 		function warn() {
-			$('#hide').fadeIn('slow');
+			$('.hide').fadeIn('slow');
 			var btn = $('#warn-button');
-			$(btn).html("I understand, generate new token");
+			$(btn).val("I understand, generate new token");
 			$(btn).removeAttr('id');
 			var id = $(btn).attr('id');
 			if (id == '') {
@@ -32,14 +32,6 @@
 	</ul>
 {% endblock submenu %}
 {% block content %}
-	<div id="messages">
-		<div class="info box">
-			<p>API token is required to log in the game. You have to keep it secret!</p>
-		</div>
-		<div id="hide" class="warning box full">
-			<p><b>Make sure you want to do this!</b> No, really. We will permanently remove your token.{# FIXME (maybe) #}</p>
-		</div>
-	</div>
 	<div class="box full">
 		<div class="header">API token</div>
 		<p>
@@ -65,7 +57,9 @@
 					wmode="opaque">
 		    </object>
 			<p>Remember, that you can generate new one any time (then the old one expires), by clicking the button below.</p>
-			<a href="{# FIXME #}" class="button" id="warn-button">Generate</a>
+			<form action="" method="POST">
+				<input type="submit" value="Generate" id="warn-button">
+			</form>
 		</p>
 	</div>
 {% endblock %}

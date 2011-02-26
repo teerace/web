@@ -98,6 +98,10 @@ class UserProfile(models.Model):
 			'feet_color': self.skin_feet_color,
 		}
 
+	def regenerate_token(self):
+		self.api_token = generate_random_key()
+		self.save()
+
 	class Meta:
 		get_latest_by = 'user__created_at'
 
