@@ -391,7 +391,7 @@ class MapHandler(BaseHandler):
 	def _read_detail(self, request, *args, **kwargs):
 		if 'map_name' in kwargs:
 			try:
-				map_obj = Map.objects.get(pk=kwargs['map_name'])
+				map_obj = Map.objects.get(name=kwargs['map_name'])
 				return map_obj
 			except Map.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
