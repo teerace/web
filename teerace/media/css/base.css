@@ -919,6 +919,13 @@ div.live-stats {
 		top: 20px;
 	}
 
+.non-field-error {
+	color: #a33;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: underline;
+}
+
 .pagination {
 	color: #444;
 	text-align: center;
