@@ -7,11 +7,13 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
+        for profile in orm.UserProfile.objects.all():
+            profile.slug = entry.slug[:24]
+            profile.save()
 
 
     def backwards(self, orm):
-        "Write your backwards methods here."
+        pass
 
 
     models = {
