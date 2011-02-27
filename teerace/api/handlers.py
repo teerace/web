@@ -81,13 +81,18 @@ class RunHandler(BaseHandler):
 	@require_extended
 	@validate_mime(RunForm)
 	def _create_new(self, request, *args, **kwargs):
+		try:
+			filtered_checkpoints = ";".join([v for v in \
+				request.form.cleaned_data['checkpoints'].split(";") if float(v) != 0.0])
+		except ValueError:
+			filtered_checkpoints = ""
 		run = Run(
 			map = request.form.map,
 			server = request.server,
 			user = request.form.user,
 			nickname = request.form.cleaned_data['nickname'],
 			time = request.form.cleaned_data['time'],
-			checkpoints = request.form.cleaned_data['checkpoints'],
+			checkpoints = filtered_checkpoints,
 		)
 		request.form.user.profile.update_connection(request.server)
 		run.save()
@@ -483,7 +488,6 @@ class PingHandler(BaseHandler):
 
 		users_dict = request.data.get('users')
 		if users_dict:
-			del users_dict[0] # let's be certain not to include Anonymous
 			UserProfile.objects.filter(id__in=users_dict.keys()).update(
 				last_played_server=request.server,
 				last_connection_at=datetime.now()
