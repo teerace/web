@@ -49,7 +49,7 @@ class UserProfile(models.Model):
 	@property
 	def points_progress(self):
 		# points progress since yesterday (actually: since 4:30 AM)
-		return self.points - self.yesterday_points
+		return "{0:+d}".format(self.points - self.yesterday_points)
 
 	@property
 	def position(self):
