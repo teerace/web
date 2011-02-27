@@ -627,25 +627,42 @@ td {
 }
 
 #userprofile.ownprofile {
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffdd6), to(#fff));
-	background-image: -moz-linear-gradient(top,  #fffdd6,  #fff);
-	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#fffdd6',EndColorStr='#fff');
-	background-color: #fffdd6;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#efffd6), to(#fff));
+	background-image: -moz-linear-gradient(top,  #efffd6,  #fff);
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#efffd6',EndColorStr='#fff');
+	background-color: #efffd6;
 }
 
-	#userprofile .header,
-	#userprofile table {
-		width: 658px;
+	#userprofile .headrow {
+		padding: 0 0 10px 20px;
+		overflow: hidden;
 	}
 
-	#userprofile .gravatar {
-		background: #fff;
-		border: thin solid #b7b6a4;
-		padding: 5px;
-		position: absolute;
-		top: 15px;
-		right: 15px;
-	}
+		#userprofile .headrow .gravatar {
+			margin-right: 20px;
+			float: left;
+		}
+
+			#userprofile .headrow .points h2 {
+				font-size: 36px;
+				line-height: 36px;
+				margin: 5px 0 -5px;
+			}
+
+				#userprofile .headrow .points h2 span {
+					font-size: 50%;
+				}
+
+			#userprofile .headrow .points h3 {
+				font-size: 12px;
+				font-weight: normal;
+				margin: 0;
+			}
+
+			#userprofile .headrow .points h3,
+			#userprofile .headrow .points h2 span {
+				color: #333;
+			}
 
 #docs {}
 

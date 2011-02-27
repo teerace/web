@@ -13,7 +13,13 @@ context variables:
 {% block content %}
 	<div id="userprofile" class="box full{% if user.id == profile.user_id %} ownprofile{% endif %}">
 		<div class="header">{% if user.id == profile.user_id %}Your profile{% else %}{{ profile }}{% endif %}</div>
-		<img src="{% gravatar_for_user profile.user 80 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
+		<div class="headrow">
+			<img src="{% gravatar_for_user profile.user 80 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
+			<div class="points">
+				<h2>{{ profile.points|default:0 }} <span>points</span></h2>
+				<h3>{{ profile.points_progress|default:0 }} <span>since yesterday</span></h3>
+			</div>
+		</div>
 		<table>
 			<tbody>
 				{% if profile.user.get_full_name %}
