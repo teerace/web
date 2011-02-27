@@ -186,6 +186,7 @@ MIDDLEWARE_CLASSES = (
 	'johnny.middleware.LocalStoreClearMiddleware',
 	'johnny.middleware.QueryCacheMiddleware',
 	'django.middleware.common.CommonMiddleware',
+	'django.middleware.http.ConditionalGetMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	#'django.middleware.transaction.TransactionMiddleware',
 	# see https://bitbucket.org/jmoiron/johnny-cache/issue/17/
