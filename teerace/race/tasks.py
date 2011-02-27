@@ -201,11 +201,8 @@ def update_user_points_history_chunked(chunk):
 	today = date.today()
 	for user_id in chunk:
 		user = UserProfile.objects.get(pk=user_id)
-		if user.points_history:
-			yesterday_points = user.points_history[-1][1] # wee!
-			user.points_progress = user.points - yesterday_points
-		else:
-			user.points_progress = user.points
+		user.yesterday_points = user.points
+		if not user.points_history:
 			# let's make a list
 			user.points_history = []
 		user.points_history.append((today, user.points))
