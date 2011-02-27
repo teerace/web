@@ -26,8 +26,8 @@ class UserProfile(models.Model):
 	country = CountryField(blank=True)
 	points = models.IntegerField(default=0)
 	points_history = PickledObjectField(null=True)
-	# progress since previous day, taken from points_history
-	points_progress = models.IntegerField(default=0)
+	# points snapshot from 4:30 AM, not really precise, but who cares?
+	yesterday_points = models.IntegerField(default=0)
 
 	has_skin = models.BooleanField(default=False)
 	skin_name = models.CharField(max_length=40, blank=True)
@@ -45,6 +45,11 @@ class UserProfile(models.Model):
 		return Run.objects.filter(user=self.user).aggregate(
 			Sum('time')
 		)['time__sum']
+
+	@property
+	def points_progress(self):
+		# points progress since yesterday (actually: since 4:30 AM)
+		return self.points - self.yesterday_points
 
 	@property
 	def position(self):
