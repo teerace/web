@@ -10,7 +10,7 @@ class ValidateUserForm(forms.Form):
 
 
 class ValidateUserTokenForm(forms.Form):
-	api_token = forms.CharField(min_length=32, max_length=32)
+	api_token = forms.CharField(min_length=24, max_length=24)
 
 
 class SkinUserForm(forms.Form):
