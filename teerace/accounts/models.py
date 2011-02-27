@@ -10,13 +10,13 @@ from picklefield.fields import PickledObjectField
 
 
 def generate_random_key():
-	return User.objects.make_random_password(length=32)
+	return User.objects.make_random_password(length=24)
 
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, unique=True, related_name='profile')
 	# TODO change token every password change
-	api_token = models.CharField(max_length=32, unique=True)
+	api_token = models.CharField(max_length=24, unique=True)
 	registration_ip = models.IPAddressField(blank=True, null=True)
 	last_connection_at = models.DateTimeField(auto_now_add=True)
 	last_played_server = models.ForeignKey('race.Server', blank=True, null=True,
