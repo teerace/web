@@ -19,20 +19,22 @@ context variables:
 			<tr>
 				<th>Name</th>
 				<th>Joined</th>
+				<th>Points</th>
 			</tr>
 			{% for profile in object_list %}
 			<tr>
 				<td><a href="{{ profile.user.get_absolute_url }}">{{ profile.user }}</a></td>
 				<td>{{ profile.user.date_joined }}</td>
+				<td>{{ profile.points }}</td>
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="2">No users.</td>
+				<td colspan="3">No users.</td>
 			</tr>
 			{% endfor %}
 		<tfoot>
 			<tr>
-				<td colspan="2">{{ paginator.count }} user{{ paginator.count|pluralize }}</td>
+				<td colspan="3">{{ paginator.count }} user{{ paginator.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		</table>
