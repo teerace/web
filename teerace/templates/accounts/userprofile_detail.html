@@ -17,7 +17,8 @@ context variables:
 			<img src="{% gravatar_for_user profile.user 80 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
 			<div class="points">
 				<h2>{{ profile.points|default:0 }} <span>points</span></h2>
-				<h3>{{ profile.points_progress|default:0 }} <span>since yesterday</span></h3>
+				{# little hack, hope to change it in the future #}
+                <h3 helper="{{ profile.points_progress|default:0 }}">{{ profile.points_progress|default:0 }} <span>since yesterday</span></h3>
 			</div>
 		</div>
 		<table>

@@ -659,7 +659,15 @@ td {
 				margin: 0;
 			}
 
-			#userprofile .headrow .points h3,
+            #userprofile .headrow .points h3[helper^="+"] {
+                color: #52ad50;
+            }
+
+            #userprofile .headrow .points h3[helper^="-"] {
+                color: #ad5052;
+            }
+
+			#userprofile .headrow .points h3 span,
 			#userprofile .headrow .points h2 span {
 				color: #333;
 			}
