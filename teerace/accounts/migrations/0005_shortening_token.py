@@ -8,7 +8,7 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         for profile in orm.UserProfile.objects.all():
-            profile.slug = entry.slug[:24]
+            profile.api_token = profile.api_token[:24]
             profile.save()
 
 
