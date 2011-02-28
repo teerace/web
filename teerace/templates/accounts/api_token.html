@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "accounts/settings.html" %}
 {% block title %}api token - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
@@ -26,11 +26,6 @@
 		});
 	</script>
 {% endblock extra_head %}
-{% block submenu %}
-	<ul class="left">
-		<li><a href="{% url api_token %}">API token</a></li>
-	</ul>
-{% endblock submenu %}
 {% block content %}
 	<div class="box full">
 		<div class="header">API token</div>

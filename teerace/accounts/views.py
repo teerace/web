@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
-	SettingsProfileForm)
+	SettingsProfileForm, PasswordChangeForm)
 from accounts.models import UserProfile
 from race.models import Run
 from annoying.functions import get_config
@@ -20,10 +20,10 @@ def login(request):
 		return redirect(reverse('home'))
 
 	next_uri = request.REQUEST.get('next', get_config('LOGIN_REDIRECT_URL',
-		reverse('welcome')))
+		reverse('home')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):
-		next_uri = get_config('LOGIN_REDIRECT_URL', reverse('welcome'))
+		next_uri = get_config('LOGIN_REDIRECT_URL', reverse('home'))
 
 	login_form = LoginForm()
 
@@ -143,8 +143,24 @@ def settings(request):
 			settings_user_form.save()
 			settings_profile_form.save()
 			messages.success(request, "Successfully updated your profile and settings.")
-			return redirect(reverse('profile', args=[request.user.id]))
 	return {
 		'settings_user_form': settings_user_form,
 		'settings_profile_form': settings_profile_form,
+	}
+
+
+@login_required
+@render_to('accounts/password_change.html')
+def password_change(request):
+	form = PasswordChangeForm(current_user=request.user)
+	if request.method == 'POST':
+		form = PasswordChangeForm(request.POST, current_user=request.user)
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Successfully changed your password.")
+	messages.warning(request, "<b>Make sure you want to do this!</b>"
+		" No, really. This action will change your password.",
+		extra_tags="hide")
+	return {
+		'form': form,
 	}

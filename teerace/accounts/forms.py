@@ -58,7 +58,7 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-	username = forms.CharField(label="Username", max_length=30)
+	username = forms.CharField(label="Username")
 	password = forms.CharField(label="Password",
 		widget=forms.PasswordInput(render_value=False))
 
@@ -92,3 +92,37 @@ class SettingsProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ('country',)
+
+
+class PasswordChangeForm(forms.Form):
+	old_password = forms.CharField(label="Old password",
+		widget=forms.PasswordInput(render_value=False))
+	new_password1 = forms.CharField(label="New password", min_length=4,
+		widget=forms.PasswordInput(render_value=False))
+	new_password2 = forms.CharField(label="New password (again)", min_length=4,
+		widget=forms.PasswordInput(render_value=False))
+
+	def __init__(self, *args, **kwargs):
+		self.current_user = kwargs.pop('current_user', None)
+		if self.current_user is None:
+			raise AttributeError("current_user missing")
+		super(PasswordChangeForm, self).__init__(*args, **kwargs)
+
+	def clean_old_password(self):
+		old_password = self.cleaned_data.get('old_password')
+		if not self.current_user.check_password(old_password):
+			raise forms.ValidationError(
+				"You have to type your old password correctly.")
+		return old_password
+	
+	def clean_new_password2(self):
+		new_password1 = self.cleaned_data.get('new_password1')
+		new_password2 = self.cleaned_data.get('new_password2')
+		if new_password1 != new_password2:
+			raise forms.ValidationError(
+				"You must type the same password each time")
+		return new_password2
+
+	def save(self):
+		self.current_user.set_password(self.cleaned_data.get('new_password1'))
+		self.current_user.save()
