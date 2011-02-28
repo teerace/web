@@ -71,12 +71,9 @@ def rebuild_map_rank(map_id):
 
 @task(rate_limit='1/m', ignore_result=True)
 def rebuild_global_rank():
-	# FIXME oh man, fix me.
-	runners = UserProfile.objects.exclude(user__pk=0)
+	runners = User.objects.annotate(Sum('bestrun__points'))
 	for runner in runners:
-		runner.points = BestRun.objects.filter(user=runner.user).aggregate(
-			Sum('points')
-		)['points__sum'] or 0
+		runner.points = runner.bestrun__points__sum
 		runner.save()
 	logger = rebuild_global_rank.get_logger()
 	logger.info("Rebuilt global rank.")
