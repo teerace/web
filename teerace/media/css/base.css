@@ -667,6 +667,10 @@ td {
                 color: #ad5052;
             }
 
+            #userprofile .headrow .points h3[helper="+0"] {
+				color: #cc2;
+            }
+
 			#userprofile .headrow .points h3 span,
 			#userprofile .headrow .points h2 span {
 				color: #333;
