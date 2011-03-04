@@ -14,6 +14,7 @@ PROJECT_DIR = os.path.dirname(__file__)
 DEBUG = False
 TEMPLATE_DEBUG = False
 TEMPLATE_CACHING = True
+BETA = False
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -47,16 +48,6 @@ else:
 	#CACHE_BACKEND = 'johnny.backends.memcached://localhost:11211/'
 # some johnny settings
 JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_teerace'
-
-# When you change this setting, you have to run
-# ./manage.py syncdb
-# to update Site instance.
-#
-# Also, it should NOT contain http://
-#
-# If you run your app on different port than 80,
-# also include it in this setting.
-SITE_DOMAIN = ''
 
 MAILER_ADDRESS = ''
 WEBMASTER_EMAIL = ''
@@ -175,7 +166,7 @@ TEMPLATE_LOADERS = (
 	'django.template.loaders.eggs.Loader',
 )
 
-if not TEMPLATE_CACHING:
+if TEMPLATE_CACHING:
 	TEMPLATE_LOADERS = (
 		('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),
 	)

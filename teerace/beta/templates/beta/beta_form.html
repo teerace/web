@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	form 
+	login_form
+{% endcomment %}
+{% block title %}beta - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Beta' 'beta_form' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Teerace beta</div>
+		<p>
+			Sorry, Teerace is in closed beta phase right now, which means only selected people can use this site.
+		</p>
+		<p>
+			Hang around #teerace channel on Quakenet, we may give you a key eventually.
+		</p>
+	</div>
+	<div class="box full">
+		If you have an account already, just log in with the form below:
+		
+		<form method="post" action="{% url login %}">
+			{% with login_form as form %}
+			{% include "snippets/form.html" %}
+			{% endwith %}
+			<input type="hidden" name="next" value="{{ next }}">
+			<div class="form_field">
+				<input type="submit" value="Login">
+			</div>
+		</form>
+		
+		Otherwise, provide your beta key:
+		
+		<form method="post" action="{% url beta_form %}">
+			{% include "snippets/form.html" %}
+			<div class="form_field">
+				<input type="submit" value="Open Sesame">
+			</div>
+		</form>
+	</div>
+{% endblock %}
