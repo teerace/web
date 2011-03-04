@@ -250,6 +250,12 @@ td img {
 		background: #916a61;
 	}
 
+	#menu li.glow,
+	#menu li#current {
+		-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+		-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+	}
+
 #submenu {
 	background-color: #c6de92;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#c6de92), to(#9dc547));
