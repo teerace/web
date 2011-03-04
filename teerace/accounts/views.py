@@ -5,6 +5,7 @@ from django.contrib.auth import (authenticate, login as auth_login,
 	logout as auth_logout)
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import Http404
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm, PasswordChangeForm)
@@ -96,6 +97,8 @@ def welcome(request):
 
 @render_to('accounts/userprofile_detail.html')
 def profile(request, user_id):
+	if user_id == 0:
+		raise Http404 # mkay, no Anonymous profile
 	user_profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
 	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
 
