@@ -164,6 +164,10 @@ td {
 	padding: 5px 0;
 }
 
+	td img {
+		margin: -3px 5px -6px 3px;
+	}
+
 #header {}
 
 #page {}
@@ -179,7 +183,8 @@ td {
 .badge, .api_token,
 #userprofile .gravatar,
 .clippy:hover:after,
-.no-map-image div  {
+.no-map-image div,
+td img {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;

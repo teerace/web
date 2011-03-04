@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load pagination_tags %}
+{% extends "base.html" %}{% load pagination_tags %}{% load gravatar %}
 {% comment %}
 context variables:
 	object_list
@@ -23,7 +23,10 @@ context variables:
 			</tr>
 			{% for profile in object_list %}
 			<tr>
-				<td><a href="{{ profile.user.get_absolute_url }}">{{ profile.user }}</a></td>
+				<td>
+					<img src="{% gravatar_for_user profile.user 20 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
+					<a href="{{ profile.user.get_absolute_url }}">{{ profile.user }}</a>
+				</td>
 				<td>{{ profile.user.date_joined }}</td>
 				<td>{{ profile.points }}</td>
 			</tr>
