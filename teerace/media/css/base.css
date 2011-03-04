@@ -80,9 +80,11 @@ input,
 	background-image: -moz-linear-gradient(top,  #e7e5be,  #918f61);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#e7e5be',EndColorStr='#918f61');
 	border: thin solid #918f61;
-	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-	-moz-box-shadow: inset 0 0 1px #fff;
-	-webkit-box-shadow: inset 0 0 1px #fff;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+	-moz-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	-webkit-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0 0 1px rgb(255,255,255);
+	-webkit-box-shadow: inset 0 0 2px rgb(255,255,255);
 	padding: 5px;
 }
 
@@ -94,9 +96,9 @@ input:hover,
 	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #4c4b33;
-	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-	-moz-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-	-webkit-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	-moz-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	-webkit-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 }
 
 textarea {
@@ -163,7 +165,8 @@ td {
 #comments .comment,
 .badge, .api_token,
 #userprofile .gravatar,
-.clippy:hover:after {
+.clippy:hover:after,
+.no-map-image div  {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -176,7 +179,7 @@ td {
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #918f61;
 	-moz-box-shadow: inset 0 0 1px #fff;
-	-webkit-box-shadow: inset 0 0 1px #fff;
+	-webkit-box-shadow: inset 0 0 2px #fff;
 	font-size: 13px;
 }
 
@@ -194,9 +197,9 @@ td {
 		display: inline-block;
 		border-right: thin solid #918f61;
 		padding: 10px;
-		text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-		-moz-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-		-webkit-text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+		text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+		-moz-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+		-webkit-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 	}
 
 	#menu li#current {
@@ -204,9 +207,9 @@ td {
 		background-image: -webkit-gradient(linear, left top, left bottom, from(#9dc547), to(#c6de92));
 		background-image: -moz-linear-gradient(top,  #9dc547,  #c6de92);
 		filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#9dc547',EndColorStr='#c6de92');
-		text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-		-moz-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-		-webkit-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 	}
 
 		#menu li#current a {
@@ -227,6 +230,13 @@ td {
 	background-image: -moz-linear-gradient(top,  #c6de92,  #9dc547);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#c6de92',EndColorStr='#9dc547');
 	font-size: 11px;
+	/* we don't want box-shadow on the top */
+	-moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,0.3),
+						inset -1px 0 0 rgba(255,255,255,0.4),
+						inset 1px 0 0 rgba(255,255,255,0.4);
+	-webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,0.3),
+						inset -1px 0 0 rgba(255,255,255,0.4),
+						inset 1px 0 0 rgba(255,255,255,0.4);
 }
 
 	#submenu a {
@@ -237,9 +247,9 @@ td {
 	#submenu li, #submenu div {
 		border-color: #9dc547;
 		padding: 10px;
-		text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-		-moz-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-		-webkit-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 	}
 
 	#submenu li:first-child {
@@ -261,9 +271,9 @@ td {
 
 	#user-box .user-name {
 		font-weight: bold;
-		text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-		-moz-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-		-webkit-text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+		text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 	}
 
 #content {
@@ -292,7 +302,7 @@ td {
 	#messages div {
 		padding: 10px 20px;
 		-moz-box-shadow: inset 0 0 1px #fff;
-		-webkit-box-shadow: inset 0 0 1px #fff;
+		-webkit-box-shadow: inset 0 0 2px #fff;
 	}
 
 	#messages div:before {
@@ -312,6 +322,24 @@ td {
 		color: #eee;
 	}
 
+	#messages .error,
+	#messages .info,
+	#messages .success {
+		text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+		-moz-text-shadow: 0 1px 0 rgba(0,0,0,0,0.5);
+		-webkit-text-shadow: 0 1px 0 rgba(0,0,0,0,0.5);
+	}
+
+	#messages .warning,
+	#messages .error:before,
+	#messages .info:before,
+	#messages .warning:before,
+	#messages .success:before {
+		text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-moz-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+		-webkit-text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+	}
+
 	#messages .error {
 		background-color: #f07c28;
 		background-image: -webkit-gradient(linear, left top, left bottom, from(#cf4800), to(#f07c28));
@@ -323,9 +351,6 @@ td {
 	#messages .error:before {
 		color: #ab3b00;
 		content: '✕';
-		text-shadow: 1px 1px 1px #f09859;
-		-moz-text-shadow: 1px 1px 1px #f09859;
-		-webkit-text-shadow: 1px 1px 1px #f09859;
 		margin-left: 1px;
 	}
 
@@ -340,9 +365,6 @@ td {
 	#messages .info:before {
 		color: #435a85;
 		content: 'ⓘ';
-		text-shadow: 1px 1px 1px #c0d4f0;
-		-moz-text-shadow: 1px 1px 1px #c0d4f0;
-		-webkit-text-shadow: 1px 1px 1px #c0d4f0;
 		margin-left: -2px;
 	}
 
@@ -357,9 +379,6 @@ td {
 	#messages .warning:before {
 		color: #b77b00;
 		content: '⚠';
-		text-shadow: 1px 1px 1px #ffefc4;
-		-moz-text-shadow: 1px 1px 1px #ffefc4;
-		-webkit-text-shadow: 1px 1px 1px #ffefc4;
 	}
 
 		#messages .warning p { color: #000; }
@@ -376,9 +395,6 @@ td {
 	#messages .success:before {
 		color: #5a781e;
 		content: '✓';
-		text-shadow: 1px 1px 1px #a8db2c;
-		-moz-text-shadow: 1px 1px 1px #a8db2c;
-		-webkit-text-shadow: 1px 1px 1px #a8db2c;
 		margin-left: 4px;
 	}
 
@@ -593,11 +609,11 @@ td {
 	padding: 7px 15px 6px 20px;
 	width: 763px;
 	float:right;
-	text-shadow: 0 1px 1px #444;
-	-moz-text-shadow: 1px 1px 1px #444;
-	-webkit-text-shadow: 1px 1px 1px #444;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	-moz-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	-webkit-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 	-moz-box-shadow: inset 0 0 1px #fff;
-	-webkit-box-shadow: inset 0 0 1px #fff;
+	-webkit-box-shadow: inset 0 0 2px #fff;
 }
 
 	#footer div[sprite=django] {
@@ -617,9 +633,6 @@ td {
 	#footer a:hover {
 		color: #fff;
 		text-decoration: none;
-		text-shadow: 1px 1px 1px #333;
-		-moz-text-shadow: 1px 1px 1px #333;
-		-webkit-text-shadow: 1px 1px 1px #333;
 	}
 
 #userprofile {
@@ -679,9 +692,6 @@ td {
 #docs {}
 
 	#docs i, #docs b {
-/*
-		color: #692556;
-*/
 		color: #918f61;
 	}
 
@@ -744,16 +754,16 @@ div.live li {
 	border-bottom: thin dotted;
 	margin: 0 0 0 20px;
 	padding: 3px;
-	display: inline-block;
 	width: 330px;
+	display: inline-block;
 }
 
 	div.live li span.name {
 		color: #000;
 		font-size: 13px;
+		width: 230px;
 		display: inline-block;
 		overflow: hidden;
-		width: 230px;
 	}
 
 	div.live li span.time {
@@ -798,11 +808,11 @@ div.live-stats {
 	font-size: 250%;
 	text-align: center;
 	padding: 20px;
-	text-shadow: 0 1px 1px #000;
-	-moz-text-shadow: 1px 1px 1px #000;
-	-webkit-text-shadow: 1px 1px 1px #000;
+	text-shadow: 1px 2px 0 #000;
+	-moz-text-shadow: 1px 2px 0 #000;
+	-webkit-text-shadow: 1px 2px 0 #000;
 	-moz-box-shadow: inset 0 0 1px #fff;
-	-webkit-box-shadow: inset 0 0 1px #fff;
+	-webkit-box-shadow: inset 0 0 2px #fff;
 }
 
 .clippy {
@@ -821,11 +831,11 @@ div.live-stats {
 	text-align: center;
 	width: 80px;
 	padding: 3px 5px;
+	margin-right: -25px;
 	display: block;
 	content: 'Copy to clipboard';
 	position: absolute;
 	right: 50%;
-	margin-right: -25px;
 }
 
 .badge {
@@ -839,9 +849,9 @@ div.live-stats {
 	margin: 5px;
 	float: left;
 	position: relative;
-	text-shadow: 0 1px 1px #fff;
-	-moz-text-shadow: 1px 1px 1px #fff;
-	-webkit-text-shadow: 1px 1px 1px #fff;
+	text-shadow: 0 1px 0 #fff;
+	-moz-text-shadow: 0 1px 0 #fff;
+	-webkit-text-shadow: 0 1px 0 #fff;
 }
 
 	.badge b {
@@ -979,9 +989,6 @@ div.live-stats {
 		margin: 0 auto;
 		width: 80%;
 		border: 3px solid #c5c5c5;
-		border-radius: 3px;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
 		padding: 5px;
 		color: #c5c5c5;
 		font: 175% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
