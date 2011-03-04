@@ -164,7 +164,7 @@ td {
 	padding: 5px 0;
 }
 
-	td img {
+	td img:not([src*=flag]) {
 		margin: -3px 5px -6px 3px;
 	}
 
