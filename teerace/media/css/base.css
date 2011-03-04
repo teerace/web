@@ -440,6 +440,10 @@ td img {
 		float: right;
 	}
 
+	#blog p {
+		line-height: 20px;
+	}
+
 #comments {
 	padding-top: 30px;
 }

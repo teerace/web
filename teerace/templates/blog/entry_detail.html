@@ -36,12 +36,12 @@ context variables:
 	<div id="blog" class="box full">
 		<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 		<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by.get_full_name|default:entry.created_by }}</span></div>
-		<p>
+		<div class="excerpt">
 			{{ entry.excerpt_html|safe }}
-		</p>
-		<p id="read-more">
+		</div>
+		<div id="read-more">
 			{{ entry.content_html|safe }}
-		</p>
+		</div>
 
 		{% if not entry.enable_comments %}
 		<div class="comment-count">comments disabled / <a href="{{ entry.get_absolute_url }}">#</a></div>
