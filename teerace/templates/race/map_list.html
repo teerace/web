@@ -45,6 +45,10 @@ context variables:
 				</tr>
 			</table>
 		</div>
+		{% empty %}
+		<div class="box full">
+			No maps were found.
+		</div>
 		{% endfor %}
 		{% paginate %}
 {% endblock content %}
