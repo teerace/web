@@ -157,7 +157,6 @@ td {
 #header, #page {
 	margin: 0 auto;
 	width: 800px;
-	overflow: hidden;
 }
 
 #menu, .box,
@@ -178,8 +177,8 @@ td {
 	background-image: -moz-linear-gradient(top,  #918f61,  #4c4b33);
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border: thin solid #918f61;
-	-moz-box-shadow: inset 0 0 1px #fff;
-	-webkit-box-shadow: inset 0 0 2px #fff;
+	-moz-box-shadow: inset 0 0 1px #fff, 0 0 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow: inset 0 0 2px #fff, 0 0 3px rgba(0,0,0,0.2);
 	font-size: 13px;
 }
 
@@ -301,8 +300,8 @@ td {
 
 	#messages div {
 		padding: 10px 20px;
-		-moz-box-shadow: inset 0 0 1px #fff;
-		-webkit-box-shadow: inset 0 0 2px #fff;
+		-moz-box-shadow: inset 0 0 1px #fff, 0 0 3px rgba(0,0,0,0.2);
+		-webkit-box-shadow: inset 0 0 2px #fff, 0 0 3px rgba(0,0,0,0.2);
 	}
 
 	#messages div:before {
@@ -612,8 +611,8 @@ td {
 	text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 	-moz-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 	-webkit-text-shadow: 0 1px 0 rgba(0,0,0,0.5);
-	-moz-box-shadow: inset 0 0 1px #fff;
-	-webkit-box-shadow: inset 0 0 2px #fff;
+	-moz-box-shadow: inset 0 0 1px #fff, 0 0 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow: inset 0 0 2px #fff, 0 0 3px rgba(0,0,0,0.2);
 }
 
 	#footer div[sprite=django] {
@@ -787,6 +786,8 @@ div.live-stats {
 	font-size: 13px;
 	margin: 5px 0;
 	padding: 20px;
+	-moz-box-shadow: 0 0 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
 }
 
 	.box .header {
