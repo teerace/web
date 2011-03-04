@@ -152,6 +152,14 @@ tr.no-border {
 	border: none;
 }
 
+tr.me {
+	background-color: #efffd6;
+}
+
+	tr.me td a {
+		font-weight: bold;
+	}
+
 th {
 	text-align: left;
 }

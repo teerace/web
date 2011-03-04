@@ -22,7 +22,7 @@ context variables:
 				<th>Points</th>
 			</tr>
 			{% for profile in object_list %}
-			<tr>
+			<tr{% if request.user.id == profile.id %} class="me" title="that's you!"{% endif %}>
 				<td>
 					<img src="{% gravatar_for_user profile.user 20 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
 					<a href="{{ profile.user.get_absolute_url }}">{{ profile.user }}</a>
