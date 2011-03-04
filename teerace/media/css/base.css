@@ -442,6 +442,7 @@ td img {
 
 	#blog p {
 		line-height: 20px;
+		text-align: justify;
 	}
 
 #comments {

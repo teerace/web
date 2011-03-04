@@ -10,7 +10,7 @@ context variables:
 	{% paginate %}
 	{% for entry in entry_list %}
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-			<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by }}</span></div>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster">{{ entry.created_by.get_full_name|default:entry.created_by }}</span></div>
 			<p>
 				{% if entry.excerpt %}
 					{{ entry.excerpt_html|safe }}
