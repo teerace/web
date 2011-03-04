@@ -97,7 +97,7 @@ def welcome(request):
 
 @render_to('accounts/userprofile_detail.html')
 def profile(request, user_id):
-	if user_id == 0:
+	if int(user_id) == 0:
 		raise Http404 # mkay, no Anonymous profile
 	user_profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
 	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
