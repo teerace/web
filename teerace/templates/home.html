@@ -66,7 +66,7 @@ context variables:
 				<div class="header">Blog</div>
 
 				<h2><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></h2>
-				<div class="post-line">{{ latest_entry.created_at }} / <span class="poster">{{ latest_entry.created_by }}</span></div>
+				<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{{ latest_entry.created_by.get_absolute_url }}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
 				<p>
 					{% if latest_entry.excerpt_html %}
 						{{ latest_entry.excerpt_html|safe }}
