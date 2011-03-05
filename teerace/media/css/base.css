@@ -195,7 +195,6 @@ td:first-child {
 .badge, .api_token,
 #userprofile .gravatar,
 .clippy:hover:after,
-.no-map-image div,
 td img {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -1024,18 +1023,15 @@ div.live-stats {
 }
 
 .no-map-image {
-	width: 49%;
+	color: #bbb;
+	text-align: center;
+	width: 370px;
 }
 
-	.no-map-image div {
-		text-align: center;
-		margin: 0 auto;
-		width: 80%;
-		border: 3px solid #c5c5c5;
-		padding: 5px;
-		color: #c5c5c5;
-		font: 175% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
-	}
+.no-map-image:before {
+	font-size: 144px;
+	content: '?';
+}
 
 .box.left { margin-right: 10px; }
 .box.right { margin-top: 5px; }
