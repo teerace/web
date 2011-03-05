@@ -20,7 +20,7 @@ context variables:
 				<th>Total playtime</th>
 			</tr>
 			{% for profile in object_list %}
-			<tr>
+			<tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
 				<td>{{ profile.position|ordinal }}</td>
 				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
 				<td>{{ profile.points }}</td>

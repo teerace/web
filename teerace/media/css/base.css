@@ -176,6 +176,10 @@ td {
 		margin: -3px 5px -6px 3px;
 	}
 
+td:first-child {
+	padding-left: 3px;
+}
+
 #header {}
 
 #page {}
