@@ -7,7 +7,7 @@ class BetaMiddleware(object):
 	"""
 
 	def process_request(self, request):
-		if request.path[:6] in ('/beta/', '/login', '/media'):
+		if request.path[:6] in ('/beta/', '/login', '/media', '/api/1'):
 			return
 		if request.method == 'GET' and not request.user.is_authenticated() \
 			and not 'is_in_beta' in request.session:
