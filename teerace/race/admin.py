@@ -13,7 +13,7 @@ class MapAdmin(admin.ModelAdmin):
 		if not change:
 			obj.added_by = request.user
 		obj.save()
-		tasks.retrieve_map_details.delay(obj.id)
+		tasks.retrieve_map_details.apply_async(args=[obj.id], countdown=10)
 
 
 class ServerAdmin(admin.ModelAdmin):
