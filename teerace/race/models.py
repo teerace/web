@@ -30,11 +30,11 @@ class Map(models.Model):
 
 	map_type = models.ForeignKey('MapType', default=1)
 
-	has_unhookables = models.BooleanField(default=False)
-	has_deathtiles = models.BooleanField(default=False)
-	shield_count = models.IntegerField(default=0)
-	heart_count = models.IntegerField(default=0)
-	grenade_count = models.IntegerField(default=0)
+	has_unhookables = models.NullBooleanField(default=False)
+	has_deathtiles = models.NullBooleanField(default=False)
+	shield_count = models.IntegerField(default=0, null=True)
+	heart_count = models.IntegerField(default=0, null=True)
+	grenade_count = models.IntegerField(default=0, null=True)
 	has_image = models.BooleanField(default=False)
 
 	# def get_map_image(self):

@@ -119,40 +119,46 @@ def retrieve_map_details(map_id):
 		logger.error("Are you kidding me? (map doesn't exist)")
 		return False
 
-	# I actually can use that! Thanks, erd!
-	teemap = Teemap().load(map_obj.map_file.path)
-	logger.info("Loaded \"{0}\" map.".format(map_obj.name))
+	try:
+		# I actually can use that! Thanks, erd!
+		teemap = Teemap().load(map_obj.map_file.path)
+		logger.info("Loaded \"{0}\" map.".format(map_obj.name))
+	except IndexError:
+		logger.error("Couldn't load \"{0}\" map".format(map_obj.name))
+		has_unhookables = has_deathtiles = is_fastcap = None
+		shield_count = heart_count = grenade_count = None
+	else:
+		has_unhookables = has_deathtiles = is_fastcap = False
+		shield_count = heart_count = grenade_count = 0
+		logger.info("Counting map items...")
+		for tile in teemap.gamelayer.tiles:
+			if tile.index == indexes.DEATHTILE:
+				has_deathtiles = True
+			elif tile.index == indexes.UNHOOKABLE:
+				has_unhookables = True
+			elif tile.index in (indexes.RED_FLAG, indexes.BLUE_FLAG):
+				is_fastcap = True
+			elif tile.index == indexes.SHIELD:
+				shield_count += 1
+			elif tile.index == indexes.HEART:
+				heart_count += 1
+			elif tile.index == indexes.GRENADE:
+				grenade_count += 1
 
-	logger.info("Counting map items...")
-	has_unhookables = has_deathtiles = is_fastcap = False
-	shield_count = heart_count = grenade_count = 0
-	for tile in teemap.gamelayer.tiles:
-		if tile.index == indexes.DEATHTILE:
-			has_deathtiles = True
-		elif tile.index == indexes.UNHOOKABLE:
-			has_unhookables = True
-		elif tile.index in (indexes.RED_FLAG, indexes.BLUE_FLAG):
-			is_fastcap = True
-		elif tile.index == indexes.SHIELD:
-			shield_count += 1
-		elif tile.index == indexes.HEART:
-			heart_count += 1
-		elif tile.index == indexes.GRENADE:
-			grenade_count += 1
+		# DISABLED due to huge (counted in GiBs) memory usage
+		# logger.info("Rendering map screenshot.")
+		# map_image = teemap.render(gamelayer_on_top=True)
+		# map_image.save('{0}images/maps/full/{1}.png'.format(settings.MEDIA_ROOT,
+		# 	map_obj.name))
+		# logger.info("Finished rendering map screenshot.")
+		# map_obj.has_image = True
+
 	map_obj.has_unhookables = has_unhookables
 	map_obj.has_deathtiles = has_deathtiles
 	map_obj.shield_count = shield_count
 	map_obj.heart_count = heart_count
 	map_obj.grenade_count = grenade_count
 	logger.info("Finished counting map items.")
-
-	# DISABLED due to huge (counted in GiBs) memory usage
-	# logger.info("Rendering map screenshot.")
-	# map_image = teemap.render(gamelayer_on_top=True)
-	# map_image.save('{0}images/maps/full/{1}.png'.format(settings.MEDIA_ROOT,
-	# 	map_obj.name))
-	# logger.info("Finished rendering map screenshot.")
-	# map_obj.has_image = True
 
 	logger.info("Generating map CRC...")
 	map_obj.map_file.open()
