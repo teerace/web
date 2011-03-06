@@ -27,6 +27,7 @@ class ServerAdmin(admin.ModelAdmin):
 		return super(ServerAdmin, self).add_view(request)
 
 	def change_view(self, request, obj_id):
+		self.exclude = ('played_map', 'anonymous_players')
 		#self.readonly_fields = ('api_key', )
 		return super(ServerAdmin, self).change_view(request, obj_id)
 

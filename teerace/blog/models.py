@@ -10,13 +10,14 @@ from annoying.functions import get_config
 class Entry(models.Model):
 	created_by = models.ForeignKey(User)
 	created_at = models.DateTimeField(auto_now_add=True)
-	is_published = models.BooleanField(default=True)
+	published_at = models.DateTimeField(auto_now=True)
+	is_published = models.BooleanField(default=True, verbose_name="publish on site")
 	enable_comments = models.BooleanField(default=True)
 	title = models.CharField(max_length=100)
 	slug = models.CharField(max_length=100, blank=True)
-	excerpt = models.TextField(blank=True)
+	excerpt = models.TextField(blank=True, help_text="You may use Markdown syntax")
 	excerpt_html = models.TextField(blank=True)
-	content = models.TextField()
+	content = models.TextField(help_text="You may use Markdown syntax")
 	content_html = models.TextField()
 
 	def slugify_title(self):

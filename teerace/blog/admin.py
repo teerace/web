@@ -6,7 +6,12 @@ class EntryAdmin(admin.ModelAdmin):
 	list_display = ('title', 'created_at', 'created_by', 'is_published')
 	list_display_links = ('created_at', 'title')
 	list_filter = ('is_published', 'created_at')
-	fields = ('title', 'excerpt', 'content', 'is_published', 'enable_comments')
+	fields = ('title', 'created_by', 'excerpt', 'content',
+		'is_published', 'enable_comments')
+
+	def add_view(self, request):
+		self.exclude = ('created_by',)
+		return super(EntryAdmin, self).add_view(request)
 
 	def save_model(self, request, obj, form, change):
 		if not change:

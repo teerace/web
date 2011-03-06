@@ -216,11 +216,14 @@ class Server(models.Model):
 	We use maintainer account to interact with API.
 	"""
 
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=100, verbose_name="server name")
 	description = models.TextField(blank=True)
 	address = models.CharField(max_length=50, blank=True)
-	maintained_by = models.ForeignKey(User, related_name='maintained_servers')
-	is_active = models.BooleanField(default=True)
+	maintained_by = models.ForeignKey(User, related_name='maintained_servers',
+		verbose_name="maintainer")
+	is_active = models.BooleanField(default=True, verbose_name="active",
+		help_text="Designates whether this server should be treated as active."
+			" Unselect this instead of deleting servers.")
 	last_connection_at = models.DateTimeField(auto_now=True)
 	played_map = models.ForeignKey(Map, null=True, blank=True)
 	anonymous_players = PickledObjectField()

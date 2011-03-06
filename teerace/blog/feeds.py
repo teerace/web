@@ -26,4 +26,4 @@ class LatestEntriesFeed(Feed):
 		return item.created_by
 
 	def item_pubdate(self, item):
-		return item.created_at
+		return item.published_at
