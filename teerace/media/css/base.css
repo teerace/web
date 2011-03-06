@@ -8,6 +8,8 @@ body {
 a {
 	color: #970;
 	text-decoration: none;
+	/* fix links without href attr */
+	cursor: pointer;
 }
 
 a:hover {
