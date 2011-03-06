@@ -166,9 +166,7 @@ class Run(models.Model):
 			best_run.save()
 
 	def checkpoints_list(self):
-		li = self.checkpoints.split(';')
-		li.sort()
-		return li
+		return self.checkpoints.split(';')
 
 	def __unicode__(self):
 		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user,
