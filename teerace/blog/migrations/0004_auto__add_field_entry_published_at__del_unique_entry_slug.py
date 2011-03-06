@@ -7,10 +7,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
-        # Removing unique constraint on 'Entry', fields ['slug']
-        db.delete_unique('blog_entry', ['slug'])
-
         # Adding field 'Entry.published_at'
         db.add_column('blog_entry', 'published_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=datetime.datetime(2011, 3, 6, 21, 58, 28, 970458), blank=True), keep_default=False)
 
@@ -19,9 +15,6 @@ class Migration(SchemaMigration):
         
         # Deleting field 'Entry.published_at'
         db.delete_column('blog_entry', 'published_at')
-
-        # Adding unique constraint on 'Entry', fields ['slug']
-        db.create_unique('blog_entry', ['slug'])
 
 
     models = {
