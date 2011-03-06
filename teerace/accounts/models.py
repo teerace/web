@@ -109,6 +109,7 @@ class UserProfile(models.Model):
 
 	class Meta:
 		get_latest_by = 'user__created_at'
+		ordering = ['id']
 
 	def __unicode__(self):
 		possessive = '' if self.user.username.endswith('s') else 's'
