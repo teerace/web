@@ -56,7 +56,7 @@ context variables:
 				</tr>
 				<tr>
 					<td class="label">Checkpoints</td>
-					<td class="content"><a class="more" href="javascript:ckp()">Show</a></td>
+					<td class="content"><a class="more" onclick="ckp()">Show</a></td>
 				</tr>
 				{% for checkpoint in map.best_score.checkpoints_list %}
 				<tr class="checklist-{{ forloop.counter }}">
