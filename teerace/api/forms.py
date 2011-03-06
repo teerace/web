@@ -60,6 +60,8 @@ class RunForm(forms.Form):
 
 	def clean_user_id(self):
 		user_id = self.cleaned_data.get('user_id')
+		if user_id in (0, None):
+			return None
 		try:
 			self.user = User.objects.get(pk=user_id)
 		except User.DoesNotExist:

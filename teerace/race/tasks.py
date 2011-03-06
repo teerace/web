@@ -17,6 +17,9 @@ def redo_ranks(run_id):
 	except Run.DoesNotExist:
 		logger.error("How is that possible? (Run doesn't exist)")
 		return False
+	if user_run.user == None:
+		logger.info("Anonymous run, not processing the rank.")
+		return
 	map_obj = user_run.map
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run_id == user_run.id:
@@ -24,7 +27,7 @@ def redo_ranks(run_id):
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
-	# exclude anonymous and banned users from scoring
+	# exclude banned users from scoring
 	ranked = runs.exclude(user__is_active=False)
 	ranked = ranked.order_by('run__time')[:ranked_count]
 	try:
@@ -54,7 +57,7 @@ def rebuild_map_rank(map_id):
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
-	# exclude anonymous and banned users from scoring
+	# exclude banned users from scoring
 	ranked = runs.exclude(user__is_active=False) \
 		.order_by('run__time')[:ranked_count]
 	i = 0

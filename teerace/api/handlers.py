@@ -94,12 +94,13 @@ class RunHandler(BaseHandler):
 			time = request.form.cleaned_data['time'],
 			checkpoints = filtered_checkpoints,
 		)
-		request.form.user.profile.update_connection(request.server)
 		run.save()
-		badges.possibly_award_badge("run_finished",
-			user=request.form.user, run=run)
 		tasks.redo_ranks.delay(run.id)
 		tasks.set_server_map.delay(request.server.id, request.form.map.id)
+		if request.form.user != None:
+			request.form.user.profile.update_connection(request.server)
+			badges.possibly_award_badge("run_finished",
+				user=request.form.user, run=run)
 		return run
 
 	def create(self, request, action, *args, **kwargs):
@@ -116,6 +117,7 @@ class RunHandler(BaseHandler):
 		Data
 			- map_name / string / name of the finished map
 			- user_id / integer / ID of the user who finished the map
+			                      (use None for anonymous user)
 			- nickname / string / currently used nickname by the user
 			- time / decimal / user result
 			- checkpoints / string / semicolon-delimited (;) list of checkpoint times

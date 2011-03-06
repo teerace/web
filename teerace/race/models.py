@@ -90,7 +90,7 @@ class Run(models.Model):
 
 	map = models.ForeignKey('Map')
 	server = models.ForeignKey('Server', related_name='runs')
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(User, blank=True, null=True)
 	nickname = models.CharField(max_length=24)
 
 	# yep, 24 semicolons and 25 time decimals,
@@ -157,6 +157,8 @@ class Run(models.Model):
 		broken_qs.exclude(pk=broken_qs[0].id).update(is_record=False)
 
 	def promote_to_best(self):
+		if self.id == None:
+			return
 		best_run, created = BestRun.objects.get_or_create(map=self.map,
 			user=self.user, defaults={'run': self})
 		if not created:
@@ -178,7 +180,7 @@ class Run(models.Model):
 		if create:
 			self.set_personal_record()
 			# we don't want anonymous users to own map records
-			if self.user_id != 0:
+			if self.user_id != None:
 				self.set_map_record()
 		super(Run, self).save(*args, **kwargs)
 		if create and self.is_personal_best:

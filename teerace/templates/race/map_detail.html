@@ -110,7 +110,7 @@ context variables:
 			{% for best_run in best_runs %}
 			<tr{% if request.user.id == best_run.user.id %} class="me" title="that's you!"{% endif %}>
 				<td>{{ best_run.position|ordinal }}</td>
-				<td>{% if best_run.user.id != 0 %}<a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a>{% else %}{{ best_run.run.nickname }}{% endif %}</td>
+				<td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
 				<td>{{ best_run.points }}</td>
 				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
 				<td>{{ best_run.run.time|floatformat:settings.RESULT_PRECISION }}</td>
@@ -142,8 +142,8 @@ context variables:
 				<th></th>
 			</tr>
 			{% for run in latest_runs %}
-			<tr{% if request.user.id == run.user.id %} class="me" title="that's you!"{% endif %}>
-				<td>{% if run.user.id != 0 %}<a href="{{ run.user.get_absolute_url }}">{{ run.user.username }}</a>{% else %}{{ run.nickname }}{% endif %}</td>
+			<tr{% if request.user.is_authenticated and request.user.id == run.user.id %} class="me" title="that's you!"{% endif %}>
+				<td>{% if run.user.id %}<a href="{{ run.user.get_absolute_url }}">{{ run.user.username }}</a>{% else %}{{ run.nickname }}{% endif %}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
 				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
 				<td>{% diff_color run.diff_from_personal_best %}</td>

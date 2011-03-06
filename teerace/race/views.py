@@ -66,7 +66,7 @@ def homepage(request):
 
 
 def ranks(request):
-	# exclude anonymous and banned users from rank
+	# exclude banned users from rank
 	# (that user shouldn't have any points anyway, just a precaution)
 	users = UserProfile.objects.filter(points__gt=0) \
 		.exclude(user__is_active=False).extra(
