@@ -1,5 +1,4 @@
-Teerace
-=======
+![Teerace](http://code.ksocha.com/teerace/images/logo.png)
 
 Basic description
 -----------------
