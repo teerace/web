@@ -135,7 +135,8 @@ def map_detail(request, map_id):
 	)[:5]
 	latest_runs = Run.objects.filter(map=map_obj).order_by('-created_at')[:5]
 	if request.user.is_authenticated():
-		user_runs = Run.objects.filter(user=request.user).order_by('-created_at')[:5]
+		user_runs = Run.objects.filter(user=request.user).filter(map=map_obj) \
+			.order_by('-created_at')[:5]
 	else:
 		user_runs = None
 	return {
