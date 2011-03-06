@@ -26,7 +26,7 @@ class Map(models.Model):
 		return 'uploads/maps/{0}.map'.format(self.name)
 	map_file = models.FileField(storage=OverwriteStorage(),
 		upload_to=map_filename, validators=[is_map_file])
-	crc = models.CharField(max_length=8)
+	crc = models.CharField(max_length=8, blank=True, null=True)
 
 	map_type = models.ForeignKey('MapType', default=1)
 
