@@ -1,8 +1,10 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load comments %}
 {% comment %}
 context variables:
 	form 
+	latest_entry
 	login_form
+	next
 {% endcomment %}
 {% block title %}beta - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -17,8 +19,34 @@ context variables:
 			Sorry, Teerace is in closed beta phase right now, which means only selected people can use this site.
 		</p>
 		<p>
+			You can read more about Teerace <a href="{% url about %}">here</a>.
+		</p>
+		<p>
 			Hang around #teerace channel on Quakenet, we may give you a key eventually.
 		</p>
+	</div>
+
+	{% if latest_entry %}
+	<div id="blog" class="box full">
+		<div class="header"><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></div>
+		<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{{ latest_entry.created_by.get_absolute_url }}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
+		<p>
+			{% if latest_entry.excerpt_html %}
+				{{ latest_entry.excerpt_html|safe }}
+			{% else %}
+				{{ latest_entry.content_html|safe }}
+			{% endif %}
+		</p>
+		{% if latest_entry.excerpt_html %}
+		<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
+		{% endif %}
+		{% if latest_entry.enable_comments %}
+		{% get_comment_count for latest_entry as comment_count %}
+		<div class="comment-count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+		{% endif %}
+	</div>
+	{% endif %}
+		
 	</div>
 	<div class="box full">
 		If you have an account already, just log in with the form below:

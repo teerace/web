@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from accounts.forms import LoginForm
 from beta.forms import BetaForm, MoarKeysForm
+from blog.models import Entry
 from annoying.decorators import render_to
 
 
@@ -10,6 +11,12 @@ from annoying.decorators import render_to
 def beta_form(request):
 	if request.user.is_authenticated():
 		return redirect(reverse('home'))
+
+	try:
+		latest_entry = Entry.objects.exclude(is_published=False) \
+			.select_related().latest()
+	except Entry.DoesNotExist:
+		latest_entry = None
 
 	form = BetaForm(request=request)
 	login_form = LoginForm()
@@ -27,6 +34,7 @@ def beta_form(request):
 
 	return {
 		'form': form,
+		'latest_entry': latest_entry,
 		'login_form': login_form,
 		'next': request.REQUEST.get('next', reverse('home')),
 	}
