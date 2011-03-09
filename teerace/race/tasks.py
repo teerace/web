@@ -128,7 +128,8 @@ def retrieve_map_details(map_id):
 		has_unhookables = has_deathtiles = is_fastcap = None
 		shield_count = heart_count = grenade_count = None
 	else:
-		has_unhookables = has_deathtiles = is_fastcap = False
+		has_unhookables = has_deathtiles = is_fastcap = has_teleporters = \
+			has_speedups = False
 		shield_count = heart_count = grenade_count = 0
 		logger.info("Counting map items...")
 		for tile in teemap.gamelayer.tiles:
@@ -144,6 +145,10 @@ def retrieve_map_details(map_id):
 				heart_count += 1
 			elif tile.index == indexes.GRENADE:
 				grenade_count += 1
+		if teemap.telelayer:
+			has_teleporters = True
+		if teemap.speeduplayer:
+			has_speedups = True
 
 		# DISABLED due to huge (counted in GiBs) memory usage
 		# logger.info("Rendering map screenshot.")
@@ -155,6 +160,8 @@ def retrieve_map_details(map_id):
 
 	map_obj.has_unhookables = has_unhookables
 	map_obj.has_deathtiles = has_deathtiles
+	map_obj.has_teleporters = has_teleporters
+	map_obj.has_speedups = has_speedups
 	map_obj.shield_count = shield_count
 	map_obj.heart_count = heart_count
 	map_obj.grenade_count = grenade_count

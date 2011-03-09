@@ -32,6 +32,8 @@ class Map(models.Model):
 
 	has_unhookables = models.NullBooleanField(default=False)
 	has_deathtiles = models.NullBooleanField(default=False)
+	has_teleporters = models.NullBooleanField(default=False)
+	has_speedups = models.NullBooleanField(default=False)
 	shield_count = models.IntegerField(default=0, null=True)
 	heart_count = models.IntegerField(default=0, null=True)
 	grenade_count = models.IntegerField(default=0, null=True)
