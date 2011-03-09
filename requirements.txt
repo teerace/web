@@ -19,5 +19,5 @@ feedparser>=4.1
 -e hg+https://bitbucket.org/jmoiron/johnny-cache#egg=johnny-cache
 M2Crypto>=0.20.2
 Markdown>=2.0.3
--e git+https://github.com/erdbeere/tml.git#egg=tml
+-e git+https://github.com/SushiTee/tml.git#egg=tml
 south>=0.7
