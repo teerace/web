@@ -995,9 +995,17 @@ div.live-stats {
 	text-decoration: underline;
 }
 
-.pagination {
+.box .pagination {
 	color: #444;
+}
+
+.box .pagination:last-child {
+	margin-top: 5px;
+}
+
+.pagination {
 	text-align: center;
+	font-size: 13px;
 	clear: both;
 }
 
@@ -1021,6 +1029,10 @@ div.live-stats {
 	.pagination .next,
 	.pagination .prev {
 		font-size: 90%;
+	}
+
+	.pagination .disabled {
+		color: #999;
 	}
 
 .detail {

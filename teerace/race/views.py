@@ -158,7 +158,7 @@ def user_activity(request):
 def awards(request):
 	"""
 	magic.
-	
+
 	yes, you will hate me for this one.
 	"""
 	award_names = [x for x in dir(badges) if x.endswith('Badge')]
