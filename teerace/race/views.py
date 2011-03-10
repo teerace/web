@@ -20,8 +20,12 @@ def homepage(request):
 	except Entry.DoesNotExist:
 		latest_entry = None
 
-	users = list(User.objects.exclude(is_active=False) \
-		.select_related())
+	user_base = User.objects.exclude(is_active=False)
+	latest_user = user_base.latest('id')
+	user_count = user_base.count()
+
+	latest_map = Map.objects.latest('id')
+	map_count = Map.objects.count()
 
 	if request.user.is_authenticated():
 		user_runs = Run.objects.filter(user=request.user) \
@@ -55,8 +59,10 @@ def homepage(request):
 
 	return {
 		'latest_entry': latest_entry,
-		'users': users,
-		'maps': list(Map.objects.all()),
+		'latest_user': latest_user,
+		'user_count': user_count,
+		'latest_map': latest_map,
+		'map_count': map_count,
 		'user_runs': user_runs,
 		'run_count': total_runs,
 		'runs_today': runs_today,
