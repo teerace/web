@@ -1,4 +1,5 @@
 from django.contrib import admin
+from blog.forms import EntryAdminForm
 from blog.models import Entry
 
 
@@ -6,8 +7,7 @@ class EntryAdmin(admin.ModelAdmin):
 	list_display = ('title', 'created_at', 'created_by', 'is_published')
 	list_display_links = ('created_at', 'title')
 	list_filter = ('is_published', 'created_at')
-	fields = ('title', 'created_by', 'excerpt', 'content',
-		'is_published', 'enable_comments')
+	form = EntryAdminForm
 
 	def add_view(self, request):
 		self.exclude = ('created_by',)
