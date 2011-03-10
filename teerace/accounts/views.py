@@ -110,7 +110,7 @@ def profile(request, user_id):
 
 @render_to('accounts/user_list.html')
 def userlist(request):
-	users = User.objects.exclude(is_active=False).select_related()
+	users = User.objects.exclude(is_active=False).order_by('id').select_related()
 	return {
 		'users': users,
 	}
