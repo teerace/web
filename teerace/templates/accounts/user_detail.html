@@ -12,13 +12,13 @@ context variables:
 {% endblock %}
 {% block content %}
 	<div id="userprofile" class="box full{% if request.user.id == profile_user.id %} ownprofile{% endif %}">
-		<div class="header">{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile }}{% endif %}</div>
+		<div class="header">{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile_user }}{% endif %}</div>
 		<div class="headrow">
 			<img src="{% gravatar_for_user profile_user 80 %}" class="gravatar" alt="{{ profile_user.username }}'s gravatar" title="{{ profile_user.username }}'s gravatar">
 			<div class="points">
 				<h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
 				{# little hack, hope to change it in the future #}
-                <h3 helper="{{ profile_user.profile.points_progress|default:0 }}">{{ profile_user.profile.points_progress|default:0 }} <span>since yesterday</span></h3>
+                <h3 helper="{{ profile_user.profile.points_progress|default:"+0" }}">{{ profile_user.profile.points_progress|default:"+0" }} <span>since yesterday</span></h3>
 			</div>
 		</div>
 		<table>

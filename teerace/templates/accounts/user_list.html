@@ -28,7 +28,7 @@ context variables:
 					<a href="{{ for_user.get_absolute_url }}">{{ for_user }}</a>
 				</td>
 				<td>{{ for_user.date_joined }}</td>
-				<td>{{ for_user.profile.points }}</td>
+				<td>{{ for_user.profile.points|default:0 }}</td>
 			</tr>
 			{% empty %}
 			<tr>
