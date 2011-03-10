@@ -89,7 +89,7 @@ context variables:
 				<table>
 					<tr>
 						<td class="label">Registered users:</td>
-						<td class="content">{{ users|length }}{% if users %} <span class="info">(latest: {% with users|last as last_profile %}{{ last_profile.user.username }}{% endwith %})</span>{% endif %}</td>
+						<td class="content">{{ users|length }}{% if users %} <span class="info">(latest: {% with users|last as last_user %}{{ last_user.username }}{% endwith %})</span>{% endif %}</td>
 					</tr>
 					<tr>
 						<td class="label">Race maps:</td>

@@ -1,56 +1,56 @@
-{% extends "accounts/userprofile_list.html" %}{% load race_diff %}{% load human_duration %}{% load brabeion_tags %}{% load gravatar %}
+{% extends "accounts/user_list.html" %}{% load race_diff %}{% load human_duration %}{% load brabeion_tags %}{% load gravatar %}
 {% comment %}
 context variables:
-	profile
+	profile_user
 	user_runs
 {% endcomment %}
-{% block title %}{{ profile.user.username }} - {{ block.super }}{% endblock title %}
+{% block title %}{{ profile_user }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}
-	{% add_crumb profile 'profile' profile.id %}
+	{% add_crumb profile_user 'profile' profile_user.id %}
 {% endblock %}
 {% block content %}
-	<div id="userprofile" class="box full{% if user.id == profile.user_id %} ownprofile{% endif %}">
-		<div class="header">{% if user.id == profile.user_id %}Your profile{% else %}{{ profile }}{% endif %}</div>
+	<div id="userprofile" class="box full{% if request.user.id == profile_user.id %} ownprofile{% endif %}">
+		<div class="header">{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile }}{% endif %}</div>
 		<div class="headrow">
-			<img src="{% gravatar_for_user profile.user 80 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
+			<img src="{% gravatar_for_user profile_user 80 %}" class="gravatar" alt="{{ profile_user.username }}'s gravatar" title="{{ profile_user.username }}'s gravatar">
 			<div class="points">
-				<h2>{{ profile.points|default:0 }} <span>points</span></h2>
+				<h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
 				{# little hack, hope to change it in the future #}
-                <h3 helper="{{ profile.points_progress|default:0 }}">{{ profile.points_progress|default:0 }} <span>since yesterday</span></h3>
+                <h3 helper="{{ profile_user.profile.points_progress|default:0 }}">{{ profile_user.profile.points_progress|default:0 }} <span>since yesterday</span></h3>
 			</div>
 		</div>
 		<table>
 			<tbody>
-				{% if profile.user.get_full_name %}
+				{% if profile_user.get_full_name %}
 				<tr>
 					<td class="label">Full name:</td>
-					<td class="content">{{ profile.user.get_full_name }}</td>
+					<td class="content">{{ profile_user.get_full_name }}</td>
 				</tr>
 				{% endif %}
-				{% if profile.country %}
+				{% if profile_user.profile.country %}
 				<tr>
 					<td class="label">Country:</td>
-					<td class="content"><img src="{{ profile.country.flag }}" /> {{ profile.country.name }}</td>
+					<td class="content"><img src="{{ profile_user.profile.country.flag }}" /> {{ profile_user.profile.country.name }}</td>
 				</tr>
 				{% endif %}
 				<tr>
 					<td class="label">Total playtime:</td>
-					<td class="content">{{ profile.playtime|default:0|sectodur }}</td>
+					<td class="content">{{ profile_user.profile.playtime|default:0|sectodur }}</td>
 				</tr>
 				<tr>
 					<td class="label">Joined:</td>
-					<td class="content">{{ profile.user.date_joined }}</td>
+					<td class="content">{{ profile_user.date_joined }}</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
-	{% badges_for_user profile.user as badges %}
+	{% badges_for_user profile_user as badges %}
 	{% if badges %}
 	<div class="box full">
-		<div class="header">{% if user.id == profile.user_id %}Your{% else %}{{ profile.user.username }}'s{% endif %} badges</div>
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}'s{% endif %} badges</div>
 		{% for badge in badges %}
 			{% cycle '<div class="full">' '' '' %}
 				<div class="badge">
@@ -65,7 +65,7 @@ context variables:
 	{% endif %}
 
 	<div class="box full">
-		<div class="header">{% if user.id == profile.user_id %}Your{% else %}{{ profile.user.username }}'s{% endif %} activity</div>
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}'s{% endif %} activity</div>
 		<table>
 			<tr class="no-border">
 				<th rowspan="2">Date</th>
@@ -89,7 +89,7 @@ context variables:
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="5">Hey! {% if user.id == profile.user_id %}You haven't{% else %}He/she hasn't{% endif %} finished any run yet!</td>
+				<td colspan="5">Hey! {% if request.user.id == profile_user.id %}You haven't{% else %}He/she hasn't{% endif %} finished any run yet!</td>
 			</tr>
 			{% endfor %}
 <!--

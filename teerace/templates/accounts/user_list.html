@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% load pagination_tags %}{% load gravatar %}
 {% comment %}
 context variables:
-	object_list
+	users
 	paginator
 {% endcomment %}
 {% block title %}userlist - {{ block.super }}{% endblock title %}
@@ -13,7 +13,7 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header">Userlist</div>
-		{% autopaginate object_list %}
+		{% autopaginate users %}
 		{% paginate %}
 		<table>
 			<tr>
@@ -21,14 +21,14 @@ context variables:
 				<th>Joined</th>
 				<th>Points</th>
 			</tr>
-			{% for profile in object_list %}
-			<tr{% if request.user.id == profile.id %} class="me" title="that's you!"{% endif %}>
+			{% for for_user in users %}
+			<tr{% if request.user.id == for_user.id %} class="me" title="that's you!"{% endif %}>
 				<td>
-					<img src="{% gravatar_for_user profile.user 20 %}" class="gravatar" alt="{{ profile.user.username }}'s gravatar" title="{{ profile.user.username }}'s gravatar">
-					<a href="{{ profile.user.get_absolute_url }}">{{ profile.user }}</a>
+					<img src="{% gravatar_for_user for_user 20 %}" class="gravatar" alt="{{ for_user.username }}'s gravatar" title="{{ for_user.username }}'s gravatar">
+					<a href="{{ for_user.get_absolute_url }}">{{ for_user }}</a>
 				</td>
-				<td>{{ profile.user.date_joined }}</td>
-				<td>{{ profile.points }}</td>
+				<td>{{ for_user.date_joined }}</td>
+				<td>{{ for_user.profile.points }}</td>
 			</tr>
 			{% empty %}
 			<tr>

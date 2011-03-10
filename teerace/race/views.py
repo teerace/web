@@ -1,6 +1,7 @@
 from datetime import date, datetime, time, timedelta
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.list_detail import object_list
@@ -19,7 +20,7 @@ def homepage(request):
 	except Entry.DoesNotExist:
 		latest_entry = None
 
-	users = list(UserProfile.objects.exclude(user__is_active=False) \
+	users = list(User.objects.exclude(is_active=False) \
 		.select_related())
 
 	if request.user.is_authenticated():

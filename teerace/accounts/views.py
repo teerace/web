@@ -3,13 +3,13 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login as auth_login,
 	logout as auth_logout)
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import Http404
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm, PasswordChangeForm)
-from accounts.models import UserProfile
 from race.models import Run
 from annoying.functions import get_config
 from annoying.decorators import render_to
@@ -95,24 +95,25 @@ def welcome(request):
 	}
 
 
-@render_to('accounts/userprofile_detail.html')
+@render_to('accounts/user_detail.html')
 def profile(request, user_id):
 	if int(user_id) == 0:
 		raise Http404 # mkay, no Anonymous profile
-	user_profile = get_object_or_404(UserProfile.objects.select_related(), pk=user_id)
+	user = get_object_or_404(User.objects.select_related(), pk=user_id)
 	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
 
 	return {
-		'profile': user_profile,
+		'profile_user': user,
 		'user_runs': user_runs,
 	}
 
 
+@render_to('accounts/user_list.html')
 def userlist(request):
-	# exclude anonymous
-	# UPDATED also excluding banned players
-	profiles = UserProfile.objects.exclude(user__is_active=False).select_related()
-	return object_list(request, queryset=profiles)
+	users = User.objects.exclude(is_active=False).select_related()
+	return {
+		'users': users,
+	}
 
 
 @login_required
