@@ -184,7 +184,10 @@ td:first-child {
 
 #header {}
 
-#page {}
+#page {
+	padding: 0 5px;
+	overflow: hidden;
+}
 
 #header, #page {
 	margin: 0 auto;
