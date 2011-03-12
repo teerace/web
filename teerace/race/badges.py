@@ -71,7 +71,7 @@ class GlobetrotterBadge(BadgeBase):
 		maps_finished = Run.objects.filter(user=user).values_list('map__name',
 			flat=True).distinct()
 		# check if maps equals to maps_finished
-		if set(maps_finished).issubset(maps):
+		if set(maps_finished).issuperset(maps):
 			return BadgeAwarded(level=1)
 
 
