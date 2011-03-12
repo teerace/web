@@ -186,6 +186,10 @@ class Run(models.Model):
 		if create and self.is_personal_best:
 			self.promote_to_best()
 
+	def delete(self, *args, **kwargs):
+		self.server_set.clear()
+		super(Map, self).delete(*args, **kwargs)
+
 
 class BestRun(models.Model):
 	user = models.ForeignKey(User)
@@ -244,6 +248,11 @@ class Server(models.Model):
 		if not self.pk:
 			self.api_key = generate_random_key()
 		super(Server, self).save(*args, **kwargs)
+
+	def delete(self, *args, **kwargs):
+		self.players.clear()
+		super(Server, self).delete(*args, **kwargs)
+
 
 # DIRTY is this even allowed?
 from race import badges
