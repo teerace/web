@@ -125,7 +125,7 @@ def retrieve_map_details(map_id):
 		logger.info("Loaded \"{0}\" map.".format(map_obj.name))
 	except IndexError:
 		logger.error("Couldn't load \"{0}\" map".format(map_obj.name))
-		has_unhookables = has_deathtiles = is_fastcap = None
+		has_unhookables = has_deathtiles = None
 		shield_count = heart_count = grenade_count = None
 	else:
 		has_unhookables = has_deathtiles = is_fastcap = has_teleporters = \
@@ -137,8 +137,6 @@ def retrieve_map_details(map_id):
 				has_deathtiles = True
 			elif tile.index == indexes.UNHOOKABLE:
 				has_unhookables = True
-			elif tile.index in (indexes.RED_FLAG, indexes.BLUE_FLAG):
-				is_fastcap = True
 			elif tile.index == indexes.SHIELD:
 				shield_count += 1
 			elif tile.index == indexes.HEART:
@@ -162,31 +160,16 @@ def retrieve_map_details(map_id):
 	map_obj.has_deathtiles = has_deathtiles
 	map_obj.has_teleporters = has_teleporters
 	map_obj.has_speedups = has_speedups
-	map_obj.shield_count = shield_count
-	map_obj.heart_count = heart_count
-	map_obj.grenade_count = grenade_count
+	if not map_obj.map_type.slug == 'fastcap-no-weapons':
+		map_obj.shield_count = shield_count
+		map_obj.heart_count = heart_count
+		map_obj.grenade_count = grenade_count
 	logger.info("Finished counting map items.")
 
 	logger.info("Generating map CRC...")
 	map_obj.map_file.open()
 	map_obj.crc = '{0:x}'.format(crc32(map_obj.map_file.read()) & 0xffffffff)
 	map_obj.map_file.close()
-
-	if is_fastcap:
-		logger.info("Turning map into fastcap type...")
-		map_obj.map_type = MapType.objects.get(slug='fastcap')
-		logger.info("Creating a non-weapon twin...")
-		new_map = Map(
-			name="{0}-no-weapons".format(map_obj.name),
-			author=map_obj.author,
-			added_by=map_obj.added_by,
-			map_file=map_obj.map_file,
-			crc=map_obj.crc,
-			map_type=MapType.objects.get(slug='fastcap-no-weapons'),
-			has_unhookables=has_unhookables,
-			has_deathtiles=has_deathtiles,
-		)
-		new_map.save()
 	map_obj.save()
 	logger.info("Finished processing \"{0}\" map.".format(map_obj.name))
 

@@ -7,7 +7,7 @@ from race.models import Map, Server
 class MapAdmin(admin.ModelAdmin):
 	list_display = ('id', 'name', 'author', 'crc', 'map_type')
 	list_display_links = ('id', 'name')
-	fields = ('name', 'author', 'map_file')
+	fields = ('name', 'author', 'map_type', 'map_file')
 
 	def save_model(self, request, obj, form, change):
 		if not change:
