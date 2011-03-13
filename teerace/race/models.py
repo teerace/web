@@ -116,7 +116,7 @@ class Run(models.Model):
 			self.promote_to_best()
 
 	def promote_to_best(self):
-		if self.id == None:
+		if self.user == None:
 			return
 		best_run, created = BestRun.objects.get_or_create(map=self.map,
 			user=self.user, defaults={'run': self})
@@ -133,8 +133,7 @@ class Run(models.Model):
 
 	def save(self, *args, **kwargs):
 		# imitate overriding create()
-		create = True if not self.pk else False
-		if create:
+		if not self.pk:
 			self.set_personal_record()
 		super(Run, self).save(*args, **kwargs)
 
