@@ -107,56 +107,13 @@ class Run(models.Model):
 		decimal_places=DECIMAL_PLACES)
 	created_at = models.DateTimeField(auto_now_add=True)
 
-	# denormalised data, also gives us primitive object history
-	is_personal_best = models.BooleanField(default=False)
-	was_personal_best = models.BooleanField(default=False)
-	is_record = models.BooleanField(default=False)
-	was_record = models.BooleanField(default=False)
-	diff_from_personal_best = models.FloatField(default=0.0)
-
 	def set_personal_record(self):
 		try:
-			current_pb = Run.objects.get(map=self.map, user=self.user,
-				is_personal_best=True)
-			if self.time < current_pb.time:
-				self.is_personal_best = True
-				current_pb.set_was_pb()
-			self.diff_from_personal_best = self.time - current_pb.time
-		except Run.DoesNotExist:
-			self.is_personal_best = True
-		except Run.MultipleObjectsReturned:
-			self.clear_pb()
-
-	def set_was_pb(self):
-		self.is_personal_best = False
-		self.was_personal_best = True
-		self.save()
-
-	def clear_pb(self):
-		broken_qs = Run.objects.filter(map=self.map, user=self.user,
-			is_personal_best=True).order_by('time')
-		broken_qs.exclude(pk=broken_qs[0].id).update(is_personal_best=False)
-
-	def set_map_record(self):
-		try:
-			current_record = Run.objects.get(map=self.map, is_record=True)
-			if self.time < current_record.time:
-				self.is_record = True
-				current_record.set_was_record()
-		except Run.DoesNotExist:
-			self.is_record = True
-		except Run.MultipleObjectsReturned:
-			self.clear_record()
-
-	def set_was_record(self):
-		self.is_record = False
-		self.was_record = True
-		self.save()
-
-	def clear_record(self):
-		broken_qs = Run.objects.filter(map=self.map,
-			is_record=True).order_by('time')
-		broken_qs.exclude(pk=broken_qs[0].id).update(is_record=False)
+			current_best = BestRun.objects.get(map=self.map, user=self.user)
+			if self.time < current_best.run.time:
+				self.promote_to_best()
+		except BestRun.DoesNotExist:
+			self.promote_to_best()
 
 	def promote_to_best(self):
 		if self.id == None:
@@ -179,12 +136,7 @@ class Run(models.Model):
 		create = True if not self.pk else False
 		if create:
 			self.set_personal_record()
-			# we don't want anonymous users to own map records
-			if self.user_id != None:
-				self.set_map_record()
 		super(Run, self).save(*args, **kwargs)
-		if create and self.is_personal_best:
-			self.promote_to_best()
 
 	def delete(self, *args, **kwargs):
 		self.server_set.clear()

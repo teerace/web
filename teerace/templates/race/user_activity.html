@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load human_duration %}{% load race_diff %}{% load humanize %}{% load pagination_tags %}
+{% extends "base.html" %}{% load human_duration %}{% load humanize %}{% load pagination_tags %}
 {% comment %}
 context variables:
 	object_list
@@ -22,24 +22,15 @@ context variables:
 		{% paginate %}
 		<table class="players">
 			<tr class="no-border">
-				<th rowspan="2">Date</th>
-				<th rowspan="2">Map</th>
-				<th rowspan="2">Time</th>
-				<th class="center" colspan="2">Diff</th>
-				<th rowspan="2"></th>
-			</tr>
-			<tr>
-				<th class="center">PB</th>
-				<th class="center">WR</th>
+				<th>Date</th>
+				<th>Map</th>
+				<th>Time</th>
 			</tr>
 			{% for run in object_list %}
 			<tr>
 				<td><span title="{{ run.created_at }}">{{ run.created_at|timesince }} ago</span></td>
 				<td>{{ run.map }}</td>
 				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
-				<td class="center">{% diff_color run.diff_from_personal_best %}</td>
-				<td class="center">{% race_diff run run.map.best_score %}</td>
-				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
 			{% empty %}
 			<tr>

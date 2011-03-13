@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}{% load race_diff %}{% load humanize %}
+{% extends "race/map_base.html" %}{% load humanize %}
 {% comment %}
 context variables:
 	map
@@ -138,16 +138,12 @@ context variables:
 				<th>Player</th>
 				<th>Date</th>
 				<th>Time</th>
-				<th>Diff (PB)</th>
-				<th></th>
 			</tr>
 			{% for run in latest_runs %}
 			<tr{% if request.user.is_authenticated and request.user.id == run.user.id %} class="me" title="that's you!"{% endif %}>
 				<td>{% if run.user.id %}<a href="{{ run.user.get_absolute_url }}">{{ run.user.username }}</a>{% else %}{{ run.nickname }}{% endif %}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
 				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
-				<td>{% diff_color run.diff_from_personal_best %}</td>
-				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
 			{% endfor %}
 		</table>
@@ -160,15 +156,11 @@ context variables:
 			<tr>
 				<th>Date</th>
 				<th>Time</th>
-				<th>Diff (PB)</th>
-				<th></th>
 			</tr>
 			{% for run in user_runs %}
 			<tr>
 				<td>{{ run.created_at|timesince }} ago</td>
 				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
-				<td>{% diff_color run.diff_from_personal_best %}</td>
-				<td>{% if run.is_personal_best %}PB!{% endif %}{% if run.was_personal_best %}old PB{% endif %}{% if run.is_record %}WR!{% endif %}{% if run.was_record %}was WR{% endif %}</td>
 			</tr>
 			{% empty %}
 			<tr>
