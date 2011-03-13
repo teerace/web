@@ -157,4 +157,4 @@ def sectodur(value, arg = ''):
 	else:
 
 		# Provide 'No duration' message
-		return 'No duration'
+		return '-'
