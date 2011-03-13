@@ -234,6 +234,7 @@ class UserHandler(BaseHandler):
 			- 400 - when there was no ID specified
 			- 200 - when everything went fine
 				(integer) user global rank
+				OR None when the user is not ranked
 
 
 		URL

@@ -21,7 +21,7 @@ context variables:
 			</tr>
 			{% for profile in object_list %}
 			<tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
-				<td>{{ profile.position|ordinal }}</td>
+				<td>{{ profile.sql_position|ordinal }}</td>
 				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
 				<td>{{ profile.points }}</td>
 				<td>{{ profile.completions }}</td>

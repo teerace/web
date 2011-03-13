@@ -77,11 +77,11 @@ def ranks(request):
 	# (that user shouldn't have any points anyway, just a precaution)
 	users = UserProfile.objects.filter(points__gt=0) \
 		.exclude(user__is_active=False).extra(
-		select = {'_position':
+		select = {'sql_position':
 			"SELECT COUNT(*)+1 FROM accounts_userprofile s "
 			"WHERE s.points > accounts_userprofile.points"
 		},
-		order_by = ['_position']
+		order_by = ['sql_position']
 	)
 	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_runs = Run.objects.count()

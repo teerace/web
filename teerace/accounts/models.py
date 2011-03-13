@@ -53,10 +53,11 @@ class UserProfile(models.Model):
 
 	@property
 	def position(self):
-		return User.objects.exclude(profile__points__lte=0) \
-			.exclude(is_active=False) \
-			.filter(profile__points__gte=self.points) \
-			.order_by('profile__points').count()
+		if self.points >= 0:
+			return None
+		return User.objects.exclude(is_active=False) \
+			.filter(profile__points__gt=self.points) \
+			.order_by('profile__points').count()+1
 
 	def map_position(self, map_name):
 		# first, retrieve players map points
