@@ -17,10 +17,10 @@ def get_best_run(player, map_name):
 @register.filter
 def map_points(player, map_name):
 	bestrun = get_best_run(player, map_name)
-	return bestrun.points if bestrun else False
+	return bestrun.points if bestrun else ''
 
 
 @register.filter
 def map_time(player, map_name):
 	bestrun = get_best_run(player, map_name)
-	return bestrun.time if bestrun else False
+	return bestrun.time if bestrun else ''
