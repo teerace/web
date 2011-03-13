@@ -53,7 +53,7 @@ class UserProfile(models.Model):
 
 	@property
 	def position(self):
-		if self.points >= 0:
+		if self.points <= 0:
 			return None
 		return User.objects.exclude(is_active=False) \
 			.filter(profile__points__gt=self.points) \
