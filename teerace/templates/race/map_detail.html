@@ -14,20 +14,19 @@ context variables:
 {% endblock %}
 {% block extra_head %}
 	{{ block.super }}
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript">
-		function ckp() {
-			var more = $('.more');
-			if (more.text() == 'Show') {
-				$('.more').text('Hide');
-				$('tr[class^="checklist"]').css('display', 'table-row');
-			} else {
-				$('.more').text('Show');
-				$('tr[class^="checklist"]').css('display', 'none');
-			}
-			return false;
-		}
 		$(document).ready(function(){
+			function ckp() {
+				var more = $('.more');
+				if (more.text() == 'Show') {
+					$('.more').text('Hide');
+					$('tr[class^="checklist"]').css('display', 'table-row');
+				} else {
+					$('.more').text('Show');
+					$('tr[class^="checklist"]').css('display', 'none');
+				}
+				return false;
+			}
 			$('tr[class^="checklist"]').hide();
 		});
 	</script>

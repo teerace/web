@@ -12,7 +12,6 @@ context variables:
 {% block extra_head %}
 	{{ block.super }}
 {% if user.is_authenticated %}
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('.reply-link').click(function(){

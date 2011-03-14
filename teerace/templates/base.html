@@ -6,6 +6,14 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css">
 	<link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico">
+	<script type="text/javascript" src="/media/js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="/media/js/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="/media/js/jquery.cycle.all.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#cycle').cycle({fx:'scrollDown',easing:'easeOutBounce'});
+		});
+	</script>
 	{% block extra_head %}
 	{% endblock extra_head %}
 	{% if settings.ANALYTICS_ID %}
@@ -84,7 +92,14 @@
 
 			<div id="footer" class="box full">
 				<div class="left"><a href="#header">↑ Top</a> &middot; <a href="{% url about %}">About</a></div>
-				<div class="right">powered by<a href="http://www.djangoproject.com/"><div sprite="django" alt="Powered by Django." title="Powered by Django."></div></a></div>
+				<div class="right">
+					<div id="cycle">
+						<div><a href="http://djangoproject.com"><div sprite="django" alt="Powered by Django." title="Powered by Django."></div></a></div>
+						<div><a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace." title="Powered by Teerace."></div></a></div>
+						<div><a href="http://python.org"><div sprite="python" alt="Powered by Python." title="Powered by Python."></div></a></div>
+						<div><a href="http://nginx.org"><div sprite="nginx" alt="Powered by Nginx." title="Powered by Nginx."></div></a></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
