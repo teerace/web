@@ -15,18 +15,18 @@ context variables:
 {% block extra_head %}
 	{{ block.super }}
 	<script type="text/javascript">
-		$(document).ready(function(){
-			function ckp() {
-				var more = $('.more');
-				if (more.text() == 'Show') {
-					$('.more').text('Hide');
-					$('tr[class^="checklist"]').css('display', 'table-row');
-				} else {
-					$('.more').text('Show');
-					$('tr[class^="checklist"]').css('display', 'none');
-				}
-				return false;
+		function ckp() {
+			var more = $('.more');
+			if (more.text() == 'Show') {
+				$('.more').text('Hide');
+				$('tr[class^="checklist"]').css('display', 'table-row');
+			} else {
+				$('.more').text('Show');
+				$('tr[class^="checklist"]').css('display', 'none');
 			}
+			return false;
+		}
+		$(document).ready(function(){
 			$('tr[class^="checklist"]').hide();
 		});
 	</script>
