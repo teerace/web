@@ -53,16 +53,20 @@ context variables:
 					<td class="label">Best result</td>
 					<td class="content">{{ map.best_score.time|floatformat:settings.RESULT_PRECISION }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
+				{% with map.best_score.checkpoints_list as checkpoints %}
+				{% if checkpoints %}
 				<tr>
 					<td class="label">Checkpoints</td>
 					<td class="content"><a class="more" onclick="ckp()">Show</a></td>
 				</tr>
-				{% for checkpoint in map.best_score.checkpoints_list %}
+				{% for checkpoint in checkpoints %}
 				<tr class="checklist-{{ forloop.counter }}">
 					<td class="label">Checkpoint {{ forloop.counter }}</td>
 					<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
 				</tr>
 				{% endfor %}
+				{% endif %}
+				{% endwith %}
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>
