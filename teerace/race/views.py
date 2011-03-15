@@ -21,10 +21,16 @@ def homepage(request):
 		latest_entry = None
 
 	user_base = User.objects.exclude(is_active=False)
-	latest_user = user_base.latest('id')
+	try:
+		latest_user = user_base.latest('id')
+	except User.DoesNotExist:
+		latest_user = None
 	user_count = user_base.count()
 
-	latest_map = Map.objects.latest('id')
+	try:
+		latest_map = Map.objects.latest('id')
+	except Map.DoesNotExist:
+		latest_map = None
 	map_count = Map.objects.count()
 
 	if request.user.is_authenticated():
