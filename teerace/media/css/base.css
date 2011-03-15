@@ -1060,6 +1060,12 @@ div.live-stats {
 	width: 50%;
 }
 
+.map-file-size {
+	color: #555;
+	font-size: 11px;
+	margin-left: 10px;
+}
+
 .no-map-image {
 	color: #bbb;
 	text-align: center;

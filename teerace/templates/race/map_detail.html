@@ -94,7 +94,7 @@ context variables:
 -->
 			</table>
 			<br>
-			<a class="button" href="{% url map_download map.id %}">Download map</a>&nbsp;({{ map.map_file.size|filesizeformat }})
+			<a class="button" href="{% url map_download map.id %}">Download map</a><span class="map-file-size">{{ map.map_file.size|filesizeformat }}</span>
 		</div>
 
 		<div class="right no-map-image"><br>Map screenshot is missing.</div>
