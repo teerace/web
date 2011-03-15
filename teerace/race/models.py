@@ -60,8 +60,8 @@ class Map(models.Model):
 	@property
 	def best_score(self):
 		try:
-			return BestRun.objects.get(user=self, map=self).run
-		except BestRun.DoesNotExist:
+			return BestRun.objects.filter(map=self).order_by('time')[0].run
+		except IndexError:
 			return None
 
 	def get_download_url(self):
