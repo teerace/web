@@ -35,8 +35,7 @@ class SkinUserForm(forms.Form):
 
 
 class RunForm(forms.Form):
-	no_weapons = forms.BooleanField(required=False)
-	map_name = forms.CharField()
+	map_id = forms.IntegerField()
 	user_id = forms.FloatField()
 	nickname = forms.CharField()
 	time = forms.DecimalField(decimal_places=Run.DECIMAL_PLACES,
@@ -48,12 +47,9 @@ class RunForm(forms.Form):
 		self.user = None
 		self.map = None
 
-	def clean_map_name(self):
-		map_name = self.cleaned_data.get('map_name')
-		if self.cleaned_data.get('no_weapons', False):
-			map_name = '{0}-no-weapons'.format(map_name)
+	def clean_map_id(self):
 		try:
-			self.map = Map.objects.get(name=map_name)
+			self.map = Map.objects.get(pk=self.cleaned_data.get('map_id'))
 		except Map.DoesNotExist:
 			raise forms.ValidationError("That map doesn't exist.")
 		return map_name

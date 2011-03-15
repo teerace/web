@@ -59,10 +59,10 @@ class UserProfile(models.Model):
 			.filter(profile__points__gt=self.points) \
 			.order_by('profile__points').count()+1
 
-	def map_position(self, map_name):
+	def map_position(self, map_id):
 		# first, retrieve players map points
 		try:
-			map_obj = Map.objects.get(name=map_name)
+			map_obj = Map.objects.get(pk=map_id)
 			player_points = BestRun.objects.get(map=map_obj, user=self.user).points
 		except (Map.DoesNotExist, BestRun.DoesNotExist):
 			return None

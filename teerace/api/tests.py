@@ -63,7 +63,7 @@ class RunTest(TestCase):
 
 	def test_create_run_success(self):
 		data = {
-			'map_name': self.map.name,
+			'map_id': self.map.id,
 			'user_id': self.user.id,
 			'nickname': "[GER] Ueber Tester",
 			'time': 14.72,
@@ -74,7 +74,7 @@ class RunTest(TestCase):
 
 	def test_create_run_wrong_map(self):
 		data = {
-			'map_name': "wrong_map",
+			'map_id': 999,
 			'user_id': self.user.id,
 			'nickname': "[AUS] Lame Badass",
 			'time': 151.02,
@@ -84,7 +84,7 @@ class RunTest(TestCase):
 
 	def test_create_map_wrong_user(self):
 		data = {
-			'map_name': "wrong_map",
+			'map_id': self.map.id,
 			'user_id': 666, # what
 			'nickname': "[AUS] Lame Badass",
 			'time': 151.02,

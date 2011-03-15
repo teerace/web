@@ -36,8 +36,8 @@ class RunHandler(BaseHandler):
 		return rc(rcs.BAD_REQUEST)
 
 	def _read_best(self, request, *args, **kwargs):
-		if 'map_name' in kwargs:
-			map_obj = Map.objects.get(name=kwargs['map_name'])
+		if 'map_id' in kwargs:
+			map_obj = Map.objects.get(pk=kwargs['map_id'])
 			return BestRun.objects.exclude(points=0) \
 				.filter(map=map_obj).select_related()[:len(BestRun.SCORING)]
 		return rc(rcs.BAD_REQUEST)
@@ -60,15 +60,15 @@ class RunHandler(BaseHandler):
 
 
 		URL
-			**/api/1/runs/best/{map_name}/**
+			**/api/1/runs/best/{map_id}/**
 		Shortdesc
 			Returns [BestRun.SCORING] best results of a map
 		Arguments
-			- map_name / string / the map name
+			- map_id / integer / ID of the map
 		Data
 			- none
 		Result
-			- 400 - when the was no map_name specified
+			- 400 - when the was no map_id specified
 			- 200 - when everything went fine
 				a list of BestRun objects, which has map, user and run attributes.
 		"""
@@ -115,14 +115,12 @@ class RunHandler(BaseHandler):
 		Arguments
 			- none
 		Data
-			- map_name / string / name of the finished map
+			- map_id / integer / ID of the finished map
 			- user_id / integer / ID of the user who finished the map
 			                      (use None for anonymous user)
 			- nickname / string / currently used nickname by the user
 			- time / decimal / user result
 			- checkpoints / string / semicolon-delimited (;) list of checkpoint times
-			- (optional) no_weapons / bool / Send True when run was finished
-				on a map with weapons disabled
 		Results
 			- 400 - when data fails validation
 				dictionary containing error message(s)
@@ -181,10 +179,10 @@ class UserHandler(BaseHandler):
 		return rc(rcs.BAD_REQUEST)
 
 	def _read_map_rank(self, request, *args, **kwargs):
-		if 'id' in kwargs and 'map_name' in kwargs:
+		if 'id' in kwargs and 'map_id' in kwargs:
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
-				return profile.map_position(kwargs['map_name'])
+				return profile.map_position(kwargs['map_id'])
 			except UserProfile.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
 		return rc(rcs.BAD_REQUEST)
@@ -238,12 +236,12 @@ class UserHandler(BaseHandler):
 
 
 		URL
-			**/api/1/users/map_rank/{id}/{map_name}/**
+			**/api/1/users/map_rank/{id}/{map_id}/**
 		Shortdesc
 			Returns user global rank.
 		Arguments
 			- id / integer / ID of the user
-			- map_name / string / name of the map
+			- map_id / integer / ID of the map
 		Data
 			- none
 		Result
@@ -383,18 +381,18 @@ class MapHandler(BaseHandler):
 
 	@classmethod
 	def resource_uri(cls, map_obj=None):
-		map_name = 'map_name'
+		map_id = 'map_id'
 		if map_obj:
-			map_name = map_obj.name
-			return ('api_maps_detail', [map_name])
+			map_id = map_obj.id
+			return ('api_maps_detail', [map_id])
 
 	def _read_list(self, request, *args, **kwargs):
 		return Map.objects.all()
 
 	def _read_detail(self, request, *args, **kwargs):
-		if 'map_name' in kwargs:
+		if 'map_id' in kwargs:
 			try:
-				map_obj = Map.objects.get(name=kwargs['map_name'])
+				map_obj = Map.objects.get(pk=kwargs['map_id'])
 				return map_obj
 			except Map.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
@@ -403,16 +401,16 @@ class MapHandler(BaseHandler):
 	def read(self, request, action, *args, **kwargs):
 		"""
 		URL
-			**/api/1/maps/detail/{map_name}/**
+			**/api/1/maps/detail/{map_id}/**
 		Shortdesc
 			Returns an instance of Map.
 		Arguments
-			- map_name / string / name of the map
+			- map_id / integer / ID of the map
 		Data
 			- none
 		Result
-			- 404 - when Map with specified map_name doesn't exist
-			- 400 - when there was no map_name specified
+			- 404 - when Map with specified map_id doesn't exist
+			- 400 - when there was no map_id specified
 			- 200 - when everything went fine
 				Map object
 
