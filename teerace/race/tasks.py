@@ -9,7 +9,7 @@ from celery.task import task
 from tml.tml import Teemap
 
 
-@task(rate_limit='60/m', ignore_result=True)
+@task(rate_limit='600/m', ignore_result=True)
 def redo_ranks(run_id):
 	logger = redo_ranks.get_logger()
 	try:
