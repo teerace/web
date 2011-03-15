@@ -120,7 +120,7 @@ class Run(models.Model):
 			return
 		best_run, created = BestRun.objects.get_or_create(map=self.map,
 			user=self.user, defaults={'run': self})
-		if not created:
+		if created:
 			best_run.run = self
 			best_run.save()
 
@@ -133,9 +133,10 @@ class Run(models.Model):
 
 	def save(self, *args, **kwargs):
 		# imitate overriding create()
-		if not self.pk:
-			self.set_personal_record()
+		created = True if not self.pk else False
 		super(Run, self).save(*args, **kwargs)
+		if created:
+			self.set_personal_record()
 
 	def delete(self, *args, **kwargs):
 		self.server_set.clear()
