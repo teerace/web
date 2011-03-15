@@ -48,11 +48,12 @@ class RunForm(forms.Form):
 		self.map = None
 
 	def clean_map_id(self):
+		map_id = self.cleaned_data.get('map_id')
 		try:
-			self.map = Map.objects.get(pk=self.cleaned_data.get('map_id'))
+			self.map = Map.objects.get(pk=map_id)
 		except Map.DoesNotExist:
 			raise forms.ValidationError("That map doesn't exist.")
-		return map_name
+		return map_id
 
 	def clean_user_id(self):
 		user_id = self.cleaned_data.get('user_id')
