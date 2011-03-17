@@ -59,6 +59,9 @@ class Map(models.Model):
 
 	@property
 	def best_score(self):
+		return self.get_best_score()
+
+	def get_best_score(self):
 		try:
 			return BestRun.objects.filter(map=self).order_by('time')[0].run
 		except IndexError:

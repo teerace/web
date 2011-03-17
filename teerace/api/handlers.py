@@ -16,7 +16,7 @@ from annoying.functions import get_object_or_None
 
 class RunHandler(BaseHandler):
 	allowed_methods = ('GET', 'POST')
-	fields = ('id', 'user', 'map', 'time', 'checkpoints_list')
+	fields = ('id', 'user', 'time', 'checkpoints_list')
 	model = Run
 
 	@classmethod
@@ -376,7 +376,8 @@ class UserHandler(BaseHandler):
 
 class MapHandler(BaseHandler):
 	allowed_methods = ('GET',)
-	fields = ('id', 'name', 'author', 'crc', 'run_count', 'get_download_url')
+	fields = ('id', 'name', 'author', 'crc', 'run_count',
+		'get_best_score', 'get_download_url')
 	model = Map
 
 	@classmethod
