@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}{% load race_diff %}{% load humanize %}
+{% extends "race/map_base.html" %}{% load race_tags %}{% load humanize %}
 {% comment %}
 context variables:
 	map
@@ -117,7 +117,7 @@ context variables:
 				<td>{{ best_run.points }}</td>
 				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
 				<td>{{ best_run.run.time|floatformat:settings.RESULT_PRECISION }}</td>
-				<td>{% race_diff best_run.run map.best_score "-" %}</td>
+				<td>{% race_diff best_run.run map.best_score %}</td>
 			</tr>
 			{% empty %}
 			<tr>

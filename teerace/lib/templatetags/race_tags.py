@@ -1,6 +1,7 @@
+from decimal import Decimal
 from django import template
-from race.models import BestRun, Map
-from annoying.functions import get_object_or_None
+from race.models import BestRun, Map, Run
+from annoying.functions import get_config, get_object_or_None
 
 register = template.Library()
 
@@ -24,3 +25,16 @@ def map_points(player, map_name):
 def map_time(player, map_name):
 	bestrun = get_best_run(player, map_name)
 	return bestrun.time if bestrun else ''
+
+
+@register.simple_tag
+def race_diff(run, compare_to):
+	diff = run.time - compare_to.time
+	if diff > Decimal('0'):
+		style = 'red'
+	elif diff < Decimal('0'):
+		style = 'green'
+	else:
+		return '-'
+	return '<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
+		precision=get_config('RESULT_PRECISION', 3))
