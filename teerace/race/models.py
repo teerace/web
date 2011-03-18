@@ -132,7 +132,7 @@ class Run(models.Model):
 
 	def __unicode__(self):
 		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user,
-			self.time, precision=get_config('RESULT_PRECISION', 3))
+			self.time, precision=self.DECIMAL_PLACES)
 
 	def save(self, *args, **kwargs):
 		# imitate overriding create()
@@ -152,7 +152,8 @@ class BestRun(models.Model):
 	run = models.ForeignKey('Run')
 
 	# UGLY hack to make rank rebuilding relatively easy
-	time = models.FloatField()
+	time = models.DecimalField(max_digits=Run.MAX_DIGITS,
+		decimal_places=Run.DECIMAL_PLACES)
 
 	#SCORING = (20, 14, 10, 8, 6, 5, 4, 3, 2, 1)
 	#          40  34  31    27, 26...3, 2, 1
