@@ -32,7 +32,7 @@ context variables:
 			success: function (json) {
 				if (json.history != null && json.history.length > 1) {
 					var options = {
-						xaxis: { mode: "time", timeformat: "%d %b" },
+						xaxis: { mode: "time", timeformat: "%d %b", minTickSize: [1, "day"] },
 						yaxis: { min: 0 },
 						series: { lines: { show: true }, points: { show: true } },
 						grid: { hoverable: true}
