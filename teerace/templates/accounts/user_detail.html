@@ -10,6 +10,60 @@ context variables:
 	{% load breadcrumb_tags %}
 	{% add_crumb profile_user.profile 'profile' profile_user.id %}
 {% endblock %}
+{% block extra_head %}
+	<!--[if IE]><script type="text/javascript" src="/media/js/flot/excanvas.min.js"></script><![endif]-->
+    <script type="text/javascript" src="/media/js/flot/jquery.flot.min.js"></script>
+	<script type="text/javascript">
+		Date.prototype.getMonthName = function() {
+			var m = ['Jan','Feb','Mar','Apr','May','Jun','Jul', 'Aug','Sep','Oct','Nov','Dec'];
+			return m[this.getMonth()];
+		}
+		function showTooltip(x, y, contents) {
+			$('<div id="tooltip">' + contents + '</div>').css( {
+				position: 'absolute',
+				top: y + 5,
+				left: x + 15
+			}).appendTo("body").show();
+		}
+		var obj = $.ajax({
+			type: "GET",
+			url: "{% url profile_points_graph_json profile_user.id %}",
+			dataType: "json",
+			success: function (json) {
+				if (json.history != null && json.history.length > 1) {
+					var options = {
+						xaxis: { mode: "time", timeformat: "%d %b" },
+						yaxis: { min: 0 },
+						series: { lines: { show: true }, points: { show: true } },
+						grid: { hoverable: true}
+					};
+					$.plot($("#placeholder"), [json.history], options);
+
+					var previousPoint = null;
+				    $("#placeholder").bind("plothover", function (event, pos, item) {
+						if (item) {
+							if (previousPoint != item.datapoint) {
+								previousPoint = item.datapoint;
+
+								$("#tooltip").remove();
+								var x = new Date(item.datapoint[0]),
+									y = item.datapoint[1];
+
+								showTooltip(item.pageX, item.pageY,
+									x.getDate()+' '+x.getMonthName()+': '+y+' points');
+							}
+						} else {
+							$("#tooltip").remove();
+							previousPoint = null;
+						}
+					});
+				} else {
+					$('#points-history').remove();
+				}
+			}
+		});
+	</script>
+{% endblock %}
 {% block content %}
 	<div id="userprofile" class="box full{% if request.user.id == profile_user.id %} ownprofile{% endif %}">
 		<div class="header">{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile_user.profile }}{% endif %}</div>
@@ -45,6 +99,11 @@ context variables:
 				</tr>
 			</tbody>
 		</table>
+	</div>
+
+	<div id="points-history" class="box full">
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}'s{% endif %} points history</div>
+		<div id="placeholder"></div>
 	</div>
 
 	{% badges_for_user profile_user as badges %}

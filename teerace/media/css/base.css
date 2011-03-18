@@ -221,7 +221,8 @@ td:first-child {
 .badge, .api_token,
 #userprofile .gravatar,
 .clippy:hover:after,
-td img {
+td img,
+#tooltip {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -798,6 +799,21 @@ td img {
 	#docs .docutils dd {
 
 	}
+
+/* for flot */
+#placeholder {
+	 width:758px;
+	 height:200px;
+}
+
+#tooltip {
+	background-color: #c6de92;
+	border: 1px solid #9dc547;
+	font-size: 12px;
+	padding: 2px;
+	display: none;
+	opacity: 0.80;
+}
 
 .hide {
 	display: none;
