@@ -11,6 +11,8 @@ urlpatterns = patterns('accounts.views',
 	url(r'^settings/api_token/$', 'api_token', name='api_token'),
 	url(r'^getstarted/$', 'first_steps', name='first_steps'),
 	url(r'^profile/(?P<user_id>\d+)/$', 'profile', name='profile'),
+	url(r'^profile/(?P<user_id>\d+)/points_graph.json$',
+		'profile_points_graph_json', name='profile_points_graph_json'),
 ) + patterns('django.contrib.auth.views',
 	(r'^password_reset/$', 'password_reset', {'template_name':
 		'accounts/password_reset.html',

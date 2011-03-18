@@ -1,3 +1,5 @@
+import datetime
+import json
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
@@ -6,7 +8,7 @@ from django.contrib.auth import (authenticate, login as auth_login,
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm, PasswordChangeForm)
@@ -106,6 +108,19 @@ def profile(request, user_id):
 		'profile_user': user,
 		'user_runs': user_runs,
 	}
+
+
+def profile_points_graph_json(request, user_id):
+	# I would have used @ajax_request, but default JSON serializer
+	# is not able to deal with datetime.date objects.
+	dthandler = lambda obj: obj.isoformat() \
+		if isinstance(obj, datetime.date) else None
+	user = get_object_or_404(User.objects.select_related(), pk=user_id)
+	response_data = json.dumps(
+		{'user': user.id, 'history': user.profile.points_history},
+		default=dthandler,
+	)
+	return HttpResponse(response_data, mimetype="application/json")
 
 
 @render_to('accounts/user_list.html')
