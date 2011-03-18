@@ -123,7 +123,7 @@ class Run(models.Model):
 			return
 		best_run, created = BestRun.objects.get_or_create(map=self.map,
 			user=self.user, defaults={'run': self})
-		if created:
+		if not created:
 			best_run.run = self
 			best_run.save()
 
