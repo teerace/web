@@ -195,17 +195,17 @@ def update_user_points_history():
 
 @task(ignore_result=True)
 def update_user_points_history_chunked(chunk):
-	today = date.today()
+	yesterday = date.today() - timedelta(1)
 	for user_id in chunk:
 		user = UserProfile.objects.get(pk=user_id)
 		if not user.points_history:
 			# let's make a list
 			user.points_history = []
-		elif user.points_history[-1][0] == today:
+		elif user.points_history[-1][0] == yesterday:
 			# making sure we save only one time per day
 			continue
 		user.yesterday_points = user.points
-		user.points_history.append((today, user.points))
+		user.points_history.append((yesterday, user.points))
 		user.save()
 
 
