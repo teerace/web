@@ -203,6 +203,11 @@ td:first-child {
 	padding-left: 3px;
 }
 
+td.right, th.right {
+	float: none;
+	text-align: right;
+}
+
 #header {}
 
 #page {

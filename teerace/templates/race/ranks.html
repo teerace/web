@@ -15,27 +15,27 @@ context variables:
 			<tr>
 				<th>Rank</th>
 				<th>Name</th>
-				<th>Points</th>
-				<th>Completions</th>
-				<th>Total playtime</th>
+				<th class="right">Points</th>
+				<th class="right">Completions</th>
+				<th class="right">Total playtime</th>
 			</tr>
 			{% for profile in object_list %}
 			<tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
 				<td>{{ profile.sql_position|ordinal }}</td>
 				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
-				<td>{{ profile.points }}</td>
-				<td>{{ profile.completions }}</td>
-				<td>{{ profile.playtime|default_if_none:0|sectodur }}</td>
+				<td class="right">{{ profile.points }}</td>
+				<td class="right">{{ profile.completions }}</td>
+				<td class="right">{{ profile.playtime|default_if_none:0|sectodur }}</td>
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="6">No ranked players.</td>
+				<td colspan="5">No ranked players.</td>
 			</tr>
 			{% endfor %}
 		{% if object_list %}
 		<tfoot>
 			<tr>
-				<td colspan="6">{{ object_list.count }} ranked player{{ object_list.count|pluralize }}</td>
+				<td colspan="5">{{ object_list.count }} ranked player{{ object_list.count|pluralize }}</td>
 			</tr>
 		</tfoot>
 		{% endif %}
