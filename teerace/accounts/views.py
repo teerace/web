@@ -1,5 +1,6 @@
 import datetime
 import json
+import time
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
@@ -113,7 +114,7 @@ def profile(request, user_id):
 def profile_points_graph_json(request, user_id):
 	# I would have used @ajax_request, but default JSON serializer
 	# is not able to deal with datetime.date objects.
-	dthandler = lambda obj: obj.isoformat() \
+	dthandler = lambda obj: time.mktime(obj.timetuple())*1000 \
 		if isinstance(obj, datetime.date) else None
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
 	response_data = json.dumps(
