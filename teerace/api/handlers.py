@@ -36,8 +36,8 @@ class RunHandler(BaseHandler):
 		return rc(rcs.BAD_REQUEST)
 
 	def _read_best(self, request, *args, **kwargs):
-		if 'map_id' in kwargs:
-			map_obj = Map.objects.get(pk=kwargs['map_id'])
+		if 'id' in kwargs:
+			map_obj = Map.objects.get(pk=kwargs['id'])
 			return BestRun.objects.exclude(points=0) \
 				.filter(map=map_obj).select_related()[:len(BestRun.SCORING)]
 		return rc(rcs.BAD_REQUEST)
@@ -68,7 +68,7 @@ class RunHandler(BaseHandler):
 		Data
 			- none
 		Result
-			- 400 - when the was no map_id specified
+			- 400 - when there was no map_id specified
 			- 200 - when everything went fine
 				a list of BestRun objects, which has map, user and run attributes.
 		"""
