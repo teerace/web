@@ -800,6 +800,10 @@ td img,
 
 	}
 
+#api_token {
+	font-size: 250%;
+}
+
 /* for flot */
 #placeholder {
 	 width:758px;
@@ -889,7 +893,6 @@ div.live-stats {
 	background: #333;
 	border: thin solid #000;
 	font-family: monospace;
-	font-size: 250%;
 	text-align: center;
 	padding: 20px;
 	text-shadow: 1px 2px 0 #000;

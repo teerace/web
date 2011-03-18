@@ -30,7 +30,7 @@
 				Locate &quot;API token&quot; tab and copy your token.<br>
 				{% endif %}
 				Go to your teeworlds configuration file and add at the end of this file:
-				<div id="api_token" class="api_token">bind <em>button_of_your_choice</em> "rcon_auth teerace:{{ user.profile.api_token|default:"your_api_key" }}"</div>
+				<div class="api_token">bind <em>button_of_your_choice</em> "rcon_auth teerace:{{ user.profile.api_token|default:"your_api_key" }}"</div>
 			</p>
 		</div>
 		<div class="step" id="s-4">
