@@ -29,7 +29,7 @@ context variables:
 					{% for run in user_runs %}
 					<tr>
 						<td><span title="{{ run.created_at }}">{{ run.created_at|timesince }} ago</span></td>
-						<td>{{ run.map }}</td>
+						<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
 						<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
 					</tr>
 					{% empty %}
