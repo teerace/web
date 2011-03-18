@@ -39,8 +39,8 @@ class RunHandler(BaseHandler):
 		if 'id' in kwargs:
 			map_obj = Map.objects.get(pk=kwargs['id'])
 			return BestRun.objects.exclude(points=0) \
-				.filter(map=map_obj).select_related()[:len(BestRun.SCORING)] \
-				.order_by('-points')
+				.filter(map=map_obj).select_related() \
+				.order_by('-points')[:len(BestRun.SCORING)]
 		return rc(rcs.BAD_REQUEST)
 
 	def read(self, request, action, *args, **kwargs):
