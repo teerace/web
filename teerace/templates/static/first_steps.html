@@ -25,8 +25,10 @@
 		<div class="step" id="s-3">
 			<div class="header">3. Configure your client</div>
 			<p>
+				{% if not user.is_authenticated %}
 				After logging into Teerace website, go to settings page.<br>
 				Locate &quot;API token&quot; tab and copy your token.<br>
+				{% endif %}
 				Go to your teeworlds configuration file and add at the end of this file:
 				<div id="api_token" class="api_token">bind <em>button_of_your_choice</em> "rcon_auth teerace:{{ user.profile.api_token|default:"your_api_key" }}"</div>
 			</p>
