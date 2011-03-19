@@ -13,7 +13,7 @@ def beta_form(request):
 		return redirect(reverse('home'))
 
 	try:
-		latest_entry = Entry.objects.exclude(is_published=False) \
+		latest_entry = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
 			.select_related().latest()
 	except Entry.DoesNotExist:
 		latest_entry = None
