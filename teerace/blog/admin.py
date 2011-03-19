@@ -4,9 +4,9 @@ from blog.models import Entry
 
 
 class EntryAdmin(admin.ModelAdmin):
-	list_display = ('title', 'created_at', 'created_by', 'is_published')
+	list_display = ('title', 'created_at', 'created_by', 'status', 'is_micro')
 	list_display_links = ('created_at', 'title')
-	list_filter = ('is_published', 'created_at')
+	list_filter = ('status', 'created_at')
 	form = EntryAdminForm
 
 	def add_view(self, request):
@@ -19,13 +19,17 @@ class EntryAdmin(admin.ModelAdmin):
 		obj.save()
 
 	def publish_entry(self, request, queryset):
-		queryset.update(is_published=True)
+		queryset.update(status=Entry.PUBLISHED_STATUS)
 	publish_entry.short_description = "Publish selected entries"
 
+	def draft_entry(self, request, queryset):
+		queryset.update(status=Entry.DRAFT_STATUS)
+	draft_entry.short_description = "Draft selected entries"
+
 	def unpublish_entry(self, request, queryset):
-		queryset.update(is_published=False)
+		queryset.update(status=Entry.HIDDEN_STATUS)
 	unpublish_entry.short_description = "Unpublish selected entries"
 
-	actions = [publish_entry, unpublish_entry]
+	actions = [publish_entry, draft_entry, unpublish_entry]
 
 admin.site.register(Entry, EntryAdmin)

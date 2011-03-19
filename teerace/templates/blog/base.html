@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block title %}blog - {{ block.super }}{% endblock title %}
-{% block extra_head %}
-	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url blog_feed %}">
-{% endblock extra_head %}
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}

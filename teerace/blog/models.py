@@ -11,14 +11,27 @@ class Entry(models.Model):
 	created_by = models.ForeignKey(User)
 	created_at = models.DateTimeField(auto_now_add=True)
 	published_at = models.DateTimeField(auto_now=True)
-	is_published = models.BooleanField(default=True, verbose_name="publish on site")
 	enable_comments = models.BooleanField(default=True)
+	is_micro = models.BooleanField(default=False, verbose_name="micro",
+		help_text="Designates whether this entry should be displayed as micropost."
+			" It will not be included in Teeplanet feed.")
 	title = models.CharField(max_length=100)
 	slug = models.CharField(max_length=100, blank=True)
-	excerpt = models.TextField(blank=True, help_text="You may use Markdown syntax")
+	excerpt = models.TextField(blank=True,
+		help_text="You may use Markdown syntax")
 	excerpt_html = models.TextField(blank=True)
 	content = models.TextField(help_text="You may use Markdown syntax")
 	content_html = models.TextField()
+
+	PUBLISHED_STATUS = 1
+	DRAFT_STATUS = 2
+	HIDDEN_STATUS = 3
+	STATUS_CHOICES = (
+		(PUBLISHED_STATUS, "Published"),
+		(DRAFT_STATUS, "Draft"),
+		(HIDDEN_STATUS, "Hidden"),
+	)
+	status = models.IntegerField(choices=STATUS_CHOICES, default=DRAFT_STATUS)
 
 	def slugify_title(self):
 		new_slug = slug = slugify(self.title) or "bad-title"

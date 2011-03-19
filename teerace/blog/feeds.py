@@ -10,7 +10,7 @@ class LatestEntriesFeed(Feed):
 	subtitle = "Updates on changes and additions to Teerace."
 
 	def items(self):
-		return Entry.objects.exclude(is_published=False) \
+		return Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
 			.order_by('-created_at')[:5]
 
 	def item_title(self, item):
@@ -27,3 +27,10 @@ class LatestEntriesFeed(Feed):
 
 	def item_pubdate(self, item):
 		return item.published_at
+
+
+class LatestEntriesForPlanetFeed(LatestEntriesFeed):
+
+	def items(self):
+		return Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
+			.exclude(is_micro=True).order_by('-created_at')[:5]

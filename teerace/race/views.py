@@ -15,7 +15,7 @@ from annoying.decorators import render_to
 @render_to('home.html')
 def homepage(request):
 	try:
-		latest_entry = Entry.objects.exclude(is_published=False) \
+		latest_entry = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
 			.select_related().latest()
 	except Entry.DoesNotExist:
 		latest_entry = None
