@@ -15,17 +15,17 @@ context variables:
 			<tr>
 				<th>Rank</th>
 				<th>Name</th>
-				<th class="right">Points</th>
-				<th class="right">Completions</th>
-				<th class="right">Total playtime</th>
+				<th class="right-align">Points</th>
+				<th class="right-align">Completions</th>
+				<th>Total playtime</th>
 			</tr>
 			{% for profile in object_list %}
 			<tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
 				<td>{{ profile.sql_position|ordinal }}</td>
 				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
-				<td class="right">{{ profile.points }}</td>
-				<td class="right">{{ profile.completions }}</td>
-				<td class="right">{{ profile.playtime|default_if_none:0|sectodur }}</td>
+				<td class="right-align">{{ profile.points }}</td>
+				<td class="right-align">{{ profile.completions }}</td>
+				<td>{{ profile.playtime|default_if_none:0|sectodur }}</td>
 			</tr>
 			{% empty %}
 			<tr>
