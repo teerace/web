@@ -15,10 +15,13 @@ from annoying.decorators import render_to
 @render_to('home.html')
 def homepage(request):
 	try:
-		latest_entry = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
-			.select_related().latest()
+		latest_entries = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
+			.order_by('-created_at').select_related()[:2]
 	except Entry.DoesNotExist:
-		latest_entry = None
+		latest_entries = None
+
+	if not latest_entries[0].is_micro and not latest_entries[1].is_micro:
+		latest_entries = latest_entries[:1]
 
 	user_base = User.objects.exclude(is_active=False)
 	try:
@@ -64,7 +67,7 @@ def homepage(request):
 	)['download_count__sum']
 
 	return {
-		'latest_entry': latest_entry,
+		'latest_entries': latest_entries,
 		'latest_user': latest_user,
 		'user_count': user_count,
 		'latest_map': latest_map,

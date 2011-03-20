@@ -13,10 +13,13 @@ def beta_form(request):
 		return redirect(reverse('home'))
 
 	try:
-		latest_entry = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
-			.select_related().latest()
+		latest_entries = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
+			.order_by('-created_at').select_related()[:2]
 	except Entry.DoesNotExist:
-		latest_entry = None
+		latest_entries = None
+
+	if not latest_entries[0].is_micro and not latest_entries[1].is_micro:
+		latest_entries = latest_entries[:1]
 
 	form = BetaForm(request=request)
 	login_form = LoginForm()
@@ -34,7 +37,7 @@ def beta_form(request):
 
 	return {
 		'form': form,
-		'latest_entry': latest_entry,
+		'latest_entries': latest_entries,
 		'login_form': login_form,
 		'next': request.REQUEST.get('next', reverse('home')),
 	}

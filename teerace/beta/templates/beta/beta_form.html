@@ -2,7 +2,7 @@
 {% comment %}
 context variables:
 	form
-	latest_entry
+	latest_entries
 	login_form
 	next
 {% endcomment %}
@@ -26,43 +26,45 @@ context variables:
 		</p>
 	</div>
 
-	{% if latest_entry %}
+	{% if latest_entries %}
 	<div id="blog" class="box full">
 		<div class="header">Latest news</div>
 
-		{% if latest_entry.is_micro %}
+		{% for entry in latest_entries %}
+		{% if entry.is_micro %}
 		<div class="post micro home">
-			<div class="header"><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></div>
+			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 			<div class="content">
-				{% if latest_entry.excerpt %}
-					{{ latest_entry.excerpt_html|safe }}
+				{% if entry.excerpt %}
+					{{ entry.excerpt_html|safe }}
 				{% else %}
-					{{ latest_entry.content_html|safe }}
+					{{ entry.content_html|safe }}
 				{% endif %}
 			</div>
 			<br>
-			<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{% url profile latest_entry.created_by.id %}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
 		</div>
 		{% else %}
 		<div class="post home">
-			<div class="header"><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></div>
-			<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{{ latest_entry.created_by.get_absolute_url }}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
-			<p>
-				{% if latest_entry.excerpt_html %}
-					{{ latest_entry.excerpt_html|safe }}
+			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
+			<div class="content">
+				{% if entry.excerpt %}
+					{{ entry.excerpt_html|safe }}
 				{% else %}
-					{{ latest_entry.content_html|safe }}
+					{{ entry.content_html|safe }}
 				{% endif %}
-			</p>
-			{% if latest_entry.excerpt_html %}
-			<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
+			</div>
+			{% if entry.excerpt_html %}
+			<a class="read-more" href="{{ entry.get_absolute_url }}#read-more">Read the rest of this entry...</a>
 			{% endif %}
-			{% if latest_entry.enable_comments %}
-			{% get_comment_count for latest_entry as comment_count %}
-			<div class="comment-count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+			{% if entry.enable_comments %}
+			{% get_comment_count for entry as comment_count %}
+			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
 			{% endif %}
 		</div>
 		{% endif %}
+		{% endfor %}
 	</div>
 	{% endif %}
 
