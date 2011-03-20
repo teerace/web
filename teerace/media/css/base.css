@@ -220,14 +220,8 @@ td.right-align, th.right-align {
 	width: 800px;
 }
 
-#menu, .box,
-.button, input,
-#comments .comment,
-.badge, .api_token,
-#userprofile .gravatar,
-.clippy:hover:after,
-td img,
-#tooltip {
+input, td img, #menu, #comments .comment, #tooltip, .box, .button, .badge,
+.api_token, .gravatar, .clippy:hover:after {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -467,32 +461,72 @@ td img,
 
 #blog {}
 
-	#blog h2 {
-		font-size: 18px;
-		margin-bottom: 0;
-	}
-
-	#blog .post-line,
-	div.live .address {
-		color: #918f61;
-		font-size: 11px;
-		font-style: italic;
-	}
-
-	#blog .poster {
-		font-weight: bold;
-	}
-
-	#blog .comment-count {
-		font-size: 11px;
-		margin-top: -10px;
-		float: right;
-	}
-
 	#blog p {
 		line-height: 20px;
 		text-align: justify;
 	}
+
+	#blog .post:not(.home) {
+		border-left: 4px double #eeebd6;
+		padding: 5px 20px;
+		margin: 0 0 20px 80px;
+	}
+
+		#blog .post .header {
+			border-bottom: none;
+			font-weight: bold;
+			margin-bottom: 3px;
+		}
+
+		#blog .post .post-line {
+			color: #918f61;
+			font-size: 11px;
+			font-style: italic;
+		}
+
+		#blog .post .comment-count {
+			font-size: 11px;
+			margin-top: -5px;
+			float: right;
+		}
+
+		#blog .post .poster {
+			color: #918f61;
+			font-size: 11px;
+		}
+
+			#blog .post:not(.micro) .poster a {
+				font-weight: bold;
+			}
+
+		#blog .post .read-more {
+			font-style: italic;
+			font-size: 90%;
+			text-decoration: underline;
+		}
+
+		#blog .post .gravatar {
+			float: left;
+			margin: 10px 0 10px -100px;
+		}
+
+	#blog .micro {
+		margin: 0 0 10px 3px;
+	}
+
+		#blog .micro .gravatar {
+			margin: 10px 0 10px -80px;
+		}
+
+		#blog .micro .header {
+			border-bottom: none;
+			font-size: 13px;
+		}
+
+		#blog .micro .poster, #blog .micro .header, #blog .micro .content,
+		#blog .micro .content *, #blog .micro .post-line {
+			display: inline;
+		}
 
 #comments {
 	padding-top: 30px;
@@ -861,6 +895,12 @@ div.live li {
 		color: #666;
 		font-size: 13px;
 		margin: 0 10px;
+	}
+
+	div.live .address {
+		color: #918f61;
+		font-size: 11px;
+		font-style: italic;
 	}
 
 div.live-stats {

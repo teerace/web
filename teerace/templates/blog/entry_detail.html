@@ -33,20 +33,23 @@ context variables:
 {% endblock %}
 {% block content %}
 	<div id="blog" class="box full">
-		<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-		<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
-		<div class="excerpt">
-			{{ entry.excerpt_html|safe }}
-		</div>
-		<div id="read-more">
-			{{ entry.content_html|safe }}
-		</div>
+		<div class="post">
+			<img src="{% gravatar_for_user entry.created_by 60 %}" class="gravatar" alt="{{ entry.created_by.username }}'s gravatar" title="{{ entry.created_by.username }}'s gravatar">
+			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
+			<div class="excerpt">
+				{{ entry.excerpt_html|safe }}
+			</div>
+			<div id="read-more">
+				{{ entry.content_html|safe }}
+			</div>
 
-		{% if not entry.enable_comments %}
-		<div class="comment-count">comments disabled / <a href="{{ entry.get_absolute_url }}">#</a></div>
-		{% else %}
-		{% get_comment_count for entry as comment_count %}
-		<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / {% if user.is_authenticated %}<a href="#comment-form">reply</a>{% else %}<a href="{% url login %}?next={{ entry.get_absolute_url }}%23comment-form">login to reply</a>{% endif %} / <a href="{{ entry.get_absolute_url }}">#</a></div>
+			{% if not entry.enable_comments %}
+			<div class="comment-count">comments disabled / <a href="{{ entry.get_absolute_url }}">#</a></div>
+			{% else %}
+			{% get_comment_count for entry as comment_count %}
+			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / {% if user.is_authenticated %}<a href="#comment-form">reply</a>{% else %}<a href="{% url login %}?next={{ entry.get_absolute_url }}%23comment-form">login to reply</a>{% endif %} / <a href="{{ entry.get_absolute_url }}">#</a></div>
+		</div>
 		<div id="comments">
 			{% get_comment_list for entry as comment_list %}
 			{% for comment in comment_list|fill_tree|annotate_tree %}

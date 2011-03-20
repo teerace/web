@@ -58,21 +58,38 @@ context variables:
 			<div id="blog" class="box left">
 				<div class="header">Blog</div>
 
-				<h2><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></h2>
-				<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{{ latest_entry.created_by.get_absolute_url }}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
-				<p>
+				{% if latest_entry.is_micro %}
+				<div class="post micro home">
+					<div class="header"><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></div>
+					<div class="content">
+						{% if latest_entry.excerpt %}
+							{{ latest_entry.excerpt_html|safe }}
+						{% else %}
+							{{ latest_entry.content_html|safe }}
+						{% endif %}
+					</div>
+					<br>
+					<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{% url profile latest_entry.created_by.id %}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
+				</div>
+				{% else %}
+				<div class="post home">
+					<div class="header"><a href="{{ latest_entry.get_absolute_url }}">{{ latest_entry.title }}</a></div>
+					<div class="post-line">{{ latest_entry.created_at }} / <span class="poster"><a href="{{ latest_entry.created_by.get_absolute_url }}">{{ latest_entry.created_by.get_full_name|default:latest_entry.created_by }}</a></span></div>
+					<div class="content">
+						{% if latest_entry.excerpt_html %}
+							{{ latest_entry.excerpt_html|safe }}
+						{% else %}
+							{{ latest_entry.content_html|safe }}
+						{% endif %}
+					</div>
 					{% if latest_entry.excerpt_html %}
-						{{ latest_entry.excerpt_html|safe }}
-					{% else %}
-						{{ latest_entry.content_html|safe }}
+					<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
 					{% endif %}
-				</p>
-				{% if latest_entry.excerpt_html %}
-				<a href="{{ latest_entry.get_absolute_url }}#read-more">Read more</a>
-				{% endif %}
-				{% if latest_entry.enable_comments %}
-				{% get_comment_count for latest_entry as comment_count %}
-				<div class="comment-count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+					{% if latest_entry.enable_comments %}
+					{% get_comment_count for latest_entry as comment_count %}
+					<div class="comment-count"><a href="{{ latest_entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+					{% endif %}
+				</div>
 				{% endif %}
 			</div>
 			{% endif %}

@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}{% load comments %}{% load pagination_tags %}
+{% extends "blog/base.html" %}{% load comments %}{% load pagination_tags %}{% load gravatar %}
 {% comment %}
 context variables:
 	entry_list
@@ -9,20 +9,40 @@ context variables:
 	<div class="box full" id="blog">
 	{% paginate %}
 	{% for entry in entry_list %}
+		{% if entry.is_micro %}
+		<div class="post micro">
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
-			<p>
+			<div class="content">
 				{% if entry.excerpt %}
 					{{ entry.excerpt_html|safe }}
 				{% else %}
 					{{ entry.content_html|safe }}
 				{% endif %}
-			</p>
+			</div>
+			<br>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
+		</div>
+		{% else %}
+		<div class="post">
+			<img src="{% gravatar_for_user entry.created_by 60 %}" class="gravatar" alt="{{ entry.created_by.username }}'s gravatar" title="{{ entry.created_by.username }}'s gravatar">
+			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url profile entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
+			<div class="content">
+				{% if entry.excerpt %}
+					{{ entry.excerpt_html|safe }}
+				{% else %}
+					{{ entry.content_html|safe }}
+				{% endif %}
+			</div>
 			{% if entry.excerpt_html %}
-			<a href="{{ entry.get_absolute_url }}#read-more">Read more</a>
+			<a class="read-more" href="{{ entry.get_absolute_url }}#read-more">Read the rest of this entry...</a>
 			{% endif %}
+			{% if entry.enable_comments %}
 			{% get_comment_count for entry as comment_count %}
 			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+			{% endif %}
+		</div>
+		{% endif %}
 	{% empty %}
 		No entries were found.
 	{% endfor %}
