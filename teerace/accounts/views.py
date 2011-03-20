@@ -117,8 +117,15 @@ def profile_points_graph_json(request, user_id):
 	dthandler = lambda obj: time.mktime(obj.timetuple())*1000 \
 		if isinstance(obj, datetime.date) else None
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
+
+	if user.profile.points_history:
+		history = user.profile.points_history.append([time.mktime(time.localtime())*1000,
+			user.profile.points])
+	else:
+		history = None
+
 	response_data = json.dumps(
-		{'user': user.id, 'history': user.profile.points_history},
+		{'user': user.id, 'history': history},
 		default=dthandler,
 	)
 	return HttpResponse(response_data, mimetype="application/json")
