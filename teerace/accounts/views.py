@@ -119,8 +119,8 @@ def profile_points_graph_json(request, user_id):
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
 
 	if user.profile.points_history:
-		history = user.profile.points_history + [time.mktime(time.localtime())*1000,
-			user.profile.points]
+		history = user.profile.points_history + [(time.mktime(time.localtime())*1000,
+			user.profile.points)]
 	else:
 		history = None
 
