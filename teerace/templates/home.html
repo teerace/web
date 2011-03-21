@@ -34,12 +34,14 @@ context variables:
 					</tr>
 					{% empty %}
 					<tr>
-						<td colspan="6">Hey! You haven't finished any run yet!</td>
+						<td colspan="3">Hey! You haven't finished any run yet!</td>
 					</tr>
 					{% endfor %}
+					{% if user_runs %}
 					<tfoot>
-						<td colspan="6"><a href="{% url user_activity %}">More &raquo;</a></td>
+						<td colspan="3"><a href="{% url user_activity %}">More &raquo;</a></td>
 					</tfoot>
+					{% endif %}
 				</table>
 			</div>
 			{% endif %}
