@@ -253,13 +253,18 @@ class UserHandler(BaseHandler):
 	@require_extended
 	@validate_mime(UserGetByNameForm)
 	def _create_get_by_name(self, request, *args, **kwargs):
+		form_username = request.form.cleaned_data.get('username')
 		try:
 			user = User.objects.get(
-				username=request.form.cleaned_data.get('username')
+				username=form_username
 			)
 		except User.DoesNotExist:
-			return rc(rcs.NOT_FOUND)
-		return user.id
+			users = User.objects.filter(username__icontains=form_username)
+			if users.count():
+				return {'id': users[0].id, 'username': users[0].username}
+			else:
+				return rc(rcs.NOT_FOUND)
+		return {'id': user.id, 'username': user.username}
 
 	def create(self, request, action, *args, **kwargs):
 		"""
