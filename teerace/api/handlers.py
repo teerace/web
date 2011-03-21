@@ -433,6 +433,12 @@ class MapHandler(BaseHandler):
 		return rc(rcs.BAD_REQUEST)
 
 
+class BestRunHandler(BaseHandler):
+	allowed_methods = ()
+	fields = ('run', )
+	model = BestRun
+
+
 class ServerHandler(BaseHandler):
 	allowed_methods = ()
 	fields = ('id', 'name', 'description')
