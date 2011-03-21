@@ -377,7 +377,7 @@ class MapHandler(BaseHandler):
 				map_obj = Map.objects.get(pk=kwargs['map_id'])
 			except Map.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
-			offset = kwargs['offset']-1 if 'offset' in kwargs else 0
+			offset = int(kwargs['offset'])-1 if 'offset' in kwargs else 0
 			return BestRun.objects.filter(map=map_obj).select_related() \
 				.order_by('-points')[offset:offset+5]
 		return rc(rcs.BAD_REQUEST)
