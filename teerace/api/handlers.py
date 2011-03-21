@@ -4,8 +4,8 @@ from brabeion import badges
 from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
-from api.forms import (ValidateUserForm, ValidateUserTokenForm,
-	SkinUserForm, RunForm)
+from api.forms import (ValidateUserTokenForm,
+	UserGetByNameForm, SkinUserForm, RunForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
@@ -35,14 +35,6 @@ class RunHandler(BaseHandler):
 				return rc(rcs.NOT_FOUND)
 		return rc(rcs.BAD_REQUEST)
 
-	def _read_best(self, request, *args, **kwargs):
-		if 'id' in kwargs:
-			map_obj = Map.objects.get(pk=kwargs['id'])
-			return BestRun.objects.exclude(points=0) \
-				.filter(map=map_obj).select_related() \
-				.order_by('-points')[:len(BestRun.SCORING)]
-		return rc(rcs.BAD_REQUEST)
-
 	def read(self, request, action, *args, **kwargs):
 		"""
 		URL
@@ -59,22 +51,9 @@ class RunHandler(BaseHandler):
 			- 200 - when everything went fine
 				Run object
 
-
-		URL
-			**/api/1/runs/best/{map_id}/**
-		Shortdesc
-			Returns [BestRun.SCORING] best results of a map
-		Arguments
-			- map_id / integer / ID of the map
-		Data
-			- none
-		Result
-			- 400 - when there was no map_id specified
-			- 200 - when everything went fine
-				a list of BestRun objects, which has map, user and run attributes.
 		"""
 		# without '_read_' prefix
-		allowed_actions = ['detail', 'best']
+		allowed_actions = ['detail']
 		if action in allowed_actions:
 			return getattr(self, '_read_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
@@ -156,36 +135,39 @@ class UserHandler(BaseHandler):
 		if 'id' in kwargs:
 			try:
 				user = User.objects.get(pk=kwargs['id'])
-				return user
 			except User.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
+			return user
 		return rc(rcs.BAD_REQUEST)
 
 	def _read_profile(self, request, *args, **kwargs):
 		if 'id' in kwargs:
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
-				return profile
 			except UserProfile.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
+			return profile
 		return rc(rcs.BAD_REQUEST)
 
 	def _read_rank(self, request, *args, **kwargs):
 		if 'id' in kwargs:
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
-				return profile.position
 			except UserProfile.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
+			return profile.position
 		return rc(rcs.BAD_REQUEST)
 
 	def _read_map_rank(self, request, *args, **kwargs):
 		if 'id' in kwargs and 'map_id' in kwargs:
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
-				return profile.map_position(kwargs['map_id'])
 			except UserProfile.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
+			return {
+				'position': profile.map_position(kwargs['map_id']),
+				'bestrun': profile.best_score(kwargs['map_id']),
+			}
 		return rc(rcs.BAD_REQUEST)
 
 	def read(self, request, action, *args, **kwargs):
@@ -258,18 +240,6 @@ class UserHandler(BaseHandler):
 		return rc(rcs.BAD_REQUEST)
 
 	@require_extended
-	@validate_mime(ValidateUserForm)
-	def _create_auth(self, request, *args, **kwargs):
-		try:
-			# we will grab the private key automatically from settings.py
-			password = request.form.cleaned_data.get('password')
-			password = RSA().decrypt(password.decode('base64'))
-			user = User.objects.get(username=request.form.cleaned_data.get('username'))
-		except (TypeError, User.DoesNotExist):
-			return False
-		return user if user.check_password(password) else False
-
-	@require_extended
 	@validate_mime(ValidateUserTokenForm)
 	def _create_auth_token(self, request, *args, **kwargs):
 		try:
@@ -280,32 +250,19 @@ class UserHandler(BaseHandler):
 			return False
 		return user
 
+	@require_extended
+	@validate_mime(UserGetByNameForm)
+	def _create_get_by_name(self, request, *args, **kwargs):
+		try:
+			user = User.objects.get(
+				username=request.form.cleaned_data.get('username')
+			)
+		except User.DoesNotExist:
+			return rc(rcs.NOT_FOUND)
+		return user.id
+
 	def create(self, request, action, *args, **kwargs):
 		"""
-		URL
-			**/api/1/users/auth/**
-		Shortdesc
-			Handles user/password checking.
-		Longdesc
-			Returns User object or False, whether provided
-			username and password pass the test.
-
-			Uses RSA and base64 to receive password,
-			remember of using the public key you received to generate cipher.
-
-			Example of password encoding:
-				`RSA(PUBLIC_KEY).encrypt(password).encode('base64')`
-		Arguments
-			- none
-		Data
-			- username / string
-			- password / string / **encrypted** password
-		Result
-			- 200, when data fails validation
-				False
-			- 200, when user data are correct
-				User object
-
 		URL
 			**/api/1/users/auth_token/**
 		Shortdesc
@@ -323,8 +280,22 @@ class UserHandler(BaseHandler):
 			- 200, when user data are correct
 				User object
 
+
+		URL
+			**/api/1/users/get_by_name/**
+		Shortdesc
+			Returns User object of the matched username.
+		Arguments
+			- none
+		Data
+			- username / string / searched user name
+		Result
+			- 404, when there was no match
+			- 200, when there is a match
+				User object
+
 		"""
-		allowed_actions = ['auth', 'auth_token']
+		allowed_actions = ['auth_token', 'get_by_name']
 		if action in allowed_actions:
 			return getattr(self, '_create_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
@@ -334,17 +305,17 @@ class UserHandler(BaseHandler):
 		if 'id' in kwargs:
 			try:
 				profile = UserProfile.objects.get(id=kwargs['id'])
-				profile.has_skin = True
-				form = request.form.cleaned_data
-				profile.skin_name = form['skin_name']
-				profile.skin_body_color_raw = form['body_color']
-				profile.skin_body_color = rgblong_to_hex(form['body_color'])
-				profile.skin_feet_color_raw = form['feet_color']
-				profile.skin_feet_color = rgblong_to_hex(form['feet_color'])
-				profile.save()
-				return profile
 			except UserProfile.DoesNotExist:
 				return rc(rcs.BAD_REQUEST)
+			profile.has_skin = True
+			form = request.form.cleaned_data
+			profile.skin_name = form['skin_name']
+			profile.skin_body_color_raw = form['body_color']
+			profile.skin_body_color = rgblong_to_hex(form['body_color'])
+			profile.skin_feet_color_raw = form['feet_color']
+			profile.skin_feet_color = rgblong_to_hex(form['feet_color'])
+			profile.save()
+			return profile
 		return rc(rcs.BAD_REQUEST)
 
 	@require_extended
@@ -395,9 +366,20 @@ class MapHandler(BaseHandler):
 		if 'map_id' in kwargs:
 			try:
 				map_obj = Map.objects.get(pk=kwargs['map_id'])
-				return map_obj
 			except Map.DoesNotExist:
 				return rc(rcs.NOT_FOUND)
+			return map_obj
+		return rc(rcs.BAD_REQUEST)
+
+	def _read_rank(self, request, *args, **kwargs):
+		if 'map_id' in kwargs:
+			try:
+				map_obj = Map.objects.get(pk=kwargs['map_id'])
+			except Map.DoesNotExist:
+				return rc(rcs.NOT_FOUND)
+			offset = kwargs['offset']-1 if 'offset' in kwargs else 0
+			return BestRun.objects.filter(map=map_obj).select_related() \
+				.order_by('-points')[offset:offset+5]
 		return rc(rcs.BAD_REQUEST)
 
 	def read(self, request, action, *args, **kwargs):
@@ -428,9 +410,24 @@ class MapHandler(BaseHandler):
 		Result
 			- 200 - when everything went fine
 				a list of Map objects
+
+
+		URL
+			**/api/1/maps/rank/{map_id}/[{offset}/]**
+		Shortdesc
+			Returns a list containing 5 elements of map rank,
+			starting with offset (default is 1)
+		Arguments
+			- map_id / integer / ID of the map
+			- offset / integer / 
+		Data
+			- none
+		Result
+			- 200 - when everything went fine
+				a list of BestRun objects
 		"""
 		# without '_read_' prefix
-		allowed_actions = ['list', 'detail']
+		allowed_actions = ['list', 'detail', 'rank']
 		if action in allowed_actions:
 			return getattr(self, '_read_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)

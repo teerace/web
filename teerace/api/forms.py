@@ -4,9 +4,8 @@ from accounts.models import UserProfile
 from race.models import Map, Run
 
 
-class ValidateUserForm(forms.Form):
+class UserGetByNameForm(forms.Form):
 	username = forms.CharField(max_length=30)
-	password = forms.CharField()
 
 
 class ValidateUserTokenForm(forms.Form):
