@@ -263,7 +263,7 @@ class UserHandler(BaseHandler):
 			if users.count():
 				return {'id': users[0].id, 'username': users[0].username}
 			else:
-				return rc(rcs.NOT_FOUND)
+				return None
 		return {'id': user.id, 'username': user.username}
 
 	def create(self, request, action, *args, **kwargs):
