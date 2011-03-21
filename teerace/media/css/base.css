@@ -511,7 +511,7 @@ input, td img, #menu, #comments .comment, #tooltip, .box, .button, .badge,
 		}
 
 	#blog .micro {
-		margin: 0 0 10px 3px;
+		margin-bottom: 10px;
 	}
 
 		#blog .micro .gravatar {
