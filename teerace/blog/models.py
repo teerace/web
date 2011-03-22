@@ -57,7 +57,12 @@ class Entry(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.pk:
 			self.slug = self.slugify_title()
-		self.excerpt_html = markdown(self.excerpt)
+		if self.is_micro:
+			# forcing no excerpt and lack of comments for micro entries
+			self.excerpt = self.excerpt_html = ""
+			self.enable_comments = False
+		else:
+			self.excerpt_html = markdown(self.excerpt)
 		self.content_html = markdown(self.content)
 		super(Entry, self).save(*args, **kwargs)
 
