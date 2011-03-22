@@ -171,6 +171,21 @@ def retrieve_map_details(map_id):
 	map_obj.crc = '{0:x}'.format(crc32(map_obj.map_file.read()) & 0xffffffff)
 	map_obj.map_file.close()
 	map_obj.save()
+
+	if map_obj.map_type.slug == 'fastcap':
+		logger.info("Creating a non-weapon twin...")
+ 		new_map = Map(
+			name="{0}-no-weapons".format(map_obj.name),
+			author=map_obj.author,
+			added_by=map_obj.added_by,
+			map_file=map_obj.map_file,
+			crc=map_obj.crc,
+			map_type=MapType.objects.get(slug='fastcap-no-weapons'),
+			has_unhookables=has_unhookables,
+			has_deathtiles=has_deathtiles,
+		)
+		new_map.save()
+	
 	logger.info("Finished processing \"{0}\" map.".format(map_obj.name))
 
 
