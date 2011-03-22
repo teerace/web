@@ -194,8 +194,8 @@ def map_download(request, map_id):
 	return redirect(map_obj.get_download_url())
 
 
-@render_to('race/live_stats.html')
-def live_stats(request):
+@render_to('race/servers.html')
+def servers(request):
 	servers_online = Server.objects.filter(
 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
 	)

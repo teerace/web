@@ -4,15 +4,15 @@ context variables:
 	servers_online
 	players_online
 {% endcomment %}
-{% block title %}live stats - {{ block.super }}{% endblock title %}
+{% block title %}servers - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}
-	{% add_crumb "Live stats" 'live_stats' %}
+	{% add_crumb "Servers" 'servers' %}
 {% endblock %}
 {% block content %}
 	<div class="box full">
-		<div class="header">Live stats</div>
+		<div class="header">Servers</div>
 		{% if servers_online %}
 		{% for server in servers_online %}
 			<div class="live">

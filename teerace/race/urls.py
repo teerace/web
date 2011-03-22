@@ -11,5 +11,5 @@ urlpatterns = patterns('race.views',
 	url(r'^ranks/maps/$', 'ranks_map_list', name='ranks_map_list'),
 	url(r'^ranks/maps/(?P<map_id>\d+)/$', 'ranks_map_detail', name='ranks_map_detail'),
 	url(r'^awards/$', 'awards', name='awards'),
-	url(r'^live/$', 'live_stats', name='live_stats'),
+	url(r'^servers/$', 'servers', name='servers'),
 )
