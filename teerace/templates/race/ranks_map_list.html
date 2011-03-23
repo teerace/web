@@ -1,4 +1,4 @@
-{% extends "race/ranks_base.html" %}{% load human_duration %}{% load pagination_tags %}
+{% extends "race/ranks_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load sorting %}
 {% comment %}
 context variables:
 	object_list
@@ -13,12 +13,13 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header">Maps</div>
+		{% auto_sort object_list %}
 		{% autopaginate object_list %}
 		{% paginate %}
 		<table class="players">
 			<tr>
-				<th>Name</th>
-				<th>Date added</th>
+				<th>{% sort_link "Name" "name" %}</th>
+				<th>{% sort_link "Date added" "added_at" "date" %}</th>
 				<th>Completions</th>
 				<th>Total playtime</th>
 				<th>Avg time</th>

@@ -233,6 +233,7 @@ INSTALLED_APPS = (
 	'threadedcomments',
 	'faq',
 	'pagination',
+	'sorting',
 	'piston',
 	'recaptcha_works',
 	'brabeion',

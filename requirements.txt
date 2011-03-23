@@ -13,6 +13,7 @@ django-pagination>=1.0.7
 django-picklefield>=0.1.8
 -e hg+https://bitbucket.org/jespern/django-piston#egg=django-piston
 django-recaptcha-works>=0.3.4
+-e git+https://github.com/agiliq/django-sorting.git#egg=django-sorting
 -e git+https://github.com/ericflo/django-threadedcomments.git#egg=django-threadedcomments
 docutils>=0.7
 feedparser>=4.1

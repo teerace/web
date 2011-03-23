@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load pagination_tags %}{% load gravatar %}
+{% extends "base.html" %}{% load pagination_tags %}{% load sorting %}{% load gravatar %}
 {% comment %}
 context variables:
 	users
@@ -8,18 +8,19 @@ context variables:
 {% block breadcrumb %}
 	{{ block.super }}
 	{% load breadcrumb_tags %}
-	{% add_crumb 'Players' 'accounts.views.userlist' %}
+	{% add_crumb 'Players' 'userlist' %}
 {% endblock %}
 {% block content %}
 	<div class="box full">
 		<div class="header">Userlist</div>
+		{% auto_sort users %}
 		{% autopaginate users %}
 		{% paginate %}
 		<table>
 			<tr>
-				<th>Name</th>
-				<th>Joined</th>
-				<th>Points</th>
+				<th>{% sort_link "Name" "username" "name" %}</th>
+				<th>{% sort_link "Joined" "date_joined" "joined" %}</th>
+				<th>{% sort_link "Points" "profile__points" "points" %}</th>
 			</tr>
 			{% for for_user in users %}
 			<tr{% if request.user.id == for_user.id %} class="me" title="that's you!"{% endif %}>
