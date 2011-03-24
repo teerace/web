@@ -132,7 +132,8 @@ def map_list(request, map_type=None):
 	if map_type:
 		filtered_type = get_object_or_404(MapType, slug=map_type)
 		maps = maps.filter(map_type__slug=map_type)
-	map_types = MapType.objects.order_by('name')
+	maps = maps.order_by('name')
+	map_types = MapType.objects.all()
 	extra_context = {
 		'map_types': map_types,
 		'filtered_type': filtered_type,
