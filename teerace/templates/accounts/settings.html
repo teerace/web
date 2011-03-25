@@ -19,7 +19,7 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header">Settings</div>
-		<form method="post" action="{% url settings %}">
+		<form method="post" action="{% url settings %}">{% csrf_token %}
 			{% with settings_user_form as form %}
 				{% include "snippets/form.html" %}
 			{% endwith %}

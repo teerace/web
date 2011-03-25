@@ -42,7 +42,7 @@
 					wmode="opaque">
 		    </object>
 			<p>Remember, that you can generate new one any time (then the old one expires), by clicking the button below.</p>
-			<form action="" method="POST">
+			<form action="" method="POST">{% csrf_token %}
 				<input type="submit" value="Generate" id="warn-button">
 			</form>
 		</p>

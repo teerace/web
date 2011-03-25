@@ -183,14 +183,13 @@ MIDDLEWARE_CLASSES = (
 	# see https://bitbucket.org/jmoiron/johnny-cache/issue/17/
 	'johnny.middleware.CommittingTransactionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.middleware.csrf.CsrfResponseMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'pagination.middleware.PaginationMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-	'django.core.context_processors.auth',
+	'django.contrib.auth.context_processors.auth',
 	'django.core.context_processors.debug',
 	'django.core.context_processors.i18n',
 	'django.core.context_processors.media',
