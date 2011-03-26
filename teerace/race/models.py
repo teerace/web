@@ -19,7 +19,7 @@ class Map(models.Model):
 	author = models.CharField(max_length=100, blank=True)
 
 	added_at = models.DateTimeField(auto_now_add=True)
-	added_by = models.ForeignKey(User)
+	added_by = models.ForeignKey(User, on_delete=models.PROTECT)
 
 	def map_filename(self, filename):
 		del filename
@@ -28,7 +28,8 @@ class Map(models.Model):
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8, blank=True, null=True)
 
-	map_type = models.ForeignKey('MapType', default=1)
+	map_type = models.ForeignKey('MapType', default=1,
+		on_delete=models.SET_DEFAULT)
 
 	has_unhookables = models.NullBooleanField(default=False)
 	has_deathtiles = models.NullBooleanField(default=False)
@@ -93,9 +94,11 @@ class MapType(models.Model):
 class Run(models.Model):
 	"""Representation of one map finish"""
 
-	map = models.ForeignKey('Map')
-	server = models.ForeignKey('Server', related_name='runs')
-	user = models.ForeignKey(User, blank=True, null=True)
+	map = models.ForeignKey('Map', on_delete=models.CASCADE)
+	server = models.ForeignKey('Server', blank=True, null=True,
+		related_name='runs', on_delete=models.SET_NULL)
+	user = models.ForeignKey(User, blank=True, null=True,
+		on_delete=models.SET_NULL)
 	nickname = models.CharField(max_length=24)
 
 	# yep, 24 semicolons and 25 time decimals,
@@ -147,9 +150,9 @@ class Run(models.Model):
 
 
 class BestRun(models.Model):
-	user = models.ForeignKey(User)
-	map = models.ForeignKey('Map')
-	run = models.ForeignKey('Run')
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	map = models.ForeignKey('Map', on_delete=models.CASCADE)
+	run = models.ForeignKey('Run', on_delete=models.CASCADE)
 
 	# UGLY hack to make rank rebuilding relatively easy
 	time = models.DecimalField(max_digits=Run.MAX_DIGITS,
@@ -182,12 +185,12 @@ class Server(models.Model):
 	description = models.TextField(blank=True)
 	address = models.CharField(max_length=50, blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers',
-		verbose_name="maintainer")
+		verbose_name="maintainer", on_delete=models.PROTECT)
 	is_active = models.BooleanField(default=True, verbose_name="active",
 		help_text="Designates whether this server should be treated as active."
 			" Unselect this instead of deleting servers.")
 	last_connection_at = models.DateTimeField(auto_now=True)
-	played_map = models.ForeignKey(Map, null=True, blank=True)
+	played_map = models.ForeignKey(Map, null=True, blank=True, on_delete=models.SET_NULL)
 	anonymous_players = PickledObjectField()
 	api_key = models.CharField(max_length=32, unique=True)
 

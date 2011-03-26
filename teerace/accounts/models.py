@@ -20,7 +20,7 @@ class UserProfile(models.Model):
 	registration_ip = models.IPAddressField(blank=True, null=True)
 	last_connection_at = models.DateTimeField(auto_now_add=True)
 	last_played_server = models.ForeignKey('race.Server', blank=True, null=True,
-		related_name='players')
+		related_name='players', on_delete=models.SET_NULL)
 	#last_activity_at = models.DateTimeField(auto_now_add=True)
 	#last_activity_ip = models.IPAddressField(blank=True, null=True)
 	country = CountryField(blank=True)

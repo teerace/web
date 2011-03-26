@@ -8,7 +8,7 @@ from annoying.functions import get_config
 
 
 class Entry(models.Model):
-	created_by = models.ForeignKey(User)
+	created_by = models.ForeignKey(User, on_delete=models.PROTECT)
 	created_at = models.DateTimeField(auto_now_add=True)
 	published_at = models.DateTimeField(auto_now=True)
 	enable_comments = models.BooleanField(default=True)
