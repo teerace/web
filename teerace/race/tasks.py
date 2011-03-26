@@ -51,7 +51,7 @@ def redo_ranks(run_id):
 	logger.info("Processed rank for \"{0}\" map.".format(map_obj))
 
 
-@task(rate_limit='10/m', ignore_result=True)
+@task(rate_limit='100/m', ignore_result=True)
 def rebuild_map_rank(map_id):
 	map_obj = Map.objects.get(pk=map_id)
 	runs = BestRun.objects.filter(map=map_obj)
@@ -72,7 +72,7 @@ def rebuild_map_rank(map_id):
 	logger.info("Rebuilt rank for map \"{0}\".".format(map_obj.name))
 
 
-@task(rate_limit='1/m', ignore_result=True)
+@task(rate_limit='10/m', ignore_result=True)
 def rebuild_global_rank():
 	runners = User.objects.annotate(Sum('bestrun__points'))
 	for runner in runners:
