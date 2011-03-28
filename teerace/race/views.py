@@ -5,10 +5,13 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.list_detail import object_list
+from accounts import badges as account_badges
 from accounts.models import UserProfile
+from beta import badges as beta_badges
 from blog.models import Entry
 from race.models import Map, MapType, Run, BestRun, Server
-from race import badges, tasks
+from race import badges as race_badges
+from race import tasks
 from annoying.decorators import render_to
 
 
@@ -179,7 +182,8 @@ def awards(request):
 
 	yes, you will hate me for this one.
 	"""
-	award_names = [x for x in dir(badges) if x.endswith('Badge')]
+	badges = dir(race_badges) + dir(account_badges) + dir(beta_badges)
+	award_names = [x for x in badges if x.endswith('Badge')]
 	award_list = []
 	for award in award_names:
 		award_list.append(getattr(badges, award))
