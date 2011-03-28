@@ -12,33 +12,39 @@ from tml.tml import Teemap
 
 @task(rate_limit='600/m', ignore_result=True)
 def redo_ranks(run_id):
+	from brabeion import badges
+	
 	logger = redo_ranks.get_logger()
 	try:
 		user_run = Run.objects.get(pk=run_id)
 	except Run.DoesNotExist:
-		logger.error("[R-{0}] How is that possible? (Run doesn't exist)".format(run_id))
+		logger.error("[R- /U- ] Run not found (pk={0}).".format(run_id))
 		return False
 	if user_run.user == None:
-		logger.info("[R-{0}] Anonymous run, not processing the rank.".format(run_id))
+		logger.info("[R-{0}/U- ] Anonymous run, not"
+			" processing the rank.".format(run_id))
 		return
 	map_obj = user_run.map
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run_id == user_run.id:
-		logger.info("[R-{0}] Not best run, not processing the rank.".format(run_id))
+		logger.info("[R-{0}/U-{1}] Not best run,"
+			"not processing the rank.".format(run_id, user_run.user_id))
 		return
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
 	# exclude banned users from scoring
 	ranked = runs.exclude(user__is_active=False)
-	ranked = ranked.order_by('run__time')[:ranked_count]
+	ranked = ranked.order_by('run__time', 'run__created_at')[:ranked_count]
 	try:
 		if user_run.time >= ranked[ranked_count-1].run.time:
-			logger.info("[R-{0}] Run won't affect ranks,"
-				" not processing the rank.".format(run_id))
+			logger.info("[R-{0}/U-{1}] Run won't affect scoring,"
+				" not processing the rank.".format(run_id, user_run.user_id))
 			return
 	except IndexError:
 		pass
+	old_rank = user_run.user.profile.position
+	new_rank = None
 	i = 0
 	for run in ranked:
 		run.points = BestRun.SCORING[i]
@@ -49,21 +55,31 @@ def redo_ranks(run_id):
 		)['points__sum']
 		run.user.profile.save()
 		i += 1
+		if user_run.user_id == run.user_id:
+			new_rank = i
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
-	logger.info("[R-{0}] Processed rank for \"{1}\" map.".format(run_id, map_obj))
+	badges.possibly_award_badge("rank_processed",
+		user=user_run.user)
+	logger.info("[R-{0}/U-{1}] {2}'s new rank is {3} (was: {4})." \
+		.format(run_id, user_run.user_id, user_run.user, new_rank, old_rank))
 
 
 @task(rate_limit='100/m', ignore_result=True)
 def rebuild_map_rank(map_id):
-	map_obj = Map.objects.get(pk=map_id)
+	logger = rebuild_map_rank.get_logger()
+	try:
+		map_obj = Map.objects.get(pk=map_id)
+	except Map.DoesNotExist:
+		logger.error("[M- ] Map not found (pk={0}).".format(map_id))
+		return False
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
 	# exclude banned users from scoring
 	ranked = runs.exclude(user__is_active=False) \
-		.order_by('run__time')[:ranked_count]
+		.order_by('run__time', 'run__created_at')[:ranked_count]
 	i = 0
 	for run in ranked:
 		run.points = BestRun.SCORING[i]
@@ -72,8 +88,8 @@ def rebuild_map_rank(map_id):
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
-	logger = rebuild_map_rank.get_logger()
-	logger.info("Rebuilt rank for map \"{0}\".".format(map_obj.name))
+	logger.info("[M-{0}] Rebuilt rank for map \"{0}\"." \
+		.format(map_id, map_obj.name))
 
 
 @task(rate_limit='10/m', ignore_result=True)
@@ -120,15 +136,15 @@ def retrieve_map_details(map_id):
 	try:
 		map_obj = Map.objects.get(pk=map_id)
 	except Map.DoesNotExist:
-		logger.error("Are you kidding me? (map doesn't exist)")
+		logger.error("[M- ] Map not found (pk={0}).".format(map_id))
 		return False
-
 	try:
 		# I actually can use that! Thanks, erd!
 		teemap = Teemap().load(map_obj.map_file.path)
-		logger.info("Loaded \"{0}\" map.".format(map_obj.name))
+		logger.info("[M-{0}] Loaded \"{1}\" map.".format(map_id, map_obj.name))
 	except IndexError:
-		logger.error("Couldn't load \"{0}\" map".format(map_obj.name))
+		logger.error("[M-{0}] Couldn't load \"{1}\" map" \
+			.format(map_id, map_obj.name))
 		has_unhookables = has_deathtiles = None
 		shield_count = heart_count = grenade_count = None
 	else:
@@ -189,8 +205,8 @@ def retrieve_map_details(map_id):
 			has_deathtiles=has_deathtiles,
 		)
 		new_map.save()
-	
-	logger.info("Finished processing \"{0}\" map.".format(map_obj.name))
+	logger.info("[M-{0}] Finished processing \"{1}\" map." \
+		.format(map_id, map_obj.name))
 
 
 @task(ignore_result=True)
@@ -198,8 +214,13 @@ def set_server_map(server_id, map_id):
 	logger = set_server_map.get_logger()
 	try:
 		map_obj = Map.objects.get(pk=map_id)
+	except Map.DoesNotExist:
+		logger.error("[S-{0}/M- ] Map not found (pk={1}).".format(server_id, map_id))
+		return False
+	try:
 		server = Server.objects.get(pk=server_id)
-	except (Map.DoesNotExist, Server.DoesNotExist):
+	except Server.DoesNotExist:
+		logger.error("[S- /M-{1}] Server not found (pk={0}).".format(server_id, map_id))
 		return False
 	if server.played_map == map_obj:
 		logger.info("[S-{0}/M-{1}] Map already set"

@@ -74,7 +74,23 @@ class GlobetrotterBadge(BadgeBase):
 		if set(maps_finished).issuperset(maps):
 			return BadgeAwarded(level=1)
 
+class HailToTheKingBadge(BadgeBase):
+	slug = 'hailtotheking'
+	levels = [
+		BadgeDetail("Hail to the King!", "Made his way to 1st place in global rank", 200),
+	]
+	events = [
+		'rank_processed',
+	]
+	multiple = False
+
+	def award(self, **state):
+		user = state['user']
+		if user.profile.position == 1:
+			return BadgeAwarded(level=1)
+
 
 badges.register(RunCountBadge)
 badges.register(PlaytimeBadge)
 badges.register(GlobetrotterBadge)
+badges.register(HailToTheKingBadge)
