@@ -44,8 +44,18 @@ DATABASES = {
 if DEBUG:
 	CACHE_BACKEND = 'johnny.backends.locmem://'
 else:
-	CACHE_BACKEND = 'johnny.backends.locmem://'# FIXME install memcached
+	CACHE_BACKEND = 'johnny.backends.locmem://'
 	#CACHE_BACKEND = 'johnny.backends.memcached://localhost:11211/'
+
+# New CACHES setting. Waiting for johnny-cache.
+# CACHES = {
+# 	'default': {
+# #		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+# #		'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+# #		'BACKEND': 'johnny.backends.memcached.CacheClass',
+# 		'LOCATION': 'localhost:11211',
+# 	}
+# }
 # some johnny settings
 JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_teerace'
 
