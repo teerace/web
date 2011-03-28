@@ -1,4 +1,4 @@
-{% extends "accounts/user_list.html" %}{% load human_duration %}{% load brabeion_tags %}{% load gravatar %}
+{% extends "accounts/user_list.html" %}{% load human_duration %}{% load humanize %}{% load brabeion_tags %}{% load gravatar %}
 {% comment %}
 context variables:
 	profile_user
@@ -89,6 +89,14 @@ context variables:
 					<td class="content"><img src="{{ profile_user.profile.country.flag }}" /> {{ profile_user.profile.country.name }}</td>
 				</tr>
 				{% endif %}
+				<tr>
+					<td class="label">Global rank:</td>
+					<td class="content">{{ profile_user.profile.position|ordinal|default:"Not ranked" }}</td>
+				</tr>
+				<tr>
+					<td class="label">Completions:</td>
+					<td class="content">{{ profile_user.profile.completions }}</td>
+				</tr>
 				<tr>
 					<td class="label">Total playtime:</td>
 					<td class="content">{{ profile_user.profile.playtime|default:0|sectodur }}</td>
