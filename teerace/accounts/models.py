@@ -100,8 +100,8 @@ class UserProfile(models.Model):
 			return None
 		return {
 			'url': '{0}images/skins/{1}.png'.format(settings.MEDIA_URL, self.skin_name),
-			'body_color': self.skin_body_color,
-			'feet_color': self.skin_feet_color,
+			'body_color': self.skin_body_color_raw,
+			'feet_color': self.skin_feet_color_raw,
 		}
 
 	def regenerate_token(self):
