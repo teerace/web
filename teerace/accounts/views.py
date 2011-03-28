@@ -16,6 +16,7 @@ from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 from race.models import Run
 from annoying.functions import get_config
 from annoying.decorators import render_to
+from brabeion import badges
 
 
 @render_to('accounts/login.html')
@@ -36,6 +37,8 @@ def login(request):
 		if login_form.is_valid() and login_form.user:
 			auth_login(request, login_form.user)
 			messages.success(request, "Hello, {0}.".format(login_form.user))
+			badges.possibly_award_badge("logged_in",
+				user=login_form.user)
 			return redirect(next_uri)
 
 	return {

@@ -74,6 +74,7 @@ class GlobetrotterBadge(BadgeBase):
 		if set(maps_finished).issuperset(maps):
 			return BadgeAwarded(level=1)
 
+
 class HailToTheKingBadge(BadgeBase):
 	slug = 'hailtotheking'
 	levels = [
