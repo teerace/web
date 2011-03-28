@@ -1,5 +1,6 @@
 from datetime import date, datetime, time, timedelta
 from zlib import crc32
+from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.db.models import Sum
 from accounts.models import UserProfile
@@ -15,14 +16,15 @@ def redo_ranks(run_id):
 	try:
 		user_run = Run.objects.get(pk=run_id)
 	except Run.DoesNotExist:
-		logger.error("How is that possible? (Run doesn't exist)")
+		logger.error("[R-{0}] How is that possible? (Run doesn't exist)".format(run_id))
 		return False
 	if user_run.user == None:
-		logger.info("Anonymous run, not processing the rank.")
+		logger.info("[R-{0}] Anonymous run, not processing the rank.".format(run_id))
 		return
 	map_obj = user_run.map
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run_id == user_run.id:
+		logger.info("[R-{0}] Not best run, not processing the rank.".format(run_id))
 		return
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
@@ -32,6 +34,8 @@ def redo_ranks(run_id):
 	ranked = ranked.order_by('run__time')[:ranked_count]
 	try:
 		if user_run.time >= ranked[ranked_count-1].run.time:
+			logger.info("[R-{0}] Run won't affect ranks,"
+				" not processing the rank.".format(run_id))
 			return
 	except IndexError:
 		pass
@@ -48,7 +52,7 @@ def redo_ranks(run_id):
 	runs.exclude(id__in=ranked.values_list('id', flat=True)).update(
 		points=0
 	)
-	logger.info("Processed rank for \"{0}\" map.".format(map_obj))
+	logger.info("[R-{0}] Processed rank for \"{1}\" map.".format(run_id, map_obj))
 
 
 @task(rate_limit='100/m', ignore_result=True)
@@ -191,13 +195,22 @@ def retrieve_map_details(map_id):
 
 @task(ignore_result=True)
 def set_server_map(server_id, map_id):
+	logger = set_server_map.get_logger()
 	try:
 		map_obj = Map.objects.get(pk=map_id)
 		server = Server.objects.get(pk=server_id)
 	except (Map.DoesNotExist, Server.DoesNotExist):
 		return False
+	if server.played_map == map_obj:
+		logger.info("[S-{0}/M-{1}] Map already set"
+			" as currently played.".format(server_id, map_id))
+		return
+	else:
+		old_map_id = server.played_map_id
 	server.played_map = map_obj
 	server.save()
+	logger.info("[S-{0}/M-{1}] Map set"
+		" as currently played (was: M-{2}).".format(server_id, map_id, old_map_id))
 
 
 @task(ignore_result=True)
