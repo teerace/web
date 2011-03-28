@@ -182,11 +182,11 @@ def awards(request):
 
 	yes, you will hate me for this one.
 	"""
-	badges = dir(race_badges) + dir(account_badges) + dir(beta_badges)
-	award_names = [x for x in badges if x.endswith('Badge')]
 	award_list = []
-	for award in award_names:
-		award_list.append(getattr(badges, award))
+	for badges in [race_badges, account_badges, beta_badges]:
+		award_names = [x for x in dir(badges) if x.endswith('Badge')]
+		for award in award_names:
+			award_list.append(getattr(badges, award))
 	return {
 		'award_list': award_list
 	}
