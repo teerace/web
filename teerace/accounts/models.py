@@ -130,3 +130,7 @@ def post_user_save(instance, **kwargs):
 
 post_save.connect(post_user_save, sender=User,
 	dispatch_uid='accounts.models')
+
+
+# DIRTY is this even allowed?
+from accounts import badges

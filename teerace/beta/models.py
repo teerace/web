@@ -14,3 +14,7 @@ class BetaKey(models.Model):
 		if not self.pk:
 			self.key = generate_random_key()
 		super(BetaKey, self).save(*args, **kwargs)
+
+
+# DIRTY is this even allowed?
+from beta import badges
