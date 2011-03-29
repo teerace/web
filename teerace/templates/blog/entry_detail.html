@@ -43,6 +43,7 @@ context variables:
 
 			{% if not entry.enable_comments %}
 			<div class="comment-count">comments disabled / <a href="{{ entry.get_absolute_url }}">#</a></div>
+		</div>
 			{% else %}
 			{% get_comment_count for entry as comment_count %}
 			<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a> / {% if user.is_authenticated %}<a href="#comment-form">reply</a>{% else %}<a href="{% url login %}?next={{ entry.get_absolute_url }}%23comment-form">login to reply</a>{% endif %} / <a href="{{ entry.get_absolute_url }}">#</a></div>
