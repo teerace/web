@@ -7,5 +7,5 @@ class EntryAdminForm(forms.ModelForm):
 	class Meta:
 		model = Entry
 		fields = ('title', 'created_by', 'excerpt', 'content',
-			'status', 'is_micro', 'enable_comments', 'created_at', 'published_at')
+			'status', 'is_micro', 'enable_comments')
 
