@@ -54,7 +54,7 @@ context variables:
 					<td class="content">{{ map.best_score.time|floatformat:settings.RESULT_PRECISION }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
 				{% with map.best_score.checkpoints_list as checkpoints %}
-				{% if checkpoints %}
+				{% if checkpoints|length > 1 %}
 				<tr>
 					<td class="label">Checkpoints</td>
 					<td class="content"><a class="more" onclick="ckp()">Show</a></td>
@@ -79,9 +79,9 @@ context variables:
 				<tr>
 					<td class="label">Map characteristics</td>
 					<td class="content">
-						<div sprite="shield" title="How many shields are on this map"></div><div>{{ map.shield_count|default:"?" }}</div>
-						<div sprite="heart" title="How many hearts are on this map"></div><div>{{ map.heart_count|default:"?" }}</div>
-						<div sprite="grenade" title="How many grenades are on this map"></div><div>{{ map.grenade_count|default:"?" }}</div>
+						<div sprite="shield" title="How many shields are on this map"></div><div>{{ map.shield_count|default_if_none:"?" }}</div>
+						<div sprite="heart" title="How many hearts are on this map"></div><div>{{ map.heart_count|default_if_none:"?" }}</div>
+						<div sprite="grenade" title="How many grenades are on this map"></div><div>{{ map.grenade_count|default_if_none:"?" }}</div>
 						{% if map.has_unhookables %}<div sprite="unhookable" title="There are unhookable tiles"></div>{% endif %}
 						{% if map.has_deathtiles %}<div sprite="deathtiles" title="There are death tiles"></div>{% endif %}
 					</td>
