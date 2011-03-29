@@ -496,15 +496,21 @@ class PingHandler(BaseHandler):
 		"""
 		if action != 'ping':
 			return rc(rcs.BAD_REQUEST)
-
+		
+		server = request.server
 		users_dict = request.data.get('users')
 		if users_dict:
-			UserProfile.objects.filter(id__in=users_dict.keys()).update(
+			user_ids = users_dict.keys()
+			# removing the relationship for users not present on the server
+			server.players.exclude(id__in=user_ids).update(
+				last_played_server=None
+			)
+			# updating users' last connection time
+			UserProfile.objects.filter(id__in=user_ids).update(
 				last_played_server=request.server,
 				last_connection_at=datetime.now()
 			)
 			# TODO save nicknames of logged users
-		server = request.server
 		server.anonymous_players = request.data.get('anonymous') or ()
 		server.played_map = get_object_or_None(Map, name=request.data.get('map'))
 		server.save()
