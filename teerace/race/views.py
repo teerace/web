@@ -116,7 +116,7 @@ def ranks_map_list(request):
 def ranks_map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
 	best_runs = BestRun.objects.filter(map=map_obj) \
-		.exclude(user__is_active=False).order_by('run__time').extra(
+		.exclude(user__is_active=False).extra(
 		select = {'position':
 			"SELECT COUNT(*)+1 FROM race_bestrun s "
 			"WHERE s.map_id = race_bestrun.map_id AND s.time < race_bestrun.time"
@@ -148,7 +148,7 @@ def map_list(request, map_type=None):
 @render_to('race/map_detail.html')
 def map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
-	best_runs = BestRun.objects.filter(map=map_obj).order_by('run__time').extra(
+	best_runs = BestRun.objects.filter(map=map_obj).extra(
 		select = {'position':
 			"SELECT COUNT(*)+1 FROM race_bestrun s "
 			"WHERE s.map_id = race_bestrun.map_id AND s.time < race_bestrun.time"

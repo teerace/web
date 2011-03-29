@@ -64,7 +64,7 @@ class Map(models.Model):
 
 	def get_best_score(self):
 		try:
-			return BestRun.objects.filter(map=self).order_by('time')[0].run
+			return BestRun.objects.filter(map=self)[0].run
 		except IndexError:
 			return None
 
@@ -133,6 +133,10 @@ class Run(models.Model):
 	def checkpoints_list(self):
 		return self.checkpoints.split(';')
 
+	class Meta:
+		get_latest_by = 'created_at'
+		ordering = ['time', 'created_at']
+
 	def __unicode__(self):
 		return u"{0} - {1} - {2:.{precision}f}s".format(self.map, self.user,
 			self.time, precision=self.DECIMAL_PLACES)
@@ -165,6 +169,7 @@ class BestRun(models.Model):
 
 	class Meta:
 		unique_together = ('user', 'map')
+		ordering = ['time', 'run__created_at']
 
 	def __unicode__(self):
 		return repr(self.run)

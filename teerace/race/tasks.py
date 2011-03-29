@@ -34,8 +34,7 @@ def redo_ranks(run_id):
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
 	# exclude banned users from scoring
-	ranked = runs.exclude(user__is_active=False)
-	ranked = ranked.order_by('run__time', 'run__created_at')[:ranked_count]
+	ranked = runs.exclude(user__is_active=False)[:ranked_count]
 	try:
 		if user_run.time >= ranked[ranked_count-1].run.time:
 			logger.info("[R-{0}/U-{1}] Run won't affect scoring,"
@@ -78,8 +77,7 @@ def rebuild_map_rank(map_id):
 	# ranked = player that receives points for his place
 	ranked_count = len(BestRun.SCORING)
 	# exclude banned users from scoring
-	ranked = runs.exclude(user__is_active=False) \
-		.order_by('run__time', 'run__created_at')[:ranked_count]
+	ranked = runs.exclude(user__is_active=False)[:ranked_count]
 	i = 0
 	for run in ranked:
 		run.points = BestRun.SCORING[i]
