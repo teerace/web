@@ -60,6 +60,20 @@ div[sprite=tinylogo] {
 	height: 22px;
 }
 
+div[sprite=teesites] {
+	background: url(/media/images/main-sprite.png) no-repeat;
+	background-position: 0 -104px;
+	width: 107px;
+	height: 22px;
+}
+
+div[sprite=teeworlds] {
+	background: url(/media/images/main-sprite.png) no-repeat;
+	background-position: -107px -104px;
+	width: 107px;
+	height: 22px;
+}
+
 div[sprite=heart] {
 	background: url(/media/images/tiles-sprite.png) no-repeat;
 	background-position: 0 0;

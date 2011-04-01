@@ -46,18 +46,16 @@ context variables:
 			</div>
 			{% endif %}
 
-			<div class="box right top">
+			{% if not request.user.is_authenticated %}
+			<div class="box left top">
 				<div class="header">Teerace quickstart</div>
 				<h2>1. <a href="{% url register %}">Sign up</a></h2>
 				<h2>2. <a href="{% url first_steps %}">Follow these instructions</a></h2>
-
-				<div class="header">Teerace Links</div>
-				<p><a href="http://teeworlds.com">Teeworlds</a></p>
-				<p><a href="http://code.ksocha.com/teerace/">Project page</a></p>
 			</div>
+			{% endif %}
 
 			{% if latest_entries %}
-			<div id="blog" class="box left">
+			<div id="blog" class="box right top">
 				<div class="header">Blog</div>
 
 				{% for entry in latest_entries %}
