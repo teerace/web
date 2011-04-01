@@ -59,7 +59,10 @@ def validate_mime(v_form, operation='POST'):
 	def wrap(wrapped_function, self, request, *a, **kwa):
 		if not hasattr(request, 'data'):
 			raise AttributeError("Validator expects serialized data.")
-		form = v_form(request.data)
+		if hasattr(request, 'FILES'):
+			form = v_form(request.data, request.FILES)
+		else:
+			form = v_form(request.data)
 
 		if form.is_valid():
 			setattr(request, 'form', form)

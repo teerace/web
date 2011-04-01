@@ -18,17 +18,17 @@ def redo_ranks(run_id):
 	try:
 		user_run = Run.objects.get(pk=run_id)
 	except Run.DoesNotExist:
-		logger.error("[R- /U- ] Run not found (pk={0}).".format(run_id))
+		logger.error("[R- /U- /M- ] Run not found (pk={0}).".format(run_id))
 		return False
-	if user_run.user == None:
-		logger.info("[R-{0}/U- ] Anonymous run, not"
-			" processing the rank.".format(run_id))
-		return
 	map_obj = user_run.map
+	if user_run.user == None:
+		logger.info("[R-{0}/U- /M-{1}] Anonymous run, not"
+			" processing the rank.".format(run_id, map_obj.id))
+		return
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run_id == user_run.id:
-		logger.info("[R-{0}/U-{1}] Not best run,"
-			"not processing the rank.".format(run_id, user_run.user_id))
+		logger.info("[R-{0}/U-{1}/M-{2}] Not best run,"
+			"not processing the rank.".format(run_id, user_run.user_id, map_obj.id))
 		return
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
@@ -37,12 +37,12 @@ def redo_ranks(run_id):
 	ranked = runs.exclude(user__is_active=False)[:ranked_count]
 	try:
 		if user_run.time >= ranked[ranked_count-1].run.time:
-			logger.info("[R-{0}/U-{1}] Run won't affect scoring,"
-				" not processing the rank.".format(run_id, user_run.user_id))
+			logger.info("[R-{0}/U-{1}/M-{2}] Run won't affect scoring,"
+				" not processing the rank.".format(run_id, user_run.user_id, map_obj.id))
 			return
 	except IndexError:
 		pass
-	old_rank = user_run.user.profile.position
+	old_rank = user_run.user.profile.map_position(map_obj)
 	new_rank = None
 	i = 0
 	for run in ranked:
@@ -61,8 +61,9 @@ def redo_ranks(run_id):
 	)
 	badges.possibly_award_badge("rank_processed",
 		user=user_run.user)
-	logger.info("[R-{0}/U-{1}] {2}'s new rank is {3} (was: {4})." \
-		.format(run_id, user_run.user_id, user_run.user, new_rank, old_rank))
+	logger.info("[R-{0}/U-{1}/M-{2}] {3}'s new map rank is {4} (was: {5})." \
+		.format(run_id, user_run.user_id, map_obj.id, user_run.user,
+			new_rank, old_rank))
 
 
 @task(rate_limit='100/m', ignore_result=True)

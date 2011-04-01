@@ -5,7 +5,7 @@ from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
 from api.forms import (ValidateUserTokenForm,
-	UserGetByNameForm, SkinUserForm, RunForm)
+	UserGetByNameForm, SkinUserForm, RunForm, DemoForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
@@ -515,3 +515,29 @@ class PingHandler(BaseHandler):
 		server.played_map = get_object_or_None(Map, name=request.data.get('map'))
 		server.save()
 		return "PONG"
+
+
+class DemoHandler(BaseHandler):
+	allowed_methods = ('POST',)
+
+	@require_extended
+	@validate_mime(DemoForm)
+	def _create_new(self, request, *args, **kwargs):
+		request.form.save()
+
+	def create(self, request, action):
+		"""
+		URL
+			**/api/1/demos/new/**
+		Shortdesc
+			Adds new demo
+		Arguments
+			- none
+		Data
+			- run_id / integer / ID of Run that is associated with demo
+		Result
+			- 200 - when everything went fine
+		"""
+		allowed_actions = ['new']
+		if action in allowed_actions:
+			return getattr(self, '_create_' + action)(request, *args, **kwargs)

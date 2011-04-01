@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Avg, Sum
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
-from race.validators import is_map_file
+from race.validators import is_map_file, is_demo_file
 from lib.file_storage import OverwriteStorage
 from picklefield.fields import PickledObjectField
 from annoying.functions import get_config
@@ -166,6 +166,16 @@ class BestRun(models.Model):
 	#          40  34  31    27, 26...3, 2, 1
 	SCORING = (40, 34, 31) + tuple(range(27, 0, -1))
 	points = models.IntegerField(default=0)
+
+	def demo_filename(self, filename):
+		del filename
+		return 'uploads/demos/m{0}_u{1}.demo'.format(self.map_id, self.user_id)
+	demo_file = models.FileField(blank=True, null=True,
+		storage=OverwriteStorage(), upload_to=demo_filename,
+		validators=[is_demo_file])
+
+	def get_demo_url(self):
+		return self.demo_file.url
 
 	class Meta:
 		unique_together = ('user', 'map')
