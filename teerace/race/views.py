@@ -204,9 +204,9 @@ def servers(request):
 	servers_online = Server.objects.filter(
 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
 	)
-	players_online = UserProfile.objects.filter(
+	players_online_count = UserProfile.objects.filter(
 		last_connection_at__gte=(datetime.now()-timedelta(minutes=10))
-	)
+	).filter(last_played_server__isnull=False).count()
 	# TODO graph?
 	return {
 		'servers_online': servers_online,

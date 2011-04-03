@@ -2,7 +2,7 @@
 {% comment %}
 context variables:
 	servers_online
-	players_online
+	players_online_count
 {% endcomment %}
 {% block title %}servers - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -37,7 +37,7 @@ context variables:
 			<span>{{ servers_online|length }}</span> server{{ servers_online|length|pluralize }} online
 		</div>
 		<div class="live-stats">
-			<span>{{ players_online|length }}</span> registered player{{ players_online|length|pluralize }} online
+			<span>{{ players_online_count }}</span> registered player{{ players_online_count|pluralize }} online
 		</div>
 	</div>
 {% endblock content %}
