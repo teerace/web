@@ -42,7 +42,7 @@ def redo_ranks(run_id):
 			return
 	except IndexError:
 		pass
-	old_rank = user_run.user.profile.map_position(map_obj)
+	old_rank = user_run.user.profile.map_position(map_obj.id)
 	new_rank = None
 	i = 0
 	for run in ranked:
