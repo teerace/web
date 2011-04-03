@@ -210,5 +210,5 @@ def servers(request):
 	# TODO graph?
 	return {
 		'servers_online': servers_online,
-		'players_online': players_online,
+		'players_online_count': players_online_count,
 	}
