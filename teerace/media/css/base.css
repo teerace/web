@@ -874,9 +874,8 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 
 /* for recaptcha */
 #recaptcha_widget_div {
-	float: right;
 	width: 318px !important;
-	margin-right: -75px;
+	margin: -1px -75px auto auto;
 	overflow: hidden;
 }
 
@@ -1076,6 +1075,7 @@ div.live-stats {
 	color: #800;
 	background: #f66;
 	border-color: #d44;
+	clear: both;
 }
 
 .form_field.error:hover {
