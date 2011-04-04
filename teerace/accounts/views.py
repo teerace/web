@@ -17,6 +17,7 @@ from race.models import Run
 from annoying.functions import get_config
 from annoying.decorators import render_to
 from brabeion import badges
+from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
 
 @render_to('accounts/login.html')
@@ -55,6 +56,7 @@ def logout(request):
 	return redirect(next_uri)
 
 
+@fix_recaptcha_remote_ip
 @render_to('accounts/register.html')
 def register(request):
 	if request.user.is_authenticated():
