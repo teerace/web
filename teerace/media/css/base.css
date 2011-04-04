@@ -109,7 +109,7 @@ div[sprite=deathtiles] {
 	height: 16px;
 }
 
-input,
+input:not(#recaptcha_response_field),
 .button {
 	color: #4c4b33;
 	background-color: #918f61;
@@ -125,8 +125,8 @@ input,
 	padding: 5px;
 }
 
-input:hover,
-input:focus,
+input:not(#recaptcha_response_field):hover,
+input:not(#recaptcha_response_field):focus,
 .button:hover,
 .button:focus {
 	color: #e7e5be !important;
@@ -141,7 +141,7 @@ input:focus,
 	outline: none;
 }
 
-input:active,
+input:not(#recaptcha_response_field):active,
 .button:active {
 	color: #e7e5be !important;
 	background: #4c4b33;
@@ -234,7 +234,7 @@ td.right-align, th.right-align {
 	width: 800px;
 }
 
-input, td img, #menu, #comments .comment, #tooltip, .box, .button, .badge,
+input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .comment, #tooltip, .box, .button, .badge,
 .api_token, .gravatar, .clippy:hover:after {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -872,6 +872,14 @@ input, td img, #menu, #comments .comment, #tooltip, .box, .button, .badge,
 	opacity: 0.80;
 }
 
+/* for recaptcha */
+#recaptcha_widget_div {
+	float: right;
+	width: 318px !important;
+	margin-right: -75px;
+	overflow: hidden;
+}
+
 .hide {
 	display: none;
 }
@@ -1030,16 +1038,16 @@ div.live-stats {
 	position: relative;
 }
 
-	.form_field input, .form_field select {
+	.form_field input:not([id^=recaptcha]):not([class^=recaptcha]), .form_field select {
 		width: 43%;
 		margin-right: 10px;
 	}
 
-	.form_field input[type=submit] {
-		width: 490px;
+	.form_field input[type=submit]:not([id^=recaptcha]):not([class^=recaptcha]) {
+		width: 100%;
 	}
 
-	.form_field label {
+	.form_field label:not([id^=recaptcha]):not([class^=recaptcha]) {
 		font-weight: bold;
 		width: 45%;
 		height: 28px;
@@ -1056,7 +1064,7 @@ div.live-stats {
 		margin-right: 3px;
 	}
 
-	.form_field span {
+	.form_field span:not([id^=recaptcha]):not([class^=recaptcha]) {
 		color: #666;
 		font-size: 11px;
 		font-weight: normal;
