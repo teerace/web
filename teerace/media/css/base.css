@@ -1076,6 +1076,7 @@ div.live-stats {
 	background: #f66;
 	border-color: #d44;
 	clear: both;
+	padding-right: 90px;
 }
 
 .form_field.error:hover {
@@ -1091,8 +1092,9 @@ div.live-stats {
 	.form_field.error .form-error {
 		font-size: 85%;
 		position: absolute;
-		right: -260px;
+		right: -170px;
 		top: 20px;
+		width: 150px;
 	}
 
 .non-field-error {
