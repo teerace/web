@@ -82,6 +82,7 @@ class Map(models.Model):
 class MapType(models.Model):
 	slug = models.SlugField(max_length=20)
 	displayed_name = models.CharField(max_length=50)
+	description = models.TextField(blank=True)
 
 	def __unicode__(self):
 		return self.displayed_name

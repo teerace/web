@@ -19,6 +19,12 @@ context variables:
 {% endif %}
 {% endblock %}
 {% block content %}
+		{% if filtered_type %}
+		<div class="box full">
+			<div class="header">{{ filtered_type }}</div>
+			{{ filtered_type.description }}
+		</div>
+		{% endif %}
 		{% autopaginate object_list %}
 		{% paginate %}
 		{% for map in object_list %}
