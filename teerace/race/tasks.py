@@ -193,17 +193,26 @@ def retrieve_map_details(map_id):
 
 	if map_obj.map_type.slug == 'fastcap':
 		logger.info("Creating a non-weapon twin...")
- 		new_map = Map(
+		new_map, created = Map.objects.get_or_create(
 			name="{0}-no-weapons".format(map_obj.name),
-			author=map_obj.author,
-			added_by=map_obj.added_by,
-			map_file=map_obj.map_file,
-			crc=map_obj.crc,
-			map_type=MapType.objects.get(slug='fastcap-no-weapons'),
-			has_unhookables=has_unhookables,
-			has_deathtiles=has_deathtiles,
-		)
-		new_map.save()
+			defaults={
+				'author': map_obj.author,
+				'added_by': map_obj.added_by,
+				'map_file' :map_obj.map_file,
+				'crc': map_obj.crc,
+				'map_type': MapType.objects.get(slug='fastcap-no-weapons'),
+				'has_unhookables': has_unhookables,
+				'has_deathtiles': has_deathtiles,
+			})
+		if not created:
+			logger.info("Oh, it already exists! Updating...")
+			new_map.author = map_obj.author
+			new_map.added_by = map_obj.added_by
+			new_map.map_file = map_obj.map_file
+			new_map.crc = map_obj.crc
+			new_map.has_unhookables = has_unhookables
+			new_map.has_deathtiles = has_deathtiles
+			new_map.save()
 	logger.info("[M-{0}] Finished processing \"{1}\" map." \
 		.format(map_id, map_obj.name))
 
