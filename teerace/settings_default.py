@@ -41,22 +41,15 @@ DATABASES = {
 	}
 }
 
-if DEBUG:
-	CACHE_BACKEND = 'johnny.backends.locmem://'
-else:
-	CACHE_BACKEND = 'johnny.backends.locmem://'
-	#CACHE_BACKEND = 'johnny.backends.memcached://localhost:11211/'
-
 # New CACHES setting. Waiting for johnny-cache.
-# CACHES = {
-# 	'default': {
-# #		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-# #		'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-# #		'BACKEND': 'johnny.backends.memcached.CacheClass',
-# 		'LOCATION': 'localhost:11211',
-# 	}
-# }
-# some johnny settings
+CACHES = {
+	'default': {
+#		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#		'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+		'BACKEND': 'johnny.backends.memcached.MemcachedCache',
+		'LOCATION': 'localhost:11211',
+	}
+}
 JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_teerace'
 
 MAILER_ADDRESS = ''
