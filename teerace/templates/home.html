@@ -46,18 +46,51 @@ context variables:
 			</div>
 			{% endif %}
 
-			{% if not request.user.is_authenticated %}
 			<div class="box left top">
+				<div class="header">Statistics overview</div>
+				<table>
+					<tr>
+						<td class="label">Registered users:</td>
+						<td class="content">{{ user_count }}{% if user_count %} <span class="info">(latest: {{ latest_user.username }})</span>{% endif %}</td>
+					</tr>
+					<tr>
+						<td class="label">Race maps:</td>
+						<td class="content">{{ map_count }}{% if map_count %} <span class="info">(latest: {{ latest_map.name }})</span>{% endif %}</td>
+					</tr>
+					<tr>
+						<td class="label">Downloaded maps:</td>
+						<td class="content">{{ total_downloads }} <span class="info">(web)</span></td>
+					</tr>
+					<tr>
+						<td class="label">Races today:</td>
+						<td class="content">{{ runs_today|length }}</td>
+					</tr>
+					<tr>
+						<td class="label">Races yesterday:</td>
+						<td class="content">{{ runs_yesterday|length }}</td>
+					</tr>
+					<tr>
+						<td class="label">Finished races:</td>
+						<td class="content">{{ run_count }}</td>
+					</tr>
+					<tr>
+						<td class="label">Time of finished races:</td>
+						<td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
+					</tr>
+				</table>
+			</div>
+
+			{% if not user.is_authenticated %}
+			<div class="box right top">
 				<div class="header">Teerace quickstart</div>
 				<h2>1. <a href="{% url register %}">Sign up</a></h2>
 				<h2>2. <a href="{% url first_steps %}">Follow these instructions</a></h2>
 			</div>
 			{% endif %}
 
-			{% if latest_entries %}
-			<div id="blog" class="box right top">
+			<div id="blog" class="box right">
 				<div class="header">Blog</div>
-
+			{% if latest_entries %}
 				{% for entry in latest_entries %}
 				{% if entry.is_micro %}
 				<div class="post micro home">
@@ -91,42 +124,10 @@ context variables:
 					<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
 					{% endif %}
 				</div>
-				{% endif %}
+				{% endif %} {# if entry.is_micro #}
 				{% endfor %}
-			</div>
-			{% endif %}
-
-			<div class="box left">
-				<div class="header">Statistics overview</div>
-				<table>
-					<tr>
-						<td class="label">Registered users:</td>
-						<td class="content">{{ user_count }}{% if user_count %} <span class="info">(latest: {{ latest_user.username }})</span>{% endif %}</td>
-					</tr>
-					<tr>
-						<td class="label">Race maps:</td>
-						<td class="content">{{ map_count }}{% if map_count %} <span class="info">(latest: {{ latest_map.name }})</span>{% endif %}</td>
-					</tr>
-					<tr>
-						<td class="label">Downloaded maps:</td>
-						<td class="content">{{ total_downloads }} <span class="info">(web)</span></td>
-					</tr>
-					<tr>
-						<td class="label">Races today:</td>
-						<td class="content">{{ runs_today|length }}</td>
-					</tr>
-					<tr>
-						<td class="label">Races yesterday:</td>
-						<td class="content">{{ runs_yesterday|length }}</td>
-					</tr>
-					<tr>
-						<td class="label">Finished races:</td>
-						<td class="content">{{ run_count }}</td>
-					</tr>
-					<tr>
-						<td class="label">Time of finished races:</td>
-						<td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
-					</tr>
-				</table>
+			{% else %}
+				No entries were found.
+			{% endif %} {# if latest_entries #}
 			</div>
 {% endblock content %}
