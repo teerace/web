@@ -954,6 +954,16 @@ div.live-stats {
 		color: inherit;
 	}
 
+	.box .header span.offline,
+	.box .header span.online {
+		font-size: 12px;
+		margin-top: 8px;
+		float: right;
+	}
+
+	.box .header span.offline { color: #c54747; }
+	.box .header span.online  { color: #627a2c; }
+
 .api_token {
 	color: #fff;
 	background: #333;

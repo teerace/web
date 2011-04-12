@@ -66,7 +66,17 @@ context variables:
 {% endblock %}
 {% block content %}
 	<div id="userprofile" class="box full{% if request.user.id == profile_user.id %} ownprofile{% endif %}">
-		<div class="header">{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile_user.profile }}{% endif %}</div>
+		<div class="header">
+			{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile_user.profile }}{% endif %}
+			{% if profile_user.is_online %}
+			<span class="online">
+				<strong>online</strong> and currently playing on <strong>{{ profile_user.playing_on.name }}duZi* Teerace #2</strong>
+			{% else %}
+			<span class="offline">
+				offline
+			{% endif %}
+			</span>
+		</div>
 		<div class="headrow">
 			<img src="{% gravatar_for_user profile_user 80 %}" class="gravatar" alt="{{ profile_user.username }}'s gravatar" title="{{ profile_user.username }}'s gravatar">
 			<div class="points">
