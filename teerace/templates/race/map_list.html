@@ -19,7 +19,7 @@ context variables:
 {% endif %}
 {% endblock %}
 {% block content %}
-		{% if filtered_type %}
+		{% if filtered_type and filtered_type.description %}
 		<div class="box full">
 			<div class="header">{{ filtered_type }}</div>
 			{{ filtered_type.description }}
