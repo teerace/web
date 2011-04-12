@@ -1,7 +1,7 @@
 from django.contrib import admin
 from race import tasks
 from race.forms import ServerAdminForm
-from race.models import Map, Server
+from race.models import Map, Run, Server
 
 
 class MapAdmin(admin.ModelAdmin):
@@ -14,6 +14,14 @@ class MapAdmin(admin.ModelAdmin):
 			obj.added_by = request.user
 		obj.save()
 		tasks.retrieve_map_details.apply_async(args=[obj.id], countdown=10)
+
+	def clear_runs(self, request, queryset):
+		map_ids = queryset.values_list('id', flat=True)
+		Run.objects.filter(map__in=map_ids).delete()
+
+	clear_runs.short_description = "Clear runs of selected maps (IRREVERSIBLE)"
+
+	actions = [clear_runs]
 
 
 class ServerAdmin(admin.ModelAdmin):
