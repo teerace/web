@@ -518,26 +518,48 @@ class PingHandler(BaseHandler):
 
 
 class DemoHandler(BaseHandler):
-	allowed_methods = ('POST',)
+	allowed_methods = ('PUT',)
 
 	@require_extended
 	@validate_mime(DemoForm)
-	def _create_new(self, request, *args, **kwargs):
-		request.form.save()
-
-	def create(self, request, action):
+	def update(self, request, action, *args, **kwargs):
 		"""
 		URL
-			**/api/1/demos/new/**
+			**/api/1/demos/update/{user_id}/{map_id}/**
 		Shortdesc
 			Adds new demo
+		Additional notes
+			It requires demo_file in request.FILES
 		Arguments
-			- none
+			- user_id / integer / ID of User associated to demo
+			- map_id / integer / ID of Map associated to demo
 		Data
-			- run_id / integer / ID of Run that is associated with demo
+			- none
 		Result
 			- 200 - when everything went fine
 		"""
-		allowed_actions = ['new']
-		if action in allowed_actions:
-			return getattr(self, '_create_' + action)(request, *args, **kwargs)
+		form = request.form
+		map_id = form.cleaned_data.get('map_id')
+		try:
+			map_obj = Map.objects.get(pk=map_id)
+		except Map.DoesNotExist:
+			return rc(rcs.BAD_REQUEST)
+
+		user_id = form.cleaned_data.get('user_id')
+		if user_id in (0, None):
+			return rc(rcs.BAD_REQUEST)
+		try:
+			user = User.objects.get(pk=user_id)
+		except User.DoesNotExist:
+			return rc(rcs.BAD_REQUEST)
+
+		try:
+			best_run = BestRun.objects.get(map=map_obj, user=user)
+		except BestRun.DoesNotExist:
+			return rc(rcs.BAD_REQUEST, "There's no BestRun matching"
+				" this user/map pair.")
+		best_run.demo_file = form.cleaned_data.get('demo_file')
+		best_run.save()
+		
+		return rc(rcs.ALL_OK)
+

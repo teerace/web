@@ -66,41 +66,4 @@ class RunForm(forms.Form):
 
 
 class DemoForm(forms.Form):
-	map_id = forms.IntegerField()
-	user_id = forms.IntegerField()
 	demo_file = forms.FileField()
-
-	def __init__(self, *args, **kwargs):
-		super(DemoForm, self).__init__(*args, **kwargs)
-		self.map_obj = None
-		self.user = None
-		self.best_run = None
-
-	def clean_map_id(self):
-		map_id = self.cleaned_data.get('map_id')
-		try:
-			self.map_obj = Map.objects.get(pk=map_id)
-		except Map.DoesNotExist:
-			raise forms.ValidationError("That map doesn't exist.")
-		return map_id
-
-	def clean_user_id(self):
-		user_id = self.cleaned_data.get('user_id')
-		if user_id in (0, None):
-			return None
-		try:
-			self.user = User.objects.get(pk=user_id)
-		except User.DoesNotExist:
-			raise forms.ValidationError("That user doesn't exist.")
-		return user_id
-
-	def clean(self):
-		try:
-			self.best_run = BestRun.objects.get(map=self.map_obj, user=self.user)
-		except BestRun.DoesNotExist:
-			raise forms.ValidationError("There's no BestRun matching"
-				" this user/map pair.")
-		
-	def save(self):
-		self.best_run.demo_file = self.cleaned_data.get('demo_file')
-		self.best_run.save()
