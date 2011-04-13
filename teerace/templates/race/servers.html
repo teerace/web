@@ -16,7 +16,7 @@ context variables:
 		{% if servers_online %}
 		{% for server in servers_online %}
 			<div class="live">
-				<h3>{{ server.name }}</h3>
+				<h3 id="s-{{ server.id }}">{{ server.name }}</h3>
 				<div class="address">{{ server.address }}{% if server.played_map %}{% if server.address %}, {% endif %}<a href="{{ server.played_map.get_absolute_url }}">{{ server.played_map.name }}</a> map{% endif %}</div>
 				<div class="description">{{ server.description }}</div>
 				<ul>
