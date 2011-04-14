@@ -3,7 +3,7 @@
 context variables:
 	object_list (it's made of UserProfile objects, be aware!)
 	paginator
-	total_playtime
+	total_runtime
 	total_runs
 {% endcomment %}
 {% block content %}
@@ -17,7 +17,7 @@ context variables:
 				<th>Name</th>
 				<th class="right-align">Points</th>
 				<th class="right-align">Completions</th>
-				<th>Total playtime</th>
+				<th>Time of finished races</th>
 			</tr>
 			{% for profile in object_list %}
 			<tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
@@ -25,7 +25,7 @@ context variables:
 				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
 				<td class="right-align">{{ profile.points }}</td>
 				<td class="right-align">{{ profile.completions }}</td>
-				<td>{{ profile.playtime|default_if_none:0|sectodur }}</td>
+				<td>{{ profile.runtime|default_if_none:0|sectodur }}</td>
 			</tr>
 			{% empty %}
 			<tr>

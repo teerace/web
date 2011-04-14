@@ -38,7 +38,7 @@ class UserProfile(models.Model):
 		return Run.objects.filter(user=self.user).count()
 
 	@property
-	def playtime(self):
+	def runtime(self):
 		return Run.objects.filter(user=self.user).aggregate(
 			Sum('time')
 		)['time__sum']

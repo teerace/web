@@ -280,6 +280,6 @@ def update_yesterday_runs():
 def update_totals():
 	# every 15 minutes
 	total_runs = Run.objects.count()
-	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	total_runtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	cache.set('total_runs', total_runs, 0)
-	cache.set('total_playtime', total_playtime, 0)
+	cache.set('total_runtime', total_runtime, 0)

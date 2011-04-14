@@ -110,8 +110,8 @@ context variables:
 					<td class="content">{{ profile_user.profile.completions }}</td>
 				</tr>
 				<tr>
-					<td class="label">Total playtime:</td>
-					<td class="content">{{ profile_user.profile.playtime|default:0|sectodur }}</td>
+					<td class="label">Time of finished races:</td>
+					<td class="content">{{ profile_user.profile.runtime|default:0|sectodur }}</td>
 				</tr>
 				<tr>
 					<td class="label">Joined:</td>

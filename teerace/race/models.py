@@ -51,7 +51,7 @@ class Map(models.Model):
 		return Run.objects.filter(map=self).count()
 
 	@property
-	def total_playtime(self):
+	def total_runtime(self):
 		return Run.objects.filter(map=self).aggregate(Sum('time'))['time__sum']
 
 	@property

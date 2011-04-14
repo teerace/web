@@ -9,7 +9,7 @@ context variables:
 	run_count
 	runs_today
 	runs_yesterday
-	total_playtime
+	total_runtime
 	total_downloads
 {% endcomment %}
 {% block extra_head %}
@@ -75,7 +75,7 @@ context variables:
 					</tr>
 					<tr>
 						<td class="label">Time of finished races:</td>
-						<td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
+						<td class="content">{{ total_runtime|default_if_none:0|sectodur }}</td>
 					</tr>
 				</table>
 			</div>

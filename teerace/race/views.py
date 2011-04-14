@@ -61,10 +61,10 @@ def homepage(request):
 		tasks.update_totals.apply()
 		total_runs = cache.get('total_runs')
 
-	total_playtime = cache.get('total_playtime')
-	if total_playtime is None:
+	total_runtime = cache.get('total_runtime')
+	if total_runtime is None:
 		tasks.update_totals.apply()
-		total_playtime = cache.get('total_playtime')
+		total_runtime = cache.get('total_runtime')
 
 	total_downloads = Map.objects.aggregate(
 		Sum('download_count')
@@ -80,7 +80,7 @@ def homepage(request):
 		'run_count': total_runs,
 		'runs_today': runs_today,
 		'runs_yesterday': runs_yesterday,
-		'total_playtime': total_playtime,
+		'total_runtime': total_runtime,
 		'total_downloads': total_downloads,
 	}
 
@@ -96,10 +96,10 @@ def ranks(request):
 		},
 		order_by = ['sql_position']
 	)
-	total_playtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	total_runtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_runs = Run.objects.count()
 	extra_context = {
-		'total_playtime': total_playtime,
+		'total_runtime': total_runtime,
 		'total_runs': total_runs,
 	}
 	return object_list(request, queryset=users, template_name='race/ranks.html',

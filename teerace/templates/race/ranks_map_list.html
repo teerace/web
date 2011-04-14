@@ -21,7 +21,7 @@ context variables:
 				<th>{% sort_link "Name" "name" %}</th>
 				<th>{% sort_link "Date added" "added_at" "date" %}</th>
 				<th>Completions</th>
-				<th>Total playtime</th>
+				<th>Total runtime</th>
 				<th>Avg time</th>
 				<th>Record</th>
 			</tr>
@@ -30,7 +30,7 @@ context variables:
 				<td><a href="{% url ranks_map_detail map.id %}">{{ map.name }}</a></td>
 				<td>{{ map.added_at|date:"F j, Y" }}</td>
 				<td>{{ map.run_count }}</td>
-				<td>{{ map.total_playtime|default_if_none:0|sectodur }}</td>
+				<td>{{ map.total_runtime|default_if_none:0|sectodur }}</td>
 				<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
 				<td>{% if map.best_score %}{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>{% else %}-{% endif %}</td>
 			</tr>

@@ -29,8 +29,8 @@ class RunCountBadge(BadgeBase):
 		return BadgeAwarded(level=1)
 
 
-class PlaytimeBadge(BadgeBase):
-	slug = 'playtime'
+class RuntimeBadge(BadgeBase):
+	slug = 'runtime'
 	levels = [
 		BadgeDetail("Happy Hour", "Accumulate one hour of time played", 10),
 		BadgeDetail("Hang 10", "Accumulate 10 hours of time played", 30),
@@ -43,15 +43,15 @@ class PlaytimeBadge(BadgeBase):
 
 	def award(self, **state):
 		user = state['user']
-		playtime = user.get_profile().playtime
+		runtime = user.get_profile().runtime
 		# a day
-		if playtime > 86400:
+		if runtime > 86400:
 			return BadgeAwarded(level=3)
 		# 10 hours
-		if playtime > 36000:
+		if runtime > 36000:
 			return BadgeAwarded(level=2)
 		# 1 hour
-		if playtime > 3600:
+		if runtime > 3600:
 			return BadgeAwarded(level=1)
 
 
