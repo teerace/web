@@ -25,6 +25,7 @@ class UserProfile(models.Model):
 	points_history = PickledObjectField(null=True)
 	# points snapshot from 4:30 AM, not really precise, but who cares?
 	yesterday_points = models.IntegerField(default=0)
+	playtime = models.IntegerField(default=0)
 
 	has_skin = models.BooleanField(default=False)
 	skin_name = models.CharField(max_length=40, blank=True)
@@ -66,6 +67,12 @@ class UserProfile(models.Model):
 		# now, count all players with equal/greater point count
 		return BestRun.objects.filter(map=map_obj).exclude(points__lte=0) \
 			.exclude(user__is_active=False).filter(points__gte=player_points).count()
+
+	def update_playtime(self, seconds):
+		if seconds <= 0:
+			return
+		self.playtime = self.playtime + seconds
+		self.save()
 
 	def update_connection(self, server):
 		self.last_connection_at = datetime.now()

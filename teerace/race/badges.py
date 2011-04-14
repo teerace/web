@@ -78,7 +78,8 @@ class GlobetrotterBadge(BadgeBase):
 class HailToTheKingBadge(BadgeBase):
 	slug = 'hailtotheking'
 	levels = [
-		BadgeDetail("Hail to the King!", "Made his way to 1st place in global rank", 200),
+		BadgeDetail("Hail to the King!",
+			"Made his way to 1st place in global rank", 200),
 	]
 	events = [
 		'rank_processed',
@@ -92,6 +93,6 @@ class HailToTheKingBadge(BadgeBase):
 
 
 badges.register(RunCountBadge)
-badges.register(PlaytimeBadge)
+badges.register(RuntimeBadge)
 badges.register(GlobetrotterBadge)
 badges.register(HailToTheKingBadge)

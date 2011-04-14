@@ -33,6 +33,10 @@ class SkinUserForm(forms.Form):
 		return skin_name
 
 
+class PlaytimeUserForm(forms.Form):
+	seconds = forms.IntegerField()
+
+
 class RunForm(forms.Form):
 	map_id = forms.IntegerField()
 	user_id = forms.IntegerField()

@@ -4,8 +4,8 @@ from brabeion import badges
 from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
-from api.forms import (ValidateUserTokenForm,
-	UserGetByNameForm, SkinUserForm, RunForm, DemoForm)
+from api.forms import (ValidateUserTokenForm, UserGetByNameForm,
+	SkinUserForm, PlaytimeUserForm, RunForm, DemoForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
@@ -324,6 +324,17 @@ class UserHandler(BaseHandler):
 			return profile
 		return rc(rcs.BAD_REQUEST)
 
+	@validate_mime(PlaytimeUserForm, 'PUT')
+	def _update_playtime(self, request, *args, **kwargs):
+		if 'id' in kwargs:
+			try:
+				profile = UserProfile.objects.get(id=kwargs['id'])
+			except UserProfile.DoesNotExist:
+				return rc(rcs.BAD_REQUEST)
+			profile.update_playtime(request.form.cleaned_data['seconds'])
+			return rc(rcs.ALL_OK)
+		return rc(rcs.BAD_REQUEST)
+
 	@require_extended
 	def update(self, request, action, *args, **kwargs):
 		"""
@@ -344,9 +355,23 @@ class UserHandler(BaseHandler):
 			- 400, when requested UserProfile doesn't exist
 			- 200, when everything went fine
 				UserProfile object
+
+
+		URL
+			**/api/1/users/playtime/{id}/**
+		Shortdesc
+			Updates user playtime (time the player spends on the server)
+		Arguments
+			- id / ID of the user
+		Data
+			- seconds / integer / number of seconds to update the count
+		Result
+			- 400, when data fails validation
+			- 400, when requested UserProfile doesn't exist
+			- 200, when everything went fine
 		"""
 		# without '_update_' prefix
-		allowed_actions = ['skin']
+		allowed_actions = ['skin', 'playtime']
 		if action in allowed_actions:
 			return getattr(self, '_update_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
@@ -539,7 +564,6 @@ class DemoHandler(BaseHandler):
 		Result
 			- 200 - when everything went fine
 		"""
-		form = request.form
 		map_id = form.cleaned_data.get('map_id')
 		try:
 			map_obj = Map.objects.get(pk=map_id)
