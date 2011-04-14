@@ -100,7 +100,7 @@ class Run(models.Model):
 		related_name='runs', on_delete=models.SET_NULL)
 	user = models.ForeignKey(User, blank=True, null=True,
 		on_delete=models.SET_NULL)
-	nickname = models.CharField(max_length=24)
+	nickname = models.CharField(max_length=15)
 	clan = models.CharField(max_length=11, blank=True)
 
 	# yep, 24 semicolons and 25 time decimals,
