@@ -562,20 +562,19 @@ class DemoHandler(BaseHandler):
 		Data
 			- none
 		Result
+			- 400 - when Map with specified map_id doesn't exist
+			- 400 - when User with specified user_id doesn't exist
+			- 400 - when BestRun with specified Map/User doesn't exist
 			- 200 - when everything went fine
 		"""
-		map_id = form.cleaned_data.get('map_id')
 		try:
-			map_obj = Map.objects.get(pk=map_id)
-		except Map.DoesNotExist:
+			map_obj = Map.objects.get(pk=kwargs['map_id'])
+		except (Map.DoesNotExist, KeyError):
 			return rc(rcs.BAD_REQUEST)
 
-		user_id = form.cleaned_data.get('user_id')
-		if user_id in (0, None):
-			return rc(rcs.BAD_REQUEST)
 		try:
-			user = User.objects.get(pk=user_id)
-		except User.DoesNotExist:
+			user = User.objects.get(pk=kwargs['user_id'])
+		except (User.DoesNotExist, KeyError):
 			return rc(rcs.BAD_REQUEST)
 
 		try:
