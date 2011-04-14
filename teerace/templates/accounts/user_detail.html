@@ -1,7 +1,7 @@
-{% extends "accounts/user_list.html" %}{% load human_duration %}{% load humanize %}{% load brabeion_tags %}{% load gravatar %}
+{% extends "accounts/user_list.html" %}{% load human_duration %}{% load humanize %}{% load brabeion_tags %}{% load gravatar %}{% load possessive %}
 {% comment %}
 context variables:
-	profile_user
+	profile_user (User instance)
 	user_runs
 {% endcomment %}
 {% block title %}{{ profile_user }} - {{ block.super }}{% endblock title %}
@@ -80,7 +80,7 @@ context variables:
 			</span>
 		</div>
 		<div class="headrow">
-			<img src="{% gravatar_for_user profile_user 80 %}" class="gravatar" alt="{{ profile_user.username }}'s gravatar" title="{{ profile_user.username }}'s gravatar">
+			<img src="{% gravatar_for_user profile_user 80 %}" class="gravatar" alt="{{ profile_user.username }}{% possessive profile_user.username %} gravatar" title="{{ profile_user.username }}{% possessive profile_user.username %} gravatar">
 			<div class="points">
 				<h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
 				{# little hack, hope to change it in the future #}
@@ -122,14 +122,14 @@ context variables:
 	</div>
 
 	<div id="points-history" class="box full">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}'s{% endif %} points history</div>
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} points history</div>
 		<div id="placeholder"></div>
 	</div>
 
 	{% badges_for_user profile_user as badges %}
 	{% if badges %}
 	<div class="box full">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}'s{% endif %} badges</div>
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
 		{% for badge in badges %}
 			{% cycle '<div class="full">' '' '' %}
 				<div class="badge">
@@ -144,7 +144,7 @@ context variables:
 	{% endif %}
 
 	<div class="box full">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}'s{% endif %} activity</div>
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} activity</div>
 		<table>
 			<tr class="no-border">
 				<th>Date</th>
@@ -159,7 +159,7 @@ context variables:
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="3">Hey! {% if request.user.id == profile_user.id %}You haven't{% else %}He/she hasn't{% endif %} finished any run yet!</td>
+				<td colspan="3">Hey! {% if request.user.id == profile_user.id %}You haven't{% else %}The player hasn't{% endif %} finished any run yet!</td>
 			</tr>
 			{% endfor %}
 <!--
