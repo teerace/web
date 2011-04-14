@@ -37,6 +37,7 @@ class RunForm(forms.Form):
 	map_id = forms.IntegerField()
 	user_id = forms.IntegerField()
 	nickname = forms.CharField()
+	clan = forms.CharField()
 	time = forms.DecimalField(decimal_places=Run.DECIMAL_PLACES,
 		max_digits=Run.MAX_DIGITS)
 	checkpoints = forms.CharField(required=False)

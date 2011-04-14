@@ -71,6 +71,7 @@ class RunHandler(BaseHandler):
 			server = request.server,
 			user = request.form.user,
 			nickname = request.form.cleaned_data['nickname'],
+			clan = request.form.cleaned_data['clan'],
 			time = request.form.cleaned_data['time'],
 			checkpoints = filtered_checkpoints,
 		)

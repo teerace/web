@@ -101,6 +101,7 @@ class Run(models.Model):
 	user = models.ForeignKey(User, blank=True, null=True,
 		on_delete=models.SET_NULL)
 	nickname = models.CharField(max_length=24)
+	clan = models.CharField(max_length=11, blank=True)
 
 	# yep, 24 semicolons and 25 time decimals,
 	# which length is MAX_DIGITS + decimal separator (.)
