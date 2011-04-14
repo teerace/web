@@ -28,7 +28,7 @@ context variables:
 			{% for map in object_list %}
 			<tr>
 				<td><a href="{% url ranks_map_detail map.id %}">{{ map.name }}</a></td>
-				<td>{{ map.added_at }}</td>
+				<td>{{ map.added_at|date:"F j, Y" }}</td>
 				<td>{{ map.run_count }}</td>
 				<td>{{ map.total_playtime|default_if_none:0|sectodur }}</td>
 				<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>

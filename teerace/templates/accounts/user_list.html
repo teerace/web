@@ -28,7 +28,7 @@ context variables:
 					<img src="{% gravatar_for_user for_user 20 %}" class="gravatar" alt="{{ for_user.username }}'s gravatar" title="{{ for_user.username }}'s gravatar">
 					<a href="{{ for_user.get_absolute_url }}">{{ for_user }}</a>
 				</td>
-				<td>{{ for_user.date_joined }}</td>
+				<td>{{ for_user.date_joined|date:"F j, Y" }}</td>
 				<td>{{ for_user.profile.points|default:0 }}</td>
 			</tr>
 			{% empty %}
