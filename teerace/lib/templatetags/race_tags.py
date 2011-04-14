@@ -1,7 +1,6 @@
 from decimal import Decimal
 from django import template
 from race.models import BestRun, Map, Run
-from annoying.functions import get_config, get_object_or_None
 
 register = template.Library()
 
@@ -37,4 +36,4 @@ def race_diff(run, compare_to):
 	else:
 		return '-'
 	return '<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
-		precision=get_config('RESULT_PRECISION', 3))
+		precision=Run.DECIMAL_PLACES)
