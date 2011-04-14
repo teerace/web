@@ -1,0 +1,26 @@
+[
+    {
+        "pk": "1",
+        "model": "stats.chart",
+        "fields": {
+            "slug": "races-daily",
+            "displayed_name": "Races daily"
+        }
+    },
+    {
+        "pk": "2",
+        "model": "stats.chart",
+        "fields": {
+            "slug": "races-overall",
+            "displayed_name": "Races overall"
+        }
+    },
+    {
+        "pk": "3",
+        "model": "stats.chart",
+        "fields": {
+            "slug": "players-daily",
+            "displayed_name": "Players daily"
+        }
+    }
+]

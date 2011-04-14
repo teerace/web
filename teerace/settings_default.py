@@ -214,6 +214,7 @@ OUR_APPS = (
 	'api',
 	'blog',
 	'race',
+	'stats',
 )
 
 INSTALLED_APPS = (
