@@ -107,7 +107,7 @@ def ranks(request):
 
 
 def ranks_map_list(request):
-	maps = Map.objects.all().select_related()
+	maps = Map.objects.order_by('name').select_related()
 	return object_list(request, queryset=maps,
 		template_name='race/ranks_map_list.html')
 
