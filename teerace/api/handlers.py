@@ -585,7 +585,7 @@ class DemoHandler(BaseHandler):
 		except BestRun.DoesNotExist:
 			return rc(rcs.BAD_REQUEST, "There's no BestRun matching"
 				" this user/map pair.")
-		best_run.demo_file = form.cleaned_data.get('demo_file')
+		best_run.demo_file = request.form.cleaned_data.get('demo_file')
 		best_run.save()
 		
 		return rc(rcs.ALL_OK)
