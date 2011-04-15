@@ -7,10 +7,10 @@ from race.models import Map, Run
 class RunCountBadge(BadgeBase):
 	slug = 'runcount'
 	levels = [
-		BadgeDetail("Newcomer", "Finished one run", 10),
-		BadgeDetail("Experienced", "Finished 100 runs", 30),
-		BadgeDetail("Legend", "Finished 1000 runs", 70),
-		BadgeDetail("???", "Finished 5000 runs", 200),
+		BadgeDetail("Newcomer", "Finish one run", 10),
+		BadgeDetail("Experienced", "Finish 100 runs", 30),
+		BadgeDetail("Legend", "Finish 1000 runs", 70),
+		BadgeDetail("???", "Finish 5000 runs", 200),
 	]
 	events = [
 		'run_finished',
