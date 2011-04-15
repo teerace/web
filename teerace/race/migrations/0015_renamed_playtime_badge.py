@@ -7,11 +7,11 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        orm.BadgeAward.objects.filter(slug='playtime').update(slug='runtime')
+        orm['brabeion.BadgeAward'].objects.filter(slug='playtime').update(slug='runtime')
 
 
     def backwards(self, orm):
-        orm.BadgeAward.objects.filter(slug='runtime').update(slug='playtime')
+        orm['brabeion.BadgeAward'].objects.filter(slug='runtime').update(slug='playtime')
 
 
     models = {
