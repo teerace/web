@@ -70,5 +70,8 @@ class RunForm(forms.Form):
 		return user_id
 
 
-class DemoForm(forms.Form):
-	demo_file = forms.FileField()
+class DemoForm(forms.ModelForm):
+
+	class Meta:
+		model = BestRun
+		fields = ('demo_file', )
