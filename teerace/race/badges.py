@@ -103,6 +103,8 @@ class RunScoreBadge(BadgeBase):
 			"Complete a run with time ending with .666", 50),
 		BadgeDetail("I can see dead zeroes",
 			"Complete a run with time ending with .000", 50),
+		BadgeDetail("Pi",
+			"Complete a run with exactly 3.142 seconds", 50),
 	]
 	events = [
 		'run_finished',
@@ -111,13 +113,16 @@ class RunScoreBadge(BadgeBase):
 
 	def award(self, **state):
 		run = state['run']
-		after_dec_point = run.time % 1 # 7.148 -> 0.148
-		if after_dec_point == Dec('0.999')
+		time = run.time
+		after_dec_point = time % 1 # 7.148 -> 0.148
+		if after_dec_point == Dec('0.999'):
 			return BadgeAwarded(level=1)
-		if after_dec_point == Dec('0.777')
+		if after_dec_point == Dec('0.777'):
 			return BadgeAwarded(level=2)
-		if after_dec_point == Dec('0.666')
+		if after_dec_point == Dec('0.666'):
 			return BadgeAwarded(level=3)
+		if time == Dec('3.142'):
+			return BadgeAwarded(level=4)
 
 badges.register(RunCountBadge)
 badges.register(RuntimeBadge)
