@@ -544,11 +544,15 @@ class PingHandler(BaseHandler):
 
 
 class DemoHandler(BaseHandler):
-	allowed_methods = ('PUT',)
+	"""
+	Dues to limitations in Django we have to use POST to receive files:
+	http://code.djangoproject.com/ticket/12635
+	"""
+	allowed_methods = ('POST',)
 
 	@require_extended
 	@validate_mime(DemoForm)
-	def update(self, request, action, *args, **kwargs):
+	def create(self, request, action, *args, **kwargs):
 		"""
 		URL
 			**/api/1/demos/update/{user_id}/{map_id}/**
