@@ -574,12 +574,12 @@ class DemoHandler(BaseHandler):
 		try:
 			map_obj = Map.objects.get(pk=kwargs['map_id'])
 		except (Map.DoesNotExist, KeyError):
-			return rc(rcs.BAD_REQUEST)
+			return rc(rcs.BAD_REQUEST, "Map with specified map_id doesn't exist")
 
 		try:
 			user = User.objects.get(pk=kwargs['user_id'])
 		except (User.DoesNotExist, KeyError):
-			return rc(rcs.BAD_REQUEST)
+			return rc(rcs.BAD_REQUEST, "User with specified map_id doesn't exist")
 
 		try:
 			best_run = BestRun.objects.get(map=map_obj, user=user)
