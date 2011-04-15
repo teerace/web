@@ -32,7 +32,7 @@ class RunHandler(BaseHandler):
 				run = Run.objects.get(pk=kwargs['id'])
 				return run
 			except Run.DoesNotExist:
-				return rc(rcs.NOT_FOUND)
+				return rc(rcs.NOT_FOUND, "Run with specified id doesn't exist")
 		return rc(rcs.BAD_REQUEST)
 
 	def read(self, request, action, *args, **kwargs):
@@ -137,7 +137,7 @@ class UserHandler(BaseHandler):
 			try:
 				user = User.objects.get(pk=kwargs['id'])
 			except User.DoesNotExist:
-				return rc(rcs.NOT_FOUND)
+				return rc(rcs.NOT_FOUND, "User with specified id doesn't exist")
 			return user
 		return rc(rcs.BAD_REQUEST)
 
@@ -146,7 +146,7 @@ class UserHandler(BaseHandler):
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
 			except UserProfile.DoesNotExist:
-				return rc(rcs.NOT_FOUND)
+				return rc(rcs.NOT_FOUND, "UserProfile with specified id doesn't exist")
 			return profile
 		return rc(rcs.BAD_REQUEST)
 
@@ -155,7 +155,7 @@ class UserHandler(BaseHandler):
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
 			except UserProfile.DoesNotExist:
-				return rc(rcs.NOT_FOUND)
+				return rc(rcs.NOT_FOUND, "UserProfile with specified id doesn't exist")
 			return profile.position
 		return rc(rcs.BAD_REQUEST)
 
@@ -164,7 +164,7 @@ class UserHandler(BaseHandler):
 			try:
 				profile = UserProfile.objects.get(pk=kwargs['id'])
 			except UserProfile.DoesNotExist:
-				return rc(rcs.NOT_FOUND)
+				return rc(rcs.NOT_FOUND, "UserProfile with specified id doesn't exist")
 			return {
 				'position': profile.map_position(kwargs['map_id']),
 				'bestrun': profile.best_score(kwargs['map_id']),
@@ -330,7 +330,7 @@ class UserHandler(BaseHandler):
 			try:
 				profile = UserProfile.objects.get(id=kwargs['id'])
 			except UserProfile.DoesNotExist:
-				return rc(rcs.BAD_REQUEST)
+				return rc(rcs.BAD_REQUEST, "UserProfile with specified id doesn't exist")
 			profile.update_playtime(request.form.cleaned_data['seconds'])
 			return rc(rcs.ALL_OK)
 		return rc(rcs.BAD_REQUEST)
@@ -578,7 +578,7 @@ class DemoHandler(BaseHandler):
 		try:
 			user = User.objects.get(pk=kwargs['user_id'])
 		except (User.DoesNotExist, KeyError):
-			return rc(rcs.BAD_REQUEST, "User with specified map_id doesn't exist")
+			return rc(rcs.BAD_REQUEST, "User with specified user_id doesn't exist")
 
 		try:
 			best_run = BestRun.objects.get(map=map_obj, user=user)
