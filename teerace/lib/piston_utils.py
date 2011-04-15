@@ -80,7 +80,7 @@ def validate_file(v_form, operation='POST'):
 		if hasattr(request, 'FILES'):
 			form = v_form(request.POST, request.FILES)
 		else:
-			form = v_form(request.POST)
+			raise AttributeError("Validator expects multipart data.")
 
 		if form.is_valid():
 			setattr(request, 'form', form)
