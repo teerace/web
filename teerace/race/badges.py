@@ -79,7 +79,7 @@ class HailToTheKingBadge(BadgeBase):
 	slug = 'hailtotheking'
 	levels = [
 		BadgeDetail("Hail to the King!",
-			"Made his way to 1st place in global rank", 200),
+			"Make your way to 1st place in global rank", 200),
 	]
 	events = [
 		'rank_processed',
@@ -91,6 +91,33 @@ class HailToTheKingBadge(BadgeBase):
 		if user.profile.position == 1:
 			return BadgeAwarded(level=1)
 
+
+class RunScoreBadge(BadgeBase):
+	slug = 'runscore'
+	levels = [
+		BadgeDetail("Floating point drifter", # Oh lol, thanks to heinrich5991 :)
+			"Complete a run with time ending with .999", 50),
+		BadgeDetail("Lucky Sevens",
+			"Complete a run with time ending with .777", 50),
+		BadgeDetail("Spawn of Satan",
+			"Complete a run with time ending with .666", 50),
+		BadgeDetail("I can see dead zeroes",
+			"Complete a run with time ending with .000", 50),
+	]
+	events = [
+		'run_finished',
+	]
+	multiple = False
+
+	def award(self, **state):
+		run = state['run']
+		after_dec_point = run.time % 1 # 7.148 -> 0.148
+		if after_dec_point == Dec('0.999')
+			return BadgeAwarded(level=1)
+		if after_dec_point == Dec('0.777')
+			return BadgeAwarded(level=2)
+		if after_dec_point == Dec('0.666')
+			return BadgeAwarded(level=3)
 
 badges.register(RunCountBadge)
 badges.register(RuntimeBadge)
