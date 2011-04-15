@@ -72,6 +72,24 @@ def validate_mime(v_form, operation='POST'):
 	return wrap
 
 
+def validate_file(v_form, operation='POST'):
+	del operation
+
+	@decorator
+	def wrap(wrapped_function, self, request, *a, **kwa):
+		if hasattr(request, 'FILES'):
+			form = v_form(request.POST, request.FILES)
+		else:
+			form = v_form(request.POST)
+
+		if form.is_valid():
+			setattr(request, 'form', form)
+			return wrapped_function(self, request, *a, **kwa)
+		else:
+			raise FormValidationError(form)
+	return wrap
+
+
 class rcs_factory(object):
 	CODES = dict(
 		ALL_OK = ('OK', 200),

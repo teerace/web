@@ -9,7 +9,7 @@ from api.forms import (ValidateUserTokenForm, UserGetByNameForm,
 from race import tasks
 from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
-from lib.piston_utils import rc, rcs, validate_mime
+from lib.piston_utils import rc, rcs, validate_mime, validate_file
 from lib.rgb import rgblong_to_hex
 from annoying.functions import get_object_or_None
 
@@ -550,8 +550,7 @@ class DemoHandler(BaseHandler):
 	"""
 	allowed_methods = ('POST',)
 
-	@require_extended
-	@validate_mime(DemoForm)
+	@validate_file(DemoForm)
 	def create(self, request, action, *args, **kwargs):
 		"""
 		URL
