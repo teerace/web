@@ -66,6 +66,11 @@ def homepage(request):
 		tasks.update_totals.apply()
 		total_runtime = cache.get('total_runtime')
 
+	total_playtime = cache.get('total_playtime')
+	if total_playtime is None:
+		tasks.update_totals.apply()
+		total_playtime = cache.get('total_playtime')
+
 	total_downloads = Map.objects.aggregate(
 		Sum('download_count')
 	)['download_count__sum']
@@ -81,6 +86,7 @@ def homepage(request):
 		'runs_today': runs_today,
 		'runs_yesterday': runs_yesterday,
 		'total_runtime': total_runtime,
+		'total_playtime': total_playtime,
 		'total_downloads': total_downloads,
 	}
 

@@ -114,6 +114,10 @@ context variables:
 					<td class="content">{{ profile_user.profile.runtime|default:0|sectodur }}</td>
 				</tr>
 				<tr>
+					<td class="label">Time spent on servers:</td>
+					<td class="content">{{ profile_user.profile.playtime|sectodur }}</td>
+				</tr>
+				<tr>
 					<td class="label">Joined:</td>
 					<td class="content">{{ profile_user.date_joined }}</td>
 				</tr>

@@ -281,5 +281,9 @@ def update_totals():
 	# every 15 minutes
 	total_runs = Run.objects.count()
 	total_runtime = Run.objects.aggregate(Sum('time'))['time__sum']
+	total_playtime = UserProfile.objects.aggregate(
+		Sum('playtime')
+	)['playtime__sum']
 	cache.set('total_runs', total_runs, 0)
 	cache.set('total_runtime', total_runtime, 0)
+	cache.set('total_playtime', total_playtime, 0)
