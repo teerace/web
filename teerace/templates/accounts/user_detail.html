@@ -10,6 +10,11 @@ context variables:
 	{% load breadcrumb_tags %}
 	{% add_crumb profile_user.profile 'profile' profile_user.id %}
 {% endblock %}
+{% block submenu %}
+	<ul class="left">
+		<li><a href="{% url profile profile_user.id %}">Profile</a></li><li><a href="{% url profile_best profile_user.id %}">Best scores</a></li>
+	</ul>
+{% endblock submenu %}
 {% block extra_head %}
 	<!--[if IE]><script type="text/javascript" src="/media/js/flot/excanvas.min.js"></script><![endif]-->
     <script type="text/javascript" src="/media/js/flot/jquery.flot.min.js"></script>

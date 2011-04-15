@@ -1,0 +1,15 @@
+{% extends "accounts/user_detail.html" %}
+{% comment %}
+context variables:
+	profile_user (User instance)
+	best_runs
+{% endcomment %}
+{% block title %}best scores - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb "Best scores" 'profile_best' profile_user.id %}
+{% endblock %}
+{% block extra_head %}{% endblock extra_head %}
+{% block content %}
+{% endblock content %}

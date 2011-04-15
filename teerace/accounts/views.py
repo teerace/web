@@ -138,6 +138,16 @@ def profile_points_graph_json(request, user_id):
 	return HttpResponse(response_data, mimetype="application/json")
 
 
+@render_to('accounts/profile_best.html')
+def profile_best(request, user_id):
+	user = get_object_or_404(User.objects.select_related(), pk=user_id)
+	best_runs = BestRun.objects.filter(user=user)
+	return {
+		'profile_user': user,
+		'best_runs': best_runs,
+	}
+
+
 @render_to('accounts/user_list.html')
 def userlist(request):
 	users = User.objects.exclude(is_active=False).order_by('id').select_related()
