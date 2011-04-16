@@ -1,4 +1,4 @@
-{% extends "accounts/user_detail.html" %}
+{% extends "accounts/user_detail.html" %}{% load human_duration %}{% load pagination_tags %}{% load sorting %}{% load possessive %}
 {% comment %}
 context variables:
 	profile_user (User instance)
@@ -10,6 +10,41 @@ context variables:
 	{% load breadcrumb_tags %}
 	{% add_crumb "Best scores" 'profile_best' profile_user.id %}
 {% endblock %}
-{% block extra_head %}{% endblock extra_head %}
 {% block content %}
+	<div class="box full">
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} records</div>
+		{% auto_sort best_runs %}
+		{% autopaginate best_runs %}
+		{% paginate %}
+		<table class="players">
+			<tr>
+				<th>{% sort_link "Name" "name" %}</th>
+				<th>{% sort_link "Date" "added_at" "date" %}</th>
+				<th>Points</th>
+				<th>Map record</th>
+				<th>Record</th>
+			</tr>
+			{% for run in best_runs %}
+			<tr>
+				<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
+				<td>{{ run.run.created_at|date:"F j, Y" }}</td>
+				<td>{{ run.points }}</td>
+				<td>{{ run.map.best_score.time }}</td>
+				<td>{{ run.time }}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan="5">Hey! You haven't finished any run yet!</td>
+			</tr>
+			{% endfor %}
+		{% if best_runs %}
+		<tfoot>
+			<tr>
+				<td colspan="5">{{ paginator.count }} run{{ paginator.count|pluralize }} finished</td>
+			</tr>
+		</tfoot>
+		{% endif %}
+		</table>
+		{% paginate %}
+	</div>
 {% endblock content %}
