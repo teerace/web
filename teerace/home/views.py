@@ -1,7 +1,9 @@
+import json
 from datetime import date, datetime, time
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.http import HttpResponse
 from blog.models import Entry
 from race.models import Map, Run
 from race import tasks
@@ -79,3 +81,18 @@ def homepage(request):
 		'total_playtime': total_playtime,
 		'total_downloads': total_downloads,
 	}
+
+
+def stream_since_json(request, since_timestamp):
+	# I would have used @ajax_request, but default JSON serializer
+	# is not able to deal with datetime.date objects.
+	dthandler = lambda obj: time.mktime(obj.timetuple())*1000 \
+		if isinstance(obj, datetime.date) else None
+
+	since_datetime = datetime.from_timestamp(since_timestamp)
+	new_actions = Action.objects.filter(timestamp__gt=since_datetime)
+	response_data = json.dumps(
+		{'new_actions': new_actions},
+		default=dthandler,
+	)
+	return HttpResponse(response_data, mimetype="application/json")
