@@ -18,18 +18,18 @@ context variables:
 		{% paginate %}
 		<table class="players">
 			<tr>
-				<th>{% sort_link "Name" "name" %}</th>
-				<th>{% sort_link "Date" "added_at" "date" %}</th>
+				<th>{% sort_link "Name" "map__name" "name" %}</th>
+				<th>{% sort_link "Date" "run__created_at" "date" %}</th>
 				<th>Points</th>
 				<th>Map record</th>
-				<th>Record</th>
+				<th>Your record</th>
 			</tr>
 			{% for run in best_runs %}
 			<tr>
 				<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
 				<td>{{ run.run.created_at|date:"F j, Y" }}</td>
 				<td>{{ run.points }}</td>
-				<td>{{ run.map.best_score.time }}</td>
+				<td>{{ run.map.best_score.time }} by <a href="{{ run.map.best_score.user.get_absolute_url }}">{{ run.map.best_score.user }}</a></td>
 				<td>{{ run.time }}</td>
 			</tr>
 			{% empty %}
