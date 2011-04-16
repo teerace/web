@@ -1,9 +1,11 @@
 *.DS_Store
+*~
 *.pyc
 *.pem
 *.sqlite
 *.svn*
 *.tmproj
+*.directory
 teerace/settings_local.py
 build/
 pip-log.txt
