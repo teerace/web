@@ -159,6 +159,7 @@ def map_list_unfinished(request):
 		.values_list('map_id', flat=True)
 	maps = Map.objects.exclude(id__in=map_ids).select_related()
 	return {
+		'map_types': MapType.objects.all(),
 		'maps': maps,
 	}
 

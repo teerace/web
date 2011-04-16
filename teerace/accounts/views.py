@@ -13,7 +13,7 @@ from django.http import Http404, HttpResponse
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm, PasswordChangeForm)
-from race.models import Run
+from race.models import Run, BestRun
 from annoying.functions import get_config
 from annoying.decorators import render_to
 from brabeion import badges
