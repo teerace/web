@@ -5,7 +5,7 @@ from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
 from api.forms import (ValidateUserTokenForm, UserGetByNameForm,
-	SkinUserForm, PlaytimeUserForm, RunForm, ActivityForm, DemoForm)
+	SkinUserForm, PlaytimeUserForm, RunForm, ActivityForm, DemoForm, GhostForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
@@ -544,7 +544,7 @@ class PingHandler(BaseHandler):
 		return "PONG"
 
 
-class DemoHandler(BaseHandler):
+class FileUploadHandler(BaseHandler):
 	"""
 	Dues to limitations in Django we have to use POST to receive files:
 	http://code.djangoproject.com/ticket/12635
@@ -552,25 +552,7 @@ class DemoHandler(BaseHandler):
 	allowed_methods = ('POST',)
 
 	@validate_file(DemoForm)
-	def create(self, request, action, *args, **kwargs):
-		"""
-		URL
-			**/api/1/demos/update/{user_id}/{map_id}/**
-		Shortdesc
-			Adds new demo
-		Additional notes
-			It requires demo_file in request.FILES
-		Arguments
-			- user_id / integer / ID of User associated to demo
-			- map_id / integer / ID of Map associated to demo
-		Data
-			- none
-		Result
-			- 400 - when Map with specified map_id doesn't exist
-			- 400 - when User with specified user_id doesn't exist
-			- 400 - when BestRun with specified Map/User doesn't exist
-			- 200 - when everything went fine
-		"""
+	def _create_demo(self, request, *args, **kwargs):
 		try:
 			map_obj = Map.objects.get(pk=kwargs['map_id'])
 		except (Map.DoesNotExist, KeyError):
@@ -586,10 +568,75 @@ class DemoHandler(BaseHandler):
 		except BestRun.DoesNotExist:
 			return rc(rcs.BAD_REQUEST, "There's no BestRun matching"
 				" this user/map pair.")
+		
 		best_run.demo_file = request.form.cleaned_data.get('demo_file')
-		best_run.save()
 		
 		return rc(rcs.ALL_OK)
+
+	@validate_file(GhostForm)
+	def _create_ghost(self, request, *args, **kwargs):
+		try:
+			map_obj = Map.objects.get(pk=kwargs['map_id'])
+		except (Map.DoesNotExist, KeyError):
+			return rc(rcs.BAD_REQUEST, "Map with specified map_id doesn't exist")
+
+		try:
+			user = User.objects.get(pk=kwargs['user_id'])
+		except (User.DoesNotExist, KeyError):
+			return rc(rcs.BAD_REQUEST, "User with specified user_id doesn't exist")
+
+		try:
+			best_run = BestRun.objects.get(map=map_obj, user=user)
+		except BestRun.DoesNotExist:
+			return rc(rcs.BAD_REQUEST, "There's no BestRun matching"
+				" this user/map pair.")
+
+		best_run.ghost_file = request.form.cleaned_data.get('ghost_file')
+
+		return rc(rcs.ALL_OK)
+
+	def create(self, request, action, *args, **kwargs):
+		"""
+		URL
+			**/api/1/files/demo/{user_id}/{map_id}/**
+		Shortdesc
+			Adds new demo
+		Additional notes
+			It requires demo_file in request.FILES
+		Arguments
+			- user_id / integer / ID of User associated to demo
+			- map_id / integer / ID of Map associated to demo
+		Data
+			- none
+		Result
+			- 400 - when Map with specified map_id doesn't exist
+			- 400 - when User with specified user_id doesn't exist
+			- 400 - when BestRun with specified Map/User doesn't exist
+			- 200 - when everything went fine
+
+
+		URL
+			**/api/1/files/ghost/{user_id}/{map_id}/**
+		Shortdesc
+			Adds new ghost
+		Additional notes
+			It requires ghost_file in request.FILES
+		Arguments
+			- user_id / integer / ID of User associated to ghost
+			- map_id / integer / ID of Map associated to ghost
+		Data
+			- none
+		Result
+			- 400 - when Map with specified map_id doesn't exist
+			- 400 - when User with specified user_id doesn't exist
+			- 400 - when BestRun with specified Map/User doesn't exist
+			- 200 - when everything went fine
+		"""
+		# without '_create_' prefix
+		allowed_actions = ['demo', 'ghost']
+		if action in allowed_actions:
+			return getattr(self, '_create_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 
 class ActivityHandler(BaseHandler):

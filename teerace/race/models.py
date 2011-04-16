@@ -3,7 +3,7 @@ from django.db.models import Avg, Sum
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
-from race.validators import is_map_file, is_demo_file
+from race.validators import is_map_file, is_demo_file, is_ghost_file
 from lib.file_storage import OverwriteStorage
 from picklefield.fields import PickledObjectField
 from annoying.functions import get_config, get_object_or_None
@@ -179,8 +179,18 @@ class BestRun(models.Model):
 		storage=OverwriteStorage(), upload_to=demo_filename,
 		validators=[is_demo_file])
 
+	def ghost_filename(self, filename):
+		del filename
+		return 'uploads/ghosts/m{0}_u{1}.demo'.format(self.map_id, self.user_id)
+	ghost_file = models.FileField(blank=True, null=True,
+		storage=OverwriteStorage(), upload_to=ghost_filename,
+		validators=[is_ghost_file])
+
 	def get_demo_url(self):
 		return self.demo_file.url
+
+	def get_ghost_url(self):
+		return self.ghost_file.url
 
 	class Meta:
 		unique_together = ('user', 'map')

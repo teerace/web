@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, url
 from piston.doc import documentation_view
 from api.handlers import (RunHandler, UserHandler, MapHandler,
-	PingHandler, DemoHandler)
+	PingHandler, FileUploadHandler)
 from lib.piston_utils import APIKeyAuthentication
 from lib.piston_utils import Resource
 
@@ -10,7 +10,7 @@ run_resource = Resource(RunHandler, authentication=auth)
 user_resource = Resource(UserHandler, authentication=auth)
 map_resource = Resource(MapHandler, authentication=auth)
 ping_resource = Resource(PingHandler, authentication=auth)
-demo_resource = Resource(DemoHandler, authentication=auth)
+file_resource = Resource(FileUploadHandler, authentication=auth)
 
 # 1st revision of API
 urlpatterns = patterns('',
@@ -32,8 +32,8 @@ urlpatterns = patterns('',
 	url(r'^1/maps/(?P<action>\w+)/(?P<map_id>\d+)/$', map_resource,
 		name='api_maps'),
 	url(r'^1/maps/(?P<action>\w+)/$', map_resource, name='api_maps'),
-	url(r'^1/demos/(?P<action>\w+)/(?P<user_id>\d+)/(?P<map_id>\d+)/$', demo_resource,
-		name='api_demos'),
+	url(r'^1/files/(?P<file_type>\w+)/(?P<user_id>\d+)/(?P<map_id>\d+)/$', filte_resource,
+		name='api_files'),
 	url(r'^1/ping/$', ping_resource, {'action': 'ping'}, name='api_ping_post'),
 	url(r'^1/hello/$', ping_resource, {'action': 'hello'}, name='api_ping'),
 	# automated documentation

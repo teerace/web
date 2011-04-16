@@ -94,3 +94,10 @@ class DemoForm(forms.ModelForm):
 	class Meta:
 		model = BestRun
 		fields = ('demo_file', )
+
+
+class GhostForm(forms.ModelForm):
+
+	class Meta:
+		model = BestRun
+		fields = ('ghost_file', )
