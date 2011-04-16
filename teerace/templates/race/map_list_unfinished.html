@@ -6,6 +6,7 @@ context variables:
 {% block title %}unfinished - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
+	{% load breadcrumb_tags %}
 	{% add_crumb "Unfinished" 'maps_unfinished' %}
 {% endblock %}
 {% block content %}
