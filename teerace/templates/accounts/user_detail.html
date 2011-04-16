@@ -158,16 +158,12 @@ context variables:
 		{% for action in user_actions %}
 			<li>
 				<span class="actor">
-					{% if action.actor.id == request.user.id %}
-						You
+					{% if action.actor.get_absolute_url %}
+						<a href="{{ action.actor.get_absolute_url }}">
 					{% else %}
-						{% if action.actor.get_absolute_url %}
-							<a href="{{ action.actor.get_absolute_url }}">
-						{% else %}
-							<a href="{{ action.actor_url }}">
-						{% endif %}
-						{{ action.actor }}
+						<a href="{{ action.actor_url }}">
 					{% endif %}
+					{{ action.actor }}
 					</a>
 				</span>
 				{{ action.verb }}
