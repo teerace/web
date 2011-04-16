@@ -152,6 +152,17 @@ def map_list(request, map_type=None):
 		extra_context=extra_context)
 
 
+@login_required
+@render_to('race/map_list_unfinished.html')
+def map_list_unfinished(request):
+	map_ids = BestRun.objects.filter(user=request.user) \
+		.values_list('map_id', flat=True)
+	maps = Map.objects.exclude(id__in=map_ids).select_related()
+	return {
+		'maps': maps,
+	}
+
+
 @render_to('race/map_detail.html')
 def map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)

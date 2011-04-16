@@ -1,33 +1,17 @@
-{% extends "race/map_base.html" %}{% load human_duration %}{% load pagination_tags %}
+{% extends "race/map_list.html" %}{% load human_duration %}{% load pagination_tags %}
 {% comment %}
 context variables:
-	object_list
-	paginator
-	map_types
-	filtered_type
+	maps
 {% endcomment %}
-{% block submenu %}
-	<ul class="left">
-		<li><a href="{% url maps %}">All</a></li>{% for type in map_types %}<li><a href="{% url maps__type type.slug %}">{{ type.displayed_name }}</a></li>{% endfor %}</li>{% if request.user.is_authenticated %}<li><a href="{% url maps_unfinished %}">Unfinished</a></li>{% endif %}
-	</ul>
-{% endblock submenu %}
+{% block title %}unfinished - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
-{% if filtered_type %}
-	{% load breadcrumb_tags %}
-	{% add_crumb filtered_type 'maps__type' filtered_type.slug %}
-{% endif %}
+	{% add_crumb "Unfinished" 'maps_unfinished' %}
 {% endblock %}
 {% block content %}
-		{% if filtered_type and filtered_type.description %}
-		<div class="box full">
-			<div class="header">{{ filtered_type }}</div>
-			{{ filtered_type.description }}
-		</div>
-		{% endif %}
-		{% autopaginate object_list %}
+		{% autopaginate maps %}
 		{% paginate %}
-		{% for map in object_list %}
+		{% for map in maps %}
 		<div class="box map {% cycle 'left' 'right' %}">
 			<div class="right">
 				{% if map.grenade_count %}<div sprite="grenade" title="There is grenade launcher"></div>{% endif %}
@@ -53,7 +37,7 @@ context variables:
 		</div>
 		{% empty %}
 		<div class="box full">
-			No maps were found.
+			You have finished all maps!
 		</div>
 		{% endfor %}
 		{% paginate %}
