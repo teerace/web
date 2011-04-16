@@ -213,6 +213,7 @@ OUR_APPS = (
 	'accounts',
 	'api',
 	'blog',
+	'home',
 	'race',
 	'stats',
 )

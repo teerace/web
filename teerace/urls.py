@@ -5,7 +5,7 @@ import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^$', 'race.views.homepage', name='home'),
+	url(r'^$', 'home.views.homepage', name='home'),
 	(r'^api/', include('api.urls')),
 	(r'^blog/', include('blog.urls')),
 	(r'^', include('accounts.urls')),
