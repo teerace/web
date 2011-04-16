@@ -12,42 +12,48 @@ context variables:
 	total_runtime
 	total_playtime
 	total_downloads
+	user_actions
 {% endcomment %}
 {% block extra_head %}
 	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url blog_feed %}">
 {% endblock extra_head %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
-			{% if user.is_authenticated %}
+			{% if user_actions %}
 			<div class="box full">
-				<div class="header">Your activity</div>
-				<table>
-					<tr class="no-border">
-						<th>Date</th>
-						<th>Map</th>
-						<th>Time</th>
-					</tr>
-					{% for run in user_runs %}
-					<tr>
-						<td><span title="{{ run.created_at }}">{{ run.created_at|timesince }} ago</span></td>
-						<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
-						<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
-					</tr>
-					{% empty %}
-					<tr>
-						<td colspan="3">Hey! You haven't finished any run yet!</td>
-					</tr>
-					{% endfor %}
-					{% if user_runs %}
-					<tfoot>
-						<td colspan="3"><a href="{% url user_activity %}">More &raquo;</a></td>
-					</tfoot>
-					{% endif %}
-				</table>
+				<div class="header">Activity</div>
+				<ul class="actstream">
+				{% for action in user_actions %}
+					<li>
+						<span class="actor">
+							{% if action.actor.get_absolute_url %}
+								<a href="{{ action.actor.get_absolute_url }}">
+							{% else %}
+								<a href="{{ action.actor_url }}">
+							{% endif %}
+							{% if action.actor.id == request.user.id %}
+								You
+							{% else %}
+								{{ action.actor }}
+							{% endif %}
+							</a>
+						</span>
+						{{ action.verb }}
+						{% if action.target %}
+							{% if action.target.get_absolute_url %}
+								<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+							{% else %}
+								<a href="{{ action.target_url }}">{{ action.target }}</a>
+							{% endif %}
+						{% endif %}
+						<span class="timestamp" title="{{ action.timestamp }}">{{ action.timestamp|timesince }} ago</span>
+					</li>
+				{% endfor %}
+				</ul>
 			</div>
 			{% endif %}
 
-			<div class="box left top">
+			<div class="box left">
 				<div class="header">Statistics overview</div>
 				<table>
 					<tr>
@@ -86,7 +92,7 @@ context variables:
 			</div>
 
 			{% if not user.is_authenticated %}
-			<div class="box right top">
+			<div class="box right">
 				<div class="header">Teerace quickstart</div>
 				<h2>1. <a href="{% url register %}">Sign up</a></h2>
 				<h2>2. <a href="{% url first_steps %}">Follow these instructions</a></h2>

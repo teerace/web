@@ -13,11 +13,12 @@ from django.http import Http404, HttpResponse
 from django.views.generic.list_detail import object_list
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm, PasswordChangeForm)
-from race.models import Run, BestRun
+from race.models import BestRun
 from annoying.functions import get_config
 from annoying.decorators import render_to
 from brabeion import badges
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
+from actstream.models import actor_stream
 
 
 @render_to('accounts/login.html')
@@ -108,11 +109,11 @@ def profile(request, user_id):
 	if int(user_id) == 0:
 		raise Http404 # mkay, no Anonymous profile
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
-	user_runs = Run.objects.filter(user=user_id).order_by('-created_at')[:5]
+	user_actions = actor_stream(user)[:10]
 
 	return {
 		'profile_user': user,
-		'user_runs': user_runs,
+		'user_actions': user_actions,
 	}
 
 

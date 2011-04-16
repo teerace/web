@@ -6,6 +6,7 @@ from blog.models import Entry
 from race.models import Map, Run
 from race import tasks
 from annoying.decorators import render_to
+from actstream.models import Action
 
 
 @render_to('home.html')
@@ -33,11 +34,7 @@ def homepage(request):
 		latest_map = None
 	map_count = Map.objects.count()
 
-	if request.user.is_authenticated():
-		user_runs = Run.objects.filter(user=request.user) \
-			.order_by('-created_at')[:5]
-	else:
-		user_runs = []
+	user_actions = Action.objects.order_by('-timestamp')[:10]
 
 	today = date.today()
 	runs_today = Run.objects.filter(created_at__range=
@@ -74,7 +71,7 @@ def homepage(request):
 		'user_count': user_count,
 		'latest_map': latest_map,
 		'map_count': map_count,
-		'user_runs': user_runs,
+		'user_actions': user_actions,
 		'run_count': total_runs,
 		'runs_today': runs_today,
 		'runs_yesterday': runs_yesterday,

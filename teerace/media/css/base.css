@@ -933,6 +933,25 @@ div.live-stats {
 		font-weight: bold;
 	}
 
+ul.actstream {
+	list-style-type: none;
+	padding: 0;
+}
+
+	ul.actstream li {
+		margin: 5px 0;
+	}
+
+	ul.actstream .actor {
+		font-weight: bold;
+	}
+
+	ul.actstream .timestamp {
+		color: #666;
+		font-size: 10px;
+		display: block;
+	}
+
 .box {
 	background: #fff;
 	border: 1px solid #918f61;
