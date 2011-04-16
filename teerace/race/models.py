@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 from race.validators import is_map_file, is_demo_file
 from lib.file_storage import OverwriteStorage
 from picklefield.fields import PickledObjectField
-from annoying.functions import get_config
+from annoying.functions import get_config, get_object_or_None
 from actstream import action
 from brabeion.signals import badge_awarded
 
@@ -190,8 +190,20 @@ class BestRun(models.Model):
 		return repr(self.run)
 
 	def save(self, *args, **kwargs):
+		was_run_id = get_object_or_None(BestRun, user=self.user, map=self.map)
+		if was_run_id:
+			was_run_id = was_run_id.run_id
+		new_run_id = self.run_id
 		self.time = self.run.time
 		super(BestRun, self).save(*args, **kwargs)
+		if was_run_id != new_run_id:
+			if self.run == self.map.best_score:
+				action.send(self.user, verb='broke the record on',
+					target=self.map)
+			else:
+				action.send(self.user, verb='broke his best score on',
+					target=self.map)
+		
 
 
 class Server(models.Model):
@@ -238,16 +250,6 @@ def post_badge_save(sender, **kwargs):
 	action.send(badge.user, verb='earned achievement {0}'.format(badge.name),
 		action_object=badge)
 
-def post_bestrun_save(instance, **kwargs):
-	if instance.run == instance.map.best_score:
-		action.send(instance.user, verb='broke the record on',
-			target=instance.map)
-	else:
-		action.send(instance.user, verb='broke his best score on',
-			target=instance.map)
-
-post_save.connect(post_bestrun_save, sender=BestRun,
-	dispatch_uid='race.models')
 badge_awarded.connect(post_badge_save)
 
 
