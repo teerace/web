@@ -137,35 +137,35 @@ context variables:
 
 	{% badges_for_user profile_user as badges %}
 	{% if badges %}
-	<div class="box full">
+	<div class="box right top">
 		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
 		{% for badge in badges %}
-			{% cycle '<div class="full">' '' '' %}
+			{% cycle '<div class="full">' '' %}
 				<div class="badge">
 					<b>{{ badge.name }}</b>
 					<img src="{{ MEDIA_URL }}images/temporary-badge.png" alt="{{ badge.slug }}">
 					<div class="date">{{ badge.awarded_at }}</div>
 					<div class="desc">{{ badge.description }}</div>
 				</div>
-			{% if forloop.counter|divisibleby:3 or forloop.last %}</div>{% endif %}
+			{% if forloop.counter|divisibleby:2 or forloop.last %}</div>{% endif %}
 		{% endfor %}
 	</div>
 	{% endif %}
 
-	<div class="box full">
+	<div class="box left top">
 		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} activity</div>
 		<ul class="actstream">
 		{% for action in user_actions %}
 			<li>
 				<span class="actor">
-					{% if action.actor.get_absolute_url %}
-						<a href="{{ action.actor.get_absolute_url }}">
-					{% else %}
-						<a href="{{ action.actor_url }}">
-					{% endif %}
 					{% if action.actor.id == request.user.id %}
 						You
 					{% else %}
+						{% if action.actor.get_absolute_url %}
+							<a href="{{ action.actor.get_absolute_url }}">
+						{% else %}
+							<a href="{{ action.actor_url }}">
+						{% endif %}
 						{{ action.actor }}
 					{% endif %}
 					</a>

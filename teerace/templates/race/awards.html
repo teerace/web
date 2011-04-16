@@ -8,7 +8,7 @@
 {% block content %}
 	{% for award in award_list %}
 	{% for level in award.levels %}
-	<div class="box {% cycle 'left' 'right' %}">
+	<div class="box award {% cycle 'left' 'center' 'right' %}">
 		<div class="header">{{ level.name }}</div>
 		<p>
 			{{ level.description }}
