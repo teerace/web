@@ -89,7 +89,7 @@ def stream_since_json(request, since_timestamp):
 	dthandler = lambda obj: time.mktime(obj.timetuple())*1000 \
 		if isinstance(obj, date) else None
 
-	since_datetime = datetime.fromtimestamp(float(since_timestamp))
+	since_datetime = datetime.fromtimestamp(float(since_timestamp)/1000)
 	new_actions = Action.objects.filter(timestamp__gt=since_datetime)
 	response_data = json.dumps(
 		{'new_actions': new_actions},
