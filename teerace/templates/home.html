@@ -46,7 +46,7 @@ context variables:
 								<a href="{{ action.target_url }}">{{ action.target }}</a>
 							{% endif %}
 						{% endif %}
-						<span class="timestamp" title="{{ action.timestamp }}">{{ action.timestamp|timesince }} ago</span>
+						<span class="timestamp" title="{{ action.timestamp }}">{{ action.timesince }} ago</span>
 					</li>
 				{% endfor %}
 				</ul>
