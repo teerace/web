@@ -72,7 +72,7 @@ context variables:
 			{% if user_bestrun %}
 				<tr>
 					<td class="label">Personal best</td>
-					<td class="content">{{ user_bestrun.time }} ({% race_diff user_bestrun.run map.best_score %})</td>
+					<td class="content">{{ user_bestrun.time }} {% race_diff user_bestrun.run map.best_score "" %}</td>
 				</tr>
 			{% endif %}
 				<tr>

@@ -27,13 +27,13 @@ def map_time(player, map_name):
 
 
 @register.simple_tag
-def race_diff(run, compare_to):
+def race_diff(run, compare_to, neutral="-"):
 	diff = run.time - compare_to.time
 	if diff > Decimal('0'):
 		style = 'red'
 	elif diff < Decimal('0'):
 		style = 'green'
 	else:
-		return '-'
+		return neutral
 	return '<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
 		precision=Run.DECIMAL_PLACES)
