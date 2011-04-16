@@ -203,7 +203,6 @@ class BestRun(models.Model):
 			else:
 				action.send(self.user, verb='broke his best score on',
 					target=self.map)
-		
 
 
 class Server(models.Model):
