@@ -70,6 +70,25 @@ class RunForm(forms.Form):
 		return user_id
 
 
+class ActivityForm(forms.ModelForm):
+	user_id = forms.IntegerField()
+	event_type = forms.CharField(max_length=15)
+
+	def __init__(self, *args, **kwargs):
+		super(ActivityForm, self).__init__(*args, **kwargs)
+		self.user = None
+
+	def clean_user_id(self):
+		user_id = self.cleaned_data.get('user_id')
+		if user_id in (0, None):
+			return None
+		try:
+			self.user = User.objects.get(pk=user_id)
+		except User.DoesNotExist:
+			raise forms.ValidationError("That user doesn't exist.")
+		return user_id
+
+
 class DemoForm(forms.ModelForm):
 
 	class Meta:

@@ -1,3 +1,4 @@
+from decimal import Decimal
 from brabeion import badges
 from brabeion.base import Badge as BadgeBase, BadgeAwarded
 from lib.brabeion_utils import BadgeDetail
@@ -115,16 +116,17 @@ class RunScoreBadge(BadgeBase):
 		run = state['run']
 		time = run.time
 		after_dec_point = time % 1 # 7.148 -> 0.148
-		if after_dec_point == Dec('0.999'):
+		if after_dec_point == Decimal('0.999'):
 			return BadgeAwarded(level=1)
-		if after_dec_point == Dec('0.777'):
+		if after_dec_point == Decimal('0.777'):
 			return BadgeAwarded(level=2)
-		if after_dec_point == Dec('0.666'):
+		if after_dec_point == Decimal('0.666'):
 			return BadgeAwarded(level=3)
-		if time == Dec('3.142'):
+		if time == Decimal('3.142'):
 			return BadgeAwarded(level=4)
 
 badges.register(RunCountBadge)
 badges.register(RuntimeBadge)
+badges.register(RunScoreBadge)
 badges.register(GlobetrotterBadge)
 badges.register(HailToTheKingBadge)

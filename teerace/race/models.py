@@ -1,11 +1,14 @@
 from django.db import models
 from django.db.models import Avg, Sum
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from race.validators import is_map_file, is_demo_file
 from lib.file_storage import OverwriteStorage
 from picklefield.fields import PickledObjectField
 from annoying.functions import get_config
+from actstream import action
+from brabeion.signals import badge_awarded
 
 
 def generate_random_key():
@@ -228,6 +231,24 @@ class Server(models.Model):
 	def delete(self, *args, **kwargs):
 		self.players.clear()
 		super(Server, self).delete(*args, **kwargs)
+
+
+def post_badge_save(sender, **kwargs):
+	badge = kwargs['badge_award']
+	action.send(badge.user, verb='earned achievement {0}'.format(badge.name),
+		action_object=badge)
+
+def post_bestrun_save(instance, **kwargs):
+	if instance.run == instance.map.best_score:
+		action.send(instance.user, verb='broke the record on',
+			target=instance.map)
+	else:
+		action.send(instance.user, verb='broke his best score on',
+			target=instance.map)
+
+post_save.connect(post_bestrun_save, sender=BestRun,
+	dispatch_uid='race.models')
+badge_awarded.connect(post_badge_save)
 
 
 # DIRTY is this even allowed?

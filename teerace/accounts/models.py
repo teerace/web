@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from race.models import Map, Run, BestRun
 from django_countries import CountryField
 from picklefield.fields import PickledObjectField
+from actstream import action
 
 
 def generate_random_key():
@@ -131,6 +132,7 @@ def post_user_save(instance, **kwargs):
 			api_token=generate_random_key()
 		)
 		profile.save()
+		action.send(instance, verb='has registered')
 
 post_save.connect(post_user_save, sender=User,
 	dispatch_uid='accounts.models')

@@ -240,6 +240,7 @@ INSTALLED_APPS = (
 	'faq',
 	'pagination',
 	'sorting',
+	'actstream',
 	'piston',
 	'recaptcha_works',
 	'brabeion',

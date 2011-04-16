@@ -5,13 +5,14 @@ from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
 from api.forms import (ValidateUserTokenForm, UserGetByNameForm,
-	SkinUserForm, PlaytimeUserForm, RunForm, DemoForm)
+	SkinUserForm, PlaytimeUserForm, RunForm, ActivityForm, DemoForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
 from lib.rsa import RSA
 from lib.piston_utils import rc, rcs, validate_mime, validate_file
 from lib.rgb import rgblong_to_hex
 from annoying.functions import get_object_or_None
+from actstream import action
 
 
 class RunHandler(BaseHandler):
@@ -590,3 +591,39 @@ class DemoHandler(BaseHandler):
 		
 		return rc(rcs.ALL_OK)
 
+
+class ActivityHandler(BaseHandler):
+	allowed_methods = ('POST',)
+
+	@require_extended
+	@validate_mime(ActivityForm)
+	def _create_new(self, request, *args, **kwargs):
+		event_type = request.form.cleaned_data.get('event_type')
+		verb_dict = {
+			'join': "joined",
+			'leave': "left",
+		}
+		if event_type in ['join', 'leave']:
+			action.send(request.form.user, verb=verb_dict[event_type],
+				target=request.server)
+			return rc(rcs.ALL_OK)
+		return rc(rcs.BAD_REQUEST)
+
+	def create(self, request, action, *args, **kwargs):
+		"""
+		URL
+			**/api/1/activity/new/**
+		Shortdesc
+			
+		Arguments
+			- none
+		Data
+			- user_id / integer / ID of User associated to this event
+			- event_type / string / 
+		Result
+			- 200 - when everything went fine
+		"""
+		allowed_actions = ['new']
+		if action in allowed_actions:
+			return getattr(self, '_create_' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
