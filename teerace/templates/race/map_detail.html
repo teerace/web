@@ -4,7 +4,8 @@ context variables:
 	map
 	best_runs
 	latest_runs
-	user_runs
+	user_latest_runs
+	user_bestrun
 {% endcomment %}
 {% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -67,6 +68,12 @@ context variables:
 				{% endfor %}
 				{% endif %}
 				{% endwith %}
+			{% endif %}
+			{% if user_bestrun %}
+				<tr>
+					<td class="label">Personal best</td>
+					<td class="content">{{ user_bestrun.time }} ({% race_diff user_bestrun.run map.best_score %})</td>
+				</tr>
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>
@@ -160,7 +167,7 @@ context variables:
 				<th>Date</th>
 				<th>Time</th>
 			</tr>
-			{% for run in user_runs %}
+			{% for run in user_latest_runs %}
 			<tr>
 				<td>{{ run.created_at|timesince }} ago</td>
 				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>

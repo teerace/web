@@ -13,6 +13,7 @@ from race.models import Map, MapType, Run, BestRun, Server
 from race import badges as race_badges
 from race import tasks
 from annoying.decorators import render_to
+from annoying.functions import get_object_or_None
 
 
 @render_to('home.html')
@@ -162,15 +163,17 @@ def map_detail(request, map_id):
 	)[:5]
 	latest_runs = Run.objects.filter(map=map_obj).order_by('-created_at')[:5]
 	if request.user.is_authenticated():
-		user_runs = Run.objects.filter(user=request.user).filter(map=map_obj) \
+		user_latest_runs = Run.objects.filter(user=request.user, map=map_obj) \
 			.order_by('-created_at')[:5]
 	else:
-		user_runs = None
+		user_latest_runs = None
+	user_bestrun = get_object_or_None(BestRun, user=request.user, map=map_obj)
 	return {
 		'map': map_obj,
 		'best_runs': best_runs,
 		'latest_runs': latest_runs,
-		'user_runs': user_runs,
+		'user_latest_runs': user_latest_runs,
+		'user_bestrun': user_bestrun,
 	}
 
 
