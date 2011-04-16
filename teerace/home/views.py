@@ -87,9 +87,9 @@ def stream_since_json(request, since_timestamp):
 	# I would have used @ajax_request, but default JSON serializer
 	# is not able to deal with datetime.date objects.
 	dthandler = lambda obj: time.mktime(obj.timetuple())*1000 \
-		if isinstance(obj, datetime.date) else None
+		if isinstance(obj, date) else None
 
-	since_datetime = datetime.from_timestamp(since_timestamp)
+	since_datetime = datetime.fromtimestamp(float(since_timestamp))
 	new_actions = Action.objects.filter(timestamp__gt=since_datetime)
 	response_data = json.dumps(
 		{'new_actions': new_actions},
