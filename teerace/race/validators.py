@@ -20,6 +20,6 @@ def is_demo_file(field):
 
 
 def is_ghost_file(field):
-	content = field.read()	
+	content = field.read()
 	if content[:7] != 'TWGHOST':
 		raise ValidationError("It's not a valid Teeworlds ghost file.")
