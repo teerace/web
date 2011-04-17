@@ -596,6 +596,9 @@ class FileUploadHandler(BaseHandler):
 		return rc(rcs.ALL_OK)
 
 	def create(self, request, file_type, *args, **kwargs):
+		import pdb
+		pdb.set_trace()
+		
 		"""
 		URL
 			**/api/1/files/demo/{user_id}/{map_id}/**
@@ -634,7 +637,7 @@ class FileUploadHandler(BaseHandler):
 		"""
 		# without '_create_' prefix
 		allowed_actions = ['demo', 'ghost']
-		if action in allowed_actions:
+		if file_type in allowed_actions:
 			return getattr(self, '_create_' + file_type)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
 
