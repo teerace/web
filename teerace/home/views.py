@@ -1,5 +1,6 @@
 import json
-from datetime import date, datetime, time
+from datetime import date, datetime
+from time import mktime
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Sum
@@ -86,13 +87,28 @@ def homepage(request):
 def stream_since_json(request, since_timestamp):
 	# I would have used @ajax_request, but default JSON serializer
 	# is not able to deal with datetime.date objects.
-	dthandler = lambda obj: time.mktime(obj.timetuple())*1000 \
-		if isinstance(obj, date) else None
-
+	dthandler = lambda obj: mktime(obj.timetuple())*1000 \
+		if isinstance(obj, datetime) else None
+	
 	since_datetime = datetime.fromtimestamp(float(since_timestamp)/1000)
-	new_actions = Action.objects.filter(timestamp__gt=since_datetime)
+	new_actions = Action.objects.filter(timestamp__gt=since_datetime) \
+		.order_by('-timestamp')[:20]
+	response_data = []
+	for action in new_actions:
+		response_data.append({
+			'actor_id': action.actor.id if action.actor else None,
+			'actor_repr': str(action.actor),
+			'verb': action.verb,
+			'action_object_id': action.action_object.id \
+				if action.action_object else None,
+			'action_object_repr': str(action.action_object),
+			'target_id': action.target.id if action.target else None,
+			'target_repr': str(action.target),
+			'timesince': action.timesince(),
+			'timestamp': action.timestamp,
+		})
 	response_data = json.dumps(
-		{'new_actions': new_actions},
+		{'new_actions': response_data},
 		default=dthandler,
 	)
 	return HttpResponse(response_data, mimetype="application/json")
