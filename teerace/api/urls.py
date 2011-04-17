@@ -1,7 +1,8 @@
 from django.conf.urls.defaults import patterns, url
 from piston.doc import documentation_view
-from api.handlers import (RunHandler, UserHandler, MapHandler,
+from api.server_handlers import (RunHandler, UserHandler, MapHandler,
 	PingHandler, FileUploadHandler)
+from api.client_handlers import AnonClientHandler
 from lib.piston_utils import APIKeyAuthentication
 from lib.piston_utils import Resource
 
@@ -11,9 +12,11 @@ user_resource = Resource(UserHandler, authentication=auth)
 map_resource = Resource(MapHandler, authentication=auth)
 ping_resource = Resource(PingHandler, authentication=auth)
 file_resource = Resource(FileUploadHandler, authentication=auth)
+anonclient_resource = Resource(AnonClientHandler)
 
 # 1st revision of API
 urlpatterns = patterns('',
+	# Server API
 	url(r'^1/runs/detail/(?P<id>\d+)/$', run_resource, {'action': 'detail'},
 		name='api_runs_detail'),
 	url(r'^1/runs/(?P<action>\w+)/(?P<id>\d+)/$', run_resource, name='api_runs'),
@@ -36,6 +39,11 @@ urlpatterns = patterns('',
 		name='api_files'),
 	url(r'^1/ping/$', ping_resource, {'action': 'ping'}, name='api_ping_post'),
 	url(r'^1/hello/$', ping_resource, {'action': 'hello'}, name='api_ping'),
+
+	# Client API
+	url(r'^1/anonclient/get_token/$', anonclient_resource,
+		name='api_client_get_token'),
+
 	# automated documentation
 	url(r'^1/docs/$', documentation_view, name='api_docs'),
 )

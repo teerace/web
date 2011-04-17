@@ -101,3 +101,8 @@ class GhostForm(forms.ModelForm):
 	class Meta:
 		model = BestRun
 		fields = ('ghost_file', )
+
+
+class TokenClientForm(forms.Form):
+	username = forms.CharField(max_length=30)
+	password = forms.CharField()
