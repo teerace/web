@@ -4,7 +4,8 @@
         "model": "race.maptype",
         "fields": {
             "slug": "race",
-            "displayed_name": "Race"
+            "displayed_name": "Race",
+            "description": ""
         }
     },
     {
@@ -12,7 +13,8 @@
         "model": "race.maptype",
         "fields": {
             "slug": "fastcap",
-            "displayed_name": "Fastcap"
+            "displayed_name": "Fastcap",
+            "description": ""
         }
     },
     {
@@ -20,7 +22,8 @@
         "model": "race.maptype",
         "fields": {
             "slug": "fastcap-no-weapons",
-            "displayed_name": "Fastcap (No weapons)"
+            "displayed_name": "Fastcap (No weapons)",
+            "description": ""
         }
     }
 ]
