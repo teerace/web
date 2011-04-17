@@ -5,7 +5,7 @@
         "fields": {
             "slug": "race",
             "displayed_name": "Race",
-            "description": ""
+            "description": "The goal is simply to cross the finish line."
         }
     },
     {
@@ -14,7 +14,7 @@
         "fields": {
             "slug": "fastcap",
             "displayed_name": "Fastcap",
-            "description": ""
+            "description": "Join either the red team or the blue team, then capture the flags like in a CTF game. The time is measured since the flag has been taken. All the pickups are available on the map and you spawn with armor and weapons."
         }
     },
     {
@@ -23,7 +23,7 @@
         "fields": {
             "slug": "fastcap-no-weapons",
             "displayed_name": "Fastcap (No weapons)",
-            "description": ""
+            "description": "It is the same as Fastcap, except that no weapons and pickups are available."
         }
     }
 ]
