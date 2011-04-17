@@ -596,9 +596,6 @@ class FileUploadHandler(BaseHandler):
 		return rc(rcs.ALL_OK)
 
 	def create(self, request, file_type, *args, **kwargs):
-		import pdb
-		pdb.set_trace()
-		
 		"""
 		URL
 			**/api/1/files/demo/{user_id}/{map_id}/**
