@@ -570,6 +570,7 @@ class FileUploadHandler(BaseHandler):
 				" this user/map pair.")
 		
 		best_run.demo_file = request.form.cleaned_data.get('demo_file')
+		best_run.save()
 		
 		return rc(rcs.ALL_OK)
 
@@ -592,6 +593,7 @@ class FileUploadHandler(BaseHandler):
 				" this user/map pair.")
 
 		best_run.ghost_file = request.form.cleaned_data.get('ghost_file')
+		best_run.save()
 
 		return rc(rcs.ALL_OK)
 
