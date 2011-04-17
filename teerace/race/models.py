@@ -208,10 +208,10 @@ class BestRun(models.Model):
 		super(BestRun, self).save(*args, **kwargs)
 		if was_run_id != new_run_id:
 			if self.run == self.map.best_score:
-				action.send(self.user, verb='broke the record on',
+				action.send(self.user, verb='beat the record on',
 					target=self.map)
 			else:
-				action.send(self.user, verb='broke his best score on',
+				action.send(self.user, verb='beat his best score on',
 					target=self.map)
 
 
