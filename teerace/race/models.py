@@ -154,8 +154,17 @@ class Run(models.Model):
 			self.set_personal_record()
 
 	def delete(self, *args, **kwargs):
+		was_bestrun = bool(self.bestrun_set.count())
+		map_id = self.map_id
+		user_id = self.user_id
 		self.server_set.clear()
-		super(Map, self).delete(*args, **kwargs)
+		super(Run, self).delete(*args, **kwargs)
+		if not was_bestrun:
+			return
+		runs = Run.objects.filter(map=map_id, user=user_id)
+		if runs.count():
+			from race import tasks
+			tasks.redo_ranks.delay(runs[0])
 
 
 class BestRun(models.Model):
