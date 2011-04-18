@@ -89,7 +89,7 @@ def stream_since_json(request, since_timestamp):
 	# is not able to deal with datetime.date objects.
 	dthandler = lambda obj: mktime(obj.timetuple())*1000 \
 		if isinstance(obj, datetime) else None
-	
+
 	since_datetime = datetime.fromtimestamp(float(since_timestamp)/1000)
 	new_actions = Action.objects.filter(timestamp__gt=since_datetime) \
 		.order_by('-timestamp')[:20]
@@ -98,12 +98,16 @@ def stream_since_json(request, since_timestamp):
 		response_data.append({
 			'actor_id': action.actor.id if action.actor else None,
 			'actor_repr': str(action.actor),
+			'actor_url': action.actor.get_absolute_url() if \
+				action.actor.get_absolute_url() else action.actor_url,
 			'verb': action.verb,
 			'action_object_id': action.action_object.id \
 				if action.action_object else None,
 			'action_object_repr': str(action.action_object),
 			'target_id': action.target.id if action.target else None,
 			'target_repr': str(action.target),
+			'target_url': action.target.get_absolute_url() if action.target and
+				action.target.get_absolute_url() else None,
 			'timesince': action.timesince(),
 			'timestamp': action.timestamp,
 		})
