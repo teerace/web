@@ -1,6 +1,6 @@
 import json
 from datetime import date, datetime, time
-from time import mktime
+from time import mktime, time as timestamp
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Sum
@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from blog.models import Entry
 from race.models import Map, Run
 from race import tasks
-from annoying.decorators import render_to
+from annoying.decorators import render_to, ajax_request
 from actstream.models import Action
 
 
@@ -116,3 +116,7 @@ def stream_since_json(request, since_timestamp):
 		default=dthandler,
 	)
 	return HttpResponse(response_data, mimetype="application/json")
+
+@ajax_request
+def server_timestamp(request):
+	return {'timestamp': int(timestamp())*1000}

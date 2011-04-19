@@ -23,7 +23,18 @@ context variables:
 	const MAX_ACTIONS = 10;
 	const UID = {% if request.user.id %}{{ request.user.id }}{% else %}-1{% endif %};
 
-	function create_html (a) {
+	// get the time from the server
+	var now = -1;
+	$.ajax ({
+		type: "GET",
+		url: "/timestamp/",
+		async: false,
+		success: function (json) {
+			now = new Date(json.timestamp);
+		}
+	});
+
+	function create_html (now, a) {
 		var html = '<li id="a-{0}"><span class="actor{1}"><a href="{2}">{3}</a></span> {4} '.format (
 			a.timestamp, (UID == a.actor_id) ? " me" : "", a.actor_url, a.actor_repr, a.verb);
 
@@ -31,11 +42,11 @@ context variables:
 			html += '<a href="{0}">{1}</a>'.format (a.target_url, a.target_repr);
 
 		var d = new Date (a.timestamp);
-		html += '<span class="timestamp" title="{0}">{1} ago</span></li>'.format (d, d.timesince ());
+		html += '<span class="timestamp" title="{0}">{1} ago</span></li>'.format (d, d.timesince (now));
 		return html;
 	}
 
-	function update_timesince (ul) {
+	function update_timesince (now, ul) {
 		var children = ul.children ();
 		for (child in children) {
 			var c = children[child];
@@ -47,17 +58,15 @@ context variables:
 				continue;
 
 			$(span).text (
-				new Date (parseInt(c.id.slice(2))).timesince () + " ago"
+				new Date (parseInt(c.id.slice(2))).timesince (now) + " ago"
 			);
 		}
 	}
 
 	function get_stream () {
-		var now = new Date ().getTime ();
-
 		$.ajax ({
 			type: "GET",
-			url: "/stream_since/" + (now - DELAY) + "/",
+			url: "/stream_since/" + (now.getTime () - DELAY) + "/",
 			success: function (json) {
 				var ul = $("ul.actstream");
 
@@ -70,11 +79,10 @@ context variables:
 						break;
 
 					// make an empty space for the new element
-					if (ul.children ().length >= MAX_ACTIONS) {
+					if (ul.children ().length >= MAX_ACTIONS)
 						li.slice (MAX_ACTIONS - 1, li.length).remove ();
-					}
 
-					var html = create_html (c);
+					var html = create_html (now, c);
 					ul.prepend (
 						$(html).hide ().fadeIn ()
 					);
@@ -82,10 +90,12 @@ context variables:
 
 				// update times
 				var ul = $("ul.actstream");
-				update_timesince (ul);
+				update_timesince (now, ul);
 			}
 		});
+		now.setTime (now.getTime () + DELAY);
 	}
+
 	$(document).ready (function () {
 		get_stream ();
 		setInterval (get_stream, DELAY);
