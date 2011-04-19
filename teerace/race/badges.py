@@ -122,8 +122,10 @@ class RunScoreBadge(BadgeBase):
 			return BadgeAwarded(level=2)
 		if after_dec_point == Decimal('0.666'):
 			return BadgeAwarded(level=3)
-		if time == Decimal('3.142'):
+		if after_dec_point == Decimal('0.000'):
 			return BadgeAwarded(level=4)
+		if time == Decimal('3.142'):
+			return BadgeAwarded(level=5)
 
 badges.register(RunCountBadge)
 badges.register(RuntimeBadge)
