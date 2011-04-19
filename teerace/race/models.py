@@ -157,7 +157,6 @@ class Run(models.Model):
 		was_bestrun = bool(self.bestrun_set.count())
 		map_id = self.map_id
 		user_id = self.user_id
-		self.server_set.clear()
 		super(Run, self).delete(*args, **kwargs)
 		if not was_bestrun:
 			return
