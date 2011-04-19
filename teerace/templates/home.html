@@ -16,6 +16,81 @@ context variables:
 {% endcomment %}
 {% block extra_head %}
 	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url blog_feed %}">
+	<script type="text/javascript" src="https://github.com/chmielu/timesince/raw/master/timesince.js"></script>
+	<script type="text/javascript" src="/media/js/string_prototype_format.js"></script>
+	<script type="text/javascript">
+	const DELAY = 10000;
+	const MAX_ACTIONS = 10;
+	const UID = {% if request.user.id %}{{ request.user.id }}{% else %}-1{% endif %};
+
+	function create_html (a) {
+		var html = '<li id="a-{0}"><span class="actor{1}"><a href="{2}">{3}</a></span> {4} '.format (
+			a.timestamp, (UID == a.actor_id) ? " me" : "", a.actor_url, a.actor_repr, a.verb);
+
+		if (a.target_repr != "None")
+			html += '<a href="{0}">{1}</a>'.format (a.target_url, a.target_repr);
+
+		var d = new Date (a.timestamp);
+		html += '<span class="timestamp" title="{0}">{1} ago</span></li>'.format (d, d.timesince ());
+		return html;
+	}
+
+	function update_timesince (ul) {
+		var children = ul.children ();
+		for (child in children) {
+			var c = children[child];
+			if (typeof c != "object")
+				continue;
+
+			var span = $(c).children(".timestamp")[0];
+			if (span == undefined)
+				continue;
+
+			$(span).text (
+				new Date (parseInt(c.id.slice(2))).timesince () + " ago"
+			);
+		}
+	}
+
+	function get_stream () {
+		var now = new Date ().getTime ();
+
+		$.ajax ({
+			type: "GET",
+			url: "/stream_since/" + (now - DELAY) + "/",
+			success: function (json) {
+				var ul = $("ul.actstream");
+
+				for (var child in json.new_actions.reverse ()) {
+					var c = json.new_actions[child];
+					var li = $("[id*=a-]");
+
+					// break the loop if there are no new elements
+					if (c.timestamp <= li[0].id.slice (2))
+						break;
+
+					// make an empty space for the new element
+					if (ul.children ().length >= MAX_ACTIONS) {
+						li.slice (MAX_ACTIONS - 1, li.length).remove ();
+					}
+
+					var html = create_html (c);
+					ul.prepend (
+						$(html).hide ().fadeIn ()
+					);
+				}
+
+				// update times
+				var ul = $("ul.actstream");
+				update_timesince (ul);
+			}
+		});
+	}
+	$(document).ready (function () {
+		get_stream ();
+		setInterval (get_stream, DELAY);
+	});
+	</script>
 {% endblock extra_head %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
@@ -67,7 +142,7 @@ context variables:
 				<div class="header">Activity</div>
 				<ul class="actstream">
 				{% for action in user_actions %}
-					<li>
+					<li id="a-{{ action.timestamp|date:"U" }}000">
 						<span class="actor{% if action.actor.id == request.user.id %} me{% endif %}">
 							{% if action.actor.get_absolute_url %}
 								<a href="{{ action.actor.get_absolute_url }}">

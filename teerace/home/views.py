@@ -92,7 +92,7 @@ def stream_since_json(request, since_timestamp):
 
 	since_datetime = datetime.fromtimestamp(float(since_timestamp)/1000)
 	new_actions = Action.objects.filter(timestamp__gt=since_datetime) \
-		.order_by('-timestamp')[:20]
+		.order_by('-timestamp')[:10]
 	response_data = []
 	for action in new_actions:
 		response_data.append({
