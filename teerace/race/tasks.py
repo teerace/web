@@ -28,7 +28,7 @@ def redo_ranks(run_id):
 	user_best = BestRun.objects.get(map=map_obj, user=user_run.user)
 	if not user_best.run_id == user_run.id:
 		logger.info("[R-{0}/U-{1}/M-{2}] Not best run,"
-			"not processing the rank.".format(run_id, user_run.user_id, map_obj.id))
+			" not processing the rank.".format(run_id, user_run.user_id, map_obj.id))
 		return
 	runs = BestRun.objects.filter(map=map_obj)
 	# ranked = player that receives points for his place
