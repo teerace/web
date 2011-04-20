@@ -100,7 +100,7 @@ BROKER_USER = "guest"
 BROKER_PASSWORD = "guest"
 BROKER_VHOST = "/"
 CELERY_RESULT_BACKEND = "amqp"
-CELERY_IMPORTS = ("race.tasks", )
+CELERY_IMPORTS = ("race.tasks", "stats.tasks")
 CELERYBEAT_SCHEDULE = {
 	# everyday, 4:30 AM
 	"points_history": {
@@ -111,6 +111,11 @@ CELERYBEAT_SCHEDULE = {
     "yesterday_runs": {
 		"task": "race.tasks.update_yesterday_runs",
 		"schedule": crontab(hour=0, minute=30),
+	},
+	# everyday, 0:32 AM
+    "daily_charts": {
+		"task": "stats.tasks.update_daily_charts",
+		"schedule": crontab(hour=0, minute=32),
 	},
 	# every 15 minutes
     "totals": {
