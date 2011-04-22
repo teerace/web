@@ -66,8 +66,12 @@ class Map(models.Model):
 		return self.get_best_score()
 
 	def get_best_score(self):
+		best_run = self.get_best_run()
+		return best_run.run if best_run else None
+
+	def get_best_run(self):
 		try:
-			return BestRun.objects.filter(map=self)[0].run
+			return BestRun.objects.filter(map=self)[0]
 		except IndexError:
 			return None
 

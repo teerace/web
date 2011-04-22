@@ -48,10 +48,10 @@ context variables:
 					<td>{{ map.run_count }}</td>
 					<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
 					<td>
-					{% if map.best_score %}
-						{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>
-						{% if map.best_score.demo_file %}<a class="download" href="{{ map.best_score.get_demo_url }}" title="Download demo">demo</a>{% endif %}
-						{% if map.best_score.ghost_file %}<a class="download" href="{{ map.best_score.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
+					{% if map.get_best_run %}
+						{{ map.get_best_run.time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.best_score.user }}</a>
+						{% if map.get_best_run.demo_file %}<a class="download" href="{{ map.get_best_run.get_demo_url }}" title="Download demo">demo</a>{% endif %}
+						{% if map.get_best_run.ghost_file %}<a class="download" href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
 					{% else %}
 						-
 					{% endif %}
