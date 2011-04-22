@@ -44,7 +44,13 @@ context variables:
 							series: { lines: { show: true }, points: { show: true } },
 							grid: { hoverable: true}
 						};
-						$.plot($("#placeholder"), [json.history], options);
+
+						// convert dates to timestamps
+						var history = new Array ();
+						for (i = 0; i < json.history.length; i++)
+							history.push ([new Date(json.history[i][0]).getTime (), json.history[i][1]]);
+
+						$.plot($("#placeholder"), [history], options);
 
 						var previousPoint = null;
 					    $("#placeholder").bind("plothover", function (event, pos, item) {
