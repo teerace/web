@@ -30,42 +30,45 @@ context variables:
 				left: x + 15
 			}).appendTo("body").show();
 		}
-		var obj = $.ajax({
-			type: "GET",
-			url: "{% url profile_points_graph_json profile_user.id %}",
-			dataType: "json",
-			success: function (json) {
-				if (json.history != null && json.history.length > 1) {
-					var options = {
-						xaxis: { mode: "time", timeformat: "%d %b", minTickSize: [1, "day"] },
-						yaxis: { min: 0 },
-						series: { lines: { show: true }, points: { show: true } },
-						grid: { hoverable: true}
-					};
-					$.plot($("#placeholder"), [json.history], options);
+		$(document).ready (function () {
+			$(".javascript").addClass ("hide");
+			$.ajax({
+				type: "GET",
+				url: "{% url profile_points_graph_json profile_user.id %}",
+				dataType: "json",
+				success: function (json) {
+					if (json.history != null && json.history.length > 1) {
+						var options = {
+							xaxis: { mode: "time", timeformat: "%d %b", minTickSize: [1, "day"] },
+							yaxis: { min: 0 },
+							series: { lines: { show: true }, points: { show: true } },
+							grid: { hoverable: true}
+						};
+						$.plot($("#placeholder"), [json.history], options);
 
-					var previousPoint = null;
-				    $("#placeholder").bind("plothover", function (event, pos, item) {
-						if (item) {
-							if (previousPoint != item.datapoint) {
-								previousPoint = item.datapoint;
+						var previousPoint = null;
+					    $("#placeholder").bind("plothover", function (event, pos, item) {
+							if (item) {
+								if (previousPoint != item.datapoint) {
+									previousPoint = item.datapoint;
 
+									$("#tooltip").remove();
+									var x = new Date(item.datapoint[0]),
+										y = item.datapoint[1];
+
+									showTooltip(item.pageX, item.pageY,
+										x.getDate()+' '+x.getMonthName()+': '+y+' points');
+								}
+							} else {
 								$("#tooltip").remove();
-								var x = new Date(item.datapoint[0]),
-									y = item.datapoint[1];
-
-								showTooltip(item.pageX, item.pageY,
-									x.getDate()+' '+x.getMonthName()+': '+y+' points');
+								previousPoint = null;
 							}
-						} else {
-							$("#tooltip").remove();
-							previousPoint = null;
-						}
-					});
-				} else {
-					$('#points-history').remove();
+						});
+					} else {
+						$('#points-history').remove();
+					}
 				}
-			}
+			});
 		});
 	</script>
 {% endblock %}
@@ -89,7 +92,7 @@ context variables:
 			<div class="points">
 				<h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
 				{# little hack, hope to change it in the future #}
-                <h3 helper="{{ profile_user.profile.points_progress|default:"+0" }}">{{ profile_user.profile.points_progress|default:"+0" }} <span>since yesterday</span></h3>
+				<h3 helper="{{ profile_user.profile.points_progress|default:"+0" }}">{{ profile_user.profile.points_progress|default:"+0" }} <span>since yesterday</span></h3>
 			</div>
 		</div>
 		<table>

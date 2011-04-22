@@ -113,6 +113,8 @@ def profile(request, user_id):
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
 	user_actions = actor_stream(user)[:10]
 
+	messages.info(request, "Please enable Javascript.", extra_tags="javascript")
+
 	return {
 		'profile_user': user,
 		'user_actions': user_actions,

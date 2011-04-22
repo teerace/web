@@ -2,6 +2,7 @@ import json
 from datetime import date, datetime, time
 from time import mktime, time as timestamp
 from django.core.cache import cache
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -67,6 +68,8 @@ def homepage(request):
 	total_downloads = Map.objects.aggregate(
 		Sum('download_count')
 	)['download_count__sum']
+
+	messages.info(request, "Please enable Javascript.", extra_tags="javascript")
 
 	return {
 		'latest_entries': latest_entries,

@@ -880,10 +880,6 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 	overflow: hidden;
 }
 
-.hide {
-	display: none;
-}
-
 div.live h3 {
 	font-size: 16px;
 	margin: 10px 0 0;
@@ -1185,6 +1181,10 @@ ul.actstream {
 	.pagination .disabled {
 		color: #999;
 	}
+
+.hide {
+	display: none;
+}
 
 .detail {
 	width: 50%;
