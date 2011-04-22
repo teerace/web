@@ -111,13 +111,6 @@ def map_detail(request, map_id):
 	}
 
 
-@login_required
-def user_activity(request):
-	latest_runs = Run.objects.filter(user=request.user).order_by('-created_at')
-	return object_list(request, queryset=latest_runs,
-		template_name='race/user_activity.html')
-
-
 @render_to('race/awards.html')
 def awards(request):
 	"""

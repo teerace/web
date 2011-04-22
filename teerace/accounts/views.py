@@ -150,6 +150,15 @@ def profile_best(request, user_id):
 	}
 
 
+@render_to('accounts/profile_actions.html')
+def profile_activity(request, user_id):
+	user = get_object_or_404(User, pk=user_id)
+	return {
+		'profile_user': user, 
+		'actions': actor_stream(user),
+	}
+
+
 @render_to('accounts/user_list.html')
 def userlist(request):
 	users = User.objects.exclude(is_active=False).order_by('id').select_related()

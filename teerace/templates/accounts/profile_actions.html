@@ -1,0 +1,45 @@
+{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load sorting %}{% load possessive %}
+{% comment %}
+context variables:
+	profile_user (User instance)
+	actions
+{% endcomment %}
+{% block title %}activity - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb "Activity" 'profile_activity' profile_user.id %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} activity stream</div>
+		{% auto_sort actions %}
+		{% autopaginate actions %}
+		{% paginate %}
+		<ul class="actstream">
+		{% for action in actions %}
+			<li>
+				<span class="actor">
+					{% if action.actor.get_absolute_url %}
+						<a href="{{ action.actor.get_absolute_url }}">
+					{% else %}
+						<a href="{{ action.actor_url }}">
+					{% endif %}
+					{{ action.actor }}
+					</a>
+				</span>
+				{{ action.verb }}
+				{% if action.target %}
+					{% if action.target.get_absolute_url %}
+						<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+					{% else %}
+						<a href="{{ action.target_url }}">{{ action.target }}</a>
+					{% endif %}
+				{% endif %}
+				<span class="timestamp" title="{{ action.timestamp }}">{{ action.timesince }} ago</span>
+			</li>
+		{% endfor %}
+		</ul>
+		{% paginate %}
+	</div>
+{% endblock content %}

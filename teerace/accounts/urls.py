@@ -14,6 +14,8 @@ urlpatterns = patterns('accounts.views',
 	url(r'^profile/(?P<user_id>\d+)/points_graph.json$',
 		'profile_points_graph_json', name='profile_points_graph_json'),
 	url(r'^profile/(?P<user_id>\d+)/best/$', 'profile_best', name='profile_best'),
+	url(r'^profile/(?P<user_id>\d+)/activity/$', 'profile_activity',
+		name='profile_activity'),
 ) + patterns('django.contrib.auth.views',
 	(r'^password_reset/$', 'password_reset', {'template_name':
 		'accounts/password_reset.html',
