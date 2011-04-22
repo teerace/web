@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('race.views',
-	url(r'^activity/$', 'user_activity', name='user_activity'),
 	url(r'^maps/$', 'map_list', name='maps'),
 	url(r'^maps/type:(?P<map_type>[\w-]+)$', 'map_list', name='maps__type'),
 	url(r'^maps/unfinished/$', 'map_list_unfinished', name='maps_unfinished'),
