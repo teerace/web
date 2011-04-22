@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% comment %}
+context variables:
+	charts
+{% endcomment %}
+{% block title %}stats - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb "Stats" 'chart_list' %}
+{% endblock %}
+{% block extra_head %}
+{% endblock %}
+{% block content %}
+{% for chart in charts %}
+	<div class="box full" id="{{ chart.slug }}">
+		<div class="header">{{ chart.displayed_name }}</div>
+		{{ chart.data }}
+	</div>
+{% endfor %}
+{% endblock %}
