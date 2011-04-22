@@ -109,6 +109,20 @@ div[sprite=deathtiles] {
 	height: 16px;
 }
 
+div[sprite=demo] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: -79px 0;
+	width: 16px;
+	height: 16px;
+}
+
+div[sprite=ghost] {
+	background: url(/media/images/tiles-sprite.png) no-repeat;
+	background-position: -95px 0;
+	width: 16px;
+	height: 16px;
+}
+
 input:not(#recaptcha_response_field),
 .button {
 	color: #4c4b33;
@@ -210,17 +224,21 @@ td {
 	padding: 5px 0;
 }
 
+td.icons {
+	width: 40px;
+}
+
 	td img:not([src*=flag]) {
 		margin: -3px 5px -6px 3px;
+	}
+
+	td.own .user {
+		font-weight: bold;
 	}
 
 td:first-child {
 	padding-left: 3px;
 }
-
-	td.own .user {
-		font-weight: bold;
-	}
 
 td.right-align, th.right-align {
 	text-align: right;

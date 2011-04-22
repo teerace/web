@@ -116,6 +116,7 @@ context variables:
 				<th>Date</th>
 				<th>Time</th>
 				<th>Diff</th>
+				<th></th>
 			</tr>
 			{% for best_run in best_runs %}
 			<tr{% if request.user.id == best_run.user.id %} class="me" title="that's you!"{% endif %}>
@@ -125,16 +126,20 @@ context variables:
 				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
 				<td>{{ best_run.run.time|floatformat:settings.RESULT_PRECISION }}</td>
 				<td>{% race_diff best_run.run map.best_score %}</td>
+				<td class="icons">
+					{% if best_run.demo_file %}<a class="download" href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+					{% if best_run.ghost_file %}<a class="download" href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+				</td>
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="6">Hey! Nobody finished this map yet!</td>
+				<td colspan="7">Hey! Nobody finished this map yet!</td>
 			</tr>
 			{% endfor %}
 		{% if best_runs %}
 		<tfoot>
 			<tr>
-				<td colspan="6"><a href="{% url ranks_map_detail map.id %}">See whole rank &raquo;</a></td>
+				<td colspan="7"><a href="{% url ranks_map_detail map.id %}">See whole rank &raquo;</a></td>
 			</tr>
 		</tfoot>
 		{% endif %}

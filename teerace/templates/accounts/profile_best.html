@@ -23,36 +23,35 @@ context variables:
 				<th>Points</th>
 				<th>Map record</th>
 				<th>Record</th>
+				<th></th>
 			</tr>
 			{% for run in best_runs %}
-			{% with run.map.get_best_run as map_bestrun %}
 			<tr>
 				<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
 				<td>{{ run.run.created_at|date:"F j, Y" }}</td>
 				<td>{{ run.points }}</td>
+			{% with run.map.get_best_run as map_bestrun %}
 				<td{% if run.id == map_bestrun.id %} colspan="2" class="own"{% endif%}>
 					{{ map_bestrun.time }} by <a href="{{ map_bestrun.user.get_absolute_url }}" class="user">{{ map_bestrun.user }}</a>
-					{% if map_bestrun.demo_file %}<a class="download" href="{{ map_bestrun.get_demo_url }}" title="Download demo">demo</a>{% endif %}
-					{% if map_bestrun.ghost_file %}<a class="download" href="{{ map_bestrun.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
 				</td>
 				{% if run.id != map_bestrun.id %}
-				<td>
-					{{ run.time }}
-					{% if run.demo_file %}<a class="download" href="{{ run.get_demo_url }}" title="Download demo">demo</a>{% endif %}
-					{% if run.ghost_file %}<a class="download" href="{{ run.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
-				</td>
+				<td>{{ run.time }}</td>
 				{% endif %}
-			</tr>
 			{% endwith %}
+				<td class="icons">
+					{% if run.demo_file %}<a class="download" href="{{ run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+					{% if run.ghost_file %}<a class="download" href="{{ run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+				</td>
+			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="5">Hey! You haven't finished any run yet!</td>
+				<td colspan="6">Hey! You haven't finished any run yet!</td>
 			</tr>
 			{% endfor %}
 		{% if best_runs %}
 		<tfoot>
 			<tr>
-				<td colspan="5">{{ paginator.count }} run{{ paginator.count|pluralize }} finished</td>
+				<td colspan="6">{{ paginator.count }} run{{ paginator.count|pluralize }} finished</td>
 			</tr>
 		</tfoot>
 		{% endif %}
