@@ -1212,6 +1212,10 @@ ul.actstream {
 	width: 50%;
 }
 
+.more {
+	font-size: 90%;
+}
+
 .map-file-size {
 	color: #555;
 	font-size: 11px;

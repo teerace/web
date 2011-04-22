@@ -221,6 +221,11 @@ context variables:
 						<td class="label">Total playtime:</td>
 						<td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
 					</tr>
+					<tfoot>
+						<tr>
+							<td colspan="2"><a href="/stats/" class="more">See more &raquo;</a></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 {% endblock content %}
