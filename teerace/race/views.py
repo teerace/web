@@ -97,9 +97,11 @@ def map_detail(request, map_id):
 	if request.user.is_authenticated():
 		user_latest_runs = Run.objects.filter(user=request.user, map=map_obj) \
 			.order_by('-created_at')[:5]
+		user_bestrun = get_object_or_None(BestRun, user=request.user,
+			map=map_obj)
 	else:
 		user_latest_runs = None
-	user_bestrun = get_object_or_None(BestRun, user=request.user, map=map_obj)
+		user_bestrun = None
 	return {
 		'map': map_obj,
 		'best_runs': best_runs,
