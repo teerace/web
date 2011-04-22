@@ -29,8 +29,24 @@ context variables:
 				<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
 				<td>{{ run.run.created_at|date:"F j, Y" }}</td>
 				<td>{{ run.points }}</td>
-				<td>{{ run.map.best_score.time }} by <a href="{{ run.map.best_score.user.get_absolute_url }}">{{ run.map.best_score.user }}</a></td>
-				<td>{{ run.time }}</td>
+				{% if run.id == run.map.best_score.id %}
+				<td colspan="2">
+					{{ run.time }} by <a href="{{ run.user.get_absolute_url }}"><strong>{{ run.user }}</strong></a>
+					{% if run.demo_file %}<a class="download" href="{{ run.get_demo_url }}" title="Download demo">demo</a>{% endif %}
+					{% if run.ghost_file %}<a class="download" href="{{ run.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
+				</td>
+				{% else %}
+				<td>
+					{{ run.map.best_score.time }} by <a href="{{ run.map.best_score.user.get_absolute_url }}">{{ run.map.best_score.user }}</a>
+					{% if run.map.best_score.demo_file %}<a class="download" href="{{ run.map.best_score.get_demo_url }}" title="Download demo">demo</a>{% endif %}
+					{% if run.map.best_score.ghost_file %}<a class="download" href="{{ run.map.best_score.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
+				</td>
+				<td>
+					{{ run.time }}
+					{% if run.demo_file %}<a class="download" href="{{ run.get_demo_url }}" title="Download demo">demo</a>{% endif %}
+					{% if run.ghost_file %}<a class="download" href="{{ run.get_ghost_url }}" title="Download ghost">ghost</a>{% endif %}
+				</td>
+				{% endif %}
 			</tr>
 			{% empty %}
 			<tr>

@@ -201,8 +201,9 @@ th {
 	text-align: left;
 }
 
-th.center {
+th.center, td.center {
 	text-align: center;
+	float: none;
 }
 
 td {
@@ -1204,6 +1205,12 @@ ul.actstream {
 .no-map-image:before {
 	font-size: 144px;
 	content: '?';
+}
+
+/* FIXME: icons! */
+.download {
+	font-size: 75%;
+	display: inline-block;
 }
 
 .box.left { margin-right: 10px; }
