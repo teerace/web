@@ -17,19 +17,9 @@ context variables:
 {% endblock submenu %}
 {% block extra_head %}
 	<!--[if IE]><script type="text/javascript" src="/media/js/flot/excanvas.min.js"></script><![endif]-->
-    <script type="text/javascript" src="/media/js/flot/jquery.flot.min.js"></script>
+	<script type="text/javascript" src="/media/js/flot/jquery.flot.min.js"></script>
+	<script type="text/javascript" src="/media/js/utils.js"></script>
 	<script type="text/javascript">
-		Date.prototype.getMonthName = function() {
-			var m = ['Jan','Feb','Mar','Apr','May','Jun','Jul', 'Aug','Sep','Oct','Nov','Dec'];
-			return m[this.getMonth()];
-		}
-		function showTooltip(x, y, contents) {
-			$('<div id="tooltip">' + contents + '</div>').css( {
-				position: 'absolute',
-				top: y + 5,
-				left: x + 15
-			}).appendTo("body").show();
-		}
 		$(document).ready (function () {
 			$(".javascript").addClass ("hide");
 			$.ajax({
