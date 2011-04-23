@@ -34,22 +34,22 @@ div[sprite=logo] {
 
 div[sprite=django] {
 	background: url(/media/images/main-sprite.png) no-repeat;
-	background-position: 0 -60px;
-	width: 107px;
+	background-position: -49px -60px;
+	width: 55px;
 	height: 22px;
 }
 
 div[sprite=python] {
 	background: url(/media/images/main-sprite.png) no-repeat;
-	background-position: -107px -60px;
-	width: 107px;
+	background-position: -141px -60px;
+	width: 73px;
 	height: 22px;
 }
 
 div[sprite=nginx] {
 	background: url(/media/images/main-sprite.png) no-repeat;
-	background-position: -107px -82px;
-	width: 107px;
+	background-position: -146px -82px;
+	width: 68px;
 	height: 22px;
 }
 
@@ -62,15 +62,15 @@ div[sprite=tinylogo] {
 
 div[sprite=teesites] {
 	background: url(/media/images/main-sprite.png) no-repeat;
-	background-position: 0 -104px;
-	width: 107px;
+	background-position: -34px -104px;
+	width: 70px;
 	height: 22px;
 }
 
 div[sprite=teeworlds] {
 	background: url(/media/images/main-sprite.png) no-repeat;
-	background-position: -107px -104px;
-	width: 107px;
+	background-position: -117px -104px;
+	width: 97px;
 	height: 22px;
 }
 
@@ -748,7 +748,6 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#918f61',EndColorStr='#4c4b33');
 	border-color: #4c4b33;
 	font-weight: bold;
-	line-height: 22px;
 	margin-bottom: 20px;
 	padding: 7px 15px 6px 20px;
 	width: 863px;
@@ -760,15 +759,6 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 	-webkit-box-shadow: inset 0 0 2px #fff, 0 0 3px rgba(0,0,0,0.2);
 }
 
-	#footer div[sprite] {
-		vertical-align: middle;
-		opacity: 0.5;
-	}
-
-	#footer div[sprite]:hover {
-		opacity: 1;
-	}
-
 	#footer a {
 		color: #b7b6a4;
 	}
@@ -776,6 +766,30 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 	#footer a:hover {
 		color: #fff;
 		text-decoration: none;
+	}
+
+	#footer .left {
+		line-height: 22px;
+	}
+
+#logos {
+	text-align: center;
+	margin-bottom: 20px;
+	clear: both;
+}
+
+	#logos * {
+		margin: 0 5px;
+		display: inline-block;
+	}
+
+	#logos div[sprite] {
+		vertical-align: middle;
+		opacity: 0.25;
+	}
+
+	#logos div[sprite]:hover {
+		opacity: 1;
 	}
 
 #userprofile {

@@ -10,13 +10,6 @@
 	<link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico">
 	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url blog_feed %}">
 	<script type="text/javascript" src="/media/js/jquery-1.5.1.min.js"></script>
-	<script type="text/javascript" src="/media/js/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="/media/js/jquery.cycle.all.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#cycle').cycle({fx:'scrollDown',easing:'easeOutBounce',pause:1});
-		});
-	</script>
 	{% block extra_head %}
 	{% endblock extra_head %}
 	{% if settings.ANALYTICS_ID %}
@@ -93,17 +86,21 @@
 			{% endblock content %}
 
 			<div id="footer" class="box full">
-				<div class="left"><a href="#header">↑ Top</a> &middot; <a href="{% url about %}">About</a></div>
-				<div class="right">
-					<div id="cycle">
-						<div><a href="http://teeworlds.com"><div sprite="teeworlds" alt="Teeworlds" title="Teeworlds"></div></a></div>
-						<div><a href="http://teesites.net"><div sprite="teesites" alt="Part of the teeSites network." title="Part of the teeSites network."></div></a></div>
-						<div><a href="http://djangoproject.com"><div sprite="django" alt="Powered by Django." title="Powered by Django."></div></a></div>
-						<div><a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace." title="Powered by Teerace."></div></a></div>
-						<div><a href="http://python.org"><div sprite="python" alt="Powered by Python." title="Powered by Python."></div></a></div>
-						<div><a href="http://nginx.org"><div sprite="nginx" alt="Powered by Nginx." title="Powered by Nginx."></div></a></div>
-					</div>
+				<div class="left">
+					<a href="#header">↑ Top</a>
+					&middot;
+					<a href="{% url about %}">About</a>
 				</div>
+				<div class="right">
+					<a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace" title="Powered by Teerace"></div></a>
+				</div>
+			</div>
+			<div id="logos">
+				<div><a href="http://teeworlds.com"><div sprite="teeworlds" alt="Teeworlds" title="Teeworlds"></div></a></div>
+				<div><a href="http://teesites.net"><div sprite="teesites" alt="Part of the teeSites network" title="Part of the teeSites network"></div></a></div>
+				<div><a href="http://djangoproject.com"><div sprite="django" alt="Powered by Django" title="Powered by Django"></div></a></div>
+				<div><a href="http://python.org"><div sprite="python" alt="Powered by Python" title="Powered by Python"></div></a></div>
+				<div><a href="http://nginx.org"><div sprite="nginx" alt="Powered by Nginx" title="Powered by Nginx"></div></a></div>
 			</div>
 		</div>
 	</div>
