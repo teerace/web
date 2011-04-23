@@ -28,6 +28,17 @@ class UserProfile(models.Model):
 	yesterday_points = models.IntegerField(default=0)
 	playtime = models.IntegerField(default=0)
 
+	UNKNOWN_GENDER = 1
+	MALE_GENDER = 2
+	FEMALE_GENDER = 3
+	GENDER_CHOICES = (
+		(UNKNOWN_GENDER, "Unknown"),
+		(MALE_GENDER, "Male"),
+		(FEMALE_GENDER, "Female"),
+	)
+	gender = models.IntegerField(choices=GENDER_CHOICES, default=UNKNOWN_GENDER,
+		blank=True)
+
 	has_skin = models.BooleanField(default=False)
 	skin_name = models.CharField(max_length=40, blank=True)
 	skin_body_color = models.CharField(max_length=7, blank=True)
@@ -57,6 +68,9 @@ class UserProfile(models.Model):
 		return User.objects.exclude(is_active=False) \
 			.filter(profile__points__gt=self.points) \
 			.order_by('profile__points').count()+1
+
+	def is_female(self):
+		return self.gender == self.FEMALE_GENDER
 
 	def map_position(self, map_id):
 		# first, retrieve players map points

@@ -91,7 +91,7 @@ class SettingsProfileForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('country',)
+		fields = ('gender', 'country',)
 
 
 class PasswordChangeForm(forms.Form):
