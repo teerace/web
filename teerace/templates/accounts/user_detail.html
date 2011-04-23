@@ -40,26 +40,7 @@ context variables:
 						for (i = 0; i < json.history.length; i++)
 							history.push ([new Date(json.history[i][0]).getTime (), json.history[i][1]]);
 
-						$.plot($("#placeholder"), [history], options);
-
-						var previousPoint = null;
-					    $("#placeholder").bind("plothover", function (event, pos, item) {
-							if (item) {
-								if (previousPoint != item.datapoint) {
-									previousPoint = item.datapoint;
-
-									$("#tooltip").remove();
-									var x = new Date(item.datapoint[0]),
-										y = item.datapoint[1];
-
-									showTooltip(item.pageX, item.pageY,
-										x.getDate()+' '+x.getMonthName()+': '+y+' points');
-								}
-							} else {
-								$("#tooltip").remove();
-								previousPoint = null;
-							}
-						});
+						plot ("#placeholder", history, options);
 					} else {
 						$('#points-history').remove();
 					}

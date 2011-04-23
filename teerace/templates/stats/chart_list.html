@@ -1,8 +1,4 @@
 {% extends "base.html" %}
-{% comment %}
-context variables:
-	charts
-{% endcomment %}
 {% block title %}stats - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
 	{{ block.super }}
@@ -10,12 +6,42 @@ context variables:
 	{% add_crumb "Stats" 'chart_list' %}
 {% endblock %}
 {% block extra_head %}
-{% endblock %}
-{% block content %}
-{% for chart in charts %}
-	<div class="box full" id="{{ chart.slug }}">
-		<div class="header">{{ chart.displayed_name }}</div>
-		{{ chart.data }}
-	</div>
-{% endfor %}
+	<!--[if IE]><script type="text/javascript" src="/media/js/flot/excanvas.min.js"></script><![endif]-->
+	<script type="text/javascript" src="/media/js/flot/jquery.flot.min.js"></script>
+	<script type="text/javascript" src="/media/js/utils.js"></script>
+	<script type="text/javascript">
+		$(document).ready (function () {
+			$(".javascript").addClass ("hide");
+
+			var t_box = '<div class="box full" id="{0}"><div class="header">{1}</div>{2}</div>';
+			var t_placeholder = '<div id="placeholder-{0}"></div>';
+			var options = {
+				xaxis: { mode: "time", timeformat: "%d %b", minTickSize: [1, "day"] },
+				yaxis: { min: 0 },
+				series: { lines: { show: true }, points: { show: true } },
+				grid: { hoverable: true}
+			};
+
+			$.ajax({
+				type: "GET",
+				url: "/stats/chart_list.json",
+				dataType: "json",
+				success: function (json) {
+					for (var e in json) {
+						var a = json[e];
+
+						// convert dates to timestamps
+						var history = new Array ();
+						for (i = 0; i < a[2].length; i++)
+							history.push ([new Date(a[2][i][0]).getTime (), a[2][i][1]]);
+
+						var box = t_box.format (a[0], a[1], t_placeholder.format (a[0]));
+						$(box).insertAfter ("#breadcrumbs");
+
+						plot ("#placeholder-" + a[0], history, options);
+					}
+				}
+			});
+		});
+	</script>
 {% endblock %}

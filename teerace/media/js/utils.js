@@ -36,3 +36,26 @@ function showTooltip(x, y, contents) {
 		left: x + 15
 	}).appendTo("body").show();
 }
+
+function plot (id, history, options) {
+	$.plot($(id), [history], options);
+
+	var previousPoint = null;
+	$(id).bind("plothover", function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.datapoint) {
+				previousPoint = item.datapoint;
+
+				$("#tooltip").remove();
+				var x = new Date(item.datapoint[0]),
+				    y = item.datapoint[1];
+
+				showTooltip(item.pageX, item.pageY,
+				            x.getDate()+' '+x.getMonthName()+': '+y+' points');
+			}
+		} else {
+			$("#tooltip").remove();
+			previousPoint = null;
+		}
+	});
+}

@@ -881,7 +881,7 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 }
 
 /* for flot */
-#placeholder {
+#placeholder, [id^=placeholder] {
 	 width:858px;
 	 height:200px;
 }
