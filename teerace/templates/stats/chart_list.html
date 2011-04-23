@@ -21,14 +21,19 @@
 				series: { lines: { show: true }, points: { show: true } },
 				grid: { hoverable: true}
 			};
+			var empty = true;
 
 			$.ajax({
 				type: "GET",
 				url: "/stats/chart_list.json",
+				async: false,
 				dataType: "json",
 				success: function (json) {
 					for (var e in json) {
 						var a = json[e];
+
+						if (e[2] == null)
+							continue;
 
 						// convert dates to timestamps
 						var history = new Array ();
@@ -39,9 +44,15 @@
 						$(box).insertAfter ("#breadcrumbs");
 
 						plot ("#placeholder-" + a[0], history, options);
+						empty = false;
 					}
 				}
 			});
+
+			if (empty) {
+				var box = t_box.format ("", "Stats", "Sorry, but it looks like there is not enough data for graphs to be rendered.");
+				$(box).insertAfter ("#breadcrumbs");
+			}
 		});
 	</script>
 {% endblock %}
