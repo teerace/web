@@ -39,8 +39,8 @@ context variables:
 				{% endif %}
 			{% endwith %}
 				<td class="icons">
-					{% if run.demo_file %}<a class="download" href="{{ run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-					{% if run.ghost_file %}<a class="download" href="{{ run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+					{% if run.demo_file %}<a href="{{ run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+					{% if run.ghost_file %}<a href="{{ run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
 				</td>
 			</tr>
 			{% empty %}

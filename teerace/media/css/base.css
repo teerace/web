@@ -1233,12 +1233,6 @@ ul.actstream {
 	content: '?';
 }
 
-/* FIXME: icons! */
-.download {
-	font-size: 75%;
-	display: inline-block;
-}
-
 .box.left { margin-right: 10px; }
 .box.right { margin-top: 5px; }
 .box.right.top { margin-top: 5px; }

@@ -127,8 +127,8 @@ context variables:
 				<td>{{ best_run.run.time|floatformat:settings.RESULT_PRECISION }}</td>
 				<td>{% race_diff best_run.run map.best_score %}</td>
 				<td class="icons">
-					{% if best_run.demo_file %}<a class="download" href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-					{% if best_run.ghost_file %}<a class="download" href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+					{% if best_run.demo_file %}<a href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+					{% if best_run.ghost_file %}<a href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
 				</td>
 			</tr>
 			{% empty %}
