@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import os, sys
+sys.path.append(os.environ['PWD'])
 from django.core.management import setup_environ
-import settings
+from teerace import settings
 setup_environ(settings)
 from django.core.cache import cache
 from subprocess import Popen, PIPE
