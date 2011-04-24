@@ -785,7 +785,7 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 
 	#logos div[sprite] {
 		vertical-align: middle;
-		opacity: 0.25;
+		opacity: 0.5;
 	}
 
 	#logos div[sprite]:hover {
