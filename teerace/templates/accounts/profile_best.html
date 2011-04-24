@@ -16,7 +16,7 @@ context variables:
 		{% auto_sort best_runs %}
 		{% autopaginate best_runs %}
 		{% paginate %}
-		<table class="players">
+		<table id="profile-best" class="players">
 			<tr>
 				<th>{% sort_link "Name" "map__name" "name" %}</th>
 				<th>{% sort_link "Date" "run__created_at" "date" %}</th>

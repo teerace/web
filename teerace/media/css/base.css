@@ -245,6 +245,27 @@ td.right-align, th.right-align {
 	padding-right: 20px;
 }
 
+	/* fix the widths */
+	#userlist th:nth-child(1) { width: 60%; }
+	#userlist th:nth-child(3) { width: 10%; }
+
+	#ranks td:nth-child(1) { width: 10%; }
+	#ranks th:nth-child(2) { width: 40%; }
+	#ranks th:nth-child(3) { width: 10%; }
+	#ranks th:nth-child(4) { width: 15%; }
+
+	#per-map th:nth-child(1) { width: 20%; }
+	#per-map th:nth-child(3) { width: 15%; }
+	#per-map th:nth-child(4) { width: 17%; }
+	#per-map th:nth-child(5) { width: 13%; }
+	#per-map th:nth-child(6) { width: 20%; }
+
+	#profile-best th:nth-child(1) { width: 25%; }
+	#profile-best th:nth-child(2) { width: 20%; }
+	#profile-best th:nth-child(3) { width: 15%; }
+	#profile-best th:nth-child(4) { width: 20%; }
+	#profile-best th:nth-child(5) { width: 20%; }
+
 #header {}
 
 #page {

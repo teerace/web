@@ -16,7 +16,7 @@ context variables:
 		{% auto_sort users %}
 		{% autopaginate users %}
 		{% paginate %}
-		<table>
+		<table id="userlist">
 			<tr>
 				<th>{% sort_link "Name" "username" "name" %}</th>
 				<th>{% sort_link "Joined" "date_joined" "joined" %}</th>
