@@ -28,12 +28,20 @@ context variables:
 				<tr>
 					<th>Completions</th>
 					<th>Average time</th>
-					<th>Record</th>
+					<th colspan="2">Record</th>
 				</tr>
 				<tr>
 					<td>{{ map.run_count }}</td>
 					<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
-					<td>{% if map.best_score %}{{ map.best_score.time }} by <a href="{{ map.best_score.user.get_absolute_url }}">{{ map.best_score.user }}</a>{% else %}-{% endif %}</td>
+					{% if map.get_best_run %}
+					<td>{{ map.get_best_run.time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
+					<td class="icons">
+						{% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+						{% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+					</td>
+					{% else %}
+					<td colspan="2">-</td>
+					{% endif %}
 				</tr>
 			</table>
 		</div>
