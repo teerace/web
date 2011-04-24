@@ -1,13 +1,12 @@
 from django import template
-from subprocess import Popen, PIPE
+from django.core.cache import cache
 
-register = template.Library ()
-
-cmd = ["git", "rev-list", "--pretty=short", "master"]
+register = template.Library()
 
 @register.simple_tag
-def revision (len = 40):
-	p = Popen (cmd, stdout=PIPE).communicate ()[0]
-	rev = p.splitlines ()[0][7:]
+def revision():
+	rev = cache.get('current_revision')
+	if rev == None:
+		return ""
 	return "r<a href=\"https://github.com/chaosk/teerace/commit/%s\">%s</a>" % \
 		(rev, rev[:7])
