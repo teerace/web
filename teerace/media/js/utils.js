@@ -37,7 +37,7 @@ function showTooltip(x, y, contents) {
 	}).appendTo("body").show();
 }
 
-function plot (id, history, options) {
+function plot (id, history, options, label) {
 	$.plot($(id), [history], options);
 
 	var previousPoint = null;
@@ -51,7 +51,7 @@ function plot (id, history, options) {
 				    y = item.datapoint[1];
 
 				showTooltip(item.pageX, item.pageY,
-				            x.getDate()+' '+x.getMonthName()+': '+y+' points');
+				            x.getDate()+' '+x.getMonthName()+': '+y+' '+label);
 			}
 		} else {
 			$("#tooltip").remove();

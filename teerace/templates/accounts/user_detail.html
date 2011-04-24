@@ -40,7 +40,7 @@ context variables:
 						for (i = 0; i < json.history.length; i++)
 							history.push ([new Date(json.history[i][0]).getTime (), json.history[i][1]]);
 
-						plot ("#placeholder", history, options);
+						plot ("#placeholder", history, options, "points");
 					} else {
 						$('#points-history').remove();
 					}

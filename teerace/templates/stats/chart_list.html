@@ -43,7 +43,7 @@
 						var box = t_box.format (a[0], a[1], t_placeholder.format (a[0]));
 						$(box).insertAfter ("#breadcrumbs");
 
-						plot ("#placeholder-" + a[0], history, options);
+						plot ("#placeholder-" + a[0], history, options, a[0].split ('-')[0]);
 						empty = false;
 					}
 				}
