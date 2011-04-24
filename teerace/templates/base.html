@@ -90,8 +90,10 @@
 					<a href="#header">↑ Top</a>
 					&middot;
 					<a href="{% url about %}">About</a>
+				{% if user.is_staff or user.is_superuser %}
 					&middot;
 					{% revision %}
+				{% endif %}
 				</div>
 				<div class="right">
 					<a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace" title="Powered by Teerace"></div></a>
