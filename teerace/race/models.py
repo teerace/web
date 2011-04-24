@@ -226,7 +226,7 @@ class BestRun(models.Model):
 					target=self.map)
 			else:
 				action.send(self.user, verb='beat {0} best score on' \
-					.format('her' if self.user.profile.is_female else 'his'),
+					.format('her' if self.user.profile.is_female() else 'his'),
 					target=self.map)
 
 
