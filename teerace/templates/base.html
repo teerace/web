@@ -1,4 +1,4 @@
-{% load menu %}{% load gravatar %}
+{% load menu %}{% load gravatar %}{% load revision %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,6 +90,8 @@
 					<a href="#header">↑ Top</a>
 					&middot;
 					<a href="{% url about %}">About</a>
+					&middot;
+					{% revision %}
 				</div>
 				<div class="right">
 					<a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace" title="Powered by Teerace"></div></a>
