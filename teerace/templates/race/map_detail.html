@@ -86,11 +86,11 @@ context variables:
 				<tr>
 					<td class="label">Map characteristics</td>
 					<td class="content">
-						<div sprite="shield" title="How many shields are on this map"></div><div>{{ map.shield_count|default_if_none:"?" }}</div>
-						<div sprite="heart" title="How many hearts are on this map"></div><div>{{ map.heart_count|default_if_none:"?" }}</div>
-						<div sprite="grenade" title="How many grenades are on this map"></div><div>{{ map.grenade_count|default_if_none:"?" }}</div>
-						{% if map.has_unhookables %}<div sprite="unhookable" title="There are unhookable tiles"></div>{% endif %}
-						{% if map.has_deathtiles %}<div sprite="deathtiles" title="There are death tiles"></div>{% endif %}
+						<div sprite="shield" title="Number of shields"></div><div>{{ map.shield_count|default_if_none:"?" }}</div>
+						<div sprite="heart" title="Number of hearts"></div><div>{{ map.heart_count|default_if_none:"?" }}</div>
+						<div sprite="grenade" title="Number of grenades"></div><div>{{ map.grenade_count|default_if_none:"?" }}</div>
+						{% if map.has_unhookables %}<div sprite="unhookable" title="Unhookable tiles present"></div>{% endif %}
+						{% if map.has_deathtiles %}<div sprite="deathtiles" title="Death tiles present"></div>{% endif %}
 					</td>
 				</tr>
 <!--
