@@ -143,7 +143,7 @@ def profile_points_graph_json(request, user_id):
 @render_to('accounts/profile_best.html')
 def profile_best(request, user_id):
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
-	best_runs = BestRun.objects.filter(user=user)
+	best_runs = BestRun.objects.filter(user=user).order_by('-points', 'time')
 	return {
 		'profile_user': user,
 		'best_runs': best_runs,
