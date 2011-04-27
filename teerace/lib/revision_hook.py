@@ -13,6 +13,6 @@ def set_cache(rev):
 	cache.set('current_revision', rev, 0)
 
 if __name__ == '__main__':
-	cmd = ["git", "rev-list", "-n 1", "--first-parent", "test"]
+	cmd = ["git", "rev-list", "-n 1", "--first-parent", "master"]
 	rev = Popen(cmd, stdout=PIPE).communicate()[0].strip()
 	set_cache(rev)
