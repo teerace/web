@@ -64,8 +64,8 @@ def register(request):
 	if request.user.is_authenticated():
 		return redirect(reverse('home'))
 
-	next_uri = request.REQUEST.get('next', get_config('FIRST_LOGIN_REDIRECT_URL',
-		reverse('first_steps')))
+	next_uri = request.REQUEST.get('next',
+		get_config('FIRST_LOGIN_REDIRECT_URL', reverse('first_steps')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):
 		next_uri = get_config('FIRST_LOGIN_REDIRECT_URL',
@@ -115,7 +115,8 @@ def profile(request, user_id):
 	user_actions = actor_stream(user)[:10]
 	badges = BadgeAward.objects.filter(user=user).order_by("-awarded_at")[:10]
 
-	messages.info(request, "Please enable Javascript.", extra_tags="javascript")
+	messages.info(request, "Please enable Javascript.",
+		extra_tags="javascript")
 
 	return {
 		'profile_user': user,
@@ -173,7 +174,8 @@ def profile_activity(request, user_id):
 
 @render_to('accounts/user_list.html')
 def userlist(request):
-	users = User.objects.exclude(is_active=False).order_by('id').select_related()
+	users = User.objects.exclude(is_active=False).order_by('id') \
+		.select_related()
 	return {
 		'users': users,
 	}
@@ -203,13 +205,15 @@ def settings(request):
 	settings_user_form = SettingsUserForm(instance=request.user)
 	settings_profile_form = SettingsProfileForm(instance=request.user.profile)
 	if request.method == 'POST':
-		settings_user_form = SettingsUserForm(request.POST, instance=request.user)
+		settings_user_form = SettingsUserForm(request.POST,
+			instance=request.user)
 		settings_profile_form = SettingsProfileForm(request.POST,
 			instance=request.user.profile)
 		if settings_user_form.is_valid() and settings_profile_form.is_valid():
 			settings_user_form.save()
 			settings_profile_form.save()
-			messages.success(request, "Successfully updated your profile and settings.")
+			messages.success(request, "Successfully updated your profile"
+				" and settings.")
 	return {
 		'settings_user_form': settings_user_form,
 		'settings_profile_form': settings_profile_form,
