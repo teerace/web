@@ -1,5 +1,4 @@
-import datetime
-import time
+from datetime import timedelta
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
@@ -130,7 +129,7 @@ def profile_points_graph_json(request, user_id):
 
 	if user.profile.points_history:
 		history = user.profile.points_history + [
-			(user.profile.points_history[-1][0]+datetime.timedelta(1),
+			(user.profile.points_history[-1][0]+timedelta(1),
 			user.profile.points)
 		]
 	else:
