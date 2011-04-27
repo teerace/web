@@ -11,6 +11,10 @@ context variables:
 	{% add_crumb "Unfinished" 'maps_unfinished' %}
 {% endblock %}
 {% block content %}
+		<div class="box full">
+			<div class="header">Unfinished maps</div>
+			List of maps that you haven't finished not even once yet.
+		</div>
 		{% autopaginate maps %}
 		{% paginate %}
 		{% for map in maps %}
