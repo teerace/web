@@ -1,8 +1,9 @@
-{% extends "accounts/user_list.html" %}{% load human_duration %}{% load humanize %}{% load brabeion_tags %}{% load gravatar %}{% load possessive %}
+{% extends "accounts/user_list.html" %}{% load human_duration %}{% load humanize %}{% load gravatar %}{% load possessive %}
 {% comment %}
 context variables:
 	profile_user (User instance)
 	user_actions
+	badges
 {% endcomment %}
 {% block title %}{{ profile_user }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
@@ -12,7 +13,7 @@ context variables:
 {% endblock %}
 {% block submenu %}
 	<ul class="left">
-		<li><a href="{% url profile profile_user.id %}">Profile</a></li><li><a href="{% url profile_best profile_user.id %}">Best scores</a></li><li><a href="{% url profile_activity profile_user.id %}">Activity</a></li>
+		<li><a href="{% url profile profile_user.id %}">Profile</a></li><li><a href="{% url profile_best profile_user.id %}">Best scores</a></li><li><a href="{% url profile_activity profile_user.id %}">Activity</a></li><li><a href="{% url profile_badges profile_user.id %}">Badges</a></li>
 	</ul>
 {% endblock submenu %}
 {% block extra_head %}
@@ -115,7 +116,6 @@ context variables:
 		<div id="placeholder"></div>
 	</div>
 
-	{% badges_for_user profile_user as badges %}
 	{% if badges %}
 	<div class="box right top">
 		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
@@ -129,6 +129,7 @@ context variables:
 				</div>
 			{% if forloop.counter|divisibleby:2 or forloop.last %}</div>{% endif %}
 		{% endfor %}
+		<a href="{% url profile_badges profile_user.id %}" class="more">See more &raquo;</a>
 	</div>
 	{% endif %}
 

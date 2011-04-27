@@ -18,6 +18,7 @@ from race.models import BestRun
 from annoying.functions import get_config
 from annoying.decorators import render_to
 from brabeion import badges
+from brabeion.models import BadgeAward
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
 from actstream.models import actor_stream
 
@@ -113,12 +114,14 @@ def profile(request, user_id):
 		raise Http404 # mkay, no Anonymous profile
 	user = get_object_or_404(User.objects.select_related(), pk=user_id)
 	user_actions = actor_stream(user)[:10]
+	badges = BadgeAward.objects.filter(user=user).order_by("-awarded_at")[:10]
 
 	messages.info(request, "Please enable Javascript.", extra_tags="javascript")
 
 	return {
 		'profile_user': user,
 		'user_actions': user_actions,
+		'badges': badges,
 	}
 
 
@@ -138,6 +141,16 @@ def profile_points_graph_json(request, user_id):
 		cls=DjangoJSONEncoder,
 	)
 	return HttpResponse(response_data, mimetype="application/json")
+
+
+@render_to('accounts/profile_badges.html')
+def profile_badges(request, user_id):
+	user = get_object_or_404(User.objects.select_related(), pk=user_id)
+	badges = BadgeAward.objects.filter(user=user).order_by("-awarded_at")
+	return {
+		'profile_user': user,
+		'badges': badges,
+	}
 
 
 @render_to('accounts/profile_best.html')
