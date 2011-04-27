@@ -20,9 +20,9 @@ context variables:
 			<tr>
 				<th>{% sort_link "Name" "map__name" "name" %}</th>
 				<th>{% sort_link "Date" "run__created_at" "date" %}</th>
-				<th>Points</th>
+				<th>{% sort_link "Points" "points" "points" %}</th>
 				<th>Map record</th>
-				<th>Record</th>
+				<th>{% sort_link "Time" "time" "record" %}</th>
 				<th></th>
 			</tr>
 			{% for run in best_runs %}
@@ -45,13 +45,13 @@ context variables:
 			</tr>
 			{% empty %}
 			<tr>
-				<td colspan="6">Hey! You haven't finished any run yet!</td>
+				<td colspan="6">Hey! You haven't finished any map yet!</td>
 			</tr>
 			{% endfor %}
 		{% if best_runs %}
 		<tfoot>
 			<tr>
-				<td colspan="6">{{ paginator.count }} run{{ paginator.count|pluralize }} finished</td>
+				<td colspan="6">{{ paginator.count }} map{{ paginator.count|pluralize }} finished</td>
 			</tr>
 		</tfoot>
 		{% endif %}
