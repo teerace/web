@@ -187,7 +187,7 @@ class BestRun(models.Model):
 	def demo_filename(self, filename):
 		del filename
 		return 'uploads/demos/{0}/{1}/{2}_{3}.demo'.format(self.map.name[0],
-			self.map.name, self.user.username[0], self.user.username)
+			self.user.username[0], self.map.name, self.user.username)
 	demo_file = models.FileField(blank=True, null=True,
 		storage=OverwriteStorage(), upload_to=demo_filename,
 		validators=[is_demo_file])
@@ -195,7 +195,7 @@ class BestRun(models.Model):
 	def ghost_filename(self, filename):
 		del filename
 		return 'uploads/ghosts/{0}/{1}/{2}_{3}.gho'.format(self.map.name[0],
-			self.map.name, self.user.username[0], self.user.username)
+			self.user.username[0], self.map.name, self.user.username)
 	ghost_file = models.FileField(blank=True, null=True,
 		storage=OverwriteStorage(), upload_to=ghost_filename,
 		validators=[is_ghost_file])
