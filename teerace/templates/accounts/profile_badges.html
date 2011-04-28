@@ -19,7 +19,7 @@ context variables:
 			{% cycle '<div class="full">' '' '' %}
 				<div class="badge">
 					<b>{{ badge.name }}</b>
-					<img src="{{ MEDIA_URL }}images/temporary-badge.png" alt="{{ badge.slug }}">
+					<div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div>
 					<div class="date">{{ badge.awarded_at }}</div>
 					<div class="desc">{{ badge.description }}</div>
 				</div>

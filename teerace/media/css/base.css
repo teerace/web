@@ -123,6 +123,38 @@ div[sprite=ghost] {
 	height: 16px;
 }
 
+
+/* badges! */
+div[sprite].icon {
+	background: url(/media/images/teeraceicons.png) no-repeat;
+	width: 32px;
+	height: 32px;
+}
+
+div[sprite=globetrotter-0],
+div[sprite=hailtotheking-0],
+div[sprite=minion-0],
+div[sprite=labrat-0] { background-position: -127px 0 !important; }
+
+div[sprite=runtime-0] { background-position: -63px 0 !important; }
+div[sprite=runtime-1] { background-position: -32px 0 !important; }
+div[sprite=runtime-2] { background-position: 0 0 !important; }
+
+div[sprite=runcount-0],
+div[sprite=runcount-1] { background-position: -316px 0 !important; }
+
+div[sprite=runcount-2] { background-position: -285px 0 !important; }
+
+div[sprite=runcount-3] { background-position: -253px 0 !important; }
+
+div[sprite=runscore-0],
+div[sprite=runscore-1],
+div[sprite=runscore-2] { background-position: -221px 0 !important; }
+
+div[sprite=runscore-3] { background-position: -189px 0 !important; }
+
+div[sprite=runscore-4] { background-position: -158px 0 !important; }
+
 input:not(#recaptcha_response_field),
 .button {
 	color: #4c4b33;
@@ -1105,7 +1137,7 @@ ul.actstream {
 		z-index: 1;
 	}
 
-	.badge img {
+	.badge div[sprite] {
 		width: 32px;
 		height: 32px;
 		display: block;
