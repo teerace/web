@@ -38,8 +38,11 @@ context variables:
 
 						// convert dates to timestamps
 						var history = new Array ();
-						for (i = 0; i < json.history.length; i++)
-							history.push ([new Date(json.history[i][0]).getTime (), json.history[i][1]]);
+						for (i = 0; i < json.history.length; i++) {
+							d = new Date(json.history[i][0]);
+							d.setUTCHours(0);
+							history.push ([d.getTime(), json.history[i][1]]);
+						}
 
 						plot ("#placeholder", history, options, "points");
 					} else {
