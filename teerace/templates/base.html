@@ -90,6 +90,8 @@
 					<a href="#header">↑ Top</a>
 					&middot;
 					<a href="{% url about %}">About</a>
+					&middot;
+					<a href="{% url contact %}">Contact us</a>
 				{% if user.is_staff or user.is_superuser %}
 					&middot;
 					{% revision %}

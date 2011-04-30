@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}contact - {{ block.super }}{% endblock title %}
+{% block breadcrumb %}
+	{{ block.super }}
+	{% load breadcrumb_tags %}
+	{% add_crumb 'Contact' 'contact' %}
+{% endblock %}
+{% block content %}
+	<div class="box full">
+		<div class="header">Contact</div>
+		<p>
+			You can reach us by using the chat below, or using your own <a href="http://en.wikipedia.org/wiki/Internet_Relay_Chat">IRC</a> client to join <a href="irc://irc.quakenet.org/teerace">#teerace on QuakeNet</a>.
+		</p>
+	</div>
+	<div class="box full">
+		<div class="header">Web chat</div>
+		<iframe src="http://webchat.quakenet.org/?channels=teerace&amp;uio=MTA9dHJ1ZSYxMT02MiYxND1mYWxzZQc0" width="100%" height="400"></iframe>
+	</div>
+{% endblock content %}

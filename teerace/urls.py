@@ -20,6 +20,8 @@ urlpatterns = patterns('',
 ) + patterns('django.views.generic.simple',
 	url(r'^about/', 'direct_to_template',
 		{'template': 'static/about.html'}, name='about'),
+	url(r'^contact/', 'direct_to_template',
+		{'template': 'static/contact.html'}, name='contact'),
 )
 
 if settings.DEBUG:
