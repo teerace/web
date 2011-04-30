@@ -78,7 +78,6 @@ class RunHandler(BaseHandler):
 		)
 		run.save()
 		tasks.redo_ranks.delay(run.id)
-		tasks.set_server_map.delay(request.server.id, request.form.map.id)
 		if request.form.user != None:
 			request.form.user.profile.update_connection(request.server)
 			badges.possibly_award_badge("run_finished",
