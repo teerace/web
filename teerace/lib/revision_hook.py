@@ -9,10 +9,13 @@ setup_environ(settings)
 from django.core.cache import cache
 from subprocess import Popen, PIPE
 
+def get_revision():
+	cmd = ["git", "rev-list", "-n 1", "--first-parent", "master"]
+	return Popen(cmd, stdout=PIPE).communicate()[0].strip()
+
 def set_cache(rev):
 	cache.set('current_revision', rev, 0)
 
 if __name__ == '__main__':
-	cmd = ["git", "rev-list", "-n 1", "--first-parent", "master"]
-	rev = Popen(cmd, stdout=PIPE).communicate()[0].strip()
+	rev = get_revision()
 	set_cache(rev)
