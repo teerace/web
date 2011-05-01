@@ -20,9 +20,10 @@ urlpatterns = patterns('accounts.views',
 	url(r'^profile/(?P<user_id>\d+)/activity/$', 'profile_activity',
 		name='profile_activity'),
 ) + patterns('django.contrib.auth.views',
-	(r'^password_reset/$', 'password_reset', {'template_name':
+	url(r'^password_reset/$', 'password_reset', {'template_name':
 		'accounts/password_reset.html',
-		'email_template_name': 'accounts/email/password_reset.html'}),
+		'email_template_name': 'accounts/email/password_reset.html'},
+		name='password_reset'),
 	(r'^password_reset/done/$', 'password_reset_done', {'template_name':
 		'accounts/password_reset_done.html'}),
 	(r'^password_reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
