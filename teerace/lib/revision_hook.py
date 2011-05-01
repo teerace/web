@@ -9,8 +9,9 @@ def get_revision():
 	old_path = os.getcwd()
 	os.chdir(settings.PROJECT_DIR)
 	cmd = ["git", "rev-list", "-n 1", "--first-parent", "master"]
+	rev = Popen(cmd, stdout=PIPE).communicate()[0].strip()
 	os.chdir(old_path)
-	return Popen(cmd, stdout=PIPE).communicate()[0].strip()
+	return rev
 
 def set_cache(rev):
 	from django.core.cache import cache
