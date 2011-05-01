@@ -55,8 +55,7 @@ class Entry(models.Model):
 		return self.title
 
 	def save(self, *args, **kwargs):
-		if not self.pk:
-			self.slug = self.slugify_title()
+		self.slug = self.slugify_title()
 		if self.is_micro:
 			# forcing no excerpt and lack of comments for micro entries
 			self.excerpt = self.excerpt_html = ""
