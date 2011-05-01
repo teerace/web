@@ -23,8 +23,8 @@ class SkinUserForm(forms.Form):
 	"""
 
 	skin_name = forms.CharField()
-	body_color = forms.IntegerField(max_value=16777215)
-	feet_color = forms.IntegerField(max_value=16777215)
+	body_color = forms.IntegerField(max_value=16777215, required=False)
+	feet_color = forms.IntegerField(max_value=16777215, required=False)
 
 	def clean_skin_name(self):
 		skin_name = self.cleaned_data['skin_name']
