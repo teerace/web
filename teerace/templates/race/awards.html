@@ -10,6 +10,7 @@
 	{% for level in award.levels %}
 	<div class="box award {% cycle 'left' 'center' 'right' %}">
 		<div class="header">{{ level.name }}</div>
+		<div class="icon award" sprite="{{ award.slug }}-{{ forloop.counter0 }}"></div>
 		<p>
 			{{ level.description }}
 		</p>
