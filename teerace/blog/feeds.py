@@ -23,7 +23,9 @@ class LatestEntriesFeed(Feed):
 		return item.content_html
 
 	def item_author_name(self, item):
-		return item.created_by
+		author = item.created_by
+		fullname = author.get_full_name()
+		return fullname if fullname else author
 
 	def item_pubdate(self, item):
 		return item.published_at
