@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os, sys
-sys.path.append(os.environ['PWD'])
-from django.core.management import setup_environ
-from teerace import settings
-setup_environ(settings)
-from django.core.cache import cache
 from subprocess import Popen, PIPE
 
 def get_revision():
@@ -14,8 +8,15 @@ def get_revision():
 	return Popen(cmd, stdout=PIPE).communicate()[0].strip()
 
 def set_cache(rev):
+	from django.core.cache import cache
 	cache.set('current_revision', rev, 0)
 
 if __name__ == '__main__':
+	import os, sys
+	sys.path.append(os.environ['PWD'])
+	from django.core.management import setup_environ
+	from teerace import settings
+	setup_environ(settings)
+
 	rev = get_revision()
 	set_cache(rev)
