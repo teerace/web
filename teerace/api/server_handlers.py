@@ -316,16 +316,14 @@ class UserHandler(BaseHandler):
 			profile.has_skin = True
 			form = request.form.cleaned_data
 			profile.skin_name = form['skin_name']
-			if 'body_color' in form:
+			if 'body_color' in form and 'feet_color' in form:
 				profile.skin_body_color_raw = form['body_color']
 				profile.skin_body_color = rgblong_to_hex(form['body_color'])
-			else:
-				profile.skin_body_color_raw = None
-				profile.skin_body_color = ''
-			if 'feet_color' in form:
 				profile.skin_feet_color_raw = form['feet_color']
 				profile.skin_feet_color = rgblong_to_hex(form['feet_color'])
 			else:
+				profile.skin_body_color_raw = None
+				profile.skin_body_color = ''
 				profile.skin_feet_color_raw = None
 				profile.skin_feet_color = ''
 			profile.save()
