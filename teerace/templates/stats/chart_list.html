@@ -37,8 +37,11 @@
 
 						// convert dates to timestamps
 						var history = new Array ();
-						for (i = 0; i < a[2].length; i++)
-							history.push ([new Date(a[2][i][0]).getTime (), a[2][i][1]]);
+						for (i = 0; i < a[2].length; i++) {
+							d = new Date(a[2][i][0]);
+							d.setUTCHours(0);
+							history.push ([d.getTime (), a[2][i][1]]);
+						}
 
 						var box = t_box.format (a[0], a[1], t_placeholder.format (a[0]));
 						$(box).insertAfter ("#breadcrumbs");
