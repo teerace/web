@@ -28,7 +28,7 @@ class LatestEntriesFeed(Feed):
 		return fullname if fullname else author
 
 	def item_pubdate(self, item):
-		return item.published_at
+		return item.created_at
 
 
 class LatestEntriesForPlanetFeed(LatestEntriesFeed):
