@@ -553,7 +553,6 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 
 	#blog p {
 		line-height: 20px;
-		text-align: justify;
 	}
 
 	#blog .post:not(.home) {
