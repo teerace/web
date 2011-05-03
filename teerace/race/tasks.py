@@ -8,7 +8,8 @@ from race.models import Map, MapType, Run, BestRun, Server
 from lib.chunks import chunks
 from celery.task import task
 from tml.tml import Teemap
-
+from johnny import middleware
+jc = middleware.QueryCacheMiddleware()
 
 @task(rate_limit='600/m', ignore_result=True)
 def redo_ranks(run_id):
