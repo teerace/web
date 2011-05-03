@@ -77,7 +77,7 @@ class RunHandler(BaseHandler):
 			checkpoints = filtered_checkpoints,
 		)
 		run.save()
-		tasks.redo_ranks.delay(run.id)
+		tasks.redo_ranks.apply(args=[run.id])
 		if request.form.user != None:
 			request.form.user.profile.update_connection(request.server)
 			badges.possibly_award_badge("run_finished",
