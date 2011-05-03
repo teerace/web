@@ -95,8 +95,8 @@ def rebuild_map_rank(map_id):
 def rebuild_global_rank():
 	runners = User.objects.annotate(Sum('bestrun__points'))
 	for runner in runners:
-		runner.points = runner.bestrun__points__sum
-		runner.save()
+		runner.profile.points = runner.bestrun__points__sum
+		runner.profile.save()
 	logger = rebuild_global_rank.get_logger()
 	logger.info("Rebuilt global rank.")
 
