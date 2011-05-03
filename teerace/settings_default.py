@@ -123,6 +123,8 @@ CELERYBEAT_SCHEDULE = {
 		"schedule": crontab(minute="*/15"),
 	},
 }
+MAIN_IN_BLACKLIST = ('djcelery_taskstate',
+	'djcelery_workerstate')
 
 
 # Local time zone for this installation. Choices can be found here:
