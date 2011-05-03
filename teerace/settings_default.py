@@ -123,7 +123,7 @@ CELERYBEAT_SCHEDULE = {
 		"schedule": crontab(minute="*/15"),
 	},
 }
-MAIN_IN_BLACKLIST = ('djcelery_taskstate',
+MAN_IN_BLACKLIST = ('djcelery_taskstate',
 	'djcelery_workerstate')
 
 
