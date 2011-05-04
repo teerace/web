@@ -73,15 +73,16 @@ class UserProfile(models.Model):
 		return self.gender == self.FEMALE_GENDER
 
 	def map_position(self, map_id):
-		# first, retrieve players map points
+		# first, retrieve player's map time
 		try:
 			map_obj = Map.objects.get(pk=map_id)
-			player_points = BestRun.objects.get(map=map_obj, user=self.user).points
+			player_time = BestRun.objects.get(map=map_obj, user=self.user).time
 		except (Map.DoesNotExist, BestRun.DoesNotExist):
 			return None
-		# now, count all players with equal/greater point count
-		return BestRun.objects.filter(map=map_obj).exclude(points__lte=0) \
-			.exclude(user__is_active=False).filter(points__gte=player_points).count()
+		# now, count all players with equal/lower time
+		return BestRun.objects.filter(map=map_obj) \
+			.exclude(user__is_active=False) \
+			.filter(time__lte=player_time).count()
 
 	def update_playtime(self, seconds):
 		if seconds <= 0:
