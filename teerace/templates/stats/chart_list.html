@@ -6,9 +6,9 @@
 	{% add_crumb "Stats" 'chart_list' %}
 {% endblock %}
 {% block extra_head %}
-	<!--[if IE]><script type="text/javascript" src="/media/js/flot/excanvas.min.js"></script><![endif]-->
-	<script type="text/javascript" src="/media/js/flot/jquery.flot.min.js"></script>
-	<script type="text/javascript" src="/media/js/utils.js"></script>
+	<!--[if IE]><script type="text/javascript" src="{{ MEDIA_URL }}js/flot/excanvas.min.js"></script><![endif]-->
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/flot/jquery.flot.min.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/utils.js"></script>
 	<script type="text/javascript">
 		$(document).ready (function () {
 			$(".javascript").addClass ("hide");

@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css">
 	<link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico">
 	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url blog_feed %}">
-	<script type="text/javascript" src="/media/js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.1.min.js"></script>
 	{% block extra_head %}
 	{% endblock extra_head %}
 	{% if settings.ANALYTICS_ID %}
