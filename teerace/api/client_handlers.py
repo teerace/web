@@ -1,12 +1,14 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from piston.handler import BaseHandler
+from piston.handler import AnonymousBaseHandler
 from piston.utils import throttle, validate
 from api.forms import TokenClientForm
 from lib.piston_utils import rc, rcs
 
 
-class AnonClientHandler(BaseHandler):
+class AnonClientHandler(AnonymousBaseHandler):
+	allowed_methods = ('POST',)
+	model = User
 
 	@throttle(5, 600)
 	@validate(TokenClientForm)

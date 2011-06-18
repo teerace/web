@@ -41,8 +41,8 @@ urlpatterns = patterns('',
 	url(r'^1/hello/$', ping_resource, {'action': 'hello'}, name='api_ping'),
 
 	# Client API
-	url(r'^1/anonclient/get_token/$', anonclient_resource,
-		name='api_client_get_token'),
+	url(r'^1/anonclient/(?P<action>\w+)/$', anonclient_resource,
+		name='api_anonclient'),
 
 	# automated documentation
 	url(r'^1/docs/$', documentation_view, name='api_docs'),
