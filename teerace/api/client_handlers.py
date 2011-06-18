@@ -11,7 +11,9 @@ class AnonClientHandler(BaseHandler):
 	@throttle(5, 600)
 	@validate(TokenClientForm)
 	def _create_get_token(self, request, *args, **kwargs):
-		user = authenticate(username=username, password=password)
+		form = request.form.cleaned_data
+		user = authenticate(username=form.get('username'),
+			password=form.get('password'))
 		if not user or not user.is_active:
 			return False
 		return user.profile.api_token
