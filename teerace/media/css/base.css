@@ -575,7 +575,6 @@ input, td img:not([id^=recaptcha]):not([class^=recaptcha]), #menu, #comments .co
 
 		#blog .post .comment-count {
 			font-size: 11px;
-			margin-top: -5px;
 			float: right;
 		}
 
