@@ -139,7 +139,7 @@ def retrieve_map_details(map_id):
 		return False
 	try:
 		# I actually can use that! Thanks, erd!
-		teemap = Teemap().load(map_obj.map_file.path)
+		teemap = Teemap(map_obj.map_file.path)
 		logger.info("[M-{0}] Loaded \"{1}\" map.".format(map_id, map_obj.name))
 	except IndexError:
 		logger.error("[M-{0}] Couldn't load \"{1}\" map" \
