@@ -79,10 +79,10 @@ class UserProfile(models.Model):
 			player_time = BestRun.objects.get(map=map_obj, user=self.user).time
 		except (Map.DoesNotExist, BestRun.DoesNotExist):
 			return None
-		# now, count all players with equal/lower time
+		# now, count all players with lower time and add 1 representing this player
 		return BestRun.objects.filter(map=map_obj) \
 			.exclude(user__is_active=False) \
-			.filter(time__lte=player_time).count()
+			.filter(time__lt=player_time).count() + 1
 
 	def update_playtime(self, seconds):
 		if seconds <= 0:
