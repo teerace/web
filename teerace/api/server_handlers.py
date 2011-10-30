@@ -244,7 +244,7 @@ class UserHandler(BaseHandler):
 	@validate_mime(ValidateUserTokenForm)
 	def _create_auth_token(self, request, *args, **kwargs):
 		try:
-			user = User.objects.get(
+			user = User.objects.exclude(is_active=False).get(
 				profile__api_token=request.form.cleaned_data.get('api_token')
 			)
 		except User.DoesNotExist:
