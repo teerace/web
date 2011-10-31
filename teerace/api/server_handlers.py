@@ -8,7 +8,7 @@ from api.forms import (ValidateUserTokenForm, UserGetByNameForm,
 	SkinUserForm, PlaytimeUserForm, RunForm, ActivityForm, DemoForm, GhostForm)
 from race import tasks
 from race.models import Run, Map, BestRun, Server
-from lib.rsa import RSA
+# from lib.rsa import RSA
 from lib.piston_utils import rc, rcs, validate_mime, validate_file
 from lib.rgb import rgblong_to_hex
 from annoying.functions import get_object_or_None
