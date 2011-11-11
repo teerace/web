@@ -52,7 +52,7 @@ context variables:
 			{% if map.best_score %}
 				<tr>
 					<td class="label">Best result</td>
-					<td class="content">{{ map.best_score.time|floatformat:settings.RESULT_PRECISION }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
+					<td class="content">{{ map.best_score.time|race_time }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
 				</tr>
 				{% with map.best_score.checkpoints_list as checkpoints %}
 				{% if checkpoints|length > 1 %}
@@ -63,7 +63,7 @@ context variables:
 				{% for checkpoint in checkpoints %}
 				<tr class="checklist-{{ forloop.counter }}">
 					<td class="label">Checkpoint {{ forloop.counter }}</td>
-					<td class="content">{{ checkpoint|floatformat:settings.RESULT_PRECISION }}</td>
+					<td class="content">{{ checkpoint|race_time }}</td>
 				</tr>
 				{% endfor %}
 				{% endif %}
@@ -72,12 +72,12 @@ context variables:
 			{% if user_bestrun %}
 				<tr>
 					<td class="label">Personal best</td>
-					<td class="content">{{ user_bestrun.time }} {% race_diff user_bestrun.run map.best_score "" %}</td>
+					<td class="content">{{ user_bestrun.time|race_time }} {% race_diff user_bestrun.run map.best_score "" %}</td>
 				</tr>
 			{% endif %}
 				<tr>
 					<td class="label">Average time</td>
-					<td class="content">{% if map.average_score %}{{ map.average_score|floatformat:settings.RESULT_PRECISION }}{% else %}-{% endif %}</td>
+					<td class="content">{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
 				</tr>
 				<tr>
 					<td class="label">Map completions</td>
@@ -124,7 +124,7 @@ context variables:
 				<td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
 				<td>{{ best_run.points }}</td>
 				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
-				<td>{{ best_run.run.time|floatformat:settings.RESULT_PRECISION }}</td>
+				<td>{{ best_run.run.time|race_time }}</td>
 				<td>{% race_diff best_run.run map.best_score %}</td>
 				<td class="icons">
 					{% if best_run.demo_file %}<a href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
@@ -158,7 +158,7 @@ context variables:
 			<tr{% if request.user.is_authenticated and request.user.id == run.user.id %} class="me" title="that's you!"{% endif %}>
 				<td>{% if run.user.id %}<a href="{{ run.user.get_absolute_url }}">{{ run.user.username }}</a>{% else %}{{ run.nickname }}{% endif %}</td>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
+				<td>{{ run.time|race_time }}</td>
 			</tr>
 			{% endfor %}
 		</table>
@@ -175,7 +175,7 @@ context variables:
 			{% for run in user_latest_runs %}
 			<tr>
 				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|floatformat:settings.RESULT_PRECISION }}</td>
+				<td>{{ run.time|race_time }}</td>
 			</tr>
 			{% empty %}
 			<tr>

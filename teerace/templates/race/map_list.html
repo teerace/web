@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}{% load human_duration %}{% load pagination_tags %}
+{% extends "race/map_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load race_tags %}
 {% comment %}
 context variables:
 	object_list
@@ -46,9 +46,9 @@ context variables:
 				</tr>
 				<tr>
 					<td>{{ map.run_count }}</td>
-					<td>{{ map.average_score|floatformat:settings.RESULT_PRECISION|default:"-" }}</td>
+					<td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
 					{% if map.get_best_run %}
-					<td>{{ map.get_best_run.time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
+					<td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
 					<td class="icons">
 						{% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
 						{% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}

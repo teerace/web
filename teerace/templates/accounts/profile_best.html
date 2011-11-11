@@ -1,4 +1,4 @@
-{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load sorting %}{% load possessive %}
+{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load sorting %}{% load possessive %}{% load race_tags %}
 {% comment %}
 context variables:
 	profile_user (User instance)
@@ -32,10 +32,10 @@ context variables:
 				<td>{{ run.points }}</td>
 			{% with run.map.get_best_run as map_bestrun %}
 				<td{% if run.id == map_bestrun.id %} colspan="2" class="own"{% endif%}>
-					{{ map_bestrun.time }} by <a href="{{ map_bestrun.user.get_absolute_url }}" class="user">{{ map_bestrun.user }}</a>
+					{{ map_bestrun.time|race_time }} by <a href="{{ map_bestrun.user.get_absolute_url }}" class="user">{{ map_bestrun.user }}</a>
 				</td>
 				{% if run.id != map_bestrun.id %}
-				<td>{{ run.time }}</td>
+				<td>{{ run.time|race_time }}</td>
 				{% endif %}
 			{% endwith %}
 				<td class="icons">
