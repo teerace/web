@@ -41,17 +41,16 @@ def race_diff(run, compare_to, neutral="-"):
 
 @register.filter
 def race_time(value):
-	try:
-		time = Decimal(value)
-		if time >= Decimal('3600.0'):
-			return "{0:02g}:{1:02g}:{2:06.{precision}f}".format(
-				time // 3600, (time % 3600) // 60, int(time % 60) + time % 1, precision=Run.DECIMAL_PLACES
-			)
-		elif time >= Decimal('60.0'):
-			return "{0:02g}:{1:06.{precision}f}".format(
-				time // 60, int(time % 60) + time % 1, precision=Run.DECIMAL_PLACES
-			)
-		else:
-			return "{0:.{precision}f}".format(time, precision=Run.DECIMAL_PLACES)
-	except:
-		return ""
+	if not value:
+		return u''
+	time = Decimal(value)
+	if time >= Decimal('3600.0'):
+		return "{0:02g}:{1:02g}:{2:06.{precision}f}".format(
+			time // 3600, (time % 3600) // 60, int(time % 60) + time % 1, precision=Run.DECIMAL_PLACES
+		)
+	elif time >= Decimal('60.0'):
+		return "{0:02g}:{1:06.{precision}f}".format(
+			time // 60, int(time % 60) + time % 1, precision=Run.DECIMAL_PLACES
+		)
+	else:
+		return "{0:.{precision}f}".format(time, precision=Run.DECIMAL_PLACES)
