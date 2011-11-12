@@ -38,7 +38,7 @@ class AnonClientHandler(AnonymousBaseHandler):
 		"""
 		allowed_actions = ['servers']
 		if action in allowed_actions:
-			return getattr(self, '_read' + action)(request, *args, **kwargs)
+			return getattr(self, '_read_' + action)(request, *args, **kwargs)
 		return rc(rcs.BAD_REQUEST)
 
 	@throttle(5, 600)
