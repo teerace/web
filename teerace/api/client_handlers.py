@@ -7,7 +7,7 @@ from race.models import Server
 from lib.piston_utils import rc, rcs
 
 
-class ServerHandler(BaseHandler):
+class ServerHandler(AnonymousBaseHandler):
 	allowed_methods = ()
 	fields = ('address')
 	model = Server
