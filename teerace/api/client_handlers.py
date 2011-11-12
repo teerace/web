@@ -6,20 +6,13 @@ from api.forms import TokenClientForm
 from race.models import Server
 from lib.piston_utils import rc, rcs
 
-
-class ServerHandler(AnonymousBaseHandler):
-	allowed_methods = ()
-	fields = ('address')
-	model = Server
-
-
 class AnonClientHandler(AnonymousBaseHandler):
 	allowed_methods = ('GET', 'POST')
 	model = User
 	
 	@throttle(5, 600)
 	def _read_servers(self, request, *args, **kwargs):
-		return Server.objects.exclude(is_active=False)
+		return Server.objects.exclude(is_active=False).values_list('address', flat=True)
 
 	def read(self, request, action, *args, **kwargs):
 		"""
