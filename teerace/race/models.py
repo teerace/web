@@ -9,6 +9,7 @@ from picklefield.fields import PickledObjectField
 from annoying.functions import get_config, get_object_or_None
 from actstream import action
 from brabeion.signals import badge_awarded
+from markdown import markdown
 
 
 def generate_random_key():
@@ -238,7 +239,9 @@ class Server(models.Model):
 	"""
 
 	name = models.CharField(max_length=100, verbose_name="server name")
-	description = models.TextField(blank=True)
+	description = models.TextField(blank=True,
+		help_text="You may use Markdown syntax")
+	description_html = models.TextField(blank=True)
 	address = models.CharField(max_length=50, blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers',
 		verbose_name="maintainer", on_delete=models.PROTECT)
@@ -262,6 +265,7 @@ class Server(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.pk:
 			self.api_key = generate_random_key()
+		self.description_html = markdown(self.description)
 		super(Server, self).save(*args, **kwargs)
 
 	def delete(self, *args, **kwargs):
