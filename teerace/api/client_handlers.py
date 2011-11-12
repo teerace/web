@@ -3,12 +3,43 @@ from django.contrib.auth.models import User
 from piston.handler import AnonymousBaseHandler
 from piston.utils import throttle, validate
 from api.forms import TokenClientForm
+from race.models import Server
 from lib.piston_utils import rc, rcs
 
 
+class ServerHandler(BaseHandler):
+	allowed_methods = ()
+	fields = ('address')
+	model = Server
+
+
 class AnonClientHandler(AnonymousBaseHandler):
-	allowed_methods = ('POST',)
+	allowed_methods = ('GET', 'POST')
 	model = User
+	
+	@throttle(5, 600)
+	def _read_servers(self, request, *args, **kwargs):
+		return Server.objects.exclude(is_active=False)
+
+	def read(self, request, action, *args, **kwargs):
+		"""
+		URL
+			**/api/1/anonclient/servers/**
+		Shortdesc
+			Returns a list of Teerace servers.
+		Arguments
+			- none
+		Data
+			- none
+		Result
+			- 200
+				list of Server objects
+
+		"""
+		allowed_actions = ['servers']
+		if action in allowed_actions:
+			return getattr(self, '_read' + action)(request, *args, **kwargs)
+		return rc(rcs.BAD_REQUEST)
 
 	@throttle(5, 600)
 	@validate(TokenClientForm)
