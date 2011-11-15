@@ -31,6 +31,7 @@ class APIKeyAuthentication(object):
 			return False
 
 		if not len(auth_string) == 32:
+			self.forbidden = True
 			return False
 
 		try:
