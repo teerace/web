@@ -1,6 +1,8 @@
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.db.models import F
 from brabeion import badges
+from brabeion.models import BadgeAward
 from piston.handler import BaseHandler
 from piston.utils import require_extended
 from accounts.models import UserProfile
@@ -524,15 +526,32 @@ class PingHandler(BaseHandler):
 			- map / string / currently played map
 		Result
 			- 200 - when everything went fine
-				PONG
+				a dictionary containing a list of new awards given
+				to the users on this server
 		"""
+		
 		if action != 'ping':
 			return rc(rcs.BAD_REQUEST)
 		
 		server = request.server
 		users_dict = request.data.get('users', {})
+	
+		badges_list = list()
+		
 		if users_dict:
 			user_ids = users_dict.keys()
+			
+			# get a list of newly awarded badges
+			badges_awarded = BadgeAward.objects.filter(
+				user__id__in=user_ids,
+				awarded_at__gt=F('user__profile__last_connection_at')
+			)
+			for badge in badges_awarded:
+				badges_list.append({
+				"name": badges._registry[badge.slug].levels[badge.level].name,
+				"user_id": badge.user.id,
+			})
+			
 			# removing the relationship for users not present on the server
 			server.players.exclude(id__in=user_ids).update(
 				last_played_server=None
@@ -546,7 +565,10 @@ class PingHandler(BaseHandler):
 		server.anonymous_players = request.data.get('anonymous', ())
 		server.played_map = get_object_or_None(Map, name=request.data.get('map'))
 		server.save()
-		return "PONG"
+		
+		return {
+			'awards': badges_list,
+		}
 
 
 class FileUploadHandler(BaseHandler):
