@@ -18,6 +18,9 @@ class APIKeyAuthentication(object):
 		self.outdated = False
 
 	def is_authenticated(self, request):
+		self.forbidden = False
+		self.outdated = False
+
 		auth_string = request.META.get('HTTP_API_AUTH', None)
 		if not auth_string:
 			return False
