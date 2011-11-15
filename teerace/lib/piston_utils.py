@@ -41,6 +41,7 @@ class APIKeyAuthentication(object):
 			server.save() # bumps the last_connection_at
 			request.throttle_extra = server.id
 		except Server.DoesNotExist:
+			self.forbidden = True
 			request.user = AnonymousUser()
 
 		return not request.user in (False, None, AnonymousUser())
