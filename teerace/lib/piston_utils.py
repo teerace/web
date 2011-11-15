@@ -14,13 +14,12 @@ class APIKeyAuthentication(object):
 	"""
 	def __init__(self, realm='API'):
 		self.realm = realm
-		self.forbidden = True
+		self.forbidden = False
 		self.outdated = False
 
 	def is_authenticated(self, request):
 		auth_string = request.META.get('HTTP_API_AUTH', None)
 		if not auth_string:
-			self.forbidden = False
 			return False
 
 		gameserver_version = request.META.get('HTTP_API_GAMESERVER_VERSION', 0)
