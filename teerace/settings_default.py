@@ -261,3 +261,5 @@ TEST_RUNNER = 'local_tests.LocalTestSuiteRunner'
 
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
+
+MIN_GAMESERVER_VERSION = 1

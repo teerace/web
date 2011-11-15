@@ -1,5 +1,6 @@
 import json
 from django.http import HttpResponse
+from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from race.models import Server
 from piston.decorator import decorator
@@ -14,12 +15,17 @@ class APIKeyAuthentication(object):
 	def __init__(self, realm='API'):
 		self.realm = realm
 		self.forbidden = True
+		self.outdated = False
 
 	def is_authenticated(self, request):
 		auth_string = request.META.get('HTTP_API_AUTH', None)
-
 		if not auth_string:
 			self.forbidden = False
+			return False
+
+		gameserver_version = request.META.get('HTTP_API_GAMESERVER_VERSION', 0)
+		if int(gameserver_version) < settings.MIN_GAMESERVER_VERSION:
+			self.outdated = True
 			return False
 
 		if not len(auth_string) == 32:
@@ -28,6 +34,7 @@ class APIKeyAuthentication(object):
 		try:
 			server = Server.objects.get(api_key=auth_string)
 			if not server.is_active:
+				self.forbidden = True
 				return False
 			request.user = server.maintained_by
 			request.server = server
@@ -39,7 +46,11 @@ class APIKeyAuthentication(object):
 		return not request.user in (False, None, AnonymousUser())
 
 	def challenge(self):
-		if self.forbidden:
+		if self.outdated:
+			resp = HttpResponse("{0} API - Your game server is outdated "
+			"and cannot fully work with current API. Please upgrade.".format(self.realm))
+			resp.status_code = 432
+		elif self.forbidden:
 			resp = HttpResponse("{0} API - Forbidden".format(self.realm))
 			resp.status_code = 403
 		else:
