@@ -6,15 +6,13 @@
 	{% add_crumb 'Awards' 'awards' %}
 {% endblock %}
 {% block content %}
-	{% for award in award_list %}
-	{% for level in award.levels %}
+	{% for slug, badge in badges_dict %}
 	<div class="box award {% cycle 'left' 'center' 'right' %}">
-		<div class="header">{{ level.name }}</div>
-		<div class="icon award" sprite="{{ award.slug }}-{{ forloop.counter0 }}"></div>
+		<div class="header">{{ badge.name }}</div>
+		<div class="icon award" sprite="{{ slug }}-{{ forloop.counter0 }} {% if badge.user_has %}awarded{% endif %}"></div>
 		<p>
-			{{ level.description }}
+			{{ badge.description }}
 		</p>
 	</div>
-	{% endfor %}
 	{% endfor %}
 {% endblock content %}

@@ -1,16 +1,15 @@
+from collections import defaultdict
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
+from django.db.models import Count, Sum
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.list_detail import object_list
-from accounts import badges as account_badges
 from accounts.models import UserProfile
-from beta import badges as beta_badges
 from race.models import Map, MapType, Run, BestRun, Server
-from race import badges as race_badges
 from annoying.decorators import render_to
 from annoying.functions import get_object_or_None
-
+from brabeion import badges
+from brabeion.models import BadgeAward
 
 def ranks(request):
 	# exclude banned users from rank
@@ -113,18 +112,30 @@ def map_detail(request, map_id):
 
 @render_to('race/awards.html')
 def awards(request):
-	"""
-	magic.
+	if request.user.is_authenticated():
+		user_badges = set((slug, level) for slug, level in
+			BadgeAward.objects.filter(
+				user = request.user
+			).values_list("slug", "level"))
+	else:
+		user_badges = []
 
-	yes, you will hate me for this one.
-	"""
-	award_list = []
-	for badges in [race_badges, account_badges, beta_badges]:
-		award_names = [x for x in dir(badges) if x.endswith('Badge')]
-		for award in award_names:
-			award_list.append(getattr(badges, award))
+	badges_awarded = BadgeAward.objects.values("slug", "level").annotate(
+		num = Count("pk")
+	)
+	badges_dict = defaultdict(list)
+	for badge in badges_awarded:
+		badges_dict[badge["slug"]].append({
+			"level": badge["level"],
+			"name": badges._registry[badge["slug"]].levels[badge["level"]].name,
+			"description": badges._registry[badge["slug"]].levels[badge["level"]].description,
+			"count": badge["num"],
+			"user_has": (badge["slug"], badge["level"]) in user_badges
+		})
+
+
 	return {
-		'award_list': award_list
+		'badges_dict': badges_dict
 	}
 
 
