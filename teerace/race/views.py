@@ -135,7 +135,8 @@ def awards(request):
 
 
 	return {
-		'badges_dict': badges_dict
+		'badges_dict': badges_dict,
+		'user_count': User.objects.count(),
 	}
 
 
