@@ -1,4 +1,3 @@
-from collections import defaultdict
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
@@ -123,20 +122,28 @@ def awards(request):
 	badges_awarded = BadgeAward.objects.values("slug", "level").annotate(
 		num = Count("pk")
 	)
-	badges_dict = defaultdict(list)
-	for badge in badges_awarded:
-		badges_dict[badge["slug"]].append({
-			"level": badge["level"],
-			"name": badges._registry[badge["slug"]].levels[badge["level"]].name,
-			"description": badges._registry[badge["slug"]].levels[badge["level"]].description,
-			"count": badge["num"],
-			"user_has": (badge["slug"], badge["level"]) in user_badges
-		})
 
+	badges_counts = {"{0}_{1}".format(k['slug'], k['level']): k['num'] for k in badges_awarded}
+
+	user_count = UserProfile.objects.count()
+
+	badges_list = list()
+	for badge_cls in badges._registry.values():
+		for level, badge in enumerate(badge_cls.levels):
+			badge_count = badges_counts.get("{0}_{1}".format(badge_cls.slug, level), 0)
+			badges_list.append({
+				"slug": badge_cls.slug,
+				"level": level,
+				"name": badge.name,
+				"description": badge.description,
+				"count": badge_count,
+				"percentage": badge_count/float(user_count) * 100,
+				"user_has": (badge_cls.slug, level) in user_badges,
+			})
 
 	return {
-		'badges_dict': badges_dict,
-		'user_count': User.objects.count(),
+		'badges_list': badges_list,
+		'user_count': user_count,
 	}
 
 
