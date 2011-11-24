@@ -6,14 +6,16 @@
 	{% add_crumb 'Awards' 'awards' %}
 {% endblock %}
 {% block content %}
+<div class="box full">
 	{% for badge in badges_list %}
-	<div class="box award {% cycle 'left' 'center' 'right' %}">
+	<div class="award{% if badge.user_has %} awarded{% endif %}">
 		<div class="header">{{ badge.name }}</div>
-		<div class="icon award{% if badge.user_has %} awarded{% endif %}" sprite="{{ badge.slug }}-{{ badge.level }}"></div>
+		<div class="icon-outer"><div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div></div>
 		<p>
 			{{ badge.description }}
 		</p>
-		<div style="" class="stats">{{ badge.count }}/{{ user_count }} ({{ badge.percentage|floatformat:2 }}%) users received this award</div>
+		<div class="stats">{{ badge.count }}/{{ user_count }} ({{ badge.percentage|floatformat:2 }}%) users received this award</div>
 	</div>
 	{% endfor %}
+</div>
 {% endblock content %}

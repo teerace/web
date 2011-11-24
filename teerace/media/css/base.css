@@ -1155,13 +1155,73 @@ ul.actstream {
 	}
 
 .award {
-	position:relative;
+	font-size: 11px;
+	position: relative;
+	width: 260px;
+	height: 50px;
+	margin: 20px 12px;
+	float: left;
 }
 
+.award:first-child, .award:nth-child(2), .award:nth-child(3) {
+	margin-top: 0;
+}
+
+	.award .icon-outer {
+		background-color: #b5b495;
+		border: 3px solid #fff;
+		box-shadow: 0 0 3px #000, inset 0 0 10px #6e6d4a;
+		border-radius: 1000px;
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		z-index: 5;
+	}
+
 	.award .icon {
-		position:absolute;
-		top:10px;
-		right:10px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -16px;
+	}
+
+	.award .header {
+		color: #333;
+		font-size: 13px;
+		font-weight: bold;
+		line-height: 26px;
+		background-color: #fff;
+		box-shadow: 0 0 3px #000;
+		border-radius: 1000px;
+		width: 75%;
+		margin: -11px 0 0 40px;
+		padding-left: 30px;
+		position: absolute;
+		top: 50%;
+		z-index: 4;
+	}
+
+	.award p {
+		color: #444;
+		background-color: #eee;
+		border-bottom-right-radius: 5px;
+		box-shadow: 0 0 3px #000;
+		width: 180px;
+		margin-left: 30px;
+		padding: 3px 3px 1px 40px;
+		position: absolute;
+		top: 56%;
+	}
+
+	.award .stats {
+		color: #444;
+		font-size: 9px;
+		background-color: #eee;
+		border-top-right-radius: 5px;
+		box-shadow: 0 0 3px #000;
+		width: 180px;
+		margin-left: 30px;
+		padding: 2px 3px 2px 40px;
 	}
 
 .form_field {
