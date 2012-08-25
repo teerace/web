@@ -689,8 +689,6 @@ class ActivityHandler(BaseHandler):
 		"""
 		URL
 			**/api/1/activity/new/**
-		Shortdesc
-
 		Arguments
 			- none
 		Data
