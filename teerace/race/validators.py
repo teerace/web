@@ -14,7 +14,7 @@ def is_demo_file(field):
 	content = field.read()	
 	if content[:6] != 'TWDEMO':
 		raise ValidationError("It's not a valid Teeworlds demo file.")
-	if content[7] != '\x03':
+	if content[7] != '\x04':
 		raise ValidationError("This demo file version is not supported by Teerace"
 			" (0.6 is required).")
 
