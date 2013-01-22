@@ -23,7 +23,7 @@
 		</div>
 		{% endif %}
 		<div class="comment-reply" style="display:block;">
-			<form method="POST" action="{% comment_form_target %}">
+			<form method="POST" action="{% comment_form_target %}">{% csrf_token %}
 			{% for field in form %}
 				{% if field.is_hidden %}
 					{{ field }}
