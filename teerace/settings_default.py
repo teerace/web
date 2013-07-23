@@ -284,5 +284,6 @@ ACTSTREAM_SETTINGS = {
     'MODELS': [
     	'brabeion.badgeaward',
     	'auth.user',
+    	'race.map',
     ],
 }
