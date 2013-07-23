@@ -7,6 +7,8 @@
 *.tmproj
 *.directory
 teerace/settings_local.py
+teerace/media/
+teerace/teerace.cache/
 build/
 pip-log.txt
 src/

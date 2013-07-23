@@ -9,7 +9,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding field 'Server.description_html'
-        db.add_column('race_server', 'description_html', self.gf('django.db.models.fields.TextField')(default='', blank=True), keep_default=False)
+        db.add_column('race_server', 'description_html', self.gf('django.db.models.fields.TextField')(default='', blank=True, null=True), keep_default=False)
 
 
     def backwards(self, orm):

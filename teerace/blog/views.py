@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic.list_detail import object_list
+from django.views.generic import ListView
 from blog.models import Entry
 from annoying.decorators import render_to
 
@@ -7,7 +7,8 @@ from annoying.decorators import render_to
 def entry_list(request):
 	entries = Entry.objects.filter(status=Entry.PUBLISHED_STATUS) \
 		.order_by('-created_at').select_related()
-	return object_list(request, queryset=entries, template_object_name='entry')
+	list_view = ListView.as_view(template_name='blog/entry_list.html', queryset=entries, context_object_name='entry_list')
+	return list_view(request)
 
 
 @render_to('blog/entry_detail.html')

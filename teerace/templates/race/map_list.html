@@ -8,7 +8,7 @@ context variables:
 {% endcomment %}
 {% block submenu %}
 	<ul class="left">
-		<li><a href="{% url maps %}">All</a></li>{% for type in map_types %}<li><a href="{% url maps__type type.slug %}">{{ type.displayed_name }}</a></li>{% endfor %}</li>{% if request.user.is_authenticated %}<li><a href="{% url maps_unfinished %}">Unfinished</a></li>{% endif %}
+		<li><a href="{% url 'maps' %}">All</a></li>{% for type in map_types %}<li><a href="{% url 'maps__type' type.slug %}">{{ type.displayed_name }}</a></li>{% endfor %}</li>{% if request.user.is_authenticated %}<li><a href="{% url 'maps_unfinished' %}">Unfinished</a></li>{% endif %}
 	</ul>
 {% endblock submenu %}
 {% block breadcrumb %}

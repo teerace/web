@@ -13,7 +13,7 @@ context variables:
 {% block content %}
 	<div class="box full">
 		<div class="header">Sign in</div>
-		<form method="post" action="{% url login %}">{% csrf_token %}
+		<form method="post" action="{% url 'login' %}">{% csrf_token %}
 			{% with login_form as form %}
 				{% include "snippets/form.html" %}
 			{% endwith %}
@@ -22,6 +22,6 @@ context variables:
 				<input type="submit" value="Login">
 			</div>
 		</form>
-		<a href="{% url django.contrib.auth.views.password_reset %}">Lost your password?</a>
+		<a href="{% url 'django.contrib.auth.views.password_reset' %}">Lost your password?</a>
 	</div>
 {% endblock %}

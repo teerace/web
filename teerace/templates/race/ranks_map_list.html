@@ -27,7 +27,7 @@ context variables:
 			</tr>
 			{% for map in object_list %}
 			<tr>
-				<td><a href="{% url ranks_map_detail map.id %}">{{ map.name }}</a></td>
+				<td><a href="{% url 'ranks_map_detail' map.id %}">{{ map.name }}</a></td>
 				<td>{{ map.added_at|date:"F j, Y" }}</td>
 				<td>{{ map.run_count }}</td>
 				<td>{{ map.total_runtime|default_if_none:0|sectodur }}</td>

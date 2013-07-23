@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import patterns, url, include, handler404, handler500
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 import settings
 
 admin.autodiscover()
@@ -18,11 +20,11 @@ urlpatterns = patterns('',
 	# (r'^stream/', include('actstream.urls')),
 	(r'^admin/', include(admin.site.urls)),
 ) + patterns('django.views.generic.simple',
-	url(r'^about/', 'direct_to_template',
-		{'template': 'static/about.html'}, name='about'),
-	url(r'^contact/', 'direct_to_template',
-		{'template': 'static/contact.html'}, name='contact'),
+	url(r'^about/', TemplateView.as_view(template_name='static/about.html'), name='about'),
+	url(r'^contact/', TemplateView.as_view(template_name='static/contact.html'), name='contact'),
 )
+
+urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
 	urlpatterns += patterns('',

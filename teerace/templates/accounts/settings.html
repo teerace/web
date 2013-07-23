@@ -12,14 +12,14 @@ context variables:
 {% endblock %}
 {% block submenu %}
 	<ul class="left">
-		<li><a href="{% url api_token %}">API token</a></li>
-		<li><a href="{% url password_change %}">Password change</a></li>
+		<li><a href="{% url 'api_token' %}">API token</a></li>
+		<li><a href="{% url 'password_change' %}">Password change</a></li>
 	</ul>
 {% endblock submenu %}
 {% block content %}
 	<div class="box full">
 		<div class="header">Settings</div>
-		<form method="post" action="{% url settings %}">{% csrf_token %}
+		<form method="post" action="{% url 'settings' %}">{% csrf_token %}
 			{% with settings_user_form as form %}
 				{% include "snippets/form.html" %}
 			{% endwith %}

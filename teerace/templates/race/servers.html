@@ -22,7 +22,7 @@ context variables:
 				<ul>
 				{% for player in server.players.all %}
 					{% if player.is_online %}
-						<li><span class="name"><a href="{% url profile player.id %}">{{ player.user.username }}</a></span>{% if server.played_map %}<span class="time">{{ player|map_time:server.played_map|race_time }}</span><span class="points">{{ player|map_points:server.played_map }}</span>{% endif %}</li>
+						<li><span class="name"><a href="{% url 'profile' player.id %}">{{ player.user.username }}</a></span>{% if server.played_map %}<span class="time">{{ player|map_time:server.played_map|race_time }}</span><span class="points">{{ player|map_points:server.played_map }}</span>{% endif %}</li>
 					{% endif %}
 				{% endfor %}
 				{% for anonymous in server.anonymous_players %}

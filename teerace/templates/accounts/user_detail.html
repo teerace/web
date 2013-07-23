@@ -13,7 +13,7 @@ context variables:
 {% endblock %}
 {% block submenu %}
 	<ul class="left">
-		<li><a href="{% url profile profile_user.id %}">Profile</a></li><li><a href="{% url profile_best profile_user.id %}">Best scores</a></li><li><a href="{% url profile_activity profile_user.id %}">Activity</a></li><li><a href="{% url profile_badges profile_user.id %}">Badges</a></li>
+		<li><a href="{% url 'profile' profile_user.id %}">Profile</a></li><li><a href="{% url 'profile_best' profile_user.id %}">Best scores</a></li><li><a href="{% url 'profile_activity' profile_user.id %}">Activity</a></li><li><a href="{% url 'profile_badges' profile_user.id %}">Badges</a></li>
 	</ul>
 {% endblock submenu %}
 {% block extra_head %}
@@ -25,7 +25,7 @@ context variables:
 			$(".javascript").addClass ("hide");
 			$.ajax({
 				type: "GET",
-				url: "{% url profile_points_graph_json profile_user.id %}",
+				url: "{% url 'profile_points_graph_json' profile_user.id %}",
 				dataType: "json",
 				success: function (json) {
 					if (json.history != null && json.history.length > 1) {
@@ -60,7 +60,7 @@ context variables:
 			{% if profile_user.profile.is_online and profile_user.profile.playing_on %}
 			<span class="online">
 				{% with profile_user.profile.playing_on as server %}
-				<strong>online</strong> and currently playing on <a href="{% url servers %}#s-{{ server.id }}"><strong>{{ server.name }}</strong></a>
+				<strong>online</strong> and currently playing on <a href="{% url 'servers' %}#s-{{ server.id }}"><strong>{{ server.name }}</strong></a>
 				{% endwith %}
 			{% else %}
 			<span class="offline">
@@ -132,7 +132,7 @@ context variables:
 				</div>
 			{% if forloop.counter|divisibleby:2 or forloop.last %}</div>{% endif %}
 		{% endfor %}
-		<a href="{% url profile_badges profile_user.id %}" class="more">See more &raquo;</a>
+		<a href="{% url 'profile_badges' profile_user.id %}" class="more">See more &raquo;</a>
 	</div>
 	{% endif %}
 
@@ -162,6 +162,6 @@ context variables:
 			</li>
 		{% endfor %}
 		</ul>
-		<a href="{% url profile_activity profile_user.id %}" class="more">See more &raquo;</a>
+		<a href="{% url 'profile_activity' profile_user.id %}" class="more">See more &raquo;</a>
 	</div>
 {% endblock content %}

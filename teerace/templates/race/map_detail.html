@@ -101,7 +101,7 @@ context variables:
 -->
 			</table>
 			<br>
-			<a class="button" href="{% url map_download map.id %}">Download map</a><span class="map-file-size">{{ map.map_file.size|filesizeformat }}</span>
+			<a class="button" href="{% url 'map_download' map.id %}">Download map</a><span class="map-file-size">{{ map.map_file.size|filesizeformat }}</span>
 		</div>
 
 		<div class="right no-map-image"><br>Map screenshot is missing.</div>
@@ -139,7 +139,7 @@ context variables:
 		{% if best_runs %}
 		<tfoot>
 			<tr>
-				<td colspan="7"><a href="{% url ranks_map_detail map.id %}">See whole rank &raquo;</a></td>
+				<td colspan="7"><a href="{% url 'ranks_map_detail' map.id %}">See whole rank &raquo;</a></td>
 			</tr>
 		</tfoot>
 		{% endif %}
