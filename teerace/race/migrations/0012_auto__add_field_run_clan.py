@@ -9,7 +9,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding field 'Run.clan'
-        db.add_column('race_run', 'clan', self.gf('django.db.models.fields.CharField')(default='', max_length=11, blank=True), keep_default=False)
+        db.add_column('race_run', 'clan', self.gf('django.db.models.fields.CharField')(default='', max_length=11, blank=True, null=True), keep_default=False)
 
 
     def backwards(self, orm):

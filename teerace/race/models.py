@@ -109,7 +109,7 @@ class Run(models.Model):
 	user = models.ForeignKey(User, blank=True, null=True,
 		on_delete=models.SET_NULL)
 	nickname = models.CharField(max_length=15)
-	clan = models.CharField(max_length=11, blank=True)
+	clan = models.CharField(max_length=11, blank=True, null=True)
 
 	# yep, 24 semicolons and 25 time decimals,
 	# which length is MAX_DIGITS + decimal separator (.)
@@ -241,7 +241,7 @@ class Server(models.Model):
 	name = models.CharField(max_length=100, verbose_name="server name")
 	description = models.TextField(blank=True,
 		help_text="You may use Markdown syntax")
-	description_html = models.TextField(blank=True)
+	description_html = models.TextField(blank=True, null=True)
 	address = models.CharField(max_length=50, blank=True)
 	maintained_by = models.ForeignKey(User, related_name='maintained_servers',
 		verbose_name="maintainer", on_delete=models.PROTECT)

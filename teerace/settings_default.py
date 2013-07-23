@@ -7,6 +7,7 @@ Please override settings in settings_local.py instead.
 """
 
 import os
+from django import contrib
 # Django settings for teerace project.
 
 PROJECT_DIR = os.path.dirname(__file__)
@@ -85,7 +86,22 @@ COUNTRIES_FLAG_URL = 'images/flags/%(code)s.gif'
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+STATIC_URL = '/static/'
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    os.path.join(contrib.__path__[0], 'admin', 'static'),
+)
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'foobar'
@@ -263,3 +279,10 @@ ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 MIN_GAMESERVER_VERSION = 1
+
+ACTSTREAM_SETTINGS = {
+    'MODELS': [
+    	'brabeion.badgeaward',
+    	'auth.user',
+    ],
+}

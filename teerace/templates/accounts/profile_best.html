@@ -27,7 +27,7 @@ context variables:
 			</tr>
 			{% for run in best_runs %}
 			<tr>
-				<td><a href="{% url ranks_map_detail run.map.id %}">{{ run.map.name }}</a></td>
+				<td><a href="{% url 'ranks_map_detail' run.map.id %}">{{ run.map.name }}</a></td>
 				<td>{{ run.run.created_at|date:"F j, Y" }}</td>
 				<td>{{ run.points }}</td>
 			{% with run.map.get_best_run as map_bestrun %}
