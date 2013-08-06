@@ -50,9 +50,6 @@ class Map(models.Model):
 
 	download_count = models.IntegerField(default=0)
 
-	class Meta:
-		ordering = ['added_at']
-
 	@property
 	def run_count(self):
 		return Run.objects.filter(map=self).count()
