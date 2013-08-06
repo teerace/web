@@ -388,7 +388,7 @@ class UserHandler(BaseHandler):
 class MapHandler(BaseHandler):
 	allowed_methods = ('GET',)
 	fields = ('id', 'name', 'author', 'crc', 'run_count',
-		'get_best_score', 'get_download_url')
+		'get_best_score', 'get_map_type', 'get_download_url')
 	model = Map
 
 	@classmethod

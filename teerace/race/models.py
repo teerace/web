@@ -76,6 +76,9 @@ class Map(models.Model):
 		except IndexError:
 			return None
 
+	def get_map_type(self):
+		return self.map_type.id
+
 	def get_download_url(self):
 		return self.map_file.url
 
