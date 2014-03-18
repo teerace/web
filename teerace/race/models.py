@@ -27,7 +27,7 @@ class Map(models.Model):
 
 	def map_filename(self, filename):
 		del filename
-		return 'uploads/maps/{0}.map'.format(self.name)
+		return u'uploads/maps/{0}.map'.format(self.name)
 	map_file = models.FileField(storage=OverwriteStorage(),
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8, blank=True, null=True)
@@ -190,7 +190,7 @@ class BestRun(models.Model):
 
 	def demo_filename(self, filename):
 		del filename
-		return 'uploads/demos/{0}/{1}/{2}_{3}.demo'.format(self.map.name[0],
+		return u'uploads/demos/{0}/{1}/{2}_{3}.demo'.format(self.map.name[0],
 			self.user.username[0], self.map.name, self.user.username)
 	demo_file = models.FileField(blank=True, null=True,
 		storage=OverwriteStorage(), upload_to=demo_filename,
@@ -198,7 +198,7 @@ class BestRun(models.Model):
 
 	def ghost_filename(self, filename):
 		del filename
-		return 'uploads/ghosts/{0}/{1}/{2}_{3}.gho'.format(self.map.name[0],
+		return u'uploads/ghosts/{0}/{1}/{2}_{3}.gho'.format(self.map.name[0],
 			self.user.username[0], self.map.name, self.user.username)
 	ghost_file = models.FileField(blank=True, null=True,
 		storage=OverwriteStorage(), upload_to=ghost_filename,
