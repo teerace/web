@@ -111,12 +111,7 @@ import djcelery
 from celery.schedules import crontab
 djcelery.setup_loader()
 
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "guest"
-BROKER_PASSWORD = "guest"
-BROKER_VHOST = "/"
-CELERY_RESULT_BACKEND = "amqp"
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 CELERY_IMPORTS = ("race.tasks", "stats.tasks")
 CELERYBEAT_SCHEDULE = {
     # everyday, 4:30 AM
