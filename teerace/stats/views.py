@@ -1,7 +1,7 @@
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.utils import simplejson
+import json as simplejson
 from stats.models import Chart
 from annoying.decorators import render_to
 

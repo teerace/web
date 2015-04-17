@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import *
 
 urlpatterns = patterns('accounts.views',
 	url(r'^user/$', 'welcome', name='welcome'),

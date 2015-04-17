@@ -6,11 +6,12 @@ Do NOT (!!!) edit this file!
 Please override settings in settings_local.py instead.
 """
 
-import os
+import os, sys
 from django import contrib
 # Django settings for teerace project.
 
 PROJECT_DIR = os.path.dirname(__file__)
+sys.path.insert(0, PROJECT_DIR)
 
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -20,36 +21,36 @@ BETA = False
 INTERNAL_IPS = ('127.0.0.1',)
 
 ADMINS = (
-#	('John Doe', 'joe@doe.com'),
+#   ('John Doe', 'joe@doe.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
-	'default': {
-		# Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3'.
-		'ENGINE': 'django.db.backends.sqlite3',
-		# Or path to database file if using sqlite3.
-		'NAME': PROJECT_DIR + '/teerace.sqlite',
-		# Not used with sqlite3.
-		'USER': '',
-		# Not used with sqlite3.
-		'PASSWORD': '',
-		# Set to empty string for localhost. Not used with sqlite3.
-		'HOST': '',
-		# Set to empty string for default. Not used with sqlite3.
-		'PORT': '',
-	}
+    'default': {
+        # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        # Or path to database file if using sqlite3.
+        'NAME': PROJECT_DIR + '/teerace.sqlite',
+        # Not used with sqlite3.
+        'USER': '',
+        # Not used with sqlite3.
+        'PASSWORD': '',
+        # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': '',
+        # Set to empty string for default. Not used with sqlite3.
+        'PORT': '',
+    }
 }
 
 # New CACHES setting. Waiting for johnny-cache.
 CACHES = {
-	'default': {
-#		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-#		'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-		'BACKEND': 'johnny.backends.memcached.MemcachedCache',
-		'LOCATION': 'localhost:11211',
-	}
+    'default': {
+#       'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#        'BACKEND': 'johnny.backends.memcached.MemcachedCache',
+        'LOCATION': 'localhost:11211',
+    }
 }
 JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_teerace'
 
@@ -118,29 +119,29 @@ BROKER_VHOST = "/"
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_IMPORTS = ("race.tasks", "stats.tasks")
 CELERYBEAT_SCHEDULE = {
-	# everyday, 4:30 AM
-	"points_history": {
-		"task": "race.tasks.update_user_points_history",
-		"schedule": crontab(hour=4, minute=30),
-	},
-	# everyday, 0:30 AM
+    # everyday, 4:30 AM
+    "points_history": {
+        "task": "race.tasks.update_user_points_history",
+        "schedule": crontab(hour=4, minute=30),
+    },
+    # everyday, 0:30 AM
     "yesterday_runs": {
-		"task": "race.tasks.update_yesterday_runs",
-		"schedule": crontab(hour=0, minute=30),
-	},
-	# everyday, 0:32 AM
+        "task": "race.tasks.update_yesterday_runs",
+        "schedule": crontab(hour=0, minute=30),
+    },
+    # everyday, 0:32 AM
     "daily_charts": {
-		"task": "stats.tasks.update_daily_charts",
-		"schedule": crontab(hour=0, minute=32),
-	},
-	# every 15 minutes
+        "task": "stats.tasks.update_daily_charts",
+        "schedule": crontab(hour=0, minute=32),
+    },
+    # every 15 minutes
     "totals": {
-		"task": "race.tasks.update_totals",
-		"schedule": crontab(minute="*/15"),
-	},
+        "task": "race.tasks.update_totals",
+        "schedule": crontab(minute="*/15"),
+    },
 }
 MAN_IN_BLACKLIST = ('djcelery_taskstate',
-	'djcelery_workerstate')
+    'djcelery_workerstate')
 
 
 # Local time zone for this installation. Choices can be found here:
@@ -178,7 +179,7 @@ LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 
 ABSOLUTE_URL_OVERRIDES = {
-	'auth.user': lambda u: "/profile/%s/" % u.id,
+    'auth.user': lambda u: "/profile/%s/" % u.id,
 }
 
 GRAVATAR_DEFAULT_IMAGE = "mm"
@@ -189,86 +190,87 @@ RESULT_PRECISION = 3
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-	'django.template.loaders.filesystem.Loader',
-	'django.template.loaders.app_directories.Loader',
-	'django.template.loaders.eggs.Loader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 if TEMPLATE_CACHING:
-	TEMPLATE_LOADERS = (
-		('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),
-	)
+    TEMPLATE_LOADERS = (
+        ('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),
+    )
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 MIDDLEWARE_CLASSES = (
-	'johnny.middleware.LocalStoreClearMiddleware',
-	'johnny.middleware.QueryCacheMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.http.ConditionalGetMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	#'django.middleware.transaction.TransactionMiddleware',
-	# see https://bitbucket.org/jmoiron/johnny-cache/issue/17/
-	'johnny.middleware.CommittingTransactionMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'pagination.middleware.PaginationMiddleware',
+    #'johnny.middleware.LocalStoreClearMiddleware',
+    #'johnny.middleware.QueryCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    #'django.middleware.transaction.TransactionMiddleware',
+    # see https://bitbucket.org/jmoiron/johnny-cache/issue/17/
+    #'johnny.middleware.CommittingTransactionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-	'django.contrib.auth.context_processors.auth',
-	'django.core.context_processors.debug',
-	'django.core.context_processors.i18n',
-	'django.core.context_processors.media',
-	'django.core.context_processors.request',
-	'lib.context_processors.settings',
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'lib.context_processors.settings',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'teerace.urls'
+# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = 'teerace.wsgi.application'
 
 TEMPLATE_DIRS = (
-	os.path.join(PROJECT_DIR, 'templates'),
-	os.path.join(PROJECT_DIR, 'templates/piston'),
+    os.path.join(PROJECT_DIR, 'templates'),
+    os.path.join(PROJECT_DIR, 'templates/piston'),
 )
 
 OUR_APPS = (
-	'accounts',
-	'api',
-	'blog',
-	'home',
-	'race',
-	'stats',
+    'race',
+    'accounts',
+    'api',
+    'blog',
+    'home',
+    'stats',
 )
 
 INSTALLED_APPS = (
-	'admin_tools',
-	'admin_tools.theming',
-	'admin_tools.menu',
-	'admin_tools.dashboard',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.sites',
-	'django.contrib.messages',
-	'django.contrib.admin',
-	'django.contrib.markup',
-	'django.contrib.humanize',
-	'lib',
-	'johnny',
-	'crumbs',
-	'gravatar',
-	'django.contrib.comments',
-	'threadedcomments',
-	'faq',
-	'pagination',
-	'sorting',
-	'actstream',
-	'piston',
-	'recaptcha_works',
-	'brabeion',
-	'djcelery',
-	'south',
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
+    'django_markwhat',
+    'django.contrib.humanize',
+    'lib',
+    'cachalot',
+    'crumbs',
+    'gravatar',
+    'django_comments',
+    'threadedcomments',
+    'faq',
+    'pagination',
+    'sorting',
+    'actstream',
+    'piston',
+    'recaptcha_works',
+    'brabeion',
+    'djcelery',
 ) + OUR_APPS
 
 COMMENTS_APP = 'threadedcomments'
@@ -282,8 +284,8 @@ MIN_GAMESERVER_VERSION = 1
 
 ACTSTREAM_SETTINGS = {
     'MODELS': [
-    	'brabeion.badgeaward',
-    	'auth.user',
-    	'race.map',
+        'brabeion.badgeaward',
+        'auth.user',
+        'race.map',
     ],
 }

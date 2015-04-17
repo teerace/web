@@ -8,7 +8,7 @@ from django.contrib.auth import (authenticate, login as auth_login,
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
-from django.utils import simplejson
+import json as simplejson
 from accounts.forms import (LoginForm, RegisterForm, SettingsUserForm,
 	SettingsProfileForm, PasswordChangeForm)
 from race.models import BestRun

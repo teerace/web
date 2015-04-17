@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import *
 
 urlpatterns = patterns('stats.views',
 	url(r'^$', 'chart_list', name='chart_list'),

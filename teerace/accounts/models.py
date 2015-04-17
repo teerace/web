@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from race.models import Map, Run, BestRun
-from django_countries import CountryField
+from django_countries.fields import CountryField
 from picklefield.fields import PickledObjectField
 from actstream import action
 

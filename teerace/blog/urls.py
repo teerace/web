@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import *
 from blog.feeds import LatestEntriesFeed, LatestEntriesForPlanetFeed
 
 urlpatterns = patterns('blog.views',

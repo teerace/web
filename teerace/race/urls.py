@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import *
 
 urlpatterns = patterns('race.views',
 	url(r'^maps/$', 'map_list', name='maps'),

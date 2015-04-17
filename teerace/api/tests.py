@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase as DjangoTestCase
 from django.test.client import Client
-from django.utils import simplejson
+import json as simplejson
 from race.models import Map, Server
 from lib.rsa import RSA
 

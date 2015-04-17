@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import *
 
 urlpatterns = patterns('home.views',
 	url(r'^stream_since/(?P<since_timestamp>[\d]+)/$',
