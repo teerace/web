@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url, include, handler404, handler500
+from django.conf.urls import *
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
@@ -14,7 +14,7 @@ urlpatterns = patterns('',
 	(r'^', include('accounts.urls')),
 	(r'^', include('race.urls')),
 	(r'^', include('home.urls')),
-	(r'^c/', include('django.contrib.comments.urls')),
+	(r'^c/', include('django_comments.urls')),
 	(r'^admin_tools/', include('admin_tools.urls')),
 	(r'^help/', include('faq.urls.shallow')),
 	# (r'^stream/', include('actstream.urls')),

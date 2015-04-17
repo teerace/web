@@ -15,6 +15,9 @@ from markdown import markdown
 def generate_random_key():
 	return User.objects.make_random_password(length=32)
 
+def map_filename(obj, filename):
+		del filename
+		return u'uploads/maps/{0}.map'.format(obj.name)
 
 class Map(models.Model):
 	"""Representation of a map played in Teerace"""
@@ -25,9 +28,6 @@ class Map(models.Model):
 	added_at = models.DateTimeField(auto_now_add=True)
 	added_by = models.ForeignKey(User, on_delete=models.PROTECT)
 
-	def map_filename(self, filename):
-		del filename
-		return u'uploads/maps/{0}.map'.format(self.name)
 	map_file = models.FileField(storage=OverwriteStorage(),
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8, blank=True, null=True)
@@ -174,6 +174,16 @@ class Run(models.Model):
 			tasks.redo_ranks.delay(runs[0])
 
 
+def demo_filename(obj, filename):
+		del filename
+		return u'uploads/demos/{0}/{1}/{2}_{3}.demo'.format(obj.map.name[0],
+			obj.user.username[0], obj.map.name, obj.user.username)
+
+def ghost_filename(obj, filename):
+		del filename
+		return u'uploads/ghosts/{0}/{1}/{2}_{3}.gho'.format(obj.map.name[0],
+			obj.user.username[0], obj.map.name, obj.user.username)
+
 class BestRun(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	map = models.ForeignKey('Map', on_delete=models.CASCADE)
@@ -188,18 +198,11 @@ class BestRun(models.Model):
 	SCORING = (40, 34, 31) + tuple(range(27, 0, -1))
 	points = models.IntegerField(default=0)
 
-	def demo_filename(self, filename):
-		del filename
-		return u'uploads/demos/{0}/{1}/{2}_{3}.demo'.format(self.map.name[0],
-			self.user.username[0], self.map.name, self.user.username)
+	
 	demo_file = models.FileField(blank=True, null=True,
 		storage=OverwriteStorage(), upload_to=demo_filename,
 		validators=[is_demo_file])
 
-	def ghost_filename(self, filename):
-		del filename
-		return u'uploads/ghosts/{0}/{1}/{2}_{3}.gho'.format(self.map.name[0],
-			self.user.username[0], self.map.name, self.user.username)
 	ghost_file = models.FileField(blank=True, null=True,
 		storage=OverwriteStorage(), upload_to=ghost_filename,
 		validators=[is_ghost_file])

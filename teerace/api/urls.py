@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import *
 from piston.doc import documentation_view
 from api.server_handlers import (RunHandler, UserHandler, MapHandler,
 	PingHandler, FileUploadHandler)
