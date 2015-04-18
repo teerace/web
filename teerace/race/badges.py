@@ -20,7 +20,7 @@ class RunCountBadge(BadgeBase):
 
 	def award(self, **state):
 		user = state['user']
-		runs = user.get_profile().completions
+		runs = user.profile.completions
 		if runs > 5000:
 			return BadgeAwarded(level=4)
 		if runs > 1000:
@@ -44,7 +44,7 @@ class RuntimeBadge(BadgeBase):
 
 	def award(self, **state):
 		user = state['user']
-		runtime = user.get_profile().runtime
+		runtime = user.profile.runtime
 		# a day
 		if runtime > 86400:
 			return BadgeAwarded(level=3)
