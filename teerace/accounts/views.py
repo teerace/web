@@ -138,7 +138,7 @@ def profile_points_graph_json(request, user_id):
 		{'user': user.id, 'history': history},
 		cls=DjangoJSONEncoder,
 	)
-	return HttpResponse(response_data, mimetype="application/json")
+	return HttpResponse(response_data, content_type="application/json")
 
 
 @render_to('accounts/profile_badges.html')
