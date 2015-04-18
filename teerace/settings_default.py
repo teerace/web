@@ -244,7 +244,7 @@ INSTALLED_APPS = (
     'admin_tools.theming',
     'admin_tools.menu',
     'admin_tools.dashboard',
-    'django.contrib.auth',
+    'apps.DjangoContribAuthConfig',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -264,7 +264,7 @@ INSTALLED_APPS = (
     'actstream',
     'piston',
     'recaptcha_works',
-    'brabeion',
+    'apps.BrabeionConfig',
     'djcelery',
 ) + OUR_APPS
 
@@ -276,11 +276,3 @@ ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 MIN_GAMESERVER_VERSION = 1
-
-ACTSTREAM_SETTINGS = {
-    'MODELS': [
-        'brabeion.badgeaward',
-        'auth.user',
-        'race.map',
-    ],
-}
