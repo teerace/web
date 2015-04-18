@@ -82,7 +82,7 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-COUNTRIES_FLAG_URL = 'images/flags/%(code)s.gif'
+COUNTRIES_FLAG_URL = 'images/flags/{code}.gif'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
