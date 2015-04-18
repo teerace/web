@@ -118,7 +118,7 @@ def stream_since_json(request, since_timestamp):
 		{'new_actions': response_data},
 		default=dthandler,
 	)
-	return HttpResponse(response_data, mimetype="application/json")
+	return HttpResponse(response_data, content_type="application/json")
 
 @ajax_request
 def server_timestamp(request):

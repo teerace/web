@@ -22,4 +22,4 @@ def chart_list_json(request):
 		data,
 		cls=DjangoJSONEncoder,
 	)
-	return HttpResponse(response_data, mimetype="application/json")
+	return HttpResponse(response_data, content_type="application/json")
