@@ -24,8 +24,9 @@ urlpatterns = patterns('accounts.views',
 		'accounts/password_reset.html',
 		'email_template_name': 'accounts/email/password_reset.html'},
 		name='password_reset'),
-	(r'^password_reset/done/$', 'password_reset_done', {'template_name':
-		'accounts/password_reset_done.html'}),
+	url(r'^password_reset/done/$', 'password_reset_done', {'template_name':
+		'accounts/password_reset_done.html'},
+		name='password_reset_done'),
 	url(r'^password_reset/confirm/(?P<uidb36>[0-9A-Za-z]+)/(?P<token>.+)/$',
 		'password_reset_confirm', {'template_name':
 		'accounts/password_reset_confirm.html'},
