@@ -31,6 +31,7 @@ urlpatterns = patterns('accounts.views',
 		'password_reset_confirm', {'template_name':
 		'accounts/password_reset_confirm.html'},
 		name='password_reset_confirm'),
-	(r'^password_reset/complete/$', 'password_reset_complete',
-		{'template_name': 'accounts/password_reset_complete.html'}),
+	url(r'^password_reset/complete/$', 'password_reset_complete',
+		{'template_name': 'accounts/password_reset_complete.html'},
+		name='password_reset_complete'),
 )
