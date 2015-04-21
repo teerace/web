@@ -18,11 +18,11 @@
 				</p>
 			</div>
 		</div>
-		<form method="POST" action="">
+		<form method="POST" action="">{% csrf_token %}
 			<div class="form_field">
-				<input type="hidden" name="next" value="{% get_comment_permalink comment "" %}">
+				<input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}#cm-{{ comment.id }}">
 				<input type="submit" value="Yes, remove it now, please.">
-				<label>or <a href="{% get_comment_permalink comment "#cm-%(id)s" %}">cancel</a></label>
+				<label>or <a href="{{ comment.content_object.get_absolute_url }}#cm-{{ comment.id }}">cancel</a></label>
 			</div>
 		</form>
 	</div>
