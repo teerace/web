@@ -273,7 +273,7 @@ def update_yesterday_runs():
 	runs_yesterday = Run.objects.filter(created_at__range=
 		(datetime.combine(yesterday, time.min),
 		datetime.combine(yesterday, time.max)))
-	cache.set('runs_yesterday', runs_yesterday, 0)
+	cache.set('runs_yesterday', runs_yesterday, timeout=None)
 
 
 @task(ignore_result=True)
@@ -284,6 +284,6 @@ def update_totals():
 	total_playtime = UserProfile.objects.aggregate(
 		Sum('playtime')
 	)['playtime__sum']
-	cache.set('total_runs', total_runs, 0)
-	cache.set('total_runtime', total_runtime, 0)
-	cache.set('total_playtime', total_playtime, 0)
+	cache.set('total_runs', total_runs, timeout=None)
+	cache.set('total_runtime', total_runtime, timeout=None)
+	cache.set('total_playtime', total_playtime, timeout=None)

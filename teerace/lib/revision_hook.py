@@ -15,7 +15,7 @@ def get_revision():
 
 def set_cache(rev):
 	from django.core.cache import cache
-	cache.set('current_revision', rev, 0)
+	cache.set('current_revision', rev, timeout=None)
 
 if __name__ == '__main__':
 	sys.path.append(os.environ['PWD'])
