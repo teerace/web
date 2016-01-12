@@ -218,7 +218,7 @@ class BestRun(models.Model):
 		ordering = ['time', 'run__created_at']
 
 	def __unicode__(self):
-		return repr(self.run)
+		return repr(self.run).decode('utf-8')
 
 	def save(self, *args, **kwargs):
 		was_run_id = get_object_or_None(BestRun, user=self.user, map=self.map)
