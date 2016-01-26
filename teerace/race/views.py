@@ -151,7 +151,7 @@ def awards(request):
 				"name": badge.name,
 				"description": badge.description,
 				"count": badge_count,
-				"percentage": badge_count/float(user_count) * 100,
+				"percentage": badge_count/float(user_count) * 100 if user_count else 0,
 				"user_has": (badge_cls.slug, level) in user_badges,
 			})
 

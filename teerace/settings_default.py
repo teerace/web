@@ -14,7 +14,7 @@ PROJECT_DIR = os.path.dirname(__file__)
 sys.path.insert(0, PROJECT_DIR)
 
 DEBUG = False
-TEMPLATE_DEBUG = False
+#TEMPLATE_DEBUG = False
 TEMPLATE_CACHING = True
 BETA = False
 
@@ -184,18 +184,6 @@ COMMENTS_ALLOW_PROFANITIES = True
 
 RESULT_PRECISION = 3
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.eggs.Loader',
-)
-
-if TEMPLATE_CACHING:
-    TEMPLATE_LOADERS = (
-        ('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),
-    )
-
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 MIDDLEWARE_CLASSES = (
@@ -216,7 +204,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'APP_DIRS': True,
+        #'APP_DIRS': True,
         'DIRS': [
             os.path.join(PROJECT_DIR, 'templates'),
             os.path.join(PROJECT_DIR, 'templates/piston'),
@@ -228,9 +216,17 @@ TEMPLATES = [
                 'django.core.context_processors.i18n',
                 'django.core.context_processors.media',
                 'django.core.context_processors.request',
+                'django.core.context_processors.static',
                 'django.contrib.messages.context_processors.messages',
                 'lib.context_processors.settings',
             ),
+            'loaders': [
+                'admin_tools.template_loaders.Loader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'django.template.loaders.eggs.Loader',
+            ],
+            'debug': DEBUG,
         },
     },
 ]
@@ -261,6 +257,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django_markwhat',
     'django.contrib.humanize',
+    'django.contrib.staticfiles',
     'lib',
     'cachalot',
     'crumbs',

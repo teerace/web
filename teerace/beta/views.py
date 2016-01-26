@@ -36,11 +36,17 @@ def beta_form(request):
 				" your beta key!")
 			return redirect(reverse('register'))
 
+	_request = None
+	if request.method == 'POST':
+		_request = request.POST.copy()
+	else:
+		_request = request.GET.copy()
+
 	return {
 		'form': form,
 		'latest_entries': latest_entries,
 		'login_form': login_form,
-		'next': request.REQUEST.get('next', reverse('home')),
+		'next': _request.get('next', reverse('home')),
 	}
 
 
