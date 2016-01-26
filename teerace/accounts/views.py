@@ -25,7 +25,13 @@ def login(request):
 	if request.user.is_authenticated():
 		return redirect(reverse('home'))
 
-	next_uri = request.REQUEST.get('next', get_config('LOGIN_REDIRECT_URL',
+	_request = None
+	if request.method == 'POST':
+		_request = request.POST.copy()
+	else:
+		_request = request.GET.copy()
+
+	next_uri = _request.get('next', get_config('LOGIN_REDIRECT_URL',
 		reverse('home')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):
@@ -50,7 +56,12 @@ def login(request):
 
 @login_required
 def logout(request):
-	next_uri = request.REQUEST.get('next', reverse('home'))
+	_request = None
+	if request.method == 'POST':
+		_request = request.POST.copy()
+	else:
+		_request = request.GET.copy()
+	next_uri = _request.get('next', reverse('home'))
 	auth_logout(request)
 	messages.success(request, "Bye bye.")
 	return redirect(next_uri)
@@ -62,7 +73,12 @@ def register(request):
 	if request.user.is_authenticated():
 		return redirect(reverse('home'))
 
-	next_uri = request.REQUEST.get('next',
+	_request = None
+	if request.method == 'POST':
+		_request = request.POST.copy()
+	else:
+		_request = request.GET.copy()
+	next_uri = _request.get('next',
 		get_config('FIRST_LOGIN_REDIRECT_URL', reverse('first_steps')))
 	# rescuing poor users from infinite redirection loop
 	if next_uri == get_config('LOGIN_URL', reverse('login')):

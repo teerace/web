@@ -15,7 +15,7 @@ file_resource = Resource(FileUploadHandler, authentication=auth)
 anonclient_resource = Resource(AnonClientHandler)
 
 # 1st revision of API
-urlpatterns = patterns('',
+urlpatterns = (
 	# Server API
 	url(r'^1/runs/detail/(?P<id>\d+)/$', run_resource, {'action': 'detail'},
 		name='api_runs_detail'),

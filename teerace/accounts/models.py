@@ -17,7 +17,7 @@ def generate_random_key():
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, unique=True, related_name='profile')
 	api_token = models.CharField(max_length=24, unique=True)
-	registration_ip = models.IPAddressField(blank=True, null=True)
+	registration_ip = models.GenericIPAddressField(blank=True, null=True)
 	last_connection_at = models.DateTimeField(auto_now_add=True)
 	last_played_server = models.ForeignKey('race.Server', blank=True, null=True,
 		related_name='players', on_delete=models.SET_NULL)

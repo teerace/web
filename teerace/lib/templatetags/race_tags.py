@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django import template
 from race.models import BestRun, Map, Run
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -34,9 +35,9 @@ def race_diff(run, compare_to, neutral="-"):
 	elif diff < Decimal('0'):
 		style = 'green'
 	else:
-		return neutral
-	return '<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
-		precision=Run.DECIMAL_PLACES)
+		return mark_safe(neutral)
+	return mark_safe('<span class="{0}">{1:+.{precision}f}</span>'.format(style, diff,
+		precision=Run.DECIMAL_PLACES))
 
 
 @register.filter
