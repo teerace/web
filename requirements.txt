@@ -24,3 +24,4 @@ feedparser>=4.1
 #M2Crypto>=0.21.1
 Markdown>=2.0.3
 -e git+https://github.com/SushiTee/tml.git#egg=tml
+requests
