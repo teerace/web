@@ -68,6 +68,7 @@ def ranks_map_detail(request, map_id):
 	return list_view(request)
 
 
+@render_to('race/map_list.html')
 def map_list(request, map_type=None):
 	maps = Map.objects.all().select_related()
 	filtered_type = None
@@ -76,12 +77,11 @@ def map_list(request, map_type=None):
 		maps = maps.filter(map_type__slug=map_type)
 	maps = maps.order_by('name')
 	map_types = MapType.objects.all()
-	extra_context = {
+	return {
 		'map_types': map_types,
 		'filtered_type': filtered_type,
+		'object_list': maps,
 	}
-	list_view = ObjectListView.as_view(template_name='race/map_list.html', queryset=maps, extra_context=extra_context, context_object_name='object_list')
-	return list_view(request)
 
 
 @login_required
