@@ -112,7 +112,7 @@ from celery.schedules import crontab
 djcelery.setup_loader()
 
 BROKER_URL = 'amqp://guest:guest@localhost:5672/'
-CELERY_IMPORTS = ("race.tasks", "stats.tasks")
+CELERY_IMPORTS = ("race.tasks", "stats.tasks", "lib.tasks")
 CELERYBEAT_SCHEDULE = {
     # everyday, 4:30 AM
     "points_history": {
@@ -133,6 +133,11 @@ CELERYBEAT_SCHEDULE = {
     "totals": {
         "task": "race.tasks.update_totals",
         "schedule": crontab(minute="*/15"),
+    },
+    # everyday, 11:00 PM
+    "daily_email_notification": {
+        "task": "lib.tasks.send_server_update_notification",
+        "schedule": crontab(hour=23, minute=00),
     },
 }
 MAN_IN_BLACKLIST = ('djcelery_taskstate',
@@ -282,3 +287,8 @@ ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 MIN_GAMESERVER_VERSION = 1
+
+GITHUB_API_URL = 'https://api.github.com'
+GITHUB_USER = 'SushiTee'
+GITHUB_REPO = 'teeworlds'
+GITHUB_BRANCH = 'teerace-0.6'
