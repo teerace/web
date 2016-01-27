@@ -9,31 +9,41 @@ import settings
 admin.autodiscover()
 
 urlpatterns = [
-	url(r'^$', homepage, name='home'),
-	url(r'^api/', include('api.urls')),
-	url(r'^blog/', include('blog.urls')),
-	url(r'^stats/', include('stats.urls')),
-	url(r'^', include('accounts.urls')),
-	url(r'^', include('race.urls')),
-	url(r'^', include('home.urls')),
-	url(r'^c/', include('django_comments.urls')),
-	url(r'^admin_tools/', include('admin_tools.urls')),
-	url(r'^help/', include('faq.urls.shallow')),
-	# url(r'^stream/', include('actstream.urls')),
-	url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', homepage, name='home'),
+    url(r'^api/', include('api.urls')),
+    url(r'^blog/', include('blog.urls')),
+    url(r'^stats/', include('stats.urls')),
+    url(r'^', include('accounts.urls')),
+    url(r'^', include('race.urls')),
+    url(r'^', include('home.urls')),
+    url(r'^c/', include('django_comments.urls')),
+    url(r'^admin_tools/', include('admin_tools.urls')),
+    url(r'^help/', include('faq.urls.shallow')),
+    # url(r'^stream/', include('actstream.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 ] + [
-	url(r'^about/', TemplateView.as_view(template_name='static/about.html'), name='about'),
-	url(r'^contact/', TemplateView.as_view(template_name='static/contact.html'), name='contact'),
+    url(r'^about/', TemplateView.as_view(template_name='static/about.html'), name='about'),
+    url(r'^contact/', TemplateView.as_view(template_name='static/contact.html'), name='contact'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
-	urlpatterns += [
+    urlpatterns += [
         url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     ]
 
+    try:
+        __import__('debug_toolbar')
+    except ImportError:
+        pass
+    else:
+        import debug_toolbar
+        urlpatterns += [
+            url(r'^__debug__/', include(debug_toolbar.urls)),
+        ]
+
 if settings.BETA:
-	urlpatterns += [
-		url(r'^beta/', include('beta.urls')),
-	]
+    urlpatterns += [
+        url(r'^beta/', include('beta.urls')),
+    ]
