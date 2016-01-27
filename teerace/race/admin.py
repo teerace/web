@@ -1,7 +1,7 @@
 from django.contrib import admin
 from race import tasks
 from race.forms import ServerAdminForm
-from race.models import Map, Run, Server
+from race.models import Map, MapType, Run, Server
 
 
 class MapAdmin(admin.ModelAdmin):
@@ -22,6 +22,12 @@ class MapAdmin(admin.ModelAdmin):
 	clear_runs.short_description = "Clear runs of selected maps (IRREVERSIBLE)"
 
 	actions = [clear_runs]
+
+
+class MapTypeAdmin(admin.ModelAdmin):
+	list_display = ('displayed_name',)
+	list_display_links = ('displayed_name',)
+	fields = ('displayed_name', 'description')
 
 
 class ServerAdmin(admin.ModelAdmin):
@@ -57,4 +63,5 @@ class ServerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Map, MapAdmin)
+admin.site.register(MapType, MapTypeAdmin)
 admin.site.register(Server, ServerAdmin)
