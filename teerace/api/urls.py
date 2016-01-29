@@ -34,6 +34,8 @@ urlpatterns = (
 		name='api_maps'),
 	url(r'^1/maps/(?P<action>\w+)/(?P<map_id>\d+)/$', map_resource,
 		name='api_maps'),
+	url(r'^1/maps/(?P<action>\w+)/(?P<type>[-\w]+)/$', map_resource,
+		name='api_maps'),
 	url(r'^1/maps/(?P<action>\w+)/$', map_resource, name='api_maps'),
 	url(r'^1/files/(?P<file_type>\w+)/(?P<user_id>\d+)/(?P<map_id>\d+)/$', file_resource,
 		name='api_files'),

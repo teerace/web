@@ -32,8 +32,7 @@ class Map(models.Model):
 		upload_to=map_filename, validators=[is_map_file])
 	crc = models.CharField(max_length=8, blank=True, null=True)
 
-	map_type = models.ForeignKey('MapType', default=1,
-		on_delete=models.SET_DEFAULT)
+	map_types = models.ManyToManyField('MapType', related_name='map_types')
 
 	has_unhookables = models.NullBooleanField(default=False)
 	has_deathtiles = models.NullBooleanField(default=False)
@@ -77,7 +76,7 @@ class Map(models.Model):
 			return None
 
 	def get_map_type(self):
-		return self.map_type.id
+		return self.map_types.all()[0].id  # todo: change this! | just for being compatible with old teerace servers!
 
 	def get_download_url(self):
 		return self.map_file.url

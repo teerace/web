@@ -5,9 +5,10 @@ from race.models import Map, MapType, Run, Server
 
 
 class MapAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'author', 'crc', 'map_type')
+	list_display = ('id', 'name', 'author', 'crc')
 	list_display_links = ('id', 'name')
-	fields = ('name', 'author', 'map_type', 'map_file')
+	list_filter = ('map_types', )
+	fields = ('name', 'author', 'map_types', 'map_file')
 
 	def save_model(self, request, obj, form, change):
 		if not change:
@@ -25,7 +26,7 @@ class MapAdmin(admin.ModelAdmin):
 
 
 class MapTypeAdmin(admin.ModelAdmin):
-	list_display = ('displayed_name',)
+	list_display = ('displayed_name', 'slug')
 	list_display_links = ('displayed_name',)
 	fields = ('displayed_name', 'description')
 

@@ -399,6 +399,8 @@ class MapHandler(BaseHandler):
 			return ('api_maps_detail', [map_id])
 
 	def _read_list(self, request, *args, **kwargs):
+		if 'type' in kwargs:
+			return Map.objects.filter(map_types__slug=kwargs['type'])
 		return Map.objects.all()
 
 	def _read_detail(self, request, *args, **kwargs):
@@ -439,11 +441,11 @@ class MapHandler(BaseHandler):
 
 
 		URL
-			**/api/1/maps/list/**
+			**/api/1/maps/list/[{type}/]**
 		Shortdesc
 			Returns a list containing all Map objects
 		Arguments
-			- none
+			- type / string / type of map
 		Data
 			- none
 		Result
