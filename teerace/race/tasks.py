@@ -179,7 +179,9 @@ def retrieve_map_details(map_id):
 	map_obj.has_deathtiles = has_deathtiles
 	map_obj.has_teleporters = has_teleporters
 	map_obj.has_speedups = has_speedups
-	if not map_obj.map_type.slug == 'fastcap-no-weapons':
+
+	map_map_types = map_obj.map_types.filter(slug='fastcap-no-weapons')
+	if not map_map_types:
 		map_obj.shield_count = shield_count
 		map_obj.heart_count = heart_count
 		map_obj.grenade_count = grenade_count
@@ -191,7 +193,8 @@ def retrieve_map_details(map_id):
 	map_obj.map_file.close()
 	map_obj.save()
 
-	if map_obj.map_type.slug == 'fastcap':
+	map_map_types = map_obj.map_types.filter(slug='fastcap')
+	if map_map_types:
 		logger.info("Creating a non-weapon twin...")
 		new_map, created = Map.objects.get_or_create(
 			name="{0}-no-weapons".format(map_obj.name),
@@ -200,7 +203,6 @@ def retrieve_map_details(map_id):
 				'added_by': map_obj.added_by,
 				'map_file' :map_obj.map_file,
 				'crc': map_obj.crc,
-				'map_type': MapType.objects.get(slug='fastcap-no-weapons'),
 				'has_unhookables': has_unhookables,
 				'has_deathtiles': has_deathtiles,
 			})
@@ -212,6 +214,9 @@ def retrieve_map_details(map_id):
 			new_map.crc = map_obj.crc
 			new_map.has_unhookables = has_unhookables
 			new_map.has_deathtiles = has_deathtiles
+			new_map.save()
+		else:
+			new_map.map_types.add(MapType.objects.get(slug='fastcap-no-weapons'))
 			new_map.save()
 	logger.info("[M-{0}] Finished processing \"{1}\" map." \
 		.format(map_id, map_obj.name))

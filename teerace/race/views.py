@@ -74,7 +74,7 @@ def map_list(request, map_type=None):
 	filtered_type = None
 	if map_type:
 		filtered_type = get_object_or_404(MapType, slug=map_type)
-		maps = maps.filter(map_type__slug=map_type)
+		maps = maps.filter(map_types__slug=map_type)
 	maps = maps.order_by('name')
 	map_types = MapType.objects.all()
 	return {
