@@ -217,6 +217,7 @@ def retrieve_map_details(map_id):
 			new_map.save()
 		else:
 			new_map.map_types.add(MapType.objects.get(slug='fastcap-no-weapons'))
+			new_map.map_types.add(*map_obj.map_types.exclude(slug='fastcap'))
 			new_map.save()
 	logger.info("[M-{0}] Finished processing \"{1}\" map." \
 		.format(map_id, map_obj.name))
