@@ -449,7 +449,7 @@ class MapHandler(BaseHandler):
 		Shortdesc
 			Returns a list containing all Map objects
 		Arguments
-			- type / string / type of map
+			- type / string / types of map (seperated by space)
 		Data
 			- none
 		Result
