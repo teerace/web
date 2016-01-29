@@ -400,7 +400,11 @@ class MapHandler(BaseHandler):
 
 	def _read_list(self, request, *args, **kwargs):
 		if 'type' in kwargs:
-			return Map.objects.filter(map_types__slug=kwargs['type'])
+			types = kwargs['type'].split()
+			q = Map.objects.filter(map_types__slug=types[0])
+			for _type in types[1:]: # chain the other types
+				q = q.filter(map_types__slug=_type)
+			return q
 		return Map.objects.all()
 
 	def _read_detail(self, request, *args, **kwargs):
