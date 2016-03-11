@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView
 from accounts.models import UserProfile
 from race.models import Map, MapType, Run, BestRun, Server
 from annoying.decorators import render_to
@@ -11,19 +10,7 @@ from brabeion import badges
 from brabeion.models import BadgeAward
 
 
-class ObjectListView(ListView):
-    extra_context = None
-    def get_context_data(self, **kwargs):
-        context = super(self.__class__, self).get_context_data(**kwargs)
-        if self.extra_context is not None:
-            for key, value in self.extra_context.items():
-                if callable(value):
-                    context[key] = value()
-                else:
-                    context[key] = value
-        return context
-
-
+@render_to('race/ranks.html')
 def ranks(request):
 	# exclude banned users from rank
 	# (that user shouldn't have any points anyway, just a precaution)
@@ -37,21 +24,23 @@ def ranks(request):
 	)
 	total_runtime = Run.objects.aggregate(Sum('time'))['time__sum']
 	total_runs = Run.objects.count()
-	extra_context = {
+	return {
 		'total_runtime': total_runtime,
 		'total_runs': total_runs,
+		'object_list': users,
 	}
-	list_view = ObjectListView.as_view(template_name='race/ranks.html', queryset=users, extra_context=extra_context, context_object_name='object_list')
-	return list_view(request)
 
 
+@render_to('race/ranks_map_list.html')
 def ranks_map_list(request):
 	maps = Map.objects.order_by('name').select_related()
-	list_view = ListView.as_view(template_name='race/ranks_map_list.html', queryset=maps, context_object_name='object_list')
-	return list_view(request)
+	return {
+		'object_list': maps,
+	}
 
 
 # actually, it's a list of records of a particular map
+@render_to('race/ranks_map_detail.html')
 def ranks_map_detail(request, map_id):
 	map_obj = get_object_or_404(Map.objects.select_related(), pk=map_id)
 	best_runs = BestRun.objects.filter(map=map_obj) \
@@ -61,11 +50,10 @@ def ranks_map_detail(request, map_id):
 			"WHERE s.map_id = race_bestrun.map_id AND s.time < race_bestrun.time"
 		},
 	)
-	extra_context = {
+	return{
 		'map': map_obj,
+		'object_list': best_runs,
 	}
-	list_view = ObjectListView.as_view(template_name='race/ranks_map_detail.html', queryset=best_runs, extra_context=extra_context, context_object_name='object_list')
-	return list_view(request)
 
 
 @render_to('race/map_list.html')
