@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.db.models import Avg, Sum
 from django.db.models.signals import post_save
@@ -253,7 +254,7 @@ class Server(models.Model):
 	is_active = models.BooleanField(default=True, verbose_name="active",
 		help_text="Designates whether this server should be treated as active."
 			" Unselect this instead of deleting servers.")
-	last_connection_at = models.DateTimeField(auto_now=True)
+	last_connection_at = models.DateTimeField(editable=False)
 	played_map = models.ForeignKey(Map, null=True, blank=True, on_delete=models.SET_NULL)
 	anonymous_players = PickledObjectField()
 	api_key = models.CharField(max_length=32, unique=True)
@@ -270,6 +271,7 @@ class Server(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.pk:
 			self.api_key = generate_random_key()
+		self.last_connection_at = datetime.now()
 		self.description_html = markdown(self.description)
 		super(Server, self).save(*args, **kwargs)
 
