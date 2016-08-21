@@ -50,6 +50,9 @@ class Map(models.Model):
 
 	download_count = models.IntegerField(default=0)
 
+	video = models.URLField(blank=True, default="", help_text="Must be a youtube link "
+		"like https://www.youtube.com/watch?v=32udz2uuwrew3u")
+
 	@property
 	def run_count(self):
 		return Run.objects.filter(map=self).count()
