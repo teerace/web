@@ -104,7 +104,13 @@ context variables:
 			<a class="button" href="{% url 'map_download' map.id %}">Download map</a><span class="map-file-size">{{ map.map_file.size|filesizeformat }}</span>
 		</div>
 
-		<div class="right no-map-image"><br>Map screenshot is missing.</div>
+		{% if map.video %}
+			<div class="right map-video">
+				<iframe width="370" height="183" src="{{ map.video }}" frameborder="0" allowfullscreen></iframe>
+			</div>
+		{% else %}
+			<div class="right no-map-image"><br>Map screenshot is missing.</div>
+		{% endif %}
 	</div>
 	<div class="box full">
 		<div class="header">Top 5</div>

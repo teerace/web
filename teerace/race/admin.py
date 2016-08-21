@@ -1,14 +1,14 @@
 from django.contrib import admin
 from race import tasks
-from race.forms import ServerAdminForm
+from race.forms import MapAdminForm, ServerAdminForm
 from race.models import Map, MapType, Run, Server
 
 
 class MapAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'author', 'crc')
+	list_display = ('id', 'name', 'author', 'crc', 'video')
 	list_display_links = ('id', 'name')
 	list_filter = ('map_types', )
-	fields = ('name', 'author', 'map_types', 'map_file')
+	form = MapAdminForm
 
 	def save_model(self, request, obj, form, change):
 		if not change:
