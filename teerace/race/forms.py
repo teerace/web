@@ -24,6 +24,8 @@ class MapAdminForm(forms.ModelForm):
 
 	def clean_video(self):
 		video = self.cleaned_data['video']
+		if not video:
+			return video
 		regex = re.match(r'http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?=]*)?', video)
 		if not regex:
 			raise forms.ValidationError('Video link must be a valid youtube link.')
