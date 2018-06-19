@@ -266,7 +266,7 @@ INSTALLED_APPS = (
     'lib',
     'cachalot',
     'crumbs',
-    'gravatar',
+    'django_gravatar',
     'django_comments',
     'threadedcomments',
     'faq',

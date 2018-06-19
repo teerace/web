@@ -6,7 +6,7 @@
 		<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %} even" id="cm-{{ comment.id }}">
 			<div class="comment-permalink"></div>
 			<div class="comment-line">
-				<img src="{% gravatar_for_user comment.user 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
+				<img src="{% gravatar_url comment.user.email 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 				<div class="comment-author-info">
 					<span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
 					<span class="comment-date" title="{{ comment.submit_date }}">{{ comment.submit_date|timesince }} ago</span>

@@ -9,7 +9,7 @@
 		<div class="comment {% if user.is_staff or user.is_superuser %}staff {% endif %}even" id="cm-0">
 			<div class="comment-permalink"></div>
 			<div class="comment-line">
-				<img src="{% gravatar_for_user user 50 %}" alt="Gravatar for {{ user.get_full_name|default:user }}">
+				<img src="{% gravatar_url user.email 50 %}" alt="Gravatar for {{ user.get_full_name|default:user }}">
 				<div class="comment-author-info">
 					<span class="comment-author"><a href="{{ user.get_absolute_url }}">{{ user.get_real_name|default:user }}</a></span>
 					<span class="comment-date" title="~now">a few microseconds ago</span>

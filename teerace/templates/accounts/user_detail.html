@@ -69,7 +69,7 @@ context variables:
 			</span>
 		</div>
 		<div class="headrow">
-			<img src="{% gravatar_for_user profile_user 80 %}" class="gravatar" alt="{{ profile_user.username }}{% possessive profile_user.username %} gravatar" title="{{ profile_user.username }}{% possessive profile_user.username %} gravatar">
+			<img src="{% gravatar_url profile_user.email 80 %}" class="gravatar" alt="{{ profile_user.username }}{% possessive profile_user.username %} gravatar" title="{{ profile_user.username }}{% possessive profile_user.username %} gravatar">
 			<div class="points">
 				<h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
 				{# little hack, hope to change it in the future #}

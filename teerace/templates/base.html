@@ -55,7 +55,7 @@
 				{% endcomment %}
 				{% block submenu %}{% endblock submenu %}
 				<div id="user-box" class="right">
-					{% if user.is_authenticated %}<img src="{% gravatar_for_user user 20 %}" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url 'profile' user.id %}">{{ user.username }}</a> <a class="button" href="{% url 'settings' %}">Settings</a> <a class="button" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+					{% if user.is_authenticated %}<img src="{% gravatar_url user.email 20 %}" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url 'profile' user.id %}">{{ user.username }}</a> <a class="button" href="{% url 'settings' %}">Settings</a> <a class="button" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
 					{% else %}
 					<a class="button" href="{% url 'login' %}?next={{ request.path }}">Login</a> <a class="button" href="{% url 'register' %}">Register</a>
 					{% endif %}

@@ -23,7 +23,7 @@ context variables:
 			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
 		{% else %}
 		<div class="post">
-			<img src="{% gravatar_for_user entry.created_by 60 %}" class="gravatar" alt="{{ entry.created_by.username }}'s gravatar" title="{{ entry.created_by.username }}'s gravatar">
+			<img src="{% gravatar_url entry.created_by.email 60 %}" class="gravatar" alt="{{ entry.created_by.username }}'s gravatar" title="{{ entry.created_by.username }}'s gravatar">
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
 			<div class="content">

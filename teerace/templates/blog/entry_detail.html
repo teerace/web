@@ -34,7 +34,7 @@ context variables:
 {% block content %}
 	<div id="blog" class="box full">
 		<div class="post">
-			<img src="{% gravatar_for_user entry.created_by 60 %}" class="gravatar" alt="{{ entry.created_by.username }}'s gravatar" title="{{ entry.created_by.username }}'s gravatar">
+			<img src="{% gravatar_url entry.created_by.email 60 %}" class="gravatar" alt="{{ entry.created_by.username }}'s gravatar" title="{{ entry.created_by.username }}'s gravatar">
 			<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
 			<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
 			<div id="read-more">
@@ -63,7 +63,7 @@ context variables:
 				<div class="comment depth-{{ comment.depth }} {% if comment.last %}close {% endif %}{% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %} {% cycle 'even' 'odd' %}" id="cm-{{ comment.id }}">
 					<div class="comment-permalink">{% if user.is_staff or user.is_superuser %}<a class="delete-link" href="{% url 'comments-delete' comment.id %}">delete</a> {% endif %}{% if user.is_authenticated %}<a class="reply-link" href="#">reply</a>{% else %}<a class="reply-link" href="{% url 'login' %}?next={{ entry.get_absolute_url }}%23cm-{{ comment.id }}">login to reply</a>{% endif %} <a title="Permalink" href="{{ entry.get_absolute_url }}#cm-{{ comment.id }}">#</a></div>
 					<div class="comment-line">
-						<img src="{% gravatar_for_user comment.user 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
+						<img src="{% gravatar_url comment.user.email 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
 						<div class="comment-author-info">
 							<span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
 							<span class="comment-date" title="{{ comment.submit_date }}">{{ comment.submit_date|timesince }} ago{% if user.is_staff or user.is_superuser %} / {{ comment.ip_address }}{% endif %}</span>

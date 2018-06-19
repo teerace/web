@@ -25,7 +25,7 @@ context variables:
 			{% for for_user in users %}
 			<tr{% if request.user.id == for_user.id %} class="me" title="that's you!"{% endif %}>
 				<td>
-					<img src="{% gravatar_for_user for_user 20 %}" class="gravatar" alt="{{ for_user.username }}'s gravatar" title="{{ for_user.username }}'s gravatar">
+					<img src="{% gravatar_url for_user.email 20 %}" class="gravatar" alt="{{ for_user.username }}'s gravatar" title="{{ for_user.username }}'s gravatar">
 					<a href="{{ for_user.get_absolute_url }}">{{ for_user }}</a>
 				</td>
 				<td>{{ for_user.date_joined|date:"F j, Y" }}</td>
