@@ -1,19 +1,19 @@
 {% for error in form.non_field_errors %}
-	<div class="non-field-error">{{ error }}</div>
+    <div class="non-field-error">{{ error }}</div>
 {% endfor %}
 {% for field in form %}
-	<div class="form_field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
-		<label for="id_{{ field.html_name }}">
-			{{ field.label }}
-			{% if field.help_text %}
-			<span>{{ field.help_text }}</span>
-			{% endif %}
-		</label>
-		{{ field }}
-		{% if field.errors %}
-			{% for error in field.errors %}
-			<div class="form-error">{{ error }}</div>
-			{% endfor %}
-		{% endif %}
-	</div>
+    <div class="form_field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
+        <label for="id_{{ field.html_name }}">
+            {{ field.label }}
+            {% if field.help_text %}
+            <span>{{ field.help_text }}</span>
+            {% endif %}
+        </label>
+        {{ field }}
+        {% if field.errors %}
+            {% for error in field.errors %}
+            <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endfor %}

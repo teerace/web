@@ -1,30 +1,30 @@
-{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load sorting %}{% load possessive %}
+{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load possessive %}
 {% comment %}
 context variables:
-	profile_user (User instance)
-	badges
+    profile_user (User instance)
+    badges
 {% endcomment %}
 {% block title %}badges - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb "Badges" 'profile_badges' profile_user.id %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb "Badges" 'profile_badges' profile_user.id %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
-		{% autopaginate badges %}
-		{% paginate %}
-		{% for badge in badges %}
-			{% cycle '<div class="full">' '' '' %}
-				<div class="badge">
-					<b>{{ badge.name }}</b>
-					<div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div>
-					<div class="date">{{ badge.awarded_at }}</div>
-					<div class="desc">{{ badge.description }}</div>
-				</div>
-			{% if forloop.counter|divisibleby:3 or forloop.last %}</div>{% endif %}
-		{% endfor %}
-		{% paginate %}
-	</div>
+    <div class="box full">
+        <div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
+        {% autopaginate badges %}
+        {% paginate %}
+        {% for badge in badges %}
+            {% cycle '<div class="full">' '' '' %}
+                <div class="badge">
+                    <b>{{ badge.name }}</b>
+                    <div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div>
+                    <div class="date">{{ badge.awarded_at }}</div>
+                    <div class="desc">{{ badge.description }}</div>
+                </div>
+            {% if forloop.counter|divisibleby:3 or forloop.last %}</div>{% endif %}
+        {% endfor %}
+        {% paginate %}
+    </div>
 {% endblock content %}

@@ -1,17 +1,17 @@
 {% load comments %}
 <form method="POST" action="{% comment_form_target %}">{% csrf_token %}
 {% for field in form %}
-	{% if field.is_hidden %}
-		{{ field }}
-	{% endif %}
-	{% if field.name == 'comment' or field.name == 'honeypot' %}
-	<div class="form_field"{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
-		{{ field }}
-	</div>
-	{% endif %}
+    {% if field.is_hidden %}
+        {{ field }}
+    {% endif %}
+    {% if field.name == 'comment' or field.name == 'honeypot' %}
+    <div class="form_field"{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+        {{ field }}
+    </div>
+    {% endif %}
 {% endfor %}
-	<div class="form_field">
-		<input type="submit" name="submit" class="submit-post" value="Post">
-		<input type="submit" name="preview" class="submit-preview" value="Preview">
-	</div>
+    <div class="form_field">
+        <input type="submit" name="submit" class="submit-post" value="Post">
+        <input type="submit" name="preview" class="submit-preview" value="Preview">
+    </div>
 </form>

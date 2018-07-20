@@ -1,50 +1,51 @@
 {% extends "accounts/settings.html" %}
+{% load static %}
 {% block title %}api token - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'API token' 'api_token' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'API token' 'api_token' %}
 {% endblock %}
 {% block extra_head %}
-	{{ block.super }}
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/utils.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#warn-button').click(function(){
-				return orly("I understand, generate new token");
-			});
-		});
-	</script>
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/utils.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#warn-button').click(function(){
+                return orly("I understand, generate new token");
+            });
+        });
+    </script>
 {% endblock extra_head %}
 {% block content %}
-	<div class="box full">
-		<div class="header">API token</div>
-		<p>
-			Your API token:
-			<div id="api_token" class="api_token">{{ user.profile.api_token }}</div>
-			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" class="clippy">
-				<param name="movie" value="https://assets0.github.com/flash/clippy.swf?v5">
-				<param name="allowScriptAccess" value="always">
-			    <param name="quality" value="high">
-			    <param name="scale" value="noscale">
-			    <param name="FlashVars" value="id=api_token">
-			    <param name="bgcolor" value="#ffffff">
-				<embed src="https://assets0.github.com/flash/clippy.swf?v5"
-					width="14"
-					height="14"
-					name="clippy"
-					quality="high"
-					allowscriptaccess="always"
-					type="application/x-shockwave-flash"
-					pluginspage="http://www.macromedia.com/go/getflashplayer"
-					flashvars="id=api_token"
-					bgcolor="#ffffff"
-					wmode="opaque">
-		    </object>
-			<p>Remember, that you can generate new one any time (then the old one expires), by clicking the button below.</p>
-			<form action="" method="POST">{% csrf_token %}
-				<input type="submit" value="Generate" id="warn-button">
-			</form>
-		</p>
-	</div>
+    <div class="box full">
+        <div class="header">API token</div>
+        <p>
+            Your API token:
+            <div id="api_token" class="api_token">{{ user.profile.api_token }}</div>
+            <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" class="clippy">
+                <param name="movie" value="https://assets0.github.com/flash/clippy.swf?v5">
+                <param name="allowScriptAccess" value="always">
+                <param name="quality" value="high">
+                <param name="scale" value="noscale">
+                <param name="FlashVars" value="id=api_token">
+                <param name="bgcolor" value="#ffffff">
+                <embed src="https://assets0.github.com/flash/clippy.swf?v5"
+                    width="14"
+                    height="14"
+                    name="clippy"
+                    quality="high"
+                    allowscriptaccess="always"
+                    type="application/x-shockwave-flash"
+                    pluginspage="http://www.macromedia.com/go/getflashplayer"
+                    flashvars="id=api_token"
+                    bgcolor="#ffffff"
+                    wmode="opaque">
+            </object>
+            <p>Remember, that you can generate new one any time (then the old one expires), by clicking the button below.</p>
+            <form action="" method="POST">{% csrf_token %}
+                <input type="submit" value="Generate" id="warn-button">
+            </form>
+        </p>
+    </div>
 {% endblock %}

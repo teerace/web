@@ -1,229 +1,229 @@
 {% extends "base.html" %}{% load human_duration %}{% load comments %}
 {% comment %}
 context variables:
-	latest_entries
-	latest_map
-	map_count
-	latest_user
-	user_count
-	run_count
-	runs_today
-	runs_yesterday
-	total_runtime
-	total_playtime
-	total_downloads
-	user_actions
+    latest_entries
+    latest_map
+    map_count
+    latest_user
+    user_count
+    run_count
+    runs_today
+    runs_yesterday
+    total_runtime
+    total_playtime
+    total_downloads
+    user_actions
 {% endcomment %}
 {% block extra_head %}
-	<script type="text/javascript" src="https://github.com/chmielu/timesince/raw/master/timesince.js"></script>
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/utils.js"></script>
-	<script type="text/javascript">
-	const DELAY = 10000;
-	const MAX_ACTIONS = 10;
-	const UID = {% if request.user.id %}{{ request.user.id }}{% else %}-1{% endif %};
+    <script type="text/javascript" src="https://github.com/chmielu/timesince/raw/master/timesince.js"></script>
+    <script type="text/javascript" src="{% static "js/utils.js" %}"></script>
+    <script type="text/javascript">
+    const DELAY = 10000;
+    const MAX_ACTIONS = 10;
+    const UID = {% if request.user.id %}{{ request.user.id }}{% else %}-1{% endif %};
 
-	// get the time from the server
-	var now = -1;
-	$.ajax ({
-		type: "GET",
-		url: "/timestamp/",
-		async: false,
-		success: function (json) {
-			now = new Date(json.timestamp);
-		}
-	});
+    // get the time from the server
+    var now = -1;
+    $.ajax ({
+        type: "GET",
+        url: "/timestamp/",
+        async: false,
+        success: function (json) {
+            now = new Date(json.timestamp);
+        }
+    });
 
-	function create_html (now, a) {
-		var html = '<li id="a-{0}"><span class="actor{1}"><a href="{2}">{3}</a></span> {4} '.format (
-			a.timestamp, (UID == a.actor_id) ? " me" : "", a.actor_url, a.actor_repr, a.verb);
+    function create_html (now, a) {
+        var html = '<li id="a-{0}"><span class="actor{1}"><a href="{2}">{3}</a></span> {4} '.format (
+            a.timestamp, (UID == a.actor_id) ? " me" : "", a.actor_url, a.actor_repr, a.verb);
 
-		if (a.target_repr != "None")
-			html += '<a href="{0}">{1}</a>'.format (a.target_url, a.target_repr);
+        if (a.target_repr != "None")
+            html += '<a href="{0}">{1}</a>'.format (a.target_url, a.target_repr);
 
-		var d = new Date (a.timestamp);
-		html += '<span class="timestamp" title="{0}">{1} ago</span></li>'.format (d, d.timesince (now));
-		return html;
-	}
+        var d = new Date (a.timestamp);
+        html += '<span class="timestamp" title="{0}">{1} ago</span></li>'.format (d, d.timesince (now));
+        return html;
+    }
 
-	function update_timesince (now, ul) {
-		var children = ul.children ();
-		for (child in children) {
-			var c = children[child];
-			if (typeof c != "object")
-				continue;
+    function update_timesince (now, ul) {
+        var children = ul.children ();
+        for (child in children) {
+            var c = children[child];
+            if (typeof c != "object")
+                continue;
 
-			var span = $(c).children(".timestamp")[0];
-			if (span == undefined)
-				continue;
+            var span = $(c).children(".timestamp")[0];
+            if (span == undefined)
+                continue;
 
-			$(span).text (
-				new Date (parseInt(c.id.slice(2))).timesince (now) + " ago"
-			);
-		}
-	}
+            $(span).text (
+                new Date (parseInt(c.id.slice(2))).timesince (now) + " ago"
+            );
+        }
+    }
 
-	function get_stream () {
-		$.ajax ({
-			type: "GET",
-			url: "/stream_since/" + (now.getTime () - DELAY) + "/",
-			success: function (json) {
-				var ul = $("ul.actstream");
+    function get_stream () {
+        $.ajax ({
+            type: "GET",
+            url: "/stream_since/" + (now.getTime () - DELAY) + "/",
+            success: function (json) {
+                var ul = $("ul.actstream");
 
-				for (var child in json.new_actions.reverse ()) {
-					var c = json.new_actions[child];
-					var li = $("[id*=a-]");
+                for (var child in json.new_actions.reverse ()) {
+                    var c = json.new_actions[child];
+                    var li = $("[id*=a-]");
 
-					// break the loop if there are no new elements
-					if (c.timestamp <= li[0].id.slice (2))
-						break;
+                    // break the loop if there are no new elements
+                    if (c.timestamp <= li[0].id.slice (2))
+                        break;
 
-					// make an empty space for the new element
-					if (ul.children ().length >= MAX_ACTIONS)
-						li.slice (MAX_ACTIONS - 1, li.length).remove ();
+                    // make an empty space for the new element
+                    if (ul.children ().length >= MAX_ACTIONS)
+                        li.slice (MAX_ACTIONS - 1, li.length).remove ();
 
-					var html = create_html (now, c);
-					ul.prepend (
-						$(html).hide ().fadeIn ()
-					);
-				}
+                    var html = create_html (now, c);
+                    ul.prepend (
+                        $(html).hide ().fadeIn ()
+                    );
+                }
 
-				// update times
-				var ul = $("ul.actstream");
-				update_timesince (now, ul);
-			}
-		});
-		now.setTime (now.getTime () + DELAY);
-	}
+                // update times
+                var ul = $("ul.actstream");
+                update_timesince (now, ul);
+            }
+        });
+        now.setTime (now.getTime () + DELAY);
+    }
 
-	$(document).ready (function () {
-		$(".javascript").addClass ("hide");
-		get_stream ();
-		setInterval (get_stream, DELAY);
-	});
-	</script>
+    $(document).ready (function () {
+        $(".javascript").addClass ("hide");
+        get_stream ();
+        setInterval (get_stream, DELAY);
+    });
+    </script>
 {% endblock extra_head %}
 {% block title %}welcome - {{ block.super }}{% endblock title %}
 {% block content %}
-			<div id="blog" class="box full">
-				<div class="header">Blog</div>
-			{% if latest_entries %}
-				{% for entry in latest_entries %}
-				{% if entry.is_micro %}
-				<div class="post micro home">
-					<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-					<div class="content">
-						{% if entry.excerpt %}
-							{{ entry.excerpt_html|safe }}
-						{% else %}
-							{{ entry.content_html|safe }}
-						{% endif %}
-					</div>
-					<br>
-					<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
-				{% else %}
-				<div class="post home">
-					<div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
-					<div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
-					<div class="content">
-						{% if entry.excerpt %}
-							{{ entry.excerpt_html|safe }}
-						{% else %}
-							{{ entry.content_html|safe }}
-						{% endif %}
-					</div>
-					{% if entry.excerpt_html %}
-					<a class="read-more" href="{{ entry.get_absolute_url }}#read-more">Read the rest of this entry...</a>
-					{% endif %}
-				{% endif %} {# if entry.is_micro #}
-				{% if entry.enable_comments %}
-					{% get_comment_count for entry as comment_count %}
-					<div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
-				</div> {# div class="post home" #}
-				{% endif %}
-				{% endfor %}
-			{% else %}
-				No entries were found.
-			{% endif %} {# if latest_entries #}
-			</div>
+            <div id="blog" class="box full">
+                <div class="header">Blog</div>
+            {% if latest_entries %}
+                {% for entry in latest_entries %}
+                {% if entry.is_micro %}
+                <div class="post micro home">
+                    <div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+                    <div class="content">
+                        {% if entry.excerpt %}
+                            {{ entry.excerpt_html|safe }}
+                        {% else %}
+                            {{ entry.content_html|safe }}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
+                {% else %}
+                <div class="post home">
+                    <div class="header"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></div>
+                    <div class="post-line">{{ entry.created_at }} / <span class="poster"><a href="{% url 'profile' entry.created_by.id %}">{{ entry.created_by.get_full_name|default:entry.created_by }}</a></span></div>
+                    <div class="content">
+                        {% if entry.excerpt %}
+                            {{ entry.excerpt_html|safe }}
+                        {% else %}
+                            {{ entry.content_html|safe }}
+                        {% endif %}
+                    </div>
+                    {% if entry.excerpt_html %}
+                    <a class="read-more" href="{{ entry.get_absolute_url }}#read-more">Read the rest of this entry...</a>
+                    {% endif %}
+                {% endif %} {# if entry.is_micro #}
+                {% if entry.enable_comments %}
+                    {% get_comment_count for entry as comment_count %}
+                    <div class="comment-count"><a href="{{ entry.get_absolute_url }}#comments">{{ comment_count }} comment{{ comment_count|pluralize }}</a></div>
+                </div> {# div class="post home" #}
+                {% endif %}
+                {% endfor %}
+            {% else %}
+                No entries were found.
+            {% endif %} {# if latest_entries #}
+            </div>
 
-			{% if user_actions %}
-			<div class="box left top">
-				<div class="header">Activity</div>
-				<ul class="actstream">
-				{% for action in user_actions %}
-					<li id="a-{{ action.timestamp|date:"U" }}000">
-						<span class="actor{% if action.actor.id == request.user.id %} me{% endif %}">
-							{% if action.actor.get_absolute_url %}
-								<a href="{{ action.actor.get_absolute_url }}">
-							{% else %}
-								<a href="{{ action.actor_url }}">
-							{% endif %}
-							{{ action.actor }}
-							</a>
-						</span>
-						{{ action.verb }}
-						{% if action.target %}
-							{% if action.target.get_absolute_url %}
-								<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
-							{% else %}
-								<a href="{{ action.target_url }}">{{ action.target }}</a>
-							{% endif %}
-						{% endif %}
-						<span class="timestamp" title="{{ action.timestamp }}">{{ action.timesince }} ago</span>
-					</li>
-				{% endfor %}
-				</ul>
-			</div>
-			{% endif %}
+            {% if user_actions %}
+            <div class="box left top">
+                <div class="header">Activity</div>
+                <ul class="actstream">
+                {% for action in user_actions %}
+                    <li id="a-{{ action.timestamp|date:"U" }}000">
+                        <span class="actor{% if action.actor.id == request.user.id %} me{% endif %}">
+                            {% if action.actor.get_absolute_url %}
+                                <a href="{{ action.actor.get_absolute_url }}">
+                            {% else %}
+                                <a href="{{ action.actor_url }}">
+                            {% endif %}
+                            {{ action.actor }}
+                            </a>
+                        </span>
+                        {{ action.verb }}
+                        {% if action.target %}
+                            {% if action.target.get_absolute_url %}
+                                <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+                            {% else %}
+                                <a href="{{ action.target_url }}">{{ action.target }}</a>
+                            {% endif %}
+                        {% endif %}
+                        <span class="timestamp" title="{{ action.timestamp }}">{{ action.timesince }} ago</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
 
-			{% if not user.is_authenticated %}
-			<div class="box right top">
-				<div class="header">Teerace quickstart</div>
-				<h2>1. <a href="{% url 'register' %}">Sign up</a></h2>
-				<h2>2. <a href="{% url 'first_steps' %}">Follow these instructions</a></h2>
-			</div>
-			{% endif %}
+            {% if not user.is_authenticated %}
+            <div class="box right top">
+                <div class="header">Teerace quickstart</div>
+                <h2>1. <a href="{% url 'register' %}">Sign up</a></h2>
+                <h2>2. <a href="{% url 'first_steps' %}">Follow these instructions</a></h2>
+            </div>
+            {% endif %}
 
-			<div class="box right top">
-				<div class="header">Statistics overview</div>
-				<table>
-					<tr>
-						<td class="label">Registered users:</td>
-						<td class="content">{{ user_count }}{% if user_count %} <span class="info">(latest: {{ latest_user.username }})</span>{% endif %}</td>
-					</tr>
-					<tr>
-						<td class="label">Race maps:</td>
-						<td class="content">{{ map_count }}{% if map_count %} <span class="info">(latest: {{ latest_map.name }})</span>{% endif %}</td>
-					</tr>
-					<tr>
-						<td class="label">Downloaded maps:</td>
-						<td class="content">{{ total_downloads }} <span class="info">(web)</span></td>
-					</tr>
-					<tr>
-						<td class="label">Races today:</td>
-						<td class="content">{{ runs_today|length }}</td>
-					</tr>
-					<tr>
-						<td class="label">Races yesterday:</td>
-						<td class="content">{{ runs_yesterday|length }}</td>
-					</tr>
-					<tr>
-						<td class="label">Finished races:</td>
-						<td class="content">{{ run_count }}</td>
-					</tr>
-					<tr>
-						<td class="label">Time of finished races:</td>
-						<td class="content">{{ total_runtime|default_if_none:0|sectodur }}</td>
-					</tr>
-					<tr>
-						<td class="label">Total playtime:</td>
-						<td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
-					</tr>
-					<tfoot>
-						<tr>
-							<td colspan="2"><a href="/stats/" class="more">More statistics &raquo;</a></td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
+            <div class="box right top">
+                <div class="header">Statistics overview</div>
+                <table>
+                    <tr>
+                        <td class="label">Registered users:</td>
+                        <td class="content">{{ user_count }}{% if user_count %} <span class="info">(latest: {{ latest_user.username }})</span>{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Race maps:</td>
+                        <td class="content">{{ map_count }}{% if map_count %} <span class="info">(latest: {{ latest_map.name }})</span>{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Downloaded maps:</td>
+                        <td class="content">{{ total_downloads }} <span class="info">(web)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Races today:</td>
+                        <td class="content">{{ runs_today|length }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Races yesterday:</td>
+                        <td class="content">{{ runs_yesterday|length }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Finished races:</td>
+                        <td class="content">{{ run_count }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Time of finished races:</td>
+                        <td class="content">{{ total_runtime|default_if_none:0|sectodur }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Total playtime:</td>
+                        <td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
+                    </tr>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"><a href="/stats/" class="more">More statistics &raquo;</a></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 {% endblock content %}

@@ -1,27 +1,28 @@
--e git+https://github.com/kinsights/brabeion.git#egg=brabeion
-celery>=3.1
-coverage>=3.4
-Django>=1.9.1
--e git+https://github.com/justquick/django-activity-stream#egg=django-activity-stream
--e git+https://github.com/Alir3z4/django-markwhat.git#egg=django-markwhat
-django-admin-tools>=0.7.2
-django-annoying>=0.7.5
-django-celery>=2.2.3
-django-countries>=1.0.5
-django-crumbs>=0.5.0
--e git+https://github.com/SushiTee/django-faq.git#egg=django-faq
-django-gravatar2>=1.4.2
--e git+https://github.com/impala2/django-pagination.git#egg=django-pagination
-django-picklefield>=0.1.8
-#-e hg+https://bitbucket.org/keithhackbarth/django-piston#egg=django-piston
--e git+https://github.com/i2xS/django-recaptcha-works#egg=django-recaptcha-works
--e git+https://github.com/chaosk/django-sorting.git#egg=django-sorting
--e git+https://github.com/HonzaKral/django-threadedcomments.git#egg=django-threadedcomments
-docutils>=0.7
-feedparser>=4.1
--e git+https://github.com/BertrandBordage/django-cachalot#egg=django-cachalot
--e git+https://github.com/django/django-contrib-comments.git#egg=django_comments
-#M2Crypto>=0.21.1
-Markdown>=2.0.3
--e git+https://github.com/SushiTee/tml.git#egg=tml
-requests
+black==18.6b4
+celery==4.2.0
+coverage==4.5.1
+dj-pagination==2.3.2
+django-activity-stream==0.6.5
+django-annoying==0.10.4
+django-cachalot==2.0.1
+django-contrib-comments==1.8.0
+django-countries==5.3.1
+django-crumbs==0.5.0
+django-environ==0.4.5
+django-gravatar2==1.4.2
+django-markwhat==1.6.0
+django-picklefield==1.0.0
+django-recaptcha==1.4.0
+django-redis==4.9.0
+django-threadedcomments==1.2
+Django==1.11.14
+djangorestframework==3.8.2
+furl==1.2
+isort==4.3.4
+Markdown==2.6.11
+pinax-badges==2.0.0
+psycopg2==2.7.5
+raven==6.9.0
+requests==2.19.1
+teerace-tml==0.3
+webstack_django_sorting==1.0.1

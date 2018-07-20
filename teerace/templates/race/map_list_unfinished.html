@@ -1,58 +1,58 @@
 {% extends "race/map_list.html" %}{% load human_duration %}{% load pagination_tags %}{% load race_tags %}
 {% comment %}
 context variables:
-	map_types
-	maps
+    map_types
+    maps
 {% endcomment %}
 {% block title %}unfinished - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb "Unfinished" 'maps_unfinished' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb "Unfinished" 'maps_unfinished' %}
 {% endblock %}
 {% block content %}
-		<div class="box full">
-			<div class="header">Unfinished maps</div>
-			List of maps you haven't finished not even once yet.
-		</div>
-		{% autopaginate maps %}
-		{% paginate %}
-		{% for map in maps %}
-		<div class="box map {% cycle 'left' 'right' %}">
-			<div class="right">
-				{% if map.grenade_count %}<div sprite="grenade" title="There is grenade launcher"></div>{% endif %}
-				{% if map.has_unhookables %}<div sprite="unhookable" title="There are unhookable tiles"></div>{% endif %}
-				{% if map.has_deathtiles %}<div sprite="deathtiles" title="There are death tiles"></div>{% endif %}
-			</div>
+        <div class="box full">
+            <div class="header">Unfinished maps</div>
+            List of maps you haven't finished not even once yet.
+        </div>
+        {% autopaginate maps %}
+        {% paginate %}
+        {% for map in maps %}
+        <div class="box map {% cycle 'left' 'right' %}">
+            <div class="right">
+                {% if map.grenade_count %}<div sprite="grenade" title="There is grenade launcher"></div>{% endif %}
+                {% if map.has_unhookables %}<div sprite="unhookable" title="There are unhookable tiles"></div>{% endif %}
+                {% if map.has_deathtiles %}<div sprite="deathtiles" title="There are death tiles"></div>{% endif %}
+            </div>
 
-			<div class="header">
-				<a href="{{ map.get_absolute_url }}">{{ map.name }}</a>
-			</div>
-			<table>
-				<tr>
-					<th>Completions</th>
-					<th>Average time</th>
-					<th colspan="2">Record</th>
-				</tr>
-				<tr>
-					<td>{{ map.run_count }}</td>
-					<td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
-					{% if map.get_best_run %}
-					<td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
-					<td class="icons">
-						{% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-						{% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
-					</td>
-					{% else %}
-					<td colspan="2">-</td>
-					{% endif %}
-				</tr>
-			</table>
-		</div>
-		{% empty %}
-		<div class="box full">
-			You have finished all maps!
-		</div>
-		{% endfor %}
-		{% paginate %}
+            <div class="header">
+                <a href="{{ map.get_absolute_url }}">{{ map.name }}</a>
+            </div>
+            <table>
+                <tr>
+                    <th>Completions</th>
+                    <th>Average time</th>
+                    <th colspan="2">Record</th>
+                </tr>
+                <tr>
+                    <td>{{ map.run_count }}</td>
+                    <td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
+                    {% if map.get_best_run %}
+                    <td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
+                    <td class="icons">
+                        {% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+                        {% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+                    </td>
+                    {% else %}
+                    <td colspan="2">-</td>
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
+        {% empty %}
+        <div class="box full">
+            You have finished all maps!
+        </div>
+        {% endfor %}
+        {% paginate %}
 {% endblock content %}

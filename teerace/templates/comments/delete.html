@@ -1,29 +1,29 @@
 {% extends "base.html" %}{% load comments %}{% load gravatar %}{% load markup %}
 {% block title %}delete confirmation - {{ block.super }}{% endblock title %}
 {% block content %}
-	<div id="comments" class="box full">
-		<div class="header">Are you sure you want to delete this comment?</div>
-		<div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %} even" id="cm-{{ comment.id }}">
-			<div class="comment-permalink"></div>
-			<div class="comment-line">
-				<img src="{% gravatar_url comment.user.email 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
-				<div class="comment-author-info">
-					<span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
-					<span class="comment-date" title="{{ comment.submit_date }}">{{ comment.submit_date|timesince }} ago</span>
-				</div>
-			</div>
-			<div class="comment-content">
-				<p>
-					{{ comment.comment|markdown }}
-				</p>
-			</div>
-		</div>
-		<form method="POST" action="">{% csrf_token %}
-			<div class="form_field">
-				<input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}#cm-{{ comment.id }}">
-				<input type="submit" value="Yes, remove it now, please.">
-				<label>or <a href="{{ comment.content_object.get_absolute_url }}#cm-{{ comment.id }}">cancel</a></label>
-			</div>
-		</form>
-	</div>
+    <div id="comments" class="box full">
+        <div class="header">Are you sure you want to delete this comment?</div>
+        <div class="comment {% if comment.user.is_staff or comment.user.is_superuser %}staff {% endif %} even" id="cm-{{ comment.id }}">
+            <div class="comment-permalink"></div>
+            <div class="comment-line">
+                <img src="{% gravatar_url comment.user.email 50 %}" alt="Gravatar for {{ comment.user.get_full_name|default:comment.user }}">
+                <div class="comment-author-info">
+                    <span class="comment-author"><a href="{{ comment.user.get_absolute_url }}">{{ comment.user.get_real_name|default:comment.user }}</a></span>
+                    <span class="comment-date" title="{{ comment.submit_date }}">{{ comment.submit_date|timesince }} ago</span>
+                </div>
+            </div>
+            <div class="comment-content">
+                <p>
+                    {{ comment.comment|markdown }}
+                </p>
+            </div>
+        </div>
+        <form method="POST" action="">{% csrf_token %}
+            <div class="form_field">
+                <input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}#cm-{{ comment.id }}">
+                <input type="submit" value="Yes, remove it now, please.">
+                <label>or <a href="{{ comment.content_object.get_absolute_url }}#cm-{{ comment.id }}">cancel</a></label>
+            </div>
+        </form>
+    </div>
 {% endblock %}

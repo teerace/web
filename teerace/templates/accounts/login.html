@@ -1,27 +1,27 @@
 {% extends "base.html" %}
 {% comment %}
 context variables:
-	login_form
-	next - URI to redirect after successful log in
+    login_form
+    next - URI to redirect after successful log in
 {% endcomment %}
 {% block title %}login - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'Sign in' 'login' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Sign in' 'login' %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header">Sign in</div>
-		<form method="post" action="{% url 'login' %}">{% csrf_token %}
-			{% with login_form as form %}
-				{% include "snippets/form.html" %}
-			{% endwith %}
-			<input type="hidden" name="next" value="{{ next }}">
-			<div class="form_field">
-				<input type="submit" value="Login">
-			</div>
-		</form>
-		<a href="{% url 'django.contrib.auth.views.password_reset' %}">Lost your password?</a>
-	</div>
+    <div class="box full">
+        <div class="header">Sign in</div>
+        <form method="post" action="{% url 'login' %}">{% csrf_token %}
+            {% with login_form as form %}
+                {% include "snippets/form.html" %}
+            {% endwith %}
+            <input type="hidden" name="next" value="{{ next }}">
+            <div class="form_field">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+        <a href="{% url 'password_reset' %}">Lost your password?</a>
+    </div>
 {% endblock %}

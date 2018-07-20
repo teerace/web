@@ -1,45 +1,45 @@
 {% extends "race/ranks_base.html" %}{% load human_duration %}{% load humanize %}{% load pagination_tags %}
 {% comment %}
 context variables:
-	object_list (it's made of UserProfile objects, be aware!)
-	paginator
-	total_runtime
-	total_runs
+    object_list (it's made of UserProfile objects, be aware!)
+    paginator
+    total_runtime
+    total_runs
 {% endcomment %}
 {% block content %}
-	<div class="box full">
-		<div class="header">Rank</div>
-		{% autopaginate object_list %}
-		{% paginate %}
-		<table id="ranks" class="players">
-			<tr>
-				<th>Rank</th>
-				<th>Name</th>
-				<th class="right-align">Points</th>
-				<th class="right-align">Completions</th>
-				<th>Time of finished races</th>
-			</tr>
-			{% for profile in object_list %}
-			<tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
-				<td>{{ profile.sql_position|ordinal }}</td>
-				<td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
-				<td class="right-align">{{ profile.points }}</td>
-				<td class="right-align">{{ profile.completions }}</td>
-				<td>{{ profile.runtime|default_if_none:0|sectodur }}</td>
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="5">No ranked players.</td>
-			</tr>
-			{% endfor %}
-		{% if object_list %}
-		<tfoot>
-			<tr>
-				<td colspan="5">{{ paginator.count }} ranked player{{ paginator.count|pluralize }}</td>
-			</tr>
-		</tfoot>
-		{% endif %}
-		</table>
-		{% paginate %}
-	</div>
+    <div class="box full">
+        <div class="header">Rank</div>
+        {% autopaginate object_list %}
+        {% paginate %}
+        <table id="ranks" class="players">
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th class="right-align">Points</th>
+                <th class="right-align">Completions</th>
+                <th>Time of finished races</th>
+            </tr>
+            {% for profile in object_list %}
+            <tr{% if request.user.id == profile.user.id %} class="me" title="that's you!"{% endif %}>
+                <td>{{ profile.sql_position|ordinal }}</td>
+                <td><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></td>
+                <td class="right-align">{{ profile.points }}</td>
+                <td class="right-align">{{ profile.completions }}</td>
+                <td>{{ profile.runtime|default_if_none:0|sectodur }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No ranked players.</td>
+            </tr>
+            {% endfor %}
+        {% if object_list %}
+        <tfoot>
+            <tr>
+                <td colspan="5">{{ paginator.count }} ranked player{{ paginator.count|pluralize }}</td>
+            </tr>
+        </tfoot>
+        {% endif %}
+        </table>
+        {% paginate %}
+    </div>
 {% endblock content %}

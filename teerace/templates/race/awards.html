@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block title %}awards - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'Awards' 'awards' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Awards' 'awards' %}
 {% endblock %}
 {% block content %}
 <div class="box full">
-	{% for badge in badges_list %}
-	<div class="award{% if badge.user_has %} awarded{% endif %}">
-		<div class="header">{{ badge.name }}</div>
-		<div class="icon-outer"><div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div></div>
-		<p>
-			{{ badge.description }}
-		</p>
-		<div class="stats">{{ badge.count }}/{{ user_count }} ({{ badge.percentage|floatformat:2 }}%) users received this award</div>
-	</div>
-	{% endfor %}
+    {% for badge in badges_list %}
+    <div class="award{% if badge.user_has %} awarded{% endif %}">
+        <div class="header">{{ badge.name }}</div>
+        <div class="icon-outer"><div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div></div>
+        <p>
+            {{ badge.description }}
+        </p>
+        <div class="stats">{{ badge.count }}/{{ user_count }} ({{ badge.percentage|floatformat:2 }}%) users received this award</div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock content %}

@@ -1,61 +1,62 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}stats - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb "Stats" 'chart_list' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb "Stats" 'chart_list' %}
 {% endblock %}
 {% block extra_head %}
-	<!--[if IE]><script type="text/javascript" src="{{ MEDIA_URL }}js/flot/excanvas.min.js"></script><![endif]-->
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/flot/jquery.flot.min.js"></script>
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/utils.js"></script>
-	<script type="text/javascript">
-		$(document).ready (function () {
-			$(".javascript").addClass ("hide");
+    <!--[if IE]><script type="text/javascript" src="{% static "js/flot/excanvas.min.js" %}"></script><![endif]-->
+    <script type="text/javascript" src="{% static "js/flot/jquery.flot.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/utils.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready (function () {
+            $(".javascript").addClass ("hide");
 
-			var t_box = '<div class="box full" id="{0}"><div class="header">{1}</div>{2}</div>';
-			var t_placeholder = '<div id="placeholder-{0}"></div>';
-			var options = {
-				xaxis: { mode: "time", timeformat: "%d %b %y", minTickSize: [1, "day"] },
-				yaxis: { min: 0 },
-				series: { lines: { show: true }, points: { show: true } },
-				grid: { hoverable: true}
-			};
-			var empty = true;
+            var t_box = '<div class="box full" id="{0}"><div class="header">{1}</div>{2}</div>';
+            var t_placeholder = '<div id="placeholder-{0}"></div>';
+            var options = {
+                xaxis: { mode: "time", timeformat: "%d %b %y", minTickSize: [1, "day"] },
+                yaxis: { min: 0 },
+                series: { lines: { show: true }, points: { show: true } },
+                grid: { hoverable: true}
+            };
+            var empty = true;
 
-			$.ajax({
-				type: "GET",
-				url: "/stats/chart_list.json",
-				async: false,
-				dataType: "json",
-				success: function (json) {
-					for (var e in json) {
-						var a = json[e];
+            $.ajax({
+                type: "GET",
+                url: "/stats/chart_list.json",
+                async: false,
+                dataType: "json",
+                success: function (json) {
+                    for (var e in json) {
+                        var a = json[e];
 
-						if (a[2] == null)
-							continue;
+                        if (a[2] == null)
+                            continue;
 
-						// convert dates to timestamps
-						var history = new Array ();
-						for (i = 0; i < a[2].length; i++) {
-							d = new Date(a[2][i][0]);
-							d.setUTCHours(0);
-							history.push ([d.getTime (), a[2][i][1]]);
-						}
+                        // convert dates to timestamps
+                        var history = new Array ();
+                        for (i = 0; i < a[2].length; i++) {
+                            d = new Date(a[2][i][0]);
+                            d.setUTCHours(0);
+                            history.push ([d.getTime (), a[2][i][1]]);
+                        }
 
-						var box = t_box.format (a[0], a[1], t_placeholder.format (a[0]));
-						$(box).insertAfter ("#breadcrumbs");
+                        var box = t_box.format (a[0], a[1], t_placeholder.format (a[0]));
+                        $(box).insertAfter ("#breadcrumbs");
 
-						plot ("#placeholder-" + a[0], history, options, a[0].split ('-')[0]);
-						empty = false;
-					}
-				}
-			});
+                        plot ("#placeholder-" + a[0], history, options, a[0].split ('-')[0]);
+                        empty = false;
+                    }
+                }
+            });
 
-			if (empty) {
-				var box = t_box.format ("", "Stats", "Sorry, but it looks like there is not enough data for graphs to be rendered.");
-				$(box).insertAfter ("#breadcrumbs");
-			}
-		});
-	</script>
+            if (empty) {
+                var box = t_box.format ("", "Stats", "Sorry, but it looks like there is not enough data for graphs to be rendered.");
+                $(box).insertAfter ("#breadcrumbs");
+            }
+        });
+    </script>
 {% endblock %}

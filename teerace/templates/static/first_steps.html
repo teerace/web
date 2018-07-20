@@ -1,84 +1,84 @@
 {% extends "base.html" %}
 {% block title %}get started - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'Get started' 'first_steps' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Get started' 'first_steps' %}
 {% endblock %}
 {% block content %}
-	<div class="box full map">
-		<div class="step{% if user.is_authenticated %} step-done{% endif %}" id="s-1">
-			<div class="header">1. Sign up to Teerace</div>
-			<p>
-				You can still use our game servers and your results will be logged, but they will be saved anonymously.
-			</p>
-		</div>
-	</div>
+    <div class="box full map">
+        <div class="step{% if user.is_authenticated %} step-done{% endif %}" id="s-1">
+            <div class="header">1. Sign up to Teerace</div>
+            <p>
+                You can still use our game servers and your results will be logged, but they will be saved anonymously.
+            </p>
+        </div>
+    </div>
 {% comment %}
-	<div class="box left map">
-		<div class="header">Recommended way (Client Pack)</div>
-		
-		<div class="step" id="s-2a">
-			<div class="header">2. Install Client Pack</div>
-			<p>
-				Client Pack is designed to work with our servers flawlessly, so it's preferred client to compete in Teerace.
-			</p>
-			<p>
-				You can get Client Pack from <a href="http://www.teeworlds.com/forum/viewtopic.php?id=7604">its topic on Teeworlds.com forum</a>.
-			</p>
-		</div>
-	</div>
+    <div class="box left map">
+        <div class="header">Recommended way (Client Pack)</div>
+        
+        <div class="step" id="s-2a">
+            <div class="header">2. Install Client Pack</div>
+            <p>
+                Client Pack is designed to work with our servers flawlessly, so it's preferred client to compete in Teerace.
+            </p>
+            <p>
+                You can get Client Pack from <a href="http://www.teeworlds.com/forum/viewtopic.php?id=7604">its topic on Teeworlds.com forum</a>.
+            </p>
+        </div>
+    </div>
 {% endcomment %}
-	<div class="box full map">
-		{# <div class="header">The hard way (any client)</div> #}
-		<div class="step" id="s-2b">
-			<div class="header">2. Locate your Teeworlds configuration file</div>
-			<p>
-				Follow instructions on <a href="http://www.teeworlds.com/?page=docs&amp;wiki=ClientConfig">Teeworlds Docs page</a>.
-			</p>
-		</div>
-	</div>
-	<div class="box full map">
-		<div class="step" id="s-3b">
-			<div class="header">3. Edit your configuration file</div>
-			<p>
-				{% if not user.is_authenticated %}
-				After logging into Teerace website, go to settings page.<br>
-				Locate &quot;API token&quot; tab and copy your token.<br>
-				{% endif %}
-				Go to your teeworlds configuration file and add at the end of this file:
-				<div class="api_token">bind <em>BUTTON</em> "rcon_auth teerace:{{ user.profile.api_token|default:"your_api_key" }}"</div>
-			</p>
-			<p>Replace <em>BUTTON</em> with the button of your choice.</p>
-		</div>
-	</div>
+    <div class="box full map">
+        {# <div class="header">The hard way (any client)</div> #}
+        <div class="step" id="s-2b">
+            <div class="header">2. Locate your Teeworlds configuration file</div>
+            <p>
+                Follow instructions on <a href="http://www.teeworlds.com/?page=docs&amp;wiki=ClientConfig">Teeworlds Docs page</a>.
+            </p>
+        </div>
+    </div>
+    <div class="box full map">
+        <div class="step" id="s-3b">
+            <div class="header">3. Edit your configuration file</div>
+            <p>
+                {% if not user.is_authenticated %}
+                After logging into Teerace website, go to settings page.<br>
+                Locate &quot;API token&quot; tab and copy your token.<br>
+                {% endif %}
+                Go to your teeworlds configuration file and add at the end of this file:
+                <div class="api_token">bind <em>BUTTON</em> "rcon_auth teerace:{{ user.profile.api_token|default:"your_api_key" }}"</div>
+            </p>
+            <p>Replace <em>BUTTON</em> with the button of your choice.</p>
+        </div>
+    </div>
 {% comment %}
-	<div class="box left map">
-		<div class="step" id="s-3a">
-			<div class="header">3. Configure your client</div>
-			<p>
-				After launching the game, go to Settings tab. Then open Race tab. Fill in your username and password and press <span class="gamebutton">Retrieve API token</span>.
-			</p>
-		</div>
-	</div>
-	<div class="box left map">
-		<div class="step" id="s-4a">
-			<div class="header">4. Enjoy!</div>
-			<p>
-				You will be automagically authenticated every time you enter a Teerace server. Have fun!
-			</p>
-		</div>
-	</div>
+    <div class="box left map">
+        <div class="step" id="s-3a">
+            <div class="header">3. Configure your client</div>
+            <p>
+                After launching the game, go to Settings tab. Then open Race tab. Fill in your username and password and press <span class="gamebutton">Retrieve API token</span>.
+            </p>
+        </div>
+    </div>
+    <div class="box left map">
+        <div class="step" id="s-4a">
+            <div class="header">4. Enjoy!</div>
+            <p>
+                You will be automagically authenticated every time you enter a Teerace server. Have fun!
+            </p>
+        </div>
+    </div>
 {% endcomment %}
-	<div class="box full map">
-		<div class="step" id="s-4b">
-			<div class="header">4. Enjoy!</div>
-			<p>
-				Connect to a Teerace server and hit the button you have chosen in the 3rd step.
-			</p>
-			<p>
-				You will have to press the button each time you enter a Teerace server. Have fun!
-			</p>
-		</div>
-	</div>
+    <div class="box full map">
+        <div class="step" id="s-4b">
+            <div class="header">4. Enjoy!</div>
+            <p>
+                Connect to a Teerace server and hit the button you have chosen in the 3rd step.
+            </p>
+            <p>
+                You will have to press the button each time you enter a Teerace server. Have fun!
+            </p>
+        </div>
+    </div>
 {% endblock content %}

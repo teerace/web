@@ -1,49 +1,49 @@
 {% extends "base.html" %}{% load comments %}{% load gravatar %}{% load markup %}
 {% block title %}comment preview - {{ block.super }}{% endblock title %}
 {% block content %}
-	<div id="comments" class="box full">
-		{% if form.errors %}
-		<div class="header">Correct your error{{ form.errors|pluralize }}, please.</div>
-		{% else %}
-		<div class="header">Comment preview</div>
-		<div class="comment {% if user.is_staff or user.is_superuser %}staff {% endif %}even" id="cm-0">
-			<div class="comment-permalink"></div>
-			<div class="comment-line">
-				<img src="{% gravatar_url user.email 50 %}" alt="Gravatar for {{ user.get_full_name|default:user }}">
-				<div class="comment-author-info">
-					<span class="comment-author"><a href="{{ user.get_absolute_url }}">{{ user.get_real_name|default:user }}</a></span>
-					<span class="comment-date" title="~now">a few microseconds ago</span>
-				</div>
-			</div>
-			<div class="comment-content">
-				<p>
-					{{ comment|markdown }}
-				</p>
-			</div>
-		</div>
-		{% endif %}
-		<div class="comment-reply" style="display:block;">
-			<form method="POST" action="{% comment_form_target %}">{% csrf_token %}
-			{% for field in form %}
-				{% if field.is_hidden %}
-					{{ field }}
-				{% endif %}
-				{% if field.name == 'comment' or field.name == 'honeypot' %}
-				<div class="form_field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}"{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
-					{{ field }}
-					{% if field.errors %}
-						{% for error in field.errors %}
-						<div class="form-error">{{ error }}</div>
-						{% endfor %}
-					{% endif %}
-				</div>
-				{% endif %}
-			{% endfor %}
-				<div class="form_field">
-					<input type="submit" name="submit" class="submit-post" value="Post">
-					<input type="submit" name="preview" class="submit-preview" value="Preview">
-				</div>
-			</form>
-		</div>
-	</div>
+    <div id="comments" class="box full">
+        {% if form.errors %}
+        <div class="header">Correct your error{{ form.errors|pluralize }}, please.</div>
+        {% else %}
+        <div class="header">Comment preview</div>
+        <div class="comment {% if user.is_staff or user.is_superuser %}staff {% endif %}even" id="cm-0">
+            <div class="comment-permalink"></div>
+            <div class="comment-line">
+                <img src="{% gravatar_url user.email 50 %}" alt="Gravatar for {{ user.get_full_name|default:user }}">
+                <div class="comment-author-info">
+                    <span class="comment-author"><a href="{{ user.get_absolute_url }}">{{ user.get_real_name|default:user }}</a></span>
+                    <span class="comment-date" title="~now">a few microseconds ago</span>
+                </div>
+            </div>
+            <div class="comment-content">
+                <p>
+                    {{ comment|markdown }}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+        <div class="comment-reply" style="display:block;">
+            <form method="POST" action="{% comment_form_target %}">{% csrf_token %}
+            {% for field in form %}
+                {% if field.is_hidden %}
+                    {{ field }}
+                {% endif %}
+                {% if field.name == 'comment' or field.name == 'honeypot' %}
+                <div class="form_field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}"{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+                    {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                        <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+                <div class="form_field">
+                    <input type="submit" name="submit" class="submit-post" value="Post">
+                    <input type="submit" name="preview" class="submit-preview" value="Preview">
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

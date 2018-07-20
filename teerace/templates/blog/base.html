@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}blog - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'Blog' 'blog' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Blog' 'blog' %}
 {% endblock %}

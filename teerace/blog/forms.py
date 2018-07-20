@@ -1,11 +1,17 @@
 from django import forms
-from blog.models import Entry
+
+from .models import Entry
 
 
 class EntryAdminForm(forms.ModelForm):
-
-	class Meta:
-		model = Entry
-		fields = ('title', 'created_by', 'excerpt', 'content',
-			'status', 'is_micro', 'enable_comments')
-
+    class Meta:
+        model = Entry
+        fields = (
+            "title",
+            "created_by",
+            "excerpt",
+            "content",
+            "status",
+            "is_micro",
+            "enable_comments",
+        )

@@ -1,0 +1,47 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:10
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - data:/var/lib/postgresql/data
+  redis:
+    image: redis:4.0
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: runserver
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./teerace:/code/teerace
+    depends_on:
+      - postgres
+      - redis
+  celery:
+    image: teerace_django
+    command: celery
+    env_file:
+      - .env
+    volumes:
+      - ./teerace:/code/teerace
+    depends_on:
+      - postgres
+      - redis
+  celerybeat:
+    image: teerace_django
+    command: beat
+    env_file:
+      - .env
+    volumes:
+      - ./teerace:/code/teerace
+    depends_on:
+      - postgres
+      - redis
+volumes:
+  data:
+    driver: local

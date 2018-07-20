@@ -1,61 +1,61 @@
-{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load sorting %}{% load possessive %}{% load race_tags %}
+{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load sorting_tags %}{% load possessive %}{% load race_tags %}
 {% comment %}
 context variables:
-	profile_user (User instance)
-	best_runs
+    profile_user (User instance)
+    best_runs
 {% endcomment %}
 {% block title %}best scores - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb "Best scores" 'profile_best' profile_user.id %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb "Best scores" 'profile_best' profile_user.id %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} records</div>
-		{% auto_sort best_runs %}
-		{% autopaginate best_runs %}
-		{% paginate %}
-		<table id="profile-best" class="players">
-			<tr>
-				<th>{% sort_link "Name" "map__name" "name" %}</th>
-				<th>{% sort_link "Date" "run__created_at" "date" %}</th>
-				<th>{% sort_link "Points" "points" "points" %}</th>
-				<th>Map record</th>
-				<th>{% sort_link "Time" "time" "record" %}</th>
-				<th></th>
-			</tr>
-			{% for run in best_runs %}
-			<tr>
-				<td><a href="{% url 'ranks_map_detail' run.map.id %}">{{ run.map.name }}</a></td>
-				<td>{{ run.run.created_at|date:"F j, Y" }}</td>
-				<td>{{ run.points }}</td>
-			{% with run.map.get_best_run as map_bestrun %}
-				<td{% if run.id == map_bestrun.id %} colspan="2" class="own"{% endif%}>
-					{{ map_bestrun.time|race_time }} by <a href="{{ map_bestrun.user.get_absolute_url }}" class="user">{{ map_bestrun.user }}</a>
-				</td>
-				{% if run.id != map_bestrun.id %}
-				<td>{{ run.time|race_time }}</td>
-				{% endif %}
-			{% endwith %}
-				<td class="icons">
-					{% if run.demo_file %}<a href="{{ run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-					{% if run.ghost_file %}<a href="{{ run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
-				</td>
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="6">{% if request.user.id == profile_user.id %}You{% else %}This user{% endif %} haven't finished any map yet!</td>
-			</tr>
-			{% endfor %}
-		{% if best_runs %}
-		<tfoot>
-			<tr>
-				<td colspan="6">{{ paginator.count }} map{{ paginator.count|pluralize }} finished</td>
-			</tr>
-		</tfoot>
-		{% endif %}
-		</table>
-		{% paginate %}
-	</div>
+    <div class="box full">
+        <div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} records</div>
+        {% autosort best_runs %}
+        {% autopaginate best_runs %}
+        {% paginate %}
+        <table id="profile-best" class="players">
+            <tr>
+                <th>{% anchor map__name "Name" %}</th>
+                <th>{% anchor run__created_at "Date" %}</th>
+                <th>{% anchor points "Points" %}</th>
+                <th>Map record</th>
+                <th>{% anchor "time" "Time" %}</th>
+                <th></th>
+            </tr>
+            {% for run in best_runs %}
+            <tr>
+                <td><a href="{% url 'ranks_map_detail' run.map.id %}">{{ run.map.name }}</a></td>
+                <td>{{ run.run.created_at|date:"F j, Y" }}</td>
+                <td>{{ run.points }}</td>
+            {% with run.map.get_best_run as map_bestrun %}
+                <td{% if run.id == map_bestrun.id %} colspan="2" class="own"{% endif%}>
+                    {{ map_bestrun.time|race_time }} by <a href="{{ map_bestrun.user.get_absolute_url }}" class="user">{{ map_bestrun.user }}</a>
+                </td>
+                {% if run.id != map_bestrun.id %}
+                <td>{{ run.time|race_time }}</td>
+                {% endif %}
+            {% endwith %}
+                <td class="icons">
+                    {% if run.demo_file %}<a href="{{ run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+                    {% if run.ghost_file %}<a href="{{ run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">{% if request.user.id == profile_user.id %}You{% else %}This user{% endif %} haven't finished any map yet!</td>
+            </tr>
+            {% endfor %}
+        {% if best_runs %}
+        <tfoot>
+            <tr>
+                <td colspan="6">{{ paginator.count }} map{{ paginator.count|pluralize }} finished</td>
+            </tr>
+        </tfoot>
+        {% endif %}
+        </table>
+        {% paginate %}
+    </div>
 {% endblock content %}

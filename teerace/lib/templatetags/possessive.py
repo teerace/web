@@ -1,7 +1,9 @@
 from django import template
 
+
 register = template.Library()
+
 
 @register.simple_tag
 def possessive(string):
-	return "'" if string.endswith('s') else "'s"
+    return "'" if string.endswith("s") else "'s"

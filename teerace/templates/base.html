@@ -1,113 +1,113 @@
-{% load menu %}{% load gravatar %}{% load revision %}
+{% load static menu gravatar revision %}
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{% block title %}Teerace{% endblock title %}</title>
-	<meta charset="utf-8">
-	<meta name="description" content="Teerace is a project gathering results from a network of trusted Teeworlds Race-mod servers. The idea behind it is to create a global ranking/stats system covering as wide span of results as we manage to obtain.">
-	<meta name="keywords" content="Teeworlds, Teerace, teeworlds-race, teeathon, game, gaming, racemaps, racing">
-	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css">
-	<link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico">
-	<link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url 'blog_feed' %}">
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.1.min.js"></script>
-	{% block extra_head %}
-	{% endblock extra_head %}
-	{% if settings.ANALYTICS_ID %}
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', '{{ settings.ANALYTICS_ID }}']);
-		_gaq.push(['_trackPageview']);
+    <title>{% block title %}Teerace{% endblock title %}</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Teerace is a project gathering results from a network of trusted Teeworlds Race-mod servers. The idea behind it is to create a global ranking/stats system covering as wide span of results as we manage to obtain.">
+    <meta name="keywords" content="Teeworlds, Teerace, teeworlds-race, teeathon, game, gaming, racemaps, racing">
+    <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}">
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}">
+    <link rel="alternate" type="application/atom+xml" title="Feed of recent entries" href="{% url 'blog_feed' %}">
+    <script type="text/javascript" src="{% static "js/jquery-1.5.1.min.js" %}"></script>
+    {% block extra_head %}
+    {% endblock extra_head %}
+    {% if settings.ANALYTICS_ID %}
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '{{ settings.ANALYTICS_ID }}']);
+        _gaq.push(['_trackPageview']);
 
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
-	{% endif %}
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    {% endif %}
 </head>
 
 <body>
-	{% url 'home' as url_home %}
-	<div id="header">
-			<a href="{{ url_home }}"><div sprite="logo" title="Teerace logo"></div></a>
-	</div>
+    {% url 'home' as url_home %}
+    <div id="header">
+            <a href="{{ url_home }}"><div sprite="logo" title="Teerace logo"></div></a>
+    </div>
 
-	<div id="page">
-		<div id="menu">
-			{% url 'blog' as url_blog %}
-			{% url 'userlist' as url_userlist %}
-			{% url 'awards' as url_awards %}
-			{% url 'maps' as url_maps %}
-			{% url 'ranks' as url_ranks %}
-			{% url 'servers' as url_servers %}
-			{% url 'faq-topic-list' as url_help %}
-			<ul>
-				<li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li{% current request url_userlist %}{% current request "/profile/" %}><a href="{{ url_userlist }}">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li{% current request url_awards %}><a href="{{ url_awards }}">Awards</a></li><li{% current request url_ranks %}><a href="{{ url_ranks }}">Ranks</a></li><li{% current request url_servers %}><a href="{{ url_servers }}">Servers</a></li><li{% current request url_help %}><a href="{{ url_help }}">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
-			</ul>
-			<div id="submenu" class="full">
-				{% comment %}
-				{% block submenu %}
-					<ul class="left">
-						<li><a href="{% url 'blog' %}">Entries</a></li>
-					</ul>
-				{% endblock submenu %}
-				{% endcomment %}
-				{% block submenu %}{% endblock submenu %}
-				<div id="user-box" class="right">
-					{% if user.is_authenticated %}<img src="{% gravatar_url user.email 20 %}" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url 'profile' user.id %}">{{ user.username }}</a> <a class="button" href="{% url 'settings' %}">Settings</a> <a class="button" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
-					{% else %}
-					<a class="button" href="{% url 'login' %}?next={{ request.path }}">Login</a> <a class="button" href="{% url 'register' %}">Register</a>
-					{% endif %}
-				</div>
-			</div>
-		</div>
+    <div id="page">
+        <div id="menu">
+            {% url 'blog' as url_blog %}
+            {% url 'userlist' as url_userlist %}
+            {% url 'awards' as url_awards %}
+            {% url 'maps' as url_maps %}
+            {% url 'ranks' as url_ranks %}
+            {% url 'servers' as url_servers %}
+            {% url 'faq-topic-list' as url_help %}
+            <ul>
+                <li{% current request url_home %}><a href="{{ url_home }}">Home</a></li><li{% current request url_blog %}><a href="{{ url_blog }}">Blog</a></li><li{% current request url_userlist %}{% current request "/profile/" %}><a href="{{ url_userlist }}">Players</a></li><li{% current request url_maps %}><a href="{{ url_maps }}">Maps</a></li><li{% current request url_awards %}><a href="{{ url_awards }}">Awards</a></li><li{% current request url_ranks %}><a href="{{ url_ranks }}">Ranks</a></li><li{% current request url_servers %}><a href="{{ url_servers }}">Servers</a></li><li{% current request url_help %}><a href="{{ url_help }}">Help</a></li>{% if user.is_staff or user.is_superuser %}<li class="glow"><a href="/admin/">Admin</a></li>{% endif %}
+            </ul>
+            <div id="submenu" class="full">
+                {% comment %}
+                {% block submenu %}
+                    <ul class="left">
+                        <li><a href="{% url 'blog' %}">Entries</a></li>
+                    </ul>
+                {% endblock submenu %}
+                {% endcomment %}
+                {% block submenu %}{% endblock submenu %}
+                <div id="user-box" class="right">
+                    {% if user.is_authenticated %}<img src="{% gravatar_url user.email 20 %}" alt="{{ user.username }}'s gravatar" title="{{ user.username }}'s gravatar"> <a class="user-name" href="{% url 'profile' user.id %}">{{ user.username }}</a> <a class="button" href="{% url 'settings' %}">Settings</a> <a class="button" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+                    {% else %}
+                    <a class="button" href="{% url 'login' %}?next={{ request.path }}">Login</a> <a class="button" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
-		<div id="content">
-			<div id="breadcrumbs">
-				{% block breadcrumb %}
-					{% load breadcrumb_tags %}
-					{% add_crumb 'Home' 'home' %}
-				{% endblock %}
-				{% render_breadcrumbs %}
-			</div>
+        <div id="content">
+            <div id="breadcrumbs">
+                {% block breadcrumb %}
+                    {% load breadcrumb_tags %}
+                    {% add_crumb 'Home' 'home' %}
+                {% endblock %}
+                {% render_breadcrumbs %}
+            </div>
 
-			{% if messages %}
-			<div id="messages">
-				{% for message in messages %}
-				<div{% if message.tags %} class="{{ message.tags }} box full"{% endif %}>
-					<p>{{ message|safe }}</p>
-				</div>
-				{% endfor %}
-			</div>
-			{% endif %}
+            {% if messages %}
+            <div id="messages">
+                {% for message in messages %}
+                <div{% if message.tags %} class="{{ message.tags }} box full"{% endif %}>
+                    <p>{{ message|safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
-			{% block content %}
-			{% endblock content %}
+            {% block content %}
+            {% endblock content %}
 
-			<div id="footer" class="box full">
-				<div class="left">
-					<a href="#header">↑ Top</a>
-					&middot;
-					<a href="{% url 'about' %}">About</a>
-					&middot;
-					<a href="{% url 'contact' %}">Contact us</a>
-				{% if user.is_staff or user.is_superuser %}
-					&middot;
-					{% revision %}
-				{% endif %}
-				</div>
-				<div class="right">
-					<a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace" title="Powered by Teerace"></div></a>
-				</div>
-			</div>
-			<div id="logos">
-				<div><a href="http://teeworlds.com"><div sprite="teeworlds" alt="Teeworlds" title="Teeworlds"></div></a></div>
-				<div><a href="http://teesites.net"><div sprite="teesites" alt="Part of the teeSites network" title="Part of the teeSites network"></div></a></div>
-				<div><a href="http://djangoproject.com"><div sprite="django" alt="Powered by Django" title="Powered by Django"></div></a></div>
-				<div><a href="http://python.org"><div sprite="python" alt="Powered by Python" title="Powered by Python"></div></a></div>
-				<div><a href="http://nginx.org"><div sprite="nginx" alt="Powered by Nginx" title="Powered by Nginx"></div></a></div>
-			</div>
-		</div>
-	</div>
+            <div id="footer" class="box full">
+                <div class="left">
+                    <a href="#header">↑ Top</a>
+                    &middot;
+                    <a href="{% url 'about' %}">About</a>
+                    &middot;
+                    <a href="{% url 'contact' %}">Contact us</a>
+                {% if user.is_staff or user.is_superuser %}
+                    &middot;
+                    {% revision %}
+                {% endif %}
+                </div>
+                <div class="right">
+                    <a href="http://race.teesites.net"><div sprite="tinylogo" alt="Powered by Teerace" title="Powered by Teerace"></div></a>
+                </div>
+            </div>
+            <div id="logos">
+                <div><a href="http://teeworlds.com"><div sprite="teeworlds" alt="Teeworlds" title="Teeworlds"></div></a></div>
+                <div><a href="http://teesites.net"><div sprite="teesites" alt="Part of the teeSites network" title="Part of the teeSites network"></div></a></div>
+                <div><a href="http://djangoproject.com"><div sprite="django" alt="Powered by Django" title="Powered by Django"></div></a></div>
+                <div><a href="http://python.org"><div sprite="python" alt="Powered by Python" title="Powered by Python"></div></a></div>
+                <div><a href="http://nginx.org"><div sprite="nginx" alt="Powered by Nginx" title="Powered by Nginx"></div></a></div>
+            </div>
+        </div>
+    </div>
 </body>

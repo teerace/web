@@ -1,68 +1,68 @@
 {% extends "race/map_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load race_tags %}
 {% comment %}
 context variables:
-	object_list
-	paginator
-	map_types
-	filtered_type
+    object_list
+    paginator
+    map_types
+    filtered_type
 {% endcomment %}
 {% block submenu %}
-	<ul class="left">
-		<li><a href="{% url 'maps' %}">All</a></li>{% for type in map_types %}<li><a href="{% url 'maps__type' type.slug %}">{{ type.displayed_name }}</a></li>{% endfor %}</li>{% if request.user.is_authenticated %}<li><a href="{% url 'maps_unfinished' %}">Unfinished</a></li>{% endif %}
-	</ul>
+    <ul class="left">
+        <li><a href="{% url 'maps' %}">All</a></li>{% for type in map_types %}<li><a href="{% url 'maps__type' type.slug %}">{{ type.displayed_name }}</a></li>{% endfor %}</li>{% if request.user.is_authenticated %}<li><a href="{% url 'maps_unfinished' %}">Unfinished</a></li>{% endif %}
+    </ul>
 {% endblock submenu %}
 {% block breadcrumb %}
-	{{ block.super }}
+    {{ block.super }}
 {% if filtered_type %}
-	{% load breadcrumb_tags %}
-	{% add_crumb filtered_type 'maps__type' filtered_type.slug %}
+    {% load breadcrumb_tags %}
+    {% add_crumb filtered_type 'maps__type' filtered_type.slug %}
 {% endif %}
 {% endblock %}
 {% block content %}
-		{% if filtered_type and filtered_type.description %}
-		<div class="box full">
-			<div class="header">{{ filtered_type }}</div>
-			{{ filtered_type.description }}
-		</div>
-		{% endif %}
-		{% autopaginate object_list %}
-		{% paginate %}
-		{% for map in object_list %}
-		<div class="box map {% cycle 'left' 'right' %}">
-			<div class="right">
-				{% if map.grenade_count %}<div sprite="grenade" title="There is grenade launcher"></div>{% endif %}
-				{% if map.has_unhookables %}<div sprite="unhookable" title="There are unhookable tiles"></div>{% endif %}
-				{% if map.has_deathtiles %}<div sprite="deathtiles" title="There are death tiles"></div>{% endif %}
-			</div>
+        {% if filtered_type and filtered_type.description %}
+        <div class="box full">
+            <div class="header">{{ filtered_type }}</div>
+            {{ filtered_type.description }}
+        </div>
+        {% endif %}
+        {% autopaginate object_list %}
+        {% paginate %}
+        {% for map in object_list %}
+        <div class="box map {% cycle 'left' 'right' %}">
+            <div class="right">
+                {% if map.grenade_count %}<div sprite="grenade" title="There is grenade launcher"></div>{% endif %}
+                {% if map.has_unhookables %}<div sprite="unhookable" title="There are unhookable tiles"></div>{% endif %}
+                {% if map.has_deathtiles %}<div sprite="deathtiles" title="There are death tiles"></div>{% endif %}
+            </div>
 
-			<div class="header">
-				<a href="{{ map.get_absolute_url }}">{{ map.name }}</a>
-			</div>
-			<table>
-				<tr>
-					<th>Completions</th>
-					<th>Average time</th>
-					<th colspan="2">Record</th>
-				</tr>
-				<tr>
-					<td>{{ map.run_count }}</td>
-					<td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
-					{% if map.get_best_run %}
-					<td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
-					<td class="icons">
-						{% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-						{% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
-					</td>
-					{% else %}
-					<td colspan="2">-</td>
-					{% endif %}
-				</tr>
-			</table>
-		</div>
-		{% empty %}
-		<div class="box full">
-			No maps were found.
-		</div>
-		{% endfor %}
-		{% paginate %}
+            <div class="header">
+                <a href="{{ map.get_absolute_url }}">{{ map.name }}</a>
+            </div>
+            <table>
+                <tr>
+                    <th>Completions</th>
+                    <th>Average time</th>
+                    <th colspan="2">Record</th>
+                </tr>
+                <tr>
+                    <td>{{ map.run_count }}</td>
+                    <td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
+                    {% if map.get_best_run %}
+                    <td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.get_best_run.user }}</a></td>
+                    <td class="icons">
+                        {% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+                        {% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+                    </td>
+                    {% else %}
+                    <td colspan="2">-</td>
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
+        {% empty %}
+        <div class="box full">
+            No maps were found.
+        </div>
+        {% endfor %}
+        {% paginate %}
 {% endblock content %}

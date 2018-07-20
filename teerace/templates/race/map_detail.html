@@ -1,194 +1,194 @@
 {% extends "race/map_base.html" %}{% load race_tags %}{% load humanize %}
 {% comment %}
 context variables:
-	map
-	best_runs
-	latest_runs
-	user_latest_runs
-	user_bestrun
+    map
+    best_runs
+    latest_runs
+    user_latest_runs
+    user_bestrun
 {% endcomment %}
 {% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb map.name 'map_detail' map.id %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb map.name 'map_detail' map.id %}
 {% endblock %}
 {% block extra_head %}
-	{{ block.super }}
-	<script type="text/javascript">
-		function ckp() {
-			var more = $('.more');
-			if (more.text() == 'Show') {
-				$('.more').text('Hide');
-				$('tr[class^="checklist"]').css('display', 'table-row');
-			} else {
-				$('.more').text('Show');
-				$('tr[class^="checklist"]').css('display', 'none');
-			}
-			return false;
-		}
-		$(document).ready(function(){
-			$('tr[class^="checklist"]').hide();
-		});
-	</script>
+    {{ block.super }}
+    <script type="text/javascript">
+        function ckp() {
+            var more = $('.more');
+            if (more.text() == 'Show') {
+                $('.more').text('Hide');
+                $('tr[class^="checklist"]').css('display', 'table-row');
+            } else {
+                $('.more').text('Show');
+                $('tr[class^="checklist"]').css('display', 'none');
+            }
+            return false;
+        }
+        $(document).ready(function(){
+            $('tr[class^="checklist"]').hide();
+        });
+    </script>
 {% endblock extra_head %}
 {% block content %}
-	<div class="box full">
-		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
-		<div class="left detail">
-			<table>
-				<tr>
-					<td class="label">Author</td>
-					<td class="content">{{ map.author }}</td>
-				</tr>
-				<tr>
-					<td class="label">Added</td>
-					<td class="content">{{ map.added_at }}</td>
-				</tr>
-				<tr>
-					<td class="label">Map downloads</td>
-					<td class="content">{{ map.download_count }}</td>
-				</tr>
-			{% if map.best_score %}
-				<tr>
-					<td class="label">Best result</td>
-					<td class="content">{{ map.best_score.time|race_time }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
-				</tr>
-				{% with map.best_score.checkpoints_list as checkpoints %}
-				{% if checkpoints|length > 1 %}
-				<tr>
-					<td class="label">Checkpoints</td>
-					<td class="content"><a class="more" onclick="ckp()">Show</a></td>
-				</tr>
-				{% for checkpoint in checkpoints %}
-				<tr class="checklist-{{ forloop.counter }}">
-					<td class="label">Checkpoint {{ forloop.counter }}</td>
-					<td class="content">{{ checkpoint|race_time }}</td>
-				</tr>
-				{% endfor %}
-				{% endif %}
-				{% endwith %}
-			{% endif %}
-			{% if user_bestrun %}
-				<tr>
-					<td class="label">Personal best</td>
-					<td class="content">{{ user_bestrun.time|race_time }} {% race_diff user_bestrun.run map.best_score "" %}</td>
-				</tr>
-			{% endif %}
-				<tr>
-					<td class="label">Average time</td>
-					<td class="content">{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
-				</tr>
-				<tr>
-					<td class="label">Map completions</td>
-					<td class="content">{{ map.run_count }}</td>
-				</tr>
-				<tr>
-					<td class="label">Map characteristics</td>
-					<td class="content">
-						<div sprite="shield" title="Number of shields"></div><div>{{ map.shield_count|default_if_none:"?" }}</div>
-						<div sprite="heart" title="Number of hearts"></div><div>{{ map.heart_count|default_if_none:"?" }}</div>
-						<div sprite="grenade" title="Number of grenade launchers"></div><div>{{ map.grenade_count|default_if_none:"?" }}</div>
-						{% if map.has_unhookables %}<div sprite="unhookable" title="Unhookable tiles present"></div>{% endif %}
-						{% if map.has_deathtiles %}<div sprite="deathtiles" title="Death tiles present"></div>{% endif %}
-					</td>
-				</tr>
+    <div class="box full">
+        <div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
+        <div class="left detail">
+            <table>
+                <tr>
+                    <td class="label">Author</td>
+                    <td class="content">{{ map.author }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Added</td>
+                    <td class="content">{{ map.added_at }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Map downloads</td>
+                    <td class="content">{{ map.download_count }}</td>
+                </tr>
+            {% if map.best_score %}
+                <tr>
+                    <td class="label">Best result</td>
+                    <td class="content">{{ map.best_score.time|race_time }} by {{ map.best_score.user }}{% if map.best_score.nickname %} ({{ map.best_score.nickname }}){% endif %}</td>
+                </tr>
+                {% with map.best_score.checkpoints_list as checkpoints %}
+                {% if checkpoints|length > 1 %}
+                <tr>
+                    <td class="label">Checkpoints</td>
+                    <td class="content"><a class="more" onclick="ckp()">Show</a></td>
+                </tr>
+                {% for checkpoint in checkpoints %}
+                <tr class="checklist-{{ forloop.counter }}">
+                    <td class="label">Checkpoint {{ forloop.counter }}</td>
+                    <td class="content">{{ checkpoint|race_time }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            {% endif %}
+            {% if user_bestrun %}
+                <tr>
+                    <td class="label">Personal best</td>
+                    <td class="content">{{ user_bestrun.time|race_time }} {% race_diff user_bestrun.run map.best_score "" %}</td>
+                </tr>
+            {% endif %}
+                <tr>
+                    <td class="label">Average time</td>
+                    <td class="content">{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <td class="label">Map completions</td>
+                    <td class="content">{{ map.run_count }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Map characteristics</td>
+                    <td class="content">
+                        <div sprite="shield" title="Number of shields"></div><div>{{ map.shield_count|default_if_none:"?" }}</div>
+                        <div sprite="heart" title="Number of hearts"></div><div>{{ map.heart_count|default_if_none:"?" }}</div>
+                        <div sprite="grenade" title="Number of grenade launchers"></div><div>{{ map.grenade_count|default_if_none:"?" }}</div>
+                        {% if map.has_unhookables %}<div sprite="unhookable" title="Unhookable tiles present"></div>{% endif %}
+                        {% if map.has_deathtiles %}<div sprite="deathtiles" title="Death tiles present"></div>{% endif %}
+                    </td>
+                </tr>
 <!--
-				<tr>
-					<td class="label"></td>
-					<td class="content"></td>
-				</tr>
+                <tr>
+                    <td class="label"></td>
+                    <td class="content"></td>
+                </tr>
 -->
-			</table>
-			<br>
-			<a class="button" href="{% url 'map_download' map.id %}">Download map</a><span class="map-file-size">{{ map.map_file.size|filesizeformat }}</span>
-		</div>
+            </table>
+            <br>
+            <a class="button" href="{% url 'map_download' map.id %}">Download map</a><span class="map-file-size">{{ map.map_file.size|filesizeformat }}</span>
+        </div>
 
-		{% if map.video %}
-			<div class="right map-video">
-				<iframe width="370" height="183" src="{{ map.video }}" frameborder="0" allowfullscreen></iframe>
-			</div>
-		{% else %}
-			<div class="right no-map-image"><br>Map screenshot is missing.</div>
-		{% endif %}
-	</div>
-	<div class="box full">
-		<div class="header">Top 5</div>
-		<table>
-			<tr>
-				<th>#</th>
-				<th>Player</th>
-				<th>Points</th>
-				<th>Date</th>
-				<th>Time</th>
-				<th>Diff</th>
-				<th></th>
-			</tr>
-			{% for best_run in best_runs %}
-			<tr{% if request.user.id == best_run.user.id %} class="me" title="that's you!"{% endif %}>
-				<td>{{ best_run.position|ordinal }}</td>
-				<td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
-				<td>{{ best_run.points }}</td>
-				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
-				<td>{{ best_run.run.time|race_time }}</td>
-				<td>{% race_diff best_run.run map.best_score %}</td>
-				<td class="icons">
-					{% if best_run.demo_file %}<a href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-					{% if best_run.ghost_file %}<a href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
-				</td>
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="7">Hey! Nobody finished this map yet!</td>
-			</tr>
-			{% endfor %}
-		{% if best_runs %}
-		<tfoot>
-			<tr>
-				<td colspan="7"><a href="{% url 'ranks_map_detail' map.id %}">See whole rank &raquo;</a></td>
-			</tr>
-		</tfoot>
-		{% endif %}
-		</table>
-	</div>
-	{% if latest_runs %}
-	<div class="box full">
-		<div class="header">Recent map completions</div>
-		<table>
-			<tr>
-				<th>Player</th>
-				<th>Date</th>
-				<th>Time</th>
-			</tr>
-			{% for run in latest_runs %}
-			<tr{% if request.user.is_authenticated and request.user.id == run.user.id %} class="me" title="that's you!"{% endif %}>
-				<td>{% if run.user.id %}<a href="{{ run.user.get_absolute_url }}">{{ run.user.username }}</a>{% else %}{{ run.nickname }}{% endif %}</td>
-				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|race_time }}</td>
-			</tr>
-			{% endfor %}
-		</table>
-	</div>
-	{% endif %}
-	{% if user.is_authenticated %}
-	<div class="box full">
-		<div class="header">Your results</div>
-		<table>
-			<tr>
-				<th>Date</th>
-				<th>Time</th>
-			</tr>
-			{% for run in user_latest_runs %}
-			<tr>
-				<td>{{ run.created_at|timesince }} ago</td>
-				<td>{{ run.time|race_time }}</td>
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="4">Hey! You haven't finished this map yet!</td>
-			</tr>
-			{% endfor %}
-		</table>
-	</div>
-	{% endif %}
+        {% if map.video %}
+            <div class="right map-video">
+                <iframe width="370" height="183" src="{{ map.video }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        {% else %}
+            <div class="right no-map-image"><br>Map screenshot is missing.</div>
+        {% endif %}
+    </div>
+    <div class="box full">
+        <div class="header">Top 5</div>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Points</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Diff</th>
+                <th></th>
+            </tr>
+            {% for best_run in best_runs %}
+            <tr{% if request.user.id == best_run.user.id %} class="me" title="that's you!"{% endif %}>
+                <td>{{ best_run.position|ordinal }}</td>
+                <td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
+                <td>{{ best_run.points }}</td>
+                <td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
+                <td>{{ best_run.run.time|race_time }}</td>
+                <td>{% race_diff best_run.run map.best_score %}</td>
+                <td class="icons">
+                    {% if best_run.demo_file %}<a href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+                    {% if best_run.ghost_file %}<a href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Hey! Nobody finished this map yet!</td>
+            </tr>
+            {% endfor %}
+        {% if best_runs %}
+        <tfoot>
+            <tr>
+                <td colspan="7"><a href="{% url 'ranks_map_detail' map.id %}">See whole rank &raquo;</a></td>
+            </tr>
+        </tfoot>
+        {% endif %}
+        </table>
+    </div>
+    {% if latest_runs %}
+    <div class="box full">
+        <div class="header">Recent map completions</div>
+        <table>
+            <tr>
+                <th>Player</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            {% for run in latest_runs %}
+            <tr{% if request.user.is_authenticated and request.user.id == run.user.id %} class="me" title="that's you!"{% endif %}>
+                <td>{% if run.user.id %}<a href="{{ run.user.get_absolute_url }}">{{ run.user.username }}</a>{% else %}{{ run.nickname }}{% endif %}</td>
+                <td>{{ run.created_at|timesince }} ago</td>
+                <td>{{ run.time|race_time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <div class="box full">
+        <div class="header">Your results</div>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            {% for run in user_latest_runs %}
+            <tr>
+                <td>{{ run.created_at|timesince }} ago</td>
+                <td>{{ run.time|race_time }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Hey! You haven't finished this map yet!</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
 {% endblock %}

@@ -1,167 +1,167 @@
-{% extends "accounts/user_list.html" %}{% load human_duration %}{% load humanize %}{% load gravatar %}{% load possessive %}
+{% extends "accounts/user_list.html" %}{% load static human_duration humanize gravatar possessive %}
 {% comment %}
 context variables:
-	profile_user (User instance)
-	user_actions
-	badges
+    profile_user (User instance)
+    user_actions
+    badges
 {% endcomment %}
 {% block title %}{{ profile_user }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb profile_user.profile 'profile' profile_user.id %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb profile_user.profile 'profile' profile_user.id %}
 {% endblock %}
 {% block submenu %}
-	<ul class="left">
-		<li><a href="{% url 'profile' profile_user.id %}">Profile</a></li><li><a href="{% url 'profile_best' profile_user.id %}">Best scores</a></li><li><a href="{% url 'profile_activity' profile_user.id %}">Activity</a></li><li><a href="{% url 'profile_badges' profile_user.id %}">Badges</a></li>
-	</ul>
+    <ul class="left">
+        <li><a href="{% url 'profile' profile_user.id %}">Profile</a></li><li><a href="{% url 'profile_best' profile_user.id %}">Best scores</a></li><li><a href="{% url 'profile_activity' profile_user.id %}">Activity</a></li><li><a href="{% url 'profile_badges' profile_user.id %}">Badges</a></li>
+    </ul>
 {% endblock submenu %}
 {% block extra_head %}
-	<!--[if IE]><script type="text/javascript" src="{{ MEDIA_URL }}js/flot/excanvas.min.js"></script><![endif]-->
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/flot/jquery.flot.min.js"></script>
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/utils.js"></script>
-	<script type="text/javascript">
-		$(document).ready (function () {
-			$(".javascript").addClass ("hide");
-			$.ajax({
-				type: "GET",
-				url: "{% url 'profile_points_graph_json' profile_user.id %}",
-				dataType: "json",
-				success: function (json) {
-					if (json.history != null && json.history.length > 1) {
-						var options = {
-							xaxis: { mode: "time", timeformat: "%d %b", minTickSize: [1, "day"] },
-							yaxis: { min: 0 },
-							series: { lines: { show: true }, points: { show: true } },
-							grid: { hoverable: true}
-						};
+    <!--[if IE]><script type="text/javascript" src="{% static "js/flot/excanvas.min.js" %}"></script><![endif]-->
+    <script type="text/javascript" src="{% static "js/flot/jquery.flot.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/utils.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready (function () {
+            $(".javascript").addClass ("hide");
+            $.ajax({
+                type: "GET",
+                url: "{% url 'profile_points_graph_json' profile_user.id %}",
+                dataType: "json",
+                success: function (json) {
+                    if (json.history != null && json.history.length > 1) {
+                        var options = {
+                            xaxis: { mode: "time", timeformat: "%d %b", minTickSize: [1, "day"] },
+                            yaxis: { min: 0 },
+                            series: { lines: { show: true }, points: { show: true } },
+                            grid: { hoverable: true}
+                        };
 
-						// convert dates to timestamps
-						var history = new Array ();
-						for (i = 0; i < json.history.length; i++) {
-							d = new Date(json.history[i][0]);
-							d.setUTCHours(0);
-							history.push ([d.getTime(), json.history[i][1]]);
-						}
+                        // convert dates to timestamps
+                        var history = new Array ();
+                        for (i = 0; i < json.history.length; i++) {
+                            d = new Date(json.history[i][0]);
+                            d.setUTCHours(0);
+                            history.push ([d.getTime(), json.history[i][1]]);
+                        }
 
-						plot ("#placeholder", history, options, "points");
-					} else {
-						$('#points-history').remove();
-					}
-				}
-			});
-		});
-	</script>
+                        plot ("#placeholder", history, options, "points");
+                    } else {
+                        $('#points-history').remove();
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}
 {% block content %}
-	<div id="userprofile" class="box full{% if request.user.id == profile_user.id %} ownprofile{% endif %}">
-		<div class="header">
-			{% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile_user.profile }}{% endif %}
-			{% if profile_user.profile.is_online and profile_user.profile.playing_on %}
-			<span class="online">
-				{% with profile_user.profile.playing_on as server %}
-				<strong>online</strong> and currently playing on <a href="{% url 'servers' %}#s-{{ server.id }}"><strong>{{ server.name }}</strong></a>
-				{% endwith %}
-			{% else %}
-			<span class="offline">
-				offline
-			{% endif %}
-			</span>
-		</div>
-		<div class="headrow">
-			<img src="{% gravatar_url profile_user.email 80 %}" class="gravatar" alt="{{ profile_user.username }}{% possessive profile_user.username %} gravatar" title="{{ profile_user.username }}{% possessive profile_user.username %} gravatar">
-			<div class="points">
-				<h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
-				{# little hack, hope to change it in the future #}
-				<h3 helper="{{ profile_user.profile.points_progress|default:"+0" }}">{{ profile_user.profile.points_progress|default:"+0" }} <span>since yesterday</span></h3>
-			</div>
-		</div>
-		<table>
-			<tbody>
-				{% if profile_user.get_full_name %}
-				<tr>
-					<td class="label">Full name:</td>
-					<td class="content">{{ profile_user.get_full_name }}</td>
-				</tr>
-				{% endif %}
-				{% if profile_user.profile.country %}
-				<tr>
-					<td class="label">Country:</td>
-					<td class="content"><img src="{{ profile_user.profile.country.flag }}" /> {{ profile_user.profile.country.name }}</td>
-				</tr>
-				{% endif %}
-				<tr>
-					<td class="label">Global rank:</td>
-					<td class="content">{{ profile_user.profile.position|ordinal|default:"Not ranked" }}</td>
-				</tr>
-				<tr>
-					<td class="label">Completions:</td>
-					<td class="content">{{ profile_user.profile.completions }}</td>
-				</tr>
-				<tr>
-					<td class="label">Time of finished races:</td>
-					<td class="content">{{ profile_user.profile.runtime|default:0|sectodur }}</td>
-				</tr>
-				<tr>
-					<td class="label">Time spent on servers:</td>
-					<td class="content">{{ profile_user.profile.playtime|sectodur }}</td>
-				</tr>
-				<tr>
-					<td class="label">Joined:</td>
-					<td class="content">{{ profile_user.date_joined }}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+    <div id="userprofile" class="box full{% if request.user.id == profile_user.id %} ownprofile{% endif %}">
+        <div class="header">
+            {% if request.user.id == profile_user.id %}Your profile{% else %}{{ profile_user.profile }}{% endif %}
+            {% if profile_user.profile.is_online and profile_user.profile.playing_on %}
+            <span class="online">
+                {% with profile_user.profile.playing_on as server %}
+                <strong>online</strong> and currently playing on <a href="{% url 'servers' %}#s-{{ server.id }}"><strong>{{ server.name }}</strong></a>
+                {% endwith %}
+            {% else %}
+            <span class="offline">
+                offline
+            {% endif %}
+            </span>
+        </div>
+        <div class="headrow">
+            <img src="{% gravatar_url profile_user.email 80 %}" class="gravatar" alt="{{ profile_user.username }}{% possessive profile_user.username %} gravatar" title="{{ profile_user.username }}{% possessive profile_user.username %} gravatar">
+            <div class="points">
+                <h2>{{ profile_user.profile.points|default:0 }} <span>points</span></h2>
+                {# little hack, hope to change it in the future #}
+                <h3 helper="{{ profile_user.profile.points_progress|default:"+0" }}">{{ profile_user.profile.points_progress|default:"+0" }} <span>since yesterday</span></h3>
+            </div>
+        </div>
+        <table>
+            <tbody>
+                {% if profile_user.get_full_name %}
+                <tr>
+                    <td class="label">Full name:</td>
+                    <td class="content">{{ profile_user.get_full_name }}</td>
+                </tr>
+                {% endif %}
+                {% if profile_user.profile.country %}
+                <tr>
+                    <td class="label">Country:</td>
+                    <td class="content"><img src="{{ profile_user.profile.country.flag }}" /> {{ profile_user.profile.country.name }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td class="label">Global rank:</td>
+                    <td class="content">{{ profile_user.profile.position|ordinal|default:"Not ranked" }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Completions:</td>
+                    <td class="content">{{ profile_user.profile.completions }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Time of finished races:</td>
+                    <td class="content">{{ profile_user.profile.runtime|default:0|sectodur }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Time spent on servers:</td>
+                    <td class="content">{{ profile_user.profile.playtime|sectodur }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Joined:</td>
+                    <td class="content">{{ profile_user.date_joined }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-	<div id="points-history" class="box full">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} points history</div>
-		<div id="placeholder"></div>
-	</div>
+    <div id="points-history" class="box full">
+        <div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} points history</div>
+        <div id="placeholder"></div>
+    </div>
 
-	{% if badges %}
-	<div class="box right top">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
-		{% for badge in badges %}
-			{% cycle '<div class="full">' '' %}
-				<div class="badge">
-					<b>{{ badge.name }}</b>
-					<div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div>
-					<div class="date">{{ badge.awarded_at }}</div>
-					<div class="desc">{{ badge.description }}</div>
-				</div>
-			{% if forloop.counter|divisibleby:2 or forloop.last %}</div>{% endif %}
-		{% endfor %}
-		<a href="{% url 'profile_badges' profile_user.id %}" class="more">See more &raquo;</a>
-	</div>
-	{% endif %}
+    {% if badges %}
+    <div class="box right top">
+        <div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} badges</div>
+        {% for badge in badges %}
+            {% cycle '<div class="full">' '' %}
+                <div class="badge">
+                    <b>{{ badge.name }}</b>
+                    <div class="icon" sprite="{{ badge.slug }}-{{ badge.level }}"></div>
+                    <div class="date">{{ badge.awarded_at }}</div>
+                    <div class="desc">{{ badge.description }}</div>
+                </div>
+            {% if forloop.counter|divisibleby:2 or forloop.last %}</div>{% endif %}
+        {% endfor %}
+        <a href="{% url 'profile_badges' profile_user.id %}" class="more">See more &raquo;</a>
+    </div>
+    {% endif %}
 
-	<div class="box left top">
-		<div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} activity</div>
-		<ul class="actstream">
-		{% for action in user_actions %}
-			<li>
-				<span class="actor">
-					{% if action.actor.get_absolute_url %}
-						<a href="{{ action.actor.get_absolute_url }}">
-					{% else %}
-						<a href="{{ action.actor_url }}">
-					{% endif %}
-					{{ action.actor }}
-					</a>
-				</span>
-				{{ action.verb }}
-				{% if action.target %}
-					{% if action.target.get_absolute_url %}
-						<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
-					{% else %}
-						<a href="{{ action.target_url }}">{{ action.target }}</a>
-					{% endif %}
-				{% endif %}
-				<span class="timestamp" title="{{ action.timestamp }}">{{ action.timesince }} ago</span>
-			</li>
-		{% endfor %}
-		</ul>
-		<a href="{% url 'profile_activity' profile_user.id %}" class="more">See more &raquo;</a>
-	</div>
+    <div class="box left top">
+        <div class="header">{% if request.user.id == profile_user.id %}Your{% else %}{{ profile_user.username }}{% possessive profile_user.username %}{% endif %} activity</div>
+        <ul class="actstream">
+        {% for action in user_actions %}
+            <li>
+                <span class="actor">
+                    {% if action.actor.get_absolute_url %}
+                        <a href="{{ action.actor.get_absolute_url }}">
+                    {% else %}
+                        <a href="{{ action.actor_url }}">
+                    {% endif %}
+                    {{ action.actor }}
+                    </a>
+                </span>
+                {{ action.verb }}
+                {% if action.target %}
+                    {% if action.target.get_absolute_url %}
+                        <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+                    {% else %}
+                        <a href="{{ action.target_url }}">{{ action.target }}</a>
+                    {% endif %}
+                {% endif %}
+                <span class="timestamp" title="{{ action.timestamp }}">{{ action.timesince }} ago</span>
+            </li>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'profile_activity' profile_user.id %}" class="more">See more &raquo;</a>
+    </div>
 {% endblock content %}

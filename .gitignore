@@ -12,3 +12,6 @@ teerace/teerace.cache/
 build/
 pip-log.txt
 src/
+.env
+celerybeat.pid
+celerybeat-schedule

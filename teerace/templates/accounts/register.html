@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 {% comment %}
 context variables:
-	register_form
-	next - URI to redirect after successful registration
+    register_form
+    next - URI to redirect after successful registration
 {% endcomment %}
 {% block title %}register - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'Sign up' 'register' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'Sign up' 'register' %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header">Sign up</div>
-		<form method="post" action="{% url 'register' %}">{% csrf_token %}
-			{% with register_form as form %}
-				{% include "snippets/form.html" %}
-			{% endwith %}
-			<input type="hidden" name="next" value="{{ next }}">
-			<div class="form_field">
-				<input type="submit" value="Sign up">
-			</div>
-		</form>
-	</div>
+    <div class="box full">
+        <div class="header">Sign up</div>
+        <form method="post" action="{% url 'register' %}">{% csrf_token %}
+            {% with register_form as form %}
+                {% include "snippets/form.html" %}
+            {% endwith %}
+            <input type="hidden" name="next" value="{{ next }}">
+            <div class="form_field">
+                <input type="submit" value="Sign up">
+            </div>
+        </form>
+    </div>
 {% endblock %}

@@ -1,58 +1,58 @@
 {% extends "race/ranks_base.html" %}{% load human_duration %}{% load race_tags %}{% load humanize %}{% load pagination_tags %}
 {% comment %}
 context variables:
-	map
-	object_list (it's made of BestRun objects, be aware!)
-	paginator
+    map
+    object_list (it's made of BestRun objects, be aware!)
+    paginator
 {% endcomment %}
 {% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb "Map list" 'ranks_map_list' %}
-	{% add_crumb map.name %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb "Map list" 'ranks_map_list' %}
+    {% add_crumb map.name %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
-		{% autopaginate object_list %}
-		{% paginate %}
-		<table class="players">
-			<tr>
-				<th>Rank</th>
-				<th>Name</th>
-				<th>Points</th>
-				<th>Date</th>
-				<th>Time</th>
-				<th>Diff</th>
-				<th></th>
-			</tr>
-			{% for best_run in object_list %}
-			<tr{% if request.user.id == best_run.user.id %} class="me" title="that's you!"{% endif %}>
-				<td>{{ best_run.position|ordinal }}</td>
-				<td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
-				<td>{{ best_run.points }}</td>
-				<td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
-				<td>{{ best_run.run.time|race_time }}</td>
-				<td>{% race_diff best_run.run map.best_score %}</td>
-				<td class="icons">
-					{% if best_run.demo_file %}<a href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-					{% if best_run.ghost_file %}<a href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
-				</td>
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="7">No ranked players.</td>
-			</tr>
-			{% endfor %}
-		{% if object_list %}
-		<tfoot>
-			<tr>
-				<td colspan="7">{{ paginator.count }} ranked player{{ paginator.count|pluralize }}</td>
-			</tr>
-		</tfoot>
-		{% endif %}
-		</table>
-		{% paginate %}
-	</div>
+    <div class="box full">
+        <div class="header"><a href="{{ map.get_absolute_url }}">{{ map.name }}</a></div>
+        {% autopaginate object_list %}
+        {% paginate %}
+        <table class="players">
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Points</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Diff</th>
+                <th></th>
+            </tr>
+            {% for best_run in object_list %}
+            <tr{% if request.user.id == best_run.user.id %} class="me" title="that's you!"{% endif %}>
+                <td>{{ best_run.position|ordinal }}</td>
+                <td><a href="{{ best_run.user.get_absolute_url }}">{{ best_run.user.username }}</a></td>
+                <td>{{ best_run.points }}</td>
+                <td><span title="{{ best_run.run.created_at }}">{{ best_run.run.created_at|timesince }} ago</span></td>
+                <td>{{ best_run.run.time|race_time }}</td>
+                <td>{% race_diff best_run.run map.best_score %}</td>
+                <td class="icons">
+                    {% if best_run.demo_file %}<a href="{{ best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+                    {% if best_run.ghost_file %}<a href="{{ best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No ranked players.</td>
+            </tr>
+            {% endfor %}
+        {% if object_list %}
+        <tfoot>
+            <tr>
+                <td colspan="7">{{ paginator.count }} ranked player{{ paginator.count|pluralize }}</td>
+            </tr>
+        </tfoot>
+        {% endif %}
+        </table>
+        {% paginate %}
+    </div>
 {% endblock content %}

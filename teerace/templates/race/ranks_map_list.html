@@ -1,60 +1,60 @@
-{% extends "race/ranks_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load sorting %}{% load race_tags %}
+{% extends "race/ranks_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load sorting_tags %}{% load race_tags %}
 {% comment %}
 context variables:
-	object_list
-	paginator
+    object_list
+    paginator
 {% endcomment %}
 {% block title %}map list - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb "Map list" 'ranks_map_list' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb "Map list" 'ranks_map_list' %}
 {% endblock %}
 {% block content %}
-	<div class="box full">
-		<div class="header">Maps</div>
-		{% auto_sort object_list %}
-		{% autopaginate object_list %}
-		{% paginate %}
-		<table id="per-map" class="players">
-			<tr>
-				<th>{% sort_link "Name" "name" %}</th>
-				<th>{% sort_link "Date added" "added_at" "date" %}</th>
-				<th>Completions</th>
-				<th>Total runtime</th>
-				<th>Avg time</th>
-				<th colspan="2">Record</th>
-			</tr>
-			{% for map in object_list %}
-			<tr>
-				<td><a href="{% url 'ranks_map_detail' map.id %}">{{ map.name }}</a></td>
-				<td>{{ map.added_at|date:"F j, Y" }}</td>
-				<td>{{ map.run_count }}</td>
-				<td>{{ map.total_runtime|default_if_none:0|sectodur }}</td>
-				<td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
-			{% if map.get_best_run %}
-				<td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.best_score.user }}</a></td>
-				<td class="icons">
-					{% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
-					{% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
-				</td>
-			{% else %}
-				<td colspan="2">-</td>
-			{% endif %}
-			</tr>
-			{% empty %}
-			<tr>
-				<td colspan="7">No maps.</td>
-			</tr>
-			{% endfor %}
-		{% if object_list %}
-		<tfoot>
-			<tr>
-				<td colspan="7">{{ paginator.count }} map{{ paginator.count|pluralize }}</td>
-			</tr>
-		</tfoot>
-		{% endif %}
-		</table>
-		{% paginate %}
-	</div>
+    <div class="box full">
+        <div class="header">Maps</div>
+        {% autosort object_list %}
+        {% autopaginate object_list %}
+        {% paginate %}
+        <table id="per-map" class="players">
+            <tr>
+                <th>{% anchor name "Name" %}</th>
+                <th>{% anchor added_at "Date added" %}</th>
+                <th>Completions</th>
+                <th>Total runtime</th>
+                <th>Avg time</th>
+                <th colspan="2">Record</th>
+            </tr>
+            {% for map in object_list %}
+            <tr>
+                <td><a href="{% url 'ranks_map_detail' map.id %}">{{ map.name }}</a></td>
+                <td>{{ map.added_at|date:"F j, Y" }}</td>
+                <td>{{ map.run_count }}</td>
+                <td>{{ map.total_runtime|default_if_none:0|sectodur }}</td>
+                <td>{% if map.average_score %}{{ map.average_score|race_time }}{% else %}-{% endif %}</td>
+            {% if map.get_best_run %}
+                <td>{{ map.get_best_run.time|race_time }} by <a href="{{ map.get_best_run.user.get_absolute_url }}">{{ map.best_score.user }}</a></td>
+                <td class="icons">
+                    {% if map.get_best_run.demo_file %}<a href="{{ map.get_best_run.get_demo_url }}" title="Download demo"><div sprite="demo"></div></a>{% endif %}
+                    {% if map.get_best_run.ghost_file %}<a href="{{ map.get_best_run.get_ghost_url }}" title="Download ghost"><div sprite="ghost"></div></a>{% endif %}
+                </td>
+            {% else %}
+                <td colspan="2">-</td>
+            {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No maps.</td>
+            </tr>
+            {% endfor %}
+        {% if object_list %}
+        <tfoot>
+            <tr>
+                <td colspan="7">{{ paginator.count }} map{{ paginator.count|pluralize }}</td>
+            </tr>
+        </tfoot>
+        {% endif %}
+        </table>
+        {% paginate %}
+    </div>
 {% endblock content %}

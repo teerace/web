@@ -1,42 +1,42 @@
 {% extends "base.html" %}{% load markup %}
 {% block title %}api docs - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
-	{{ block.super }}
-	{% load breadcrumb_tags %}
-	{% add_crumb 'API documentation' 'api_docs' %}
+    {{ block.super }}
+    {% load breadcrumb_tags %}
+    {% add_crumb 'API documentation' 'api_docs' %}
 {% endblock %}
 {% block content %}
-	<div class="box full" id="docs">
-		<h1>API Documentation</h1>
+    <div class="box full" id="docs">
+        <h1>API Documentation</h1>
 
-		{% for doc in docs %}
-		{% if doc.allowed_methods %}
-			<div class="header">
-				{{ doc.name|cut:"Handler" }}
-			</div>
+        {% for doc in docs %}
+        {% if doc.allowed_methods %}
+            <div class="header">
+                {{ doc.name|cut:"Handler" }}
+            </div>
 
-			<div class="doc">
-				{{ doc.doc|default:""|restructuredtext }}
-			</div>
+            <div class="doc">
+                {{ doc.doc|default:""|restructuredtext }}
+            </div>
 
-			<div class="allowed-methods">
-				Accepted methods: {% for meth in doc.allowed_methods %}<b>{{ meth }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}
-			</div>
+            <div class="allowed-methods">
+                Accepted methods: {% for meth in doc.allowed_methods %}<b>{{ meth }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}
+            </div>
 
-			<dl>
-				{% for method in doc.get_methods %}
-					<dt class="name">
-						{{ method.name }}(<i>{{ method.signature }}</i>)
-					</dt>
+            <dl>
+                {% for method in doc.get_methods %}
+                    <dt class="name">
+                        {{ method.name }}(<i>{{ method.signature }}</i>)
+                    </dt>
 
-					{% if method.doc %}
-						<dd>
-							{{ method.doc|default:""|restructuredtext }}
-						<dd>
-					{% endif %}
-				{% endfor %}
-			</dl>
-		{% endif %}
-		{% endfor %}
-	</div>
+                    {% if method.doc %}
+                        <dd>
+                            {{ method.doc|default:""|restructuredtext }}
+                        <dd>
+                    {% endif %}
+                {% endfor %}
+            </dl>
+        {% endif %}
+        {% endfor %}
+    </div>
 {% endblock content %}
