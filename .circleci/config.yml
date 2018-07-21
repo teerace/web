@@ -20,7 +20,8 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build -e GIT_COMMIT=$CIRCLE_SHA1 --cache-from=app -t app .
+            GIT_COMMIT=$CIRCLE_SHA1
+            docker build --cache-from=app -t app .
       - run:
           name: Save Docker image layer cache
           command: |
@@ -38,7 +39,9 @@ jobs:
       - restore_cache:
           keys: v1-{{ .Branch }}-{{ epoch }}
       - run: docker load -i /caches/app.tar || true
-      - run: docker run app pytest
+      - run:
+          name: Run tests
+          command: docker run app pytest
 
   push-branch:
     docker:
@@ -48,10 +51,13 @@ jobs:
       - restore_cache:
           keys: v1-{{ .Branch }}-{{ epoch }}
       - run: docker load -i /caches/app.tar || true
-      - TAG=$CIRCLE_BRANCH
-        docker tag app chaosk/teerace:$TAG
-        docker login -u $DOCKER_USER -p $DOCKER_PASS
-        docker push chaosk/teerace:$TAG
+      - run:
+          name: Push to Docker Hub
+          command: |
+            TAG=$CIRCLE_BRANCH
+            docker tag app chaosk/teerace:$TAG
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push chaosk/teerace:$TAG
 
   push-tag:
     docker:
@@ -61,12 +67,15 @@ jobs:
       - restore_cache:
           keys: v1-{{ .Branch }}-{{ epoch }}
       - run: docker load -i /caches/app.tar || true
-      - TAG=$CIRCLE_TAG
-        docker tag app chaosk/teerace:$TAG
-        docker tag app chaosk/teerace:latest
-        docker login -u $DOCKER_USER -p $DOCKER_PASS
-        docker push chaosk/teerace:$TAG
-        docker push chaosk/teerace:latest
+      - run:
+        name: Push to Docker Hub
+          command: |
+            TAG=$CIRCLE_TAG
+            docker tag app chaosk/teerace:$TAG
+            docker tag app chaosk/teerace:latest
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push chaosk/teerace:$TAG
+            docker push chaosk/teerace:latest
 
   deploy:
     docker:
