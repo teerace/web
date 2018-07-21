@@ -7,8 +7,8 @@ context variables:
 {% block title %}settings - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Settings' 'settings' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb 'Settings' 'settings' %}
 {% endblock %}
 {% block submenu %}
     <ul class="left">

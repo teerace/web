@@ -2,8 +2,8 @@
 {% block title %}get started - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Get started' 'first_steps' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb 'Get started' 'first_steps' %}
 {% endblock %}
 {% block content %}
     <div class="box full map">
@@ -17,7 +17,7 @@
 {% comment %}
     <div class="box left map">
         <div class="header">Recommended way (Client Pack)</div>
-        
+
         <div class="step" id="s-2a">
             <div class="header">2. Install Client Pack</div>
             <p>

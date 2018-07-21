@@ -7,8 +7,8 @@ context variables:
 {% block title %}login - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Sign in' 'login' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb 'Sign in' 'login' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

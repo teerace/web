@@ -1,4 +1,4 @@
-{% extends "race/ranks_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load sorting_tags %}{% load race_tags %}
+{% extends "race/ranks_base.html" %}{% load human_duration pagination_tags sorting_tags race_tags django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     object_list
@@ -7,8 +7,7 @@ context variables:
 {% block title %}map list - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb "Map list" 'ranks_map_list' %}
+    {% breadcrumb "Map list" 'ranks_map_list' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

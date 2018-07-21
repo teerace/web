@@ -1,10 +1,9 @@
 {% extends "accounts/settings.html" %}
-{% load static %}
+{% load static django_bootstrap_breadcrumbs %}
 {% block title %}api token - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'API token' 'api_token' %}
+    {% breadcrumb 'API token' 'api_token' %}
 {% endblock %}
 {% block extra_head %}
     {{ block.super }}

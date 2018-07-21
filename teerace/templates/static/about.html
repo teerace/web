@@ -2,8 +2,8 @@
 {% block title %}about - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'About' 'about' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb 'About' 'about' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

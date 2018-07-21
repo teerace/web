@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}{% load comments %}{% load threadedcomments_tags %}{% load markup %}{% load gravatar %}
+{% extends "blog/base.html" %}{% load comments threadedcomments_tags markup gravatar django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     entry
@@ -6,8 +6,7 @@ context variables:
 {% block title %}{{ entry.title }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb entry.title 'blog_entry' entry.id %}
+    {% breadcrumb entry.title 'blog_entry' entry.id %}
 {% endblock %}
 {% block extra_head %}
     {{ block.super }}

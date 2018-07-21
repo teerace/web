@@ -1,4 +1,4 @@
-{% extends "accounts/user_list.html" %}{% load static human_duration humanize gravatar possessive %}
+{% extends "accounts/user_list.html" %}{% load static human_duration humanize gravatar possessive django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     profile_user (User instance)
@@ -8,8 +8,7 @@ context variables:
 {% block title %}{{ profile_user }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb profile_user.profile 'profile' profile_user.id %}
+    {% breadcrumb profile_user.profile 'profile' profile_user.id %}
 {% endblock %}
 {% block submenu %}
     <ul class="left">

@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load race_tags %}
+{% extends "base.html" %}{% load race_tags django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     servers_online
@@ -7,8 +7,7 @@ context variables:
 {% block title %}servers - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb "Servers" 'servers' %}
+    {% breadcrumb "Servers" 'servers' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

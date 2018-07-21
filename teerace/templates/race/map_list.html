@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}{% load human_duration %}{% load pagination_tags %}{% load race_tags %}
+{% extends "race/map_base.html" %}{% load human_duration pagination_tags race_tags django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     object_list
@@ -14,8 +14,7 @@ context variables:
 {% block breadcrumb %}
     {{ block.super }}
 {% if filtered_type %}
-    {% load breadcrumb_tags %}
-    {% add_crumb filtered_type 'maps__type' filtered_type.slug %}
+    {% breadcrumb filtered_type 'maps__type' filtered_type.slug %}
 {% endif %}
 {% endblock %}
 {% block content %}

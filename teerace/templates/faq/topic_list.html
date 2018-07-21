@@ -1,9 +1,8 @@
-{% extends "base.html" %}{% load markup %}
+{% extends "base.html" %}{% load markup django_bootstrap_breadcrumbs %}
 {% block title %}help - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Help' 'faq-topic-list' %}
+    {% breadcrumb 'Help' 'faq-topic-list' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

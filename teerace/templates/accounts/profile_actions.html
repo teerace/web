@@ -1,4 +1,4 @@
-{% extends "accounts/user_detail.html" %}{% load pagination_tags %}{% load possessive %}
+{% extends "accounts/user_detail.html" %}{% load pagination_tags possessive django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     profile_user (User instance)
@@ -7,8 +7,7 @@ context variables:
 {% block title %}activity - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb "Activity" 'profile_activity' profile_user.id %}
+    {% breadcrumb "Activity" 'profile_activity' profile_user.id %}
 {% endblock %}
 {% block content %}
     <div class="box full">

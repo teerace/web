@@ -1,4 +1,4 @@
-{% extends "race/map_base.html" %}{% load race_tags %}{% load humanize %}
+{% extends "race/map_base.html" %}{% load race_tags humanize django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     map
@@ -10,8 +10,7 @@ context variables:
 {% block title %}{{ map.name }} - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb map.name 'map_detail' map.id %}
+    {% breadcrumb map.name 'map_detail' map.id %}
 {% endblock %}
 {% block extra_head %}
     {{ block.super }}

@@ -131,6 +131,8 @@ COMMENTS_ALLOW_PROFANITIES = True
 
 RESULT_PRECISION = 3
 
+BREADCRUMBS_TEMPLATE = 'snippets/breadcrumbs.html'
+
 SESSION_ENGINE = env("SESSION_ENGINE", default="django.contrib.sessions.backends.db")
 
 MIDDLEWARE = (
@@ -186,7 +188,7 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "lib",
     "cachalot",
-    "crumbs",
+    "django_bootstrap_breadcrumbs",
     "django_gravatar",
     "django_comments",
     "threadedcomments",

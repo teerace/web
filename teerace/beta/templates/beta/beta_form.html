@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load comments %}
+{% extends "base.html" %}{% load comments django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     form
@@ -9,8 +9,7 @@ context variables:
 {% block title %}beta - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Beta' 'beta_form' %}
+    {% breadcrumb 'Beta' 'beta_form' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

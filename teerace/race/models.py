@@ -99,7 +99,7 @@ class Map(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("race.views.map_detail", kwargs={"map_id": self.id})
+        return reverse("map_detail", kwargs={"map_id": self.id})
 
 
 class MapType(models.Model):

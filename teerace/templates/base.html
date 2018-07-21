@@ -1,4 +1,4 @@
-{% load static menu gravatar revision %}
+{% load static menu gravatar revision django_bootstrap_breadcrumbs %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,11 +65,12 @@
 
         <div id="content">
             <div id="breadcrumbs">
-                {% block breadcrumb %}
-                    {% load breadcrumb_tags %}
-                    {% add_crumb 'Home' 'home' %}
+                {% block rendered_breadcrumb %}
+                    {% block breadcrumb %}
+                        {% breadcrumb 'Home' 'home' %}
+                    {% endblock %}
+                    {% render_breadcrumbs %}
                 {% endblock %}
-                {% render_breadcrumbs %}
             </div>
 
             {% if messages %}

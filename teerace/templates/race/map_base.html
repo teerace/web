@@ -2,6 +2,6 @@
 {% block title %}maps - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Maps' 'maps' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb 'Maps' 'maps' %}
 {% endblock %}

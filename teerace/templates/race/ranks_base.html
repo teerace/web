@@ -2,8 +2,8 @@
 {% block title %}rank - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Ranks' 'ranks' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb 'Ranks' 'ranks' %}
 {% endblock %}
 {% block submenu %}
     <ul class="left">

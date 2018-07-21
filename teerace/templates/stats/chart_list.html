@@ -3,8 +3,8 @@
 {% block title %}stats - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb "Stats" 'chart_list' %}
+    {% load django_bootstrap_breadcrumbs %}
+    {% breadcrumb "Stats" 'chart_list' %}
 {% endblock %}
 {% block extra_head %}
     <!--[if IE]><script type="text/javascript" src="{% static "js/flot/excanvas.min.js" %}"></script><![endif]-->

@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load pagination_tags %}{% load sorting_tags %}{% load gravatar %}
+{% extends "base.html" %}{% load pagination_tags sorting_tags gravatar django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     users
@@ -7,8 +7,7 @@ context variables:
 {% block title %}userlist - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb 'Players' 'userlist' %}
+    {% breadcrumb 'Players' 'userlist' %}
 {% endblock %}
 {% block content %}
     <div class="box full">

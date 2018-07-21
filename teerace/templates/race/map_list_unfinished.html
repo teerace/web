@@ -1,4 +1,4 @@
-{% extends "race/map_list.html" %}{% load human_duration %}{% load pagination_tags %}{% load race_tags %}
+{% extends "race/map_list.html" %}{% load human_duration pagination_tags race_tags django_bootstrap_breadcrumbs %}
 {% comment %}
 context variables:
     map_types
@@ -7,8 +7,7 @@ context variables:
 {% block title %}unfinished - {{ block.super }}{% endblock title %}
 {% block breadcrumb %}
     {{ block.super }}
-    {% load breadcrumb_tags %}
-    {% add_crumb "Unfinished" 'maps_unfinished' %}
+    {% breadcrumb "Unfinished" 'maps_unfinished' %}
 {% endblock %}
 {% block content %}
         <div class="box full">
