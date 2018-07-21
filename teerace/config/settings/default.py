@@ -63,7 +63,7 @@ PAGINATION_INVALID_PAGE_RAISES_404 = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = env("MEDIA_ROOT", default=root("media"))
+MEDIA_ROOT = env("MEDIA_ROOT", default=(root - 1)("media"))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -72,10 +72,13 @@ MEDIA_URL = env("MEDIA_URL", default="/media/")
 
 COUNTRIES_FLAG_URL = "images/flags/{code}.gif"
 
+STATIC_ROOT = env("STATIC_ROOT", default=(root - 1)("static"))
 STATIC_URL = env("STATIC_URL", default="/static/")
 
 # Additional locations of static files
-STATICFILES_DIRS = ()
+STATICFILES_DIRS = (
+    root("static"),
+)
 
 # List of finder classes that know how to find static files in
 # various locations.

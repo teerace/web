@@ -10,7 +10,7 @@ The [teerace-ready gameserver](https://github.com/SushiTee/teeworlds/tree/teerac
 
 Network graph
 -----
-![network graph](https://github.com/chaosk/teerace/raw/master/teerace/media/images/network_graph.png)
+![network graph](https://github.com/chaosk/teerace/raw/master/teerace/static/images/network_graph.png)
 
 License
 -------
