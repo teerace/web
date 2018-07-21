@@ -37,7 +37,10 @@ jobs:
     steps:
       - setup_remote_docker
       - restore_cache:
-          keys: v1-{{ .Branch }}-{{ epoch }}
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
       - run: docker load -i /caches/app.tar || true
       - run:
           name: Run tests
@@ -49,7 +52,10 @@ jobs:
     steps:
       - setup_remote_docker
       - restore_cache:
-          keys: v1-{{ .Branch }}-{{ epoch }}
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
       - run: docker load -i /caches/app.tar || true
       - run:
           name: Push to Docker Hub
@@ -65,7 +71,10 @@ jobs:
     steps:
       - setup_remote_docker
       - restore_cache:
-          keys: v1-{{ .Branch }}-{{ epoch }}
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
       - run: docker load -i /caches/app.tar || true
       - run:
           name: Push to Docker Hub
