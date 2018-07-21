@@ -6,54 +6,84 @@ jobs:
       - image: docker:18.06.0-ce-git
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 17.09.0-ce
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/app.tar
+            - layers-v1-{{ .Branch }}
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i /caches/app.tar | true
+            if [ -f /caches/app-layers.tar.gz ]; then gunzip -c /caches/app-layers.tar.gz | docker load; fi
       - run:
           name: Build application Docker image
           command: |
             GIT_COMMIT=$CIRCLE_SHA1
-            docker build --cache-from=app -t app .
+            docker build -t app . | tee /tmp/build_output.txt
+            grep '\-\-\->' /tmp/build_output.txt | grep -v 'Using cache' | grep -v 'Running in ' | sed -e 's/[ >-]//g' > /tmp/layers.txt
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
+            docker save $(cat /tmp/layers.txt) | gzip > /caches/app-layers.tar.gz
             docker save -o /caches/app.tar app
       - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
+          key: layers-v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app-layers.tar.gz
+      - save_cache:
+          key: built-image-v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
   test:
     docker:
-      - image: docker:18.06.0-ce
+      - image: docker:18.06.0-ce-git
     steps:
-      - setup_remote_docker
+      - checkout
+      - setup_remote_docker:
+          version: 17.09.0-ce
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - built-image-v1-{{ .Branch }}
           paths:
             - /caches/app.tar
       - run: docker load -i /caches/app.tar || true
       - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            wget https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 -O ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+      - run:
           name: Run tests
-          command: docker run app pytest
+          command: |
+            docker run --name test-runner app pytest ../tests/ \
+              --cov=.. \
+              --cov-report xml:/tmp/reports/coverage/coverage.xml \
+              --junitxml=/tmp/reports/pytest/results.xml
+      - run:
+          name: Copy test results from container
+          command: |
+            docker cp test-runner:/tmp/reports/ test-results
+          when: always
+      - run:
+          name: Store Code Climate report
+          command: |
+            ./cc-test-reporter format-coverage --input-type coverage.py test-results/coverage/coverage.xml
+            ./cc-test-reporter upload-coverage
+      - store_test_results:
+          path: test-results
 
   push-branch:
     docker:
       - image: docker:18.06.0-ce
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 17.09.0-ce
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - built-image-v1-{{ .Branch }}
           paths:
             - /caches/app.tar
       - run: docker load -i /caches/app.tar || true
@@ -69,10 +99,11 @@ jobs:
     docker:
       - image: docker:18.06.0-ce
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 17.09.0-ce
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - built-image-v1-{{ .Branch }}
           paths:
             - /caches/app.tar
       - run: docker load -i /caches/app.tar || true
@@ -90,7 +121,8 @@ jobs:
     docker:
       - image: docker:18.06.0-ce
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 17.09.0-ce
 
 workflows:
   version: 2
@@ -100,15 +132,15 @@ workflows:
           filters:
             tags:
               only: /.*/
-      # - test:
-      #     requires:
-      #       - build
-      #     filters:
-      #       tags:
-      #         only: /.*/
-      - push-branch:
+      - test:
           requires:
             - build
+          filters:
+            tags:
+              only: /.*/
+      - push-branch:
+          requires:
+            - test
           filters:
             tags:
               ignore: /.*/
@@ -116,7 +148,7 @@ workflows:
               only: master
       - push-tag:
           requires:
-            - build
+            - test
           filters:
             tags:
               only: /.*/

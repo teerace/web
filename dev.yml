@@ -19,6 +19,7 @@ services:
       - "8000:8000"
     volumes:
       - ./teerace:/code/teerace
+      - ./tests:/code/tests
     depends_on:
       - postgres
       - redis

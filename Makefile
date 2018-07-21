@@ -15,7 +15,7 @@ makemigrations:
 	$(RUN_DJANGO) manage makemigrations
 
 test:
-	$(BASE) run django pytest
+	$(BASE) run django pytest ../tests/
 
 sh:
 	$(RUN_DJANGO) sh

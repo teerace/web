@@ -267,8 +267,6 @@ if RAVEN_DSN:
         "raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware"  # noqa
     ] + MIDDLEWARE
 
-TEST_RUNNER = "local_tests.LocalTestSuiteRunner"
-
 MIN_GAMESERVER_VERSION = 1
 
 GITHUB_API_URL = "https://api.github.com"

@@ -26,7 +26,7 @@ elif [ "$1" = 'isort' ]; then
     shift
     exec isort -y $@
 elif [ "$1" = 'black' ]; then
-    exec black .
+    exec black ..
 elif [ "$1" = 'mypy' ]; then
     exec mypy .
 fi

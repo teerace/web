@@ -13,6 +13,16 @@ WORKDIR /wheels
 COPY requirements.txt /wheels/requirements.txt
 RUN pip wheel -r requirements.txt
 
+# Workspace image
+FROM alpine:3.7 AS workspace
+ARG PROJECT_NAME=teerace
+ENV PROJECT_NAME ${PROJECT_NAME}
+
+RUN mkdir /code
+ADD ${PROJECT_NAME} /code/${PROJECT_NAME}
+ADD tests /code/tests
+ADD setup.cfg entrypoint.sh /code/
+
 # Final image
 FROM python:${PYTHON_TAG}
 ARG PROJECT_NAME=teerace
@@ -34,8 +44,7 @@ RUN addgroup -S app \
     && adduser -S -G app app
 RUN mkdir /code
 WORKDIR /code
-COPY --chown=app:app setup.cfg entrypoint.sh ${PROJECT_NAME} /code/
-# ADD tests /code/tests
+COPY --chown=app:app --from=workspace /code /code
 USER app
 WORKDIR /code/${PROJECT_NAME}/
 
