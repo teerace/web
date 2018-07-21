@@ -88,17 +88,25 @@ workflows:
       #     filters:
       #       tags:
       #         only: /.*/
-      - push:
+      - push-branch:
+          requires:
+            - build
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              only: master
+      - push-tag:
           requires:
             - build
           filters:
             tags:
               only: /.*/
             branches:
-              only: master
+              ignore: /.*/
       - deploy:
           requires:
-              - push
+              - push-tag
           filters:
             tags:
               only: /.*/
