@@ -68,7 +68,7 @@ jobs:
           keys: v1-{{ .Branch }}-{{ epoch }}
       - run: docker load -i /caches/app.tar || true
       - run:
-        name: Push to Docker Hub
+          name: Push to Docker Hub
           command: |
             TAG=$CIRCLE_TAG
             docker tag app chaosk/teerace:$TAG
