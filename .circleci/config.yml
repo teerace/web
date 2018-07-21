@@ -1,0 +1,106 @@
+version: 2.0
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:18.06.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build -e GIT_COMMIT=$CIRCLE_SHA1 --cache-from=app -t app .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
+  test:
+    docker:
+      - image: docker:18.06.0-ce
+    steps:
+      - setup_remote_docker
+      - restore_cache:
+          keys: v1-{{ .Branch }}-{{ epoch }}
+      - run: docker load -i /caches/app.tar || true
+      - run: docker run app pytest
+
+  push-branch:
+    docker:
+      - image: docker:18.06.0-ce
+    steps:
+      - setup_remote_docker
+      - restore_cache:
+          keys: v1-{{ .Branch }}-{{ epoch }}
+      - run: docker load -i /caches/app.tar || true
+      - TAG=$CIRCLE_BRANCH
+        docker tag app chaosk/teerace:$TAG
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker push chaosk/teerace:$TAG
+
+  push-tag:
+    docker:
+      - image: docker:18.06.0-ce
+    steps:
+      - setup_remote_docker
+      - restore_cache:
+          keys: v1-{{ .Branch }}-{{ epoch }}
+      - run: docker load -i /caches/app.tar || true
+      - TAG=$CIRCLE_TAG
+        docker tag app chaosk/teerace:$TAG
+        docker tag app chaosk/teerace:latest
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker push chaosk/teerace:$TAG
+        docker push chaosk/teerace:latest
+
+  deploy:
+    docker:
+      - image: docker:18.06.0-ce
+    steps:
+      - setup_remote_docker
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      # - test:
+      #     requires:
+      #       - build
+      #     filters:
+      #       tags:
+      #         only: /.*/
+      - push:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: master
+      - deploy:
+          requires:
+              - push
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
