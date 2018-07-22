@@ -192,12 +192,3 @@ INSTALLED_APPS
 You might want to add some debug stuff here.
 """
 #INSTALLED_APPS = INSTALLED_APPS + ()
-
-"""
-Beta mode
-
-Uncommenting those settings will trigger closed beta mode
-"""
-#BETA = True
-#MIDDLEWARE_CLASSES += ('beta.middleware.BetaMiddleware',)
-#INSTALLED_APPS += ('beta',)

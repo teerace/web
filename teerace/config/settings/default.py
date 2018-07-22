@@ -26,8 +26,6 @@ DEBUG_TOOLBAR = env("DEBUG_TOOLBAR", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
-BETA = False
-
 INTERNAL_IPS = ("127.0.0.1",)
 
 DATABASES = {

@@ -56,6 +56,3 @@ if settings.DEBUG_TOOLBAR:
     import debug_toolbar
 
     urlpatterns += [url(r"^__debug__/", include(debug_toolbar.urls))]
-
-if settings.BETA:
-    urlpatterns += [url(r"^beta/", include("beta.urls"))]
