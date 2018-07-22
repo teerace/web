@@ -61,7 +61,8 @@ jobs:
             docker run --name test-runner app pytest ../tests/ \
               --cov=.. \
               --cov-report xml:/tmp/reports/coverage/coverage.xml \
-              --junitxml=/tmp/reports/pytest/results.xml
+              --cov-config ../setup.cfg \
+              --junitxml=/tmp/reports/pytest/junit.xml
       - run:
           name: Copy test results from container
           command: |
@@ -73,6 +74,8 @@ jobs:
             ./cc-test-reporter format-coverage --input-type coverage.py test-results/coverage/coverage.xml
             ./cc-test-reporter upload-coverage
       - store_test_results:
+          path: test-results
+      - store_artifacts:
           path: test-results
 
   push-branch:

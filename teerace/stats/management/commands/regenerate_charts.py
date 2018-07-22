@@ -17,16 +17,12 @@ class Command(BaseCommand):
         overall_chart, created = Chart.objects.get_or_create(slug="races-overall")
         self.stdout.write("Rebuilding charts...\n")
         try:
-            first_run_date = Run.objects.order_by("created_at")[0].created_at
-            first_run_date = date(
-                first_run_date.year, first_run_date.month, first_run_date.day
-            )
+            first_run_date = Run.objects.order_by("created_at")[0].created_at.date()
         except IndexError:
             self.stdout.write("\nNo Run objects. Aborting.\n")
             sys.exit(1)
         days_number = (yesterday - first_run_date).days + 1
-        daily_data = []
-        overall_data = []
+        daily_data, overall_data = [], []
         for i in range(days_number):
             that_day = first_run_date + timedelta(days=i)
             runs_that_day = get_date_run_count(that_day)
