@@ -76,9 +76,7 @@ STATIC_ROOT = env("STATIC_ROOT", default=(root - 1)("static"))
 STATIC_URL = env("STATIC_URL", default="/static/")
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-    root("static"),
-)
+STATICFILES_DIRS = (root("static"),)
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -131,7 +129,7 @@ COMMENTS_ALLOW_PROFANITIES = True
 
 RESULT_PRECISION = 3
 
-BREADCRUMBS_TEMPLATE = 'snippets/breadcrumbs.html'
+BREADCRUMBS_TEMPLATE = "snippets/breadcrumbs.html"
 
 SESSION_ENGINE = env("SESSION_ENGINE", default="django.contrib.sessions.backends.db")
 
