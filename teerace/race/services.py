@@ -29,7 +29,7 @@ def get_date_run_count(date_):
 def get_yesterday_run_count():
     value = cache.get("runs_yesterday_count")
     if value is None:
-        from tasks import update_yesterday_runs
+        from .tasks import update_yesterday_runs
 
         update_yesterday_runs.apply()
         value = cache.get("runs_yesterday_count")
