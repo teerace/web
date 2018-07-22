@@ -1,3 +1,5 @@
+from functools import partial
+
 from actstream import action
 from annoying.functions import get_config, get_object_or_None
 from django.contrib.auth.models import User
@@ -188,18 +190,13 @@ class Run(models.Model):
             tasks.redo_ranks.delay(runs[0])
 
 
-def demo_filename(obj, filename):
-    del filename
-    return "uploads/demos/{0}/{1}/{2}_{3}.demo".format(
-        obj.map.name[0], obj.user.username[0], obj.map.name, obj.user.username
-    )
+def _filename(obj, filename, folder, extension):
+    map_, username = obj.map.name, obj.user.username
+    return f"uploads/{folder}/{map_[0]}/{username[0]}/{map_}_{username}.{extension}"
 
 
-def ghost_filename(obj, filename):
-    del filename
-    return "uploads/ghosts/{0}/{1}/{2}_{3}.gho".format(
-        obj.map.name[0], obj.user.username[0], obj.map.name, obj.user.username
-    )
+demo_filename = partial(_filename, folder="demos", extension="demo")
+ghost_filename = partial(_filename, folder="ghosts", extension="gho")
 
 
 class BestRun(models.Model):
