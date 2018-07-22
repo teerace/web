@@ -3,15 +3,15 @@ from datetime import timedelta
 from annoying.decorators import render_to
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Sum
-from django.shortcuts import get_object_or_404, redirect
+from django.db.models import Sum
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from pinax.badges.models import BadgeAward
-from pinax.badges.registry import badges
 
 from accounts.models import UserProfile
+from accounts.services import get_user_count
 
 from .models import BestRun, Map, MapType, Run, Server
+from .services import get_badges, get_user_badges
 
 
 @render_to("race/ranks.html")
@@ -108,47 +108,18 @@ def map_detail(request, map_id):
     }
 
 
-@render_to("race/awards.html")
 def awards(request):
-    if request.user.is_authenticated:
-        user_badges = set(
-            (slug, level)
-            for slug, level in BadgeAward.objects.filter(user=request.user).values_list(
-                "slug", "level"
-            )
-        )
-    else:
-        user_badges = []
+    user_badges = get_user_badges(request.user)
+    user_count = get_user_count()
 
-    badges_awarded = BadgeAward.objects.values("slug", "level").annotate(
-        num=Count("pk")
+    return render(
+        request,
+        "race/awards.html",
+        {
+            "badges_list": list(get_badges(user_badges, user_count)),
+            "user_count": user_count,
+        },
     )
-
-    badges_counts = {
-        "{0}_{1}".format(k["slug"], k["level"]): k["num"] for k in badges_awarded
-    }
-
-    user_count = UserProfile.objects.count()
-
-    badges_list = list()
-    for badge_cls in badges._registry.values():
-        for level, badge in enumerate(badge_cls.levels):
-            badge_count = badges_counts.get("{0}_{1}".format(badge_cls.slug, level), 0)
-            badges_list.append(
-                {
-                    "slug": badge_cls.slug,
-                    "level": level,
-                    "name": badge.name,
-                    "description": badge.description,
-                    "count": badge_count,
-                    "percentage": badge_count / float(user_count) * 100
-                    if user_count
-                    else 0,
-                    "user_has": (badge_cls.slug, level) in user_badges,
-                }
-            )
-
-    return {"badges_list": badges_list, "user_count": user_count}
 
 
 def map_download(request, map_id):
