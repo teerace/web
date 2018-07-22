@@ -110,15 +110,16 @@ class RunScoreBadge(BadgeBase):
     def award(self, **state):
         run = state["run"]
         time = run.time
-        after_dec_point = time % 1  # 7.148 -> 0.148
-        if after_dec_point == Decimal("0.999"):
-            return BadgeAwarded(level=1)
-        if after_dec_point == Decimal("0.777"):
-            return BadgeAwarded(level=2)
-        if after_dec_point == Decimal("0.666"):
-            return BadgeAwarded(level=3)
-        if after_dec_point == Decimal("0.000"):
-            return BadgeAwarded(level=4)
+        remainder = time % 1  # 7.148 -> 0.148
+        remainder_map = {
+            Decimal("0.999"): BadgeAwarded(level=1),
+            Decimal("0.777"): BadgeAwarded(level=2),
+            Decimal("0.666"): BadgeAwarded(level=3),
+            Decimal("0.000"): BadgeAwarded(level=4),
+        }
+        remainder_award = remainder_map.get(remainder)
+        if remainder_award:
+            return remainder_award
         if time == Decimal("3.142"):
             return BadgeAwarded(level=5)
 
