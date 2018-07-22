@@ -4,9 +4,9 @@ from actstream import action
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.templatetags.static import static
 from django.db.models import Sum
 from django.db.models.signals import post_save
+from django.templatetags.static import static
 from django.utils import timezone
 from django_countries.fields import CountryField
 from picklefield.fields import PickledObjectField

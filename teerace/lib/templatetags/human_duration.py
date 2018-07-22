@@ -2,6 +2,7 @@ from collections import namedtuple
 
 from django import template
 
+
 register = template.Library()
 
 

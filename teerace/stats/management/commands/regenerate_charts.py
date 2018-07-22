@@ -1,9 +1,10 @@
 import sys
-from datetime import date, datetime, time, timedelta
+from datetime import date, timedelta
 
 from django.core.management.base import BaseCommand
 
 from race.models import Run
+from race.services import get_date_run_count
 from stats.models import Chart
 
 
@@ -28,12 +29,7 @@ class Command(BaseCommand):
         overall_data = []
         for i in range(days_number):
             that_day = first_run_date + timedelta(days=i)
-            runs_that_day = Run.objects.filter(
-                created_at__range=(
-                    datetime.combine(that_day, time.min),
-                    datetime.combine(that_day, time.max),
-                )
-            ).count()
+            runs_that_day = get_date_run_count(that_day)
             runs_to_that_day = Run.objects.filter(created_at__lte=that_day).count()
             daily_data.append((that_day, runs_that_day))
             overall_data.append((that_day, runs_to_that_day))

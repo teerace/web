@@ -11,6 +11,7 @@ from accounts.models import UserProfile
 from lib.chunks import chunks
 
 from .models import BestRun, Map, MapType, Run, Server
+from .services import get_date_run_count
 
 
 @task(rate_limit="600/m", ignore_result=True)
@@ -290,21 +291,18 @@ def update_user_points_history_chunked(chunk):
 def update_yesterday_runs():
     # everyday, around 0:00 AM
     yesterday = datetime.today() - timedelta(days=1)
-    runs_yesterday = Run.objects.filter(
-        created_at__range=(
-            datetime.combine(yesterday, time.min),
-            datetime.combine(yesterday, time.max),
-        )
-    )
-    cache.set("runs_yesterday", runs_yesterday, timeout=None)
+    runs_yesterday = get_date_run_count(yesterday)
+    cache.set("runs_yesterday_count", runs_yesterday, timeout=None)
 
 
 @task(ignore_result=True)
 def update_totals():
     # every 15 minutes
     total_runs = Run.objects.count()
-    total_runtime = Run.objects.aggregate(Sum("time"))["time__sum"]
-    total_playtime = UserProfile.objects.aggregate(Sum("playtime"))["playtime__sum"]
+    total_runtime = Run.objects.aggregate(Sum("time"))["time__sum"] or 0
+    total_playtime = (
+        UserProfile.objects.aggregate(Sum("playtime"))["playtime__sum"] or 0
+    )
     cache.set("total_runs", total_runs, timeout=None)
     cache.set("total_runtime", total_runtime, timeout=None)
     cache.set("total_playtime", total_playtime, timeout=None)

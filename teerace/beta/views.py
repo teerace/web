@@ -1,7 +1,7 @@
 from annoying.decorators import render_to
 from django.contrib import messages
-from django.urls import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
 
 from accounts.forms import LoginForm
 from beta.forms import BetaForm, MoarKeysForm

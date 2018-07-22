@@ -6,7 +6,7 @@ context variables:
     map_count
     latest_user
     user_count
-    run_count
+    total_runs
     runs_today
     runs_yesterday
     total_runtime
@@ -202,23 +202,23 @@ context variables:
                     </tr>
                     <tr>
                         <td class="label">Races today:</td>
-                        <td class="content">{{ runs_today|length }}</td>
+                        <td class="content">{{ runs_today }}</td>
                     </tr>
                     <tr>
                         <td class="label">Races yesterday:</td>
-                        <td class="content">{{ runs_yesterday|length }}</td>
+                        <td class="content">{{ runs_yesterday }}</td>
                     </tr>
                     <tr>
                         <td class="label">Finished races:</td>
-                        <td class="content">{{ run_count }}</td>
+                        <td class="content">{{ total_runs }}</td>
                     </tr>
                     <tr>
                         <td class="label">Time of finished races:</td>
-                        <td class="content">{{ total_runtime|default_if_none:0|sectodur }}</td>
+                        <td class="content">{{ total_runtime|default:0|sectodur }}</td>
                     </tr>
                     <tr>
                         <td class="label">Total playtime:</td>
-                        <td class="content">{{ total_playtime|default_if_none:0|sectodur }}</td>
+                        <td class="content">{{ total_playtime|default:0|sectodur }}</td>
                     </tr>
                     <tfoot>
                         <tr>

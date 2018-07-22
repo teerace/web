@@ -1,5 +1,5 @@
-from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import ListView
 
 from ..models import Question, Topic

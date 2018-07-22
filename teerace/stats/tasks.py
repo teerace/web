@@ -4,6 +4,7 @@ from celery.task import task
 
 from accounts.models import UserProfile
 from race.models import Run
+from race.services import get_date_run_count
 
 from .models import Chart
 
@@ -14,12 +15,7 @@ def update_daily_charts():
     logger = update_daily_charts.get_logger()
     races_daily, created = Chart.objects.get_or_create(slug="races-daily")
     yesterday = date.today() - timedelta(days=1)
-    runs_yesterday = Run.objects.filter(
-        created_at__range=(
-            datetime.combine(yesterday, time.min),
-            datetime.combine(yesterday, time.max),
-        )
-    ).count()
+    runs_yesterday = get_date_run_count(yesterday)
     races_daily.append(runs_yesterday)
 
     races_overall, created = Chart.objects.get_or_create(slug="races-overall")
