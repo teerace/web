@@ -1,4 +1,4 @@
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, timedelta
 from zlib import crc32
 
 from celery.task import task
@@ -25,7 +25,7 @@ def redo_ranks(run_id):
         logger.error("[R- /U- /M- ] Run not found (pk={0}).".format(run_id))
         return False
     map_obj = user_run.map
-    if user_run.user == None:
+    if user_run.user is None:
         logger.info(
             "[R-{0}/U- /M-{1}] Anonymous run, not"
             " processing the rank.".format(run_id, map_obj.id)
@@ -157,9 +157,7 @@ def retrieve_map_details(map_id):
         has_unhookables = has_deathtiles = None
         shield_count = heart_count = grenade_count = None
     else:
-        has_unhookables = (
-            has_deathtiles
-        ) = is_fastcap = has_teleporters = has_speedups = False
+        has_unhookables = has_deathtiles = has_teleporters = has_speedups = False
         shield_count = heart_count = grenade_count = 0
         logger.info("Counting map items...")
         for tile in teemap.gamelayer.tiles:

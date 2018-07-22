@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from annoying.decorators import render_to
 from annoying.functions import get_object_or_None

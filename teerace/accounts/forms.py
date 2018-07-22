@@ -82,7 +82,7 @@ class LoginForm(forms.Form):
             return self.cleaned_data
 
         self.user = authenticate(username=username, password=password)
-        if self.user == None:
+        if self.user is None:
             raise forms.ValidationError("Invalid username and/or password")
         if not self.user.is_active:
             raise forms.ValidationError("Your account has been disabled")

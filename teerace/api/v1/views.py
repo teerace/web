@@ -3,6 +3,7 @@ from annoying.functions import get_object_or_None
 from django.contrib.auth import authenticate, get_user_model
 from django.db.models import F, Q
 from django.http import Http404
+from django.utils import timezone
 from pinax.badges.models import BadgeAward
 from pinax.badges.registry import badges
 from rest_framework import status

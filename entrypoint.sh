@@ -27,6 +27,8 @@ elif [ "$1" = 'isort' ]; then
     exec isort -y $@
 elif [ "$1" = 'black' ]; then
     exec black ..
+elif [ "$1" = 'flake8' ]; then
+    exec flake8 ..
 elif [ "$1" = 'mypy' ]; then
     exec mypy .
 fi

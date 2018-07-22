@@ -44,6 +44,9 @@ outdated:
 isort:
 	$(RUN_DJANGO) isort
 
+flake8:
+	$(RUN_DJANGO) flake8
+
 mypy:
 	$(RUN_DJANGO) mypy
 

@@ -146,7 +146,7 @@ class Run(models.Model):
             self.promote_to_best()
 
     def promote_to_best(self):
-        if self.user == None:
+        if self.user is None:
             return
         best_run, created = BestRun.objects.get_or_create(
             map=self.map, user=self.user, defaults={"run": self}
@@ -329,4 +329,4 @@ def post_badge_save(sender, **kwargs):
 badge_awarded.connect(post_badge_save)
 
 # DIRTY is this even allowed?
-from . import badges  # isort:skip
+from . import badges  # noqa:E402,F401 isort:skip

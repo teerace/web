@@ -17,6 +17,7 @@ django-redis==4.9.0
 django-threadedcomments==1.2
 Django==2.0.7
 djangorestframework==3.8.2
+flake8==3.5.0
 furl==1.2
 isort==4.3.4
 Markdown==2.6.11

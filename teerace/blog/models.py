@@ -40,7 +40,7 @@ class Entry(models.Model):
         n = 1
         while True:
             try:
-                slug_dupe = Entry.objects.get(slug=new_slug)
+                Entry.objects.get(slug=new_slug)
             except Entry.DoesNotExist:
                 break
             n += 1

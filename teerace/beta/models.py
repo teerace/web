@@ -1,2 +1,2 @@
 # DIRTY is this even allowed?
-from . import badges  # isort:skip
+from . import badges  # noqa:F401 isort:skip

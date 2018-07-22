@@ -13,11 +13,11 @@ from django.utils.timezone import utc
 from accounts.services import get_latest_actions, get_latest_user, get_user_count
 from blog.services import latest_entries
 from race.services import (
+    get_cached_totals,
     get_date_run_count,
     get_latest_map,
     get_map_count,
     get_total_downloads,
-    get_cached_totals,
     get_yesterday_run_count,
 )
 

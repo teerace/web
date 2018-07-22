@@ -21,7 +21,7 @@ jobs:
           command: |
             GIT_COMMIT=$CIRCLE_SHA1
             docker build -t app . | tee /tmp/build_output.txt
-            grep '\-\-\->' /tmp/build_output.txt | grep -v 'Using cache' | grep -v 'Running in ' | sed -e 's/[ >-]//g' > /tmp/layers.txt
+            grep '\-\-\-> [a-z0-9]' /tmp/build_output.txt | grep -v 'Using cache' | grep -v 'Running in ' | sed -e 's/[ >-]//g' | sed 's/\x1b\[[0-9;]*m//g' > /tmp/layers.txt
       - run:
           name: Save Docker image layer cache
           command: |

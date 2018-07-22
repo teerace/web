@@ -30,6 +30,7 @@ def get_yesterday_run_count():
     value = cache.get("runs_yesterday_count")
     if value is None:
         from tasks import update_yesterday_runs
+
         update_yesterday_runs.apply()
         value = cache.get("runs_yesterday_count")
     return value
@@ -40,6 +41,7 @@ def get_cached_totals():
     values = cache.get_many(keys)
     if set(keys) != set(values):
         from .tasks import update_totals
+
         update_totals.apply()
         values = cache.get_many(keys)
     return values
