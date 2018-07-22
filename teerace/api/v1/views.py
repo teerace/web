@@ -2,7 +2,7 @@ from actstream import action
 from annoying.functions import get_object_or_None
 from django.contrib.auth import authenticate, get_user_model
 from django.db.models import F, Q
-from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from pinax.badges.models import BadgeAward
 from pinax.badges.registry import badges
@@ -18,6 +18,7 @@ from race import tasks
 from race.models import BestRun, Map, Run, Server
 
 from . import serializers
+from .helpers import get_filtered_checkpoints
 
 
 User = get_user_model()
@@ -42,68 +43,37 @@ class ActivityCreateView(APIView):
         return Response()
 
 
-class DemoUploadView(APIView):
-    def post(self, request, format=None):
-        try:
-            map_obj = Map.objects.get(pk=int(self.kwargs["map_id"]))
-        except (Map.DoesNotExist, KeyError):
-            return Response(
-                "Map with specified map_id doesn't exist",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+class RecordingUploadView(APIView):
+    recording_field_name = None
 
+    def post(self, request, user_id, map_id, format=None):
         try:
-            user = User.objects.get(pk=int(self.kwargs["user_id"]))
-        except (User.DoesNotExist, KeyError):
-            return Response(
-                "User with specified user_id doesn't exist",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
-        try:
-            best_run = BestRun.objects.get(map=map_obj, user=user)
+            best_run = BestRun.objects.get(map_id=map_id, user_id=user_id)
         except BestRun.DoesNotExist:
             return Response(
                 "There's no BestRun matching this user/map pair.",
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        best_run.demo_file = request.data.get("demo_file")
+        setattr(
+            best_run,
+            self.recording_field_name,
+            request.data.get(self.recording_field_name),
+        )
         best_run.save()
 
         return Response()
 
 
-class GhostUploadView(APIView):
-    def post(self, request, format=None):
-        try:
-            map_obj = Map.objects.get(pk=int(self.kwargs["map_id"]))
-        except (Map.DoesNotExist, KeyError):
-            return Response(
-                "Map with specified map_id doesn't exist",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+def recording_upload_view_factory(class_name, field_name):
+    return type(
+        class_name, (RecordingUploadView,), {"recording_field_name": field_name}
+    )
 
-        try:
-            user = User.objects.get(pk=int(self.kwargs["user_id"]))
-        except (User.DoesNotExist, KeyError):
-            return Response(
-                "User with specified user_id doesn't exist",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
-        try:
-            best_run = BestRun.objects.get(map=map_obj, user=user)
-        except BestRun.DoesNotExist:
-            return Response(
-                "There's no BestRun matching this user/map pair.",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        best_run.ghost_file = request.data.get("ghost_file")
-        best_run.save()
-
-        return Response()
+DemoUploadView = recording_upload_view_factory("DemoUploadView", "demo_file")
+GhostUploadView = recording_upload_view_factory("GhostUploadView", "ghost_file")
 
 
 class PingView(APIView):
@@ -111,7 +81,7 @@ class PingView(APIView):
         server = request.auth
         users_dict = request.data.get("users", {})
 
-        badges_list = list()
+        badges_list = []
 
         if users_dict:
             user_ids = list(users_dict.keys())
@@ -121,13 +91,14 @@ class PingView(APIView):
                 user__id__in=user_ids,
                 awarded_at__gt=F("user__profile__last_connection_at"),
             )
-            for badge in badges_awarded:
-                badges_list.append(
-                    {
-                        "name": badges._registry[badge.slug].levels[badge.level].name,
-                        "user_id": badge.user.id,
-                    }
-                )
+
+            badges_list = [
+                {
+                    "name": badges._registry[badge.slug].levels[badge.level].name,
+                    "user_id": badge.user.id,
+                }
+                for badge in badges_awarded
+            ]
 
             # removing the relationship for users not present on the server
             server.players.exclude(id__in=user_ids).update(last_played_server=None)
@@ -156,24 +127,18 @@ class UserProfileDetailView(RetrieveAPIView):
 
 
 class UserRankView(APIView):
-    def get(self, request, format=None):
-        try:
-            profile = UserProfile.objects.get(pk=int(self.kwargs["user_id"]))
-        except UserProfile.DoesNotExist:
-            raise Http404
+    def get(self, request, user_id, format=None):
+        profile = get_object_or_404(UserProfile, pk=user_id)
         return Response(profile.position)
 
 
 class UserMapRankView(APIView):
-    def get(self, request, format=None):
-        try:
-            profile = UserProfile.objects.get(pk=int(self.kwargs["user_id"]))
-        except UserProfile.DoesNotExist:
-            raise Http404
+    def get(self, request, user_id, map_id, format=None):
+        profile = get_object_or_404(UserProfile, pk=user_id)
         return Response(
             {
-                "position": profile.map_position(int(self.kwargs["map_id"])),
-                "bestrun": profile.best_score(int(self.kwargs["map_id"])),
+                "position": profile.map_position(int(map_id)),
+                "bestrun": profile.best_score(int(map_id)),
             }
         )
 
@@ -204,11 +169,8 @@ class UserGetByNameView(APIView):
 
 
 class UserSkinView(APIView):
-    def put(self, request, format=None):
-        try:
-            profile = UserProfile.objects.get(id=int(self.kwargs["user_id"]))
-        except UserProfile.DoesNotExist:
-            raise Http404
+    def put(self, request, user_id, format=None):
+        profile = get_object_or_404(UserProfile, pk=user_id)
         profile.has_skin = True
         try:
             profile.skin_name = request.data["skin_name"]
@@ -231,11 +193,8 @@ class UserSkinView(APIView):
 
 
 class UserPlaytimeView(APIView):
-    def put(self, request, format=None):
-        try:
-            profile = UserProfile.objects.get(id=int(self.kwargs["user_id"]))
-        except UserProfile.DoesNotExist:
-            raise Http404
+    def put(self, request, user_id, format=None):
+        profile = get_object_or_404(UserProfile, pk=user_id)
         profile.update_playtime(int(request.data.get("seconds")))
         return Response()
 
@@ -248,13 +207,9 @@ class RunDetailView(RetrieveAPIView):
 
 class RunCreateView(APIView):
     def post(self, request, format=None):
-        try:
-            filtered_checkpoints = ";".join(
-                [v for v in request.data["checkpoints"].split(";") if float(v) != 0.0]
-            )
-        except ValueError:
-            filtered_checkpoints = ""
-        user_id = int(request.data.get("user_id"))
+        filtered_checkpoints = get_filtered_checkpoints(request.data["checkpoints"])
+        user_id = request.data.get("user_id")
+        user = get_object_or_404(User, pk=user_id) if user_id else None
         run = Run(
             map_id=int(request.data["map_id"]),
             server=request.auth,
@@ -266,11 +221,7 @@ class RunCreateView(APIView):
         )
         run.save()
         tasks.redo_ranks.apply(args=[run.id])
-        if user_id is not None:
-            try:
-                user = User.objects.get(pk=user_id)
-            except User.DoesNotExist:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+        if user is not None:
             user.profile.update_connection(request.auth)
             badges.possibly_award_badge("run_finished", user=user, run=run)
         return Response(serializers.RunSerializer(run).data)
