@@ -5,26 +5,13 @@ from django.shortcuts import redirect
 
 from accounts.forms import LoginForm
 from beta.forms import BetaForm, MoarKeysForm
-from blog.models import Entry
+from blog.services import latest_entries
 
 
 @render_to("beta/beta_form.html")
 def beta_form(request):
     if request.user.is_authenticated:
         return redirect(reverse("home"))
-
-    try:
-        latest_entries = (
-            Entry.objects.filter(status=Entry.PUBLISHED_STATUS)
-            .order_by("-created_at")
-            .select_related()[:2]
-        )
-
-        if latest_entries.count() > 1:
-            if not latest_entries[0].is_micro and not latest_entries[1].is_micro:
-                latest_entries = latest_entries[:1]
-    except Entry.DoesNotExist:
-        latest_entries = None
 
     form = BetaForm(request=request)
     login_form = LoginForm()
@@ -54,7 +41,7 @@ def beta_form(request):
 
     return {
         "form": form,
-        "latest_entries": latest_entries,
+        "latest_entries": latest_entries(),
         "login_form": login_form,
         "next": _request.get("next", reverse("home")),
     }

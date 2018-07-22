@@ -12,26 +12,13 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.utils.timezone import utc
 
-from blog.models import Entry
+from blog.services import latest_entries
 from race import tasks
 from race.models import Map, Run
 
 
 @render_to("home.html")
 def homepage(request):
-    try:
-        latest_entries = (
-            Entry.objects.filter(status=Entry.PUBLISHED_STATUS)
-            .order_by("-created_at")
-            .select_related()[:2]
-        )
-
-        if latest_entries.count() > 1:
-            if not latest_entries[0].is_micro and not latest_entries[1].is_micro:
-                latest_entries = latest_entries[:1]
-    except Entry.DoesNotExist:
-        latest_entries = None
-
     user_base = User.objects.exclude(is_active=False)
     try:
         latest_user = user_base.latest("id")
@@ -82,7 +69,7 @@ def homepage(request):
     messages.info(request, "Please enable Javascript.", extra_tags="javascript")
 
     return {
-        "latest_entries": latest_entries,
+        "latest_entries": latest_entries(),
         "latest_user": latest_user,
         "user_count": user_count,
         "latest_map": latest_map,
