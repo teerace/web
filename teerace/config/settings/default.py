@@ -142,7 +142,7 @@ MIDDLEWARE = ["django.middleware.security.SecurityMiddleware"]
 if env.bool("STATICFILES_WHITENOISE", True):
     MIDDLEWARE += ["whitenoise.middleware.WhiteNoiseMiddleware"]
 
-MIDDLEWARE += (
+MIDDLEWARE += [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -150,7 +150,7 @@ MIDDLEWARE += (
     "django.contrib.messages.middleware.MessageMiddleware",
     "dj_pagination.middleware.PaginationMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-)
+]
 
 TEMPLATES = [
     {
