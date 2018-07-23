@@ -18,7 +18,7 @@ FROM alpine:3.7 AS workspace
 ARG PROJECT_NAME=teerace
 ENV PROJECT_NAME ${PROJECT_NAME}
 
-RUN mkdir /code
+RUN mkdir -p /code/static
 ADD ${PROJECT_NAME} /code/${PROJECT_NAME}
 ADD tests /code/tests
 ADD setup.cfg entrypoint.sh /code/
@@ -28,6 +28,7 @@ FROM python:${PYTHON_TAG}
 ARG PROJECT_NAME=teerace
 ENV PYTHONUNBUFFERED 1
 ENV PROJECT_NAME ${PROJECT_NAME}
+ENV RAVEN_RELEASE ${RAVEN_RELEASE}
 ENV GIT_COMMIT ${GIT_COMMIT}
 
 RUN apk add --no-cache \
@@ -47,5 +48,6 @@ WORKDIR /code
 COPY --chown=app:app --from=workspace /code /code
 USER app
 WORKDIR /code/${PROJECT_NAME}/
+RUN python manage.py collectstatic --noinput
 
 ENTRYPOINT ["../entrypoint.sh"]

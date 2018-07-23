@@ -113,19 +113,32 @@ jobs:
       - run:
           name: Push to Docker Hub
           command: |
-            TAG=$CIRCLE_TAG
-            docker tag app chaosk/teerace:$TAG
+            docker tag app chaosk/teerace:$CIRCLE_TAG
             docker tag app chaosk/teerace:latest
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push chaosk/teerace:$TAG
+            docker push chaosk/teerace:$CIRCLE_TAG
             docker push chaosk/teerace:latest
 
   deploy:
     docker:
-      - image: docker:18.06.0-ce
+      - image: circleci/node:8.10.0
     steps:
-      - setup_remote_docker:
-          version: 17.09.0-ce
+      - checkout
+      - run:
+          name: Install Now CLI
+          command: sudo npm install --global --unsafe-perm now
+      - run:
+          name: Deploy using Now
+          command: |
+            cd .now
+            echo "FROM chaosk/teerace:$CIRCLE_TAG\nEXPOSE 8000\nCMD [\"runserver\"]" > Dockerfile
+            now \
+              --local-config now.production.json \
+              --token $ZEIT_TOKEN
+            now \
+              --local-config now.production.json \
+              --token $ZEIT_TOKEN \
+              alias
 
 workflows:
   version: 2

@@ -83,6 +83,12 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+DEFAULT_FILE_STORAGE = env(
+    "DEFAULT_FILE_STORAGE", default="django.core.files.storage.FileSystemStorage"
+)
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env("SECRET_KEY", default="foobar")
 
@@ -131,14 +137,19 @@ BREADCRUMBS_TEMPLATE = "snippets/breadcrumbs.html"
 
 SESSION_ENGINE = env("SESSION_ENGINE", default="django.contrib.sessions.backends.db")
 
-MIDDLEWARE = (
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.http.ConditionalGetMiddleware",
+MIDDLEWARE = ["django.middleware.security.SecurityMiddleware"]
+
+if env.bool("STATICFILES_WHITENOISE", True):
+    MIDDLEWARE += ["whitenoise.middleware.WhiteNoiseMiddleware"]
+
+MIDDLEWARE += (
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "dj_pagination.middleware.PaginationMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
 TEMPLATES = [
@@ -180,6 +191,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "django_markwhat",
     "django.contrib.humanize",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "lib",
     "cachalot",

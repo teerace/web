@@ -1,0 +1,9 @@
+{
+    "name": "teerace-production",
+    "type": "docker",
+    "public": true,
+    "env": {
+        "ALLOWED_HOSTS": "*",
+        "DATABASE_URL": "sqlite://localhost/:memory:"
+    }
+}
