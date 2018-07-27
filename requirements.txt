@@ -5,7 +5,7 @@ dj-pagination==2.3.2
 django-activity-stream==0.6.5
 django-annoying==0.10.4
 django-bootstrap-breadcrumbs==0.9.1
-django-cachalot==2.0.1
+django-cachalot==2.0.2
 django-contrib-comments==1.8.0
 django-countries==5.3.1
 django-environ==0.4.5
