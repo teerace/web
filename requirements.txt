@@ -10,7 +10,7 @@ django-contrib-comments==1.9.0
 django-countries==5.3.2
 django-environ==0.4.5
 django-gravatar2==1.4.2
-django-markwhat==1.6.0
+django-markwhat==1.6.1
 django-picklefield==1.1.0
 django-recaptcha==1.4.0
 django-redis==4.9.0
