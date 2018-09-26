@@ -20,7 +20,7 @@ djangorestframework==3.8.2
 flake8==3.5.0
 furl==1.2.1
 isort==4.3.4
-Markdown==3.0
+Markdown==3.0.1
 pinax-badges==2.0.0
 psycopg2==2.7.5
 pytest-cov==2.6.0
