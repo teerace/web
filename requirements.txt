@@ -18,7 +18,7 @@ django-threadedcomments==1.2
 Django==2.0.7
 djangorestframework==3.8.2
 flake8==3.5.0
-furl==1.2.1
+furl==2.0.0
 isort==4.3.4
 Markdown==3.0.1
 pinax-badges==2.0.0
