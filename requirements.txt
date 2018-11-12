@@ -22,7 +22,7 @@ furl==2.0.0
 isort==4.3.4
 Markdown==3.0.1
 pinax-badges==2.0.0
-psycopg2==2.7.6
+psycopg2==2.7.6.1
 pytest-cov==2.6.0
 pytest-django==3.4.3
 pytest-env==0.6.2
