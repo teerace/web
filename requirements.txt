@@ -13,7 +13,7 @@ django-gravatar2==1.4.2
 django-markwhat==1.6.1
 django-picklefield==1.1.0
 django-recaptcha==1.4.0
-django-redis==4.9.0
+django-redis==4.10.0
 django-threadedcomments==1.2
 Django==2.0.9
 djangorestframework==3.9.0
