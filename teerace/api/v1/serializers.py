@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django_countries.serializer_fields import CountryField
 from rest_framework import serializers
 
 from accounts.models import UserProfile
@@ -7,6 +8,8 @@ from race.models import BestRun, Map, Run
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    country = CountryField(allow_blank=True)
+    
     class Meta:
         model = UserProfile
         fields = ("country", "points", "get_skin")
