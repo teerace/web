@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from actstream import action
 from annoying.functions import get_object_or_None
 from django.contrib.auth import authenticate, get_user_model
@@ -135,10 +137,11 @@ class UserRankView(APIView):
 class UserMapRankView(APIView):
     def get(self, request, user_id, map_id, format=None):
         profile = get_object_or_404(UserProfile, pk=user_id)
+        bestrun = profile.best_score(int(map_id))
         return Response(
             {
                 "position": profile.map_position(int(map_id)),
-                "bestrun": profile.best_score(int(map_id)),
+                "bestrun": serializers.RunSerializer(bestrun).data if bestrun else None,
             }
         )
 
@@ -213,10 +216,10 @@ class RunCreateView(APIView):
         run = Run(
             map_id=int(request.data["map_id"]),
             server=request.auth,
-            user_id=user_id,
+            user=user,
             nickname=request.data["nickname"],
-            clan=request.data["clan"],
-            time=request.data["time"],
+            clan=request.data.get("clan", ""),
+            time=Decimal(request.data["time"]),
             checkpoints=filtered_checkpoints,
         )
         run.save()
@@ -242,10 +245,8 @@ class MapListView(ListAPIView):
         types = self.kwargs.get("type")
         if types:
             types = types.split(" ")
-            q = Q()
             for type_ in types:
-                q &= Q(map_types__slug=type_)
-            queryset = queryset.filter(q)
+                queryset = queryset.filter(map_types__slug=type_)
         return queryset
 
 
@@ -285,5 +286,5 @@ class UserTokenView(APIView):
             username=request.data.get("username"), password=request.data.get("password")
         )
         if not user or not user.is_active:
-            return False
-        return user.profile.api_token
+            return Response(False)
+        return Response(user.profile.api_token)

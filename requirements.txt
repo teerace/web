@@ -28,6 +28,7 @@ pytest-django==3.4.4
 pytest-env==0.6.2
 pytest==4.0.1
 raven==6.9.0
+redis==2.10.6
 requests==2.20.1
 teerace-tml==0.3
 webstack_django_sorting==1.0.1

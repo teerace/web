@@ -46,7 +46,7 @@ class UserProfile(models.Model):
         (FEMALE_GENDER, "Female"),
     )
     gender = models.IntegerField(
-        choices=GENDER_CHOICES, default=UNKNOWN_GENDER, blank=True
+        choices=GENDER_CHOICES, default=UNKNOWN_GENDER
     )
 
     has_skin = models.BooleanField(default=False)

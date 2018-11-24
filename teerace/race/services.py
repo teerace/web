@@ -81,7 +81,7 @@ class GetBadges:
             num=Count("pk")
         )
         return {
-            self.get_slug(badge["slug", badge["level"]]): badge["num"]
+            self.get_slug(badge["slug"], badge["level"]): badge["num"]
             for badge in badges_awarded
         }
 

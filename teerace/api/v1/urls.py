@@ -15,7 +15,7 @@ urlpatterns = [
     url(r"^users/rank/(?P<user_id>\d+)/$", views.UserRankView.as_view()),
     url(
         r"^users/map_rank/(?P<user_id>\d+)/(?P<map_id>\d+)/$",
-        views.UserRankView.as_view(),
+        views.UserMapRankView.as_view(),
     ),
     url(r"^users/auth_token/$", views.UserAuthTokenView.as_view()),
     url(r"^users/get_by_name/$", views.UserGetByNameView.as_view()),
