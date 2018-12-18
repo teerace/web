@@ -6,7 +6,7 @@
     "public": true,
     "env": {
         "ALLOWED_HOSTS": "*",
-        "DATABASE_URL": "sqlite://localhost/:memory:",
+        "DATABASE_URL": "sqlite:////tmp/db.sqlite",
         "RAVEN_DSN": "@sentry-dsn",
         "RAVEN_ENVIRONMENT": "now.sh"
     }
