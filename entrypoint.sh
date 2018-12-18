@@ -32,7 +32,7 @@ elif [ "$1" = 'flake8' ]; then
 elif [ "$1" = 'mypy' ]; then
     exec mypy .
 elif [ "$1" = 'now-runner' ]; then
-    exec .now/run.sh
+    python manage.py migrate && exec python manage.py runserver 0.0.0.0:8000
 fi
 
 exec "$@"
