@@ -31,6 +31,8 @@ elif [ "$1" = 'flake8' ]; then
     exec flake8 ..
 elif [ "$1" = 'mypy' ]; then
     exec mypy .
+elif [ "$1" = 'now-runner' ]; then
+    exec .now/run.sh
 fi
 
 exec "$@"
