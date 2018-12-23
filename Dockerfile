@@ -3,6 +3,7 @@ ARG PYTHON_TAG=3.6.5-alpine3.7
 # Builder image
 FROM python:${PYTHON_TAG} AS builder
 RUN apk add --no-cache \
+        linux-headers \
         gettext-dev \
         postgresql-dev \
         gcc \
