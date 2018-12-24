@@ -66,9 +66,7 @@ class Entry(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse(
-            "blog.views.entry_detail", kwargs={"entry_id": self.id, "slug": self.slug}
-        )
+        return reverse("blog_entry", kwargs={"entry_id": self.id, "slug": self.slug})
 
 
 class EntryModerator(CommentModerator):
