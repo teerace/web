@@ -182,7 +182,7 @@ ROOT_URLCONF = "config.urls"
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = "config.wsgi.application"
 
-OUR_APPS = ("race", "accounts", "api", "blog", "home", "stats")
+OUR_APPS = ("beta", "race", "accounts", "api", "blog", "home", "stats")
 
 INSTALLED_APPS = (
     "config.apps.DjangoContribAuthConfig",
