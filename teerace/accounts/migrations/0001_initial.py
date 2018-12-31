@@ -42,23 +42,15 @@ class Migration(migrations.Migration):
                 (
                     "gender",
                     models.IntegerField(
-                        default=1,
-                        blank=True,
-                        choices=[(1, b"Unknown"), (2, b"Male"), (3, b"Female")],
+                        default=1, choices=[(1, "Unknown"), (2, "Male"), (3, "Female")]
                     ),
                 ),
                 ("has_skin", models.BooleanField(default=False)),
                 ("skin_name", models.CharField(max_length=40, blank=True)),
                 ("skin_body_color", models.CharField(max_length=7, blank=True)),
                 ("skin_feet_color", models.CharField(max_length=7, blank=True)),
-                (
-                    "skin_body_color_raw",
-                    models.IntegerField(max_length=8, null=True, blank=True),
-                ),
-                (
-                    "skin_feet_color_raw",
-                    models.IntegerField(max_length=8, null=True, blank=True),
-                ),
+                ("skin_body_color_raw", models.IntegerField(null=True, blank=True)),
+                ("skin_feet_color_raw", models.IntegerField(null=True, blank=True)),
                 (
                     "last_played_server",
                     models.ForeignKey(

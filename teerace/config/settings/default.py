@@ -86,8 +86,10 @@ STATICFILES_FINDERS = (
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_FILE_STORAGE = env(
-    "DEFAULT_FILE_STORAGE", default="django.core.files.storage.FileSystemStorage"
+    "DEFAULT_FILE_STORAGE", default="lib.file_storage.OverwriteStorage"
 )
+GS_BUCKET_NAME = env("GS_BUCKET_NAME", default=None)
+GS_DEFAULT_ACL = env("GS_DEFAULT_ACL", default="publicRead")
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env("SECRET_KEY", default="foobar")

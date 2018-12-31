@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
                     "is_micro",
                     models.BooleanField(
                         default=False,
-                        help_text=b"Designates whether this entry should be displayed as micropost. It will not be included in Teeplanet feed.",
-                        verbose_name=b"micro",
+                        help_text="Designates whether this entry should be displayed as micropost. It will not be included in Teeplanet feed.",
+                        verbose_name="micro",
                     ),
                 ),
                 ("title", models.CharField(max_length=100)),
@@ -36,17 +36,17 @@ class Migration(migrations.Migration):
                 (
                     "excerpt",
                     models.TextField(
-                        help_text=b"You may use Markdown syntax", blank=True
+                        help_text="You may use Markdown syntax", blank=True
                     ),
                 ),
                 ("excerpt_html", models.TextField(blank=True)),
-                ("content", models.TextField(help_text=b"You may use Markdown syntax")),
+                ("content", models.TextField(help_text="You may use Markdown syntax")),
                 ("content_html", models.TextField()),
                 (
                     "status",
                     models.IntegerField(
                         default=2,
-                        choices=[(1, b"Published"), (2, b"Draft"), (3, b"Hidden")],
+                        choices=[(1, "Published"), (2, "Draft"), (3, "Hidden")],
                     ),
                 ),
                 (

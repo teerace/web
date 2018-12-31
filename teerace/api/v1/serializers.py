@@ -9,7 +9,7 @@ from race.models import BestRun, Map, Run
 
 class UserProfileSerializer(serializers.ModelSerializer):
     country = CountryField(allow_blank=True)
-    
+
     class Meta:
         model = UserProfile
         fields = ("country", "points", "get_skin")
