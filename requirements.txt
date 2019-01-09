@@ -30,7 +30,7 @@ pytest-django==3.4.4
 pytest-env==0.6.2
 pytest==4.0.2
 raven==6.10.0
-redis==2.10.6
+redis==3.0.1
 requests==2.21.0
 teerace-tml==0.3
 uWSGI==2.0.17.1
