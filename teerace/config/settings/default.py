@@ -86,8 +86,10 @@ STATICFILES_FINDERS = (
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_FILE_STORAGE = env(
-    "DEFAULT_FILE_STORAGE", default="django.core.files.storage.FileSystemStorage"
+    "DEFAULT_FILE_STORAGE", default="lib.file_storage.OverwriteStorage"
 )
+GS_BUCKET_NAME = env("GS_BUCKET_NAME", default=None)
+GS_DEFAULT_ACL = env("GS_DEFAULT_ACL", default="publicRead")
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env("SECRET_KEY", default="foobar")
@@ -180,7 +182,7 @@ ROOT_URLCONF = "config.urls"
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = "config.wsgi.application"
 
-OUR_APPS = ("race", "accounts", "api", "blog", "home", "stats")
+OUR_APPS = ("beta", "race", "accounts", "api", "blog", "home", "stats")
 
 INSTALLED_APPS = (
     "config.apps.DjangoContribAuthConfig",

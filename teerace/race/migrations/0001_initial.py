@@ -31,7 +31,6 @@ class Migration(migrations.Migration):
                     "demo_file",
                     models.FileField(
                         blank=True,
-                        storage=lib.file_storage.OverwriteStorage(),
                         null=True,
                         upload_to=race.models.demo_filename,
                         validators=[race.validators.is_demo_file],
@@ -41,7 +40,6 @@ class Migration(migrations.Migration):
                     "ghost_file",
                     models.FileField(
                         blank=True,
-                        storage=lib.file_storage.OverwriteStorage(),
                         null=True,
                         upload_to=race.models.ghost_filename,
                         validators=[race.validators.is_ghost_file],
@@ -68,7 +66,6 @@ class Migration(migrations.Migration):
                 (
                     "map_file",
                     models.FileField(
-                        storage=lib.file_storage.OverwriteStorage(),
                         upload_to=race.models.map_filename,
                         validators=[race.validators.is_map_file],
                     ),

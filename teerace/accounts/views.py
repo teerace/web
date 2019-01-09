@@ -84,7 +84,7 @@ def register(request):
         "next", get_config("FIRST_LOGIN_REDIRECT_URL", reverse("first_steps"))
     )
     # rescuing poor users from infinite redirection loop
-    if next_uri == get_config("LOGIN_URL", reverse("login")):
+    if not next_uri or next_uri == get_config("LOGIN_URL", reverse("login")):
         next_uri = get_config("FIRST_LOGIN_REDIRECT_URL", reverse("first_steps"))
 
     register_form = RegisterForm()

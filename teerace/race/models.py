@@ -12,7 +12,6 @@ from markdown import markdown
 from picklefield.fields import PickledObjectField
 from pinax.badges.signals import badge_awarded
 
-from lib.file_storage import OverwriteStorage
 from race.validators import is_demo_file, is_ghost_file, is_map_file
 
 
@@ -34,9 +33,7 @@ class Map(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     added_by = models.ForeignKey(User, on_delete=models.PROTECT)
 
-    map_file = models.FileField(
-        storage=OverwriteStorage(), upload_to=map_filename, validators=[is_map_file]
-    )
+    map_file = models.FileField(upload_to=map_filename, validators=[is_map_file])
     crc = models.CharField(max_length=8, blank=True, null=True)
 
     map_types = models.ManyToManyField("MapType", related_name="map_types")
@@ -215,19 +212,11 @@ class BestRun(models.Model):
     points = models.IntegerField(default=0)
 
     demo_file = models.FileField(
-        blank=True,
-        null=True,
-        storage=OverwriteStorage(),
-        upload_to=demo_filename,
-        validators=[is_demo_file],
+        blank=True, null=True, upload_to=demo_filename, validators=[is_demo_file]
     )
 
     ghost_file = models.FileField(
-        blank=True,
-        null=True,
-        storage=OverwriteStorage(),
-        upload_to=ghost_filename,
-        validators=[is_ghost_file],
+        blank=True, null=True, upload_to=ghost_filename, validators=[is_ghost_file]
     )
 
     def get_demo_url(self):

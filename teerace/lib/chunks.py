@@ -1,4 +1,3 @@
-
 """
 http://stackoverflow.com/questions/312443/#312464
 """

@@ -198,7 +198,7 @@ def retrieve_map_details(map_id):
 
     logger.info("Generating map CRC...")
     map_obj.map_file.open()
-    map_obj.crc = "{0:x}".format(crc32(map_obj.map_file.read()) & 0xffffffff)
+    map_obj.crc = "{0:x}".format(crc32(map_obj.map_file.read()) & 0xFFFFFFFF)
     map_obj.map_file.close()
     map_obj.save()
 

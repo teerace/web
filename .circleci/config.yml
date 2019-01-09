@@ -131,12 +131,12 @@ jobs:
           name: Deploy using Now
           command: |
             cd .now
-            echo "FROM chaosk/teerace:$CIRCLE_TAG\nEXPOSE 8000\nCMD [\"runserver\"]" > Dockerfile
+            echo "FROM chaosk/teerace:$CIRCLE_TAG\nEXPOSE 8000\nCMD [\"now-runner\"]" > Dockerfile
             now \
-              --local-config now.production.json \
+              --local-config now.master.json \
               --token $ZEIT_TOKEN
             now \
-              --local-config now.production.json \
+              --local-config now.master.json \
               --token $ZEIT_TOKEN \
               alias
 
