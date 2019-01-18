@@ -2,7 +2,7 @@ black==18.9b0
 celery==4.2.1
 coverage==4.5.2
 dj-pagination==2.4.0
-django-activity-stream==0.6.5
+django-activity-stream==0.7.0
 django-annoying==0.10.4
 django-bootstrap-breadcrumbs==0.9.1
 django-cachalot==2.1.0
