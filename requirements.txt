@@ -17,7 +17,7 @@ django-redis==4.10.0
 django-storages==1.7.1
 django-threadedcomments==1.2
 Django==2.0.10
-djangorestframework==3.9.0
+djangorestframework==3.9.1
 flake8==3.6.0
 furl==2.0.0
 google-cloud-storage==1.13.2
