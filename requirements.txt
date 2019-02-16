@@ -7,7 +7,7 @@ django-annoying==0.10.4
 django-bootstrap-breadcrumbs==0.9.1
 django-cachalot==2.1.0
 django-contrib-comments==1.9.0
-django-countries==5.3.2
+django-countries==5.3.3
 django-environ==0.4.5
 django-gravatar2==1.4.2
 django-markwhat==1.6.1
