@@ -26,7 +26,7 @@ Markdown==2.6.11
 pinax-badges==2.0.0
 psycopg2==2.7.7
 pytest-cov==2.6.1
-pytest-django==3.4.5
+pytest-django==3.4.8
 pytest-env==0.6.2
 pytest==4.2.0
 raven==6.10.0
