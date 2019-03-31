@@ -1,5 +1,5 @@
 black==18.9b0
-celery==4.2.1
+celery==4.3.0
 coverage==4.5.2
 dj-pagination==2.4.0
 django-activity-stream==0.7.0
