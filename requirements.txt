@@ -16,7 +16,7 @@ django-recaptcha==2.0.2
 django-redis==4.10.0
 django-storages==1.7.1
 django-threadedcomments==1.2
-Django==2.1.5
+Django==2.2
 djangorestframework==3.9.1
 flake8==3.7.4
 furl==2.0.0
