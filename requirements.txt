@@ -24,7 +24,7 @@ google-cloud-storage==1.13.2
 isort==4.3.4
 Markdown==2.6.11
 pinax-badges==2.0.0
-psycopg2==2.7.7
+psycopg2==2.8.1
 pytest-cov==2.6.1
 pytest-django==3.4.5
 pytest-env==0.6.2
