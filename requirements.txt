@@ -21,7 +21,7 @@ djangorestframework==3.9.1
 flake8==3.7.4
 furl==2.0.0
 google-cloud-storage==1.13.2
-isort==4.3.4
+isort==4.3.17
 Markdown==2.6.11
 pinax-badges==2.0.0
 psycopg2==2.7.7
